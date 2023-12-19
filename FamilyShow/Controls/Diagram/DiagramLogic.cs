@@ -26,6 +26,9 @@ namespace Microsoft.FamilyShow
         // List of people, global list that is shared by all objects in the application.
         private PeopleCollection family;
 
+        // DPI information at which this Visual is measured and rendered.
+        private DpiScale dpiScale;
+
         // Callback when a node is clicked.
         private RoutedEventHandler nodeClickHandler;
 
@@ -132,10 +135,12 @@ namespace Microsoft.FamilyShow
 
         #endregion
 
-        public DiagramLogic()
+        public DiagramLogic(DpiScale dpiScale)
         {
             // The list of people, this is a global list shared by the application.
             family = App.Family;
+
+            this.dpiScale = dpiScale;
 
             Clear();
         }
@@ -283,7 +288,8 @@ namespace Microsoft.FamilyShow
                     // Add connection.
                     DiagramConnectorNode connectorNode = new DiagramConnectorNode(node, group, row);
                     personLookup.Add(node.Person, connectorNode);
-                    connections.Add(new MarriedDiagramConnector(married, personLookup[person], connectorNode));
+                    connections.Add(new MarriedDiagramConnector(married,
+                      personLookup[person], connectorNode, dpiScale));
                 }
             }
         }
@@ -538,7 +544,7 @@ namespace Microsoft.FamilyShow
                             personLookup.ContainsKey(spouse))
                         {
                             connections.Add(new MarriedDiagramConnector(true,
-                                personLookup[person], personLookup[spouse]));
+                                personLookup[person], personLookup[spouse], dpiScale));
                         }
                     }
 
@@ -549,7 +555,7 @@ namespace Microsoft.FamilyShow
                             personLookup.ContainsKey(spouse))
                         {
                             connections.Add(new MarriedDiagramConnector(false,
-                                personLookup[person], personLookup[spouse]));
+                                personLookup[person], personLookup[spouse], dpiScale));
                         }
                     }
                 }

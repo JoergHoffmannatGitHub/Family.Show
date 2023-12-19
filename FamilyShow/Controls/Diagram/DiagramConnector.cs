@@ -376,14 +376,17 @@ namespace Microsoft.FamilyShow
         // Flag if currently married or former.
         private bool married;
 
+        // The Pixels Per Density Independent Pixel value.
+        private readonly double pixelsPerDip;
+
         #endregion
 
-        #region properties
-                
-        /// <summary>
-        /// Return true if this is a child connector.
-        /// </summary>
-        override public bool IsChildConnector
+    #region properties
+
+    /// <summary>
+    /// Return true if this is a child connector.
+    /// </summary>
+    override public bool IsChildConnector
         {
             get { return false; }
         }
@@ -458,7 +461,8 @@ namespace Microsoft.FamilyShow
         #endregion        
 
         public MarriedDiagramConnector(bool isMarried,
-            DiagramConnectorNode startConnector, DiagramConnectorNode endConnector) : 
+            DiagramConnectorNode startConnector, DiagramConnectorNode endConnector,
+            DpiScale dpiScale) : 
             base(startConnector, endConnector)
         {
             // Store if currently married or former.
@@ -468,6 +472,9 @@ namespace Microsoft.FamilyShow
             connectionTextSize = (double)Application.Current.TryFindResource("ConnectionTextSize");
             connectionTextColor = (Color)Application.Current.TryFindResource("ConnectionTextColor");
             connectionTextFont = (FontFamily)Application.Current.TryFindResource("ConnectionTextFont");
+
+            // Gets the DPI information at which this Visual is measured and rendered.
+            pixelsPerDip = dpiScale.PixelsPerDip;
 
             // Get resourced used to draw the connection line.
             this.ResourcePen = (Pen)Application.Current.TryFindResource(
@@ -522,7 +529,8 @@ namespace Microsoft.FamilyShow
                         System.Globalization.CultureInfo.CurrentUICulture, 
                         FlowDirection.LeftToRight, new Typeface(connectionTextFont, 
                         FontStyles.Normal, FontWeights.Normal, FontStretches.Normal, 
-                        connectionTextFont), connectionTextSize, GetBrush(connectionTextColor));
+                        connectionTextFont), connectionTextSize, GetBrush(connectionTextColor),
+                        pixelsPerDip);
 
                     drawingContext.DrawText(format, new Point(
                         bounds.Left + ((bounds.Width / 2) - (format.Width / 2)),
@@ -538,7 +546,8 @@ namespace Microsoft.FamilyShow
                         System.Globalization.CultureInfo.CurrentUICulture,
                         FlowDirection.LeftToRight, new Typeface(connectionTextFont, 
                         FontStyles.Normal, FontWeights.Normal, FontStretches.Normal, 
-                        connectionTextFont), connectionTextSize, GetBrush(connectionTextColor));
+                        connectionTextFont), connectionTextSize, GetBrush(connectionTextColor),
+                        pixelsPerDip);
 
                     drawingContext.DrawText(format, new Point(
                         bounds.Left + ((bounds.Width / 2) - (format.Width / 2)),

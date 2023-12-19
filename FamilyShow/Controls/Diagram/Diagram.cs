@@ -197,7 +197,7 @@ namespace Microsoft.FamilyShow
         public Diagram()
         {
             // Init the diagram logic, which handles all of the layout logic.
-            logic = new DiagramLogic();
+            logic = new DiagramLogic(VisualTreeHelper.GetDpi(this));
             logic.NodeClickHandler = new RoutedEventHandler(OnNodeClick);
 
             // Can have an empty People collection when in design tools such as Blend.
@@ -426,7 +426,8 @@ namespace Microsoft.FamilyShow
                     System.Globalization.CultureInfo.CurrentUICulture,
                     FlowDirection.LeftToRight, new Typeface(connectionTextFont,
                     FontStyles.Normal, FontWeights.Normal, FontStretches.Normal,
-                    connectionTextFont), connectionTextSize, (Brush)Brushes.PaleVioletRed);
+                    connectionTextFont), connectionTextSize, (Brush)Brushes.PaleVioletRed,
+                    VisualTreeHelper.GetDpi(this).PixelsPerDip);
 
                     if (rownumber != rows.Count)
                     {
