@@ -42,7 +42,7 @@ namespace Microsoft.FamilyShow
         /// Creates a single task bar instance.
         /// </summary>
         /// <returns></returns>
-        public static TaskBar Create(Window mainWindow, string appId, params IJumpListTask[] tasks)
+        public static TaskBar Create(Window mainWindow, string appId, params JumpListTask[] tasks)
         {
             if (Current == null)
             {
@@ -69,7 +69,7 @@ namespace Microsoft.FamilyShow
         /// </summary>
         /// <param name="mainWindow">The main window.</param>
         /// <param name="tasks">List of tasks that should be added to the jump list.</param>
-        public virtual void AddTasks(params IJumpListTask[] tasks)
+        public virtual void AddTasks(params JumpListTask[] tasks)
         {
             if (tasks == null || tasks.Length == 0)
             {
@@ -118,7 +118,7 @@ namespace Microsoft.FamilyShow
             public override void Loading() { }
             public override void Restore() { }
             public override void Progress(int progress) { }
-            public override void AddTasks(params IJumpListTask[] tasks) { }
+            public override void AddTasks(params JumpListTask[] tasks) { }
         }
 
         #endregion
