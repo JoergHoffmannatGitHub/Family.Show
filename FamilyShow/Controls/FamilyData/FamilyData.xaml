@@ -2,7 +2,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Microsoft.FamilyShow" 
-    xmlns:tk="http://schemas.microsoft.com/wpf/2008/toolkit"
     x:Class="Microsoft.FamilyShow.FamilyData" 
     xmlns:properties="clr-namespace:Microsoft.FamilyShow.Properties"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
@@ -514,93 +513,93 @@
                     <Border Grid.Row="2" Grid.Column="0" Margin="5,0,0,5">
 
                         <UniformGrid Columns="1">
-                            <tk:DataGrid x:Name="FamilyEditorGrid"
-                                     Background="{x:Null}"                                         
-                                     Margin="-2,0,0,0"
-                                     BorderBrush="{x:Null}"
-                                     AutoGenerateColumns="False"
-                                     SelectionMode="Single"
-                                     GridLinesVisibility="None"
-                                     LostFocus="FamilyEditor_LostFocus">
+                            <DataGrid x:Name="FamilyEditorGrid"
+                                      Background="{x:Null}"                                         
+                                      Margin="-2,0,0,0"
+                                      BorderBrush="{x:Null}"
+                                      AutoGenerateColumns="False"
+                                      SelectionMode="Single"
+                                      GridLinesVisibility="None"
+                                      LostFocus="FamilyEditor_LostFocus">
                                 
-                                <tk:DataGrid.CellStyle>
-                                    <Style TargetType="{x:Type tk:DataGridCell}">
+                                <DataGrid.CellStyle>
+                                    <Style TargetType="{x:Type DataGridCell}">
                                         <Setter Property="VerticalContentAlignment" Value="Center" />
                                     </Style>
-                                </tk:DataGrid.CellStyle>
+                                </DataGrid.CellStyle>
                                 
-                                <tk:DataGrid.RowStyle>
-                                    <Style TargetType="{x:Type tk:DataGridRow}">
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="{x:Type DataGridRow}">
                                         <Setter Property="Height" Value="32" />
                                     </Style>
-                                </tk:DataGrid.RowStyle>
+                                </DataGrid.RowStyle>
                                 
 
-                                <tk:DataGrid.Columns>
-                                    <tk:DataGridTemplateColumn HeaderTemplate="{StaticResource RestrictionFamilyDataGridColumnHeader}"
-                                                               SortMemberPath="HasRestriction"
-                                                               CellTemplate="{StaticResource RestrictionColumnTemplate}" />
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource RestrictionFamilyDataGridColumnHeader}"
+                                                            SortMemberPath="HasRestriction"
+                                                            CellTemplate="{StaticResource RestrictionColumnTemplate}" />
                                     
-                                    <tk:DataGridTemplateColumn HeaderTemplate="{StaticResource CitationFamilyDataGridColumnHeader}"
-                                                               SortMemberPath="HasCitations"
-                                                               CellTemplate="{StaticResource SourcesColumnTemplate}" />
+                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource CitationFamilyDataGridColumnHeader}"
+                                                            SortMemberPath="HasCitations"
+                                                            CellTemplate="{StaticResource SourcesColumnTemplate}" />
                                     
-                                    <tk:DataGridTemplateColumn HeaderTemplate="{StaticResource PhotoFamilyDataGridColumnHeader}"
-                                                               SortMemberPath="HasPhoto"
-                                                               CellTemplate="{StaticResource PhotosColumnTemplate}" />
+                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource PhotoFamilyDataGridColumnHeader}"
+                                                            SortMemberPath="HasPhoto"
+                                                            CellTemplate="{StaticResource PhotosColumnTemplate}" />
                                     
-                                    <tk:DataGridTemplateColumn HeaderTemplate="{StaticResource NoteFamilyDataGridColumnHeader}"
-                                                               SortMemberPath="HasNote"                                                              
-                                                               CellTemplate="{StaticResource NotesColumnTemplate}" />
+                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource NoteFamilyDataGridColumnHeader}"
+                                                            SortMemberPath="HasNote"                                                              
+                                                            CellTemplate="{StaticResource NotesColumnTemplate}" />
                                     
-                                    <tk:DataGridTemplateColumn HeaderTemplate="{StaticResource AttachmentFamilyDataGridColumnHeader}"
-                                                               SortMemberPath="HasAttachment"
-                                                               CellTemplate="{StaticResource AttachmentsColumnTemplate}" />
+                                    <DataGridTemplateColumn HeaderTemplate="{StaticResource AttachmentFamilyDataGridColumnHeader}"
+                                                            SortMemberPath="HasAttachment"
+                                                            CellTemplate="{StaticResource AttachmentsColumnTemplate}" />
                                     
-                                    <tk:DataGridTemplateColumn SortMemberPath="HasAvatar"
-                                                               CellTemplate="{StaticResource ImagesColumnTemplate}" />
+                                    <DataGridTemplateColumn SortMemberPath="HasAvatar"
+                                                            CellTemplate="{StaticResource ImagesColumnTemplate}" />
                                     
-                                    <tk:DataGridTextColumn Header="{x:Static properties:Resources.Names}"
-                                                           Binding="{Binding FirstName}"
-                                                           SortMemberPath="FirstName" />
+                                    <DataGridTextColumn Header="{x:Static properties:Resources.Names}"
+                                                        Binding="{Binding FirstName}"
+                                                        SortMemberPath="FirstName" />
                                     
-                                    <tk:DataGridTextColumn Header="{x:Static properties:Resources.Surname}"                                                           
-                                                           Binding="{Binding LastName}"
-                                                           SortMemberPath="LastName" />
+                                    <DataGridTextColumn Header="{x:Static properties:Resources.Surname}"                                                           
+                                                        Binding="{Binding LastName}"
+                                                        SortMemberPath="LastName" />
                                     
-                                    <tk:DataGridTextColumn Header="{x:Static properties:Resources.Suffix}"
-                                                           Binding="{Binding Suffix}"
-                                                           SortMemberPath="Suffix" />
+                                    <DataGridTextColumn Header="{x:Static properties:Resources.Suffix}"
+                                                        Binding="{Binding Suffix}"
+                                                        SortMemberPath="Suffix" />
                                     
-                                    <tk:DataGridTextColumn Header="{x:Static properties:Resources.Age}"
-                                                           Binding="{Binding Age}"
-                                                           SortMemberPath="Age"
-                                                           IsReadOnly="True" />
+                                    <DataGridTextColumn Header="{x:Static properties:Resources.Age}"
+                                                        Binding="{Binding Age}"
+                                                        SortMemberPath="Age"
+                                                        IsReadOnly="True" />
                                     
-                                    <tk:DataGridTemplateColumn Header="{x:Static properties:Resources.BirthDate}"
-                                                               SortMemberPath="BirthDate"                                                               
-                                                               CellTemplate="{StaticResource BirthDateColumnTemplate}" />
+                                    <DataGridTemplateColumn Header="{x:Static properties:Resources.BirthDate}"
+                                                            SortMemberPath="BirthDate"                                                               
+                                                            CellTemplate="{StaticResource BirthDateColumnTemplate}" />
                                     
-                                    <tk:DataGridTemplateColumn Header="{x:Static properties:Resources.BirthPlace}"
-                                                               SortMemberPath="BirthPlace" CellTemplate="{StaticResource BirthPlaceColumnTemplate}" />
+                                    <DataGridTemplateColumn Header="{x:Static properties:Resources.BirthPlace}"
+                                                            SortMemberPath="BirthPlace" CellTemplate="{StaticResource BirthPlaceColumnTemplate}" />
                                                                
-                                    <tk:DataGridTemplateColumn Header="{x:Static properties:Resources.DeathDate}"
-                                                               SortMemberPath="DeathDate"
-                                                               CellTemplate="{StaticResource DeathDateColumnTemplate}" />
+                                    <DataGridTemplateColumn Header="{x:Static properties:Resources.DeathDate}"
+                                                            SortMemberPath="DeathDate"
+                                                            CellTemplate="{StaticResource DeathDateColumnTemplate}" />
                                         
-                                    <tk:DataGridTemplateColumn Header="{x:Static properties:Resources.DeathPlace}" SortMemberPath="DeathPlace" CellTemplate="{StaticResource DeathPlaceColumnTemplate}" />
-                                    <tk:DataGridTemplateColumn Header="{x:Static properties:Resources.IsLivingQuestion}" SortMemberPath="IsLiving" CellTemplate="{StaticResource IsLivingColumnTemplate}" />
-                                    <tk:DataGridTemplateColumn Header="{x:Static properties:Resources.Occupation}" SortMemberPath="Occupation" CellTemplate="{StaticResource OccupationColumnTemplate}" />
-                                    <tk:DataGridTemplateColumn Header="{x:Static properties:Resources.Education}" SortMemberPath="Education" CellTemplate="{StaticResource EducationColumnTemplate}" />
-                                    <tk:DataGridTemplateColumn Header="{x:Static properties:Resources.Religion}" SortMemberPath="Religion" CellTemplate="{StaticResource ReligionColumnTemplate}" />
-                                    <tk:DataGridTemplateColumn Header="{x:Static properties:Resources.BurialPlace}" SortMemberPath="BurialPlace" CellTemplate="{StaticResource BurialPlaceColumnTemplate}" />
-                                    <tk:DataGridTemplateColumn Header="{x:Static properties:Resources.BurialDate}" SortMemberPath="BurialDate" CellTemplate="{StaticResource BurialDateColumnTemplate}" />
-                                    <tk:DataGridTemplateColumn Header="{x:Static properties:Resources.CremationPlace}" SortMemberPath="CremationPlace" CellTemplate="{StaticResource CremationPlaceColumnTemplate}" />
-                                    <tk:DataGridTemplateColumn Header="{x:Static properties:Resources.CremationDate}" SortMemberPath="CremationDate" CellTemplate="{StaticResource CremationDateColumnTemplate}" />
-                                    <tk:DataGridTemplateColumn Header="{x:Static properties:Resources.ID}" SortMemberPath="ID" CellTemplate="{StaticResource IDColumnTemplate}" />
-                                </tk:DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="{x:Static properties:Resources.DeathPlace}" SortMemberPath="DeathPlace" CellTemplate="{StaticResource DeathPlaceColumnTemplate}" />
+                                    <DataGridTemplateColumn Header="{x:Static properties:Resources.IsLivingQuestion}" SortMemberPath="IsLiving" CellTemplate="{StaticResource IsLivingColumnTemplate}" />
+                                    <DataGridTemplateColumn Header="{x:Static properties:Resources.Occupation}" SortMemberPath="Occupation" CellTemplate="{StaticResource OccupationColumnTemplate}" />
+                                    <DataGridTemplateColumn Header="{x:Static properties:Resources.Education}" SortMemberPath="Education" CellTemplate="{StaticResource EducationColumnTemplate}" />
+                                    <DataGridTemplateColumn Header="{x:Static properties:Resources.Religion}" SortMemberPath="Religion" CellTemplate="{StaticResource ReligionColumnTemplate}" />
+                                    <DataGridTemplateColumn Header="{x:Static properties:Resources.BurialPlace}" SortMemberPath="BurialPlace" CellTemplate="{StaticResource BurialPlaceColumnTemplate}" />
+                                    <DataGridTemplateColumn Header="{x:Static properties:Resources.BurialDate}" SortMemberPath="BurialDate" CellTemplate="{StaticResource BurialDateColumnTemplate}" />
+                                    <DataGridTemplateColumn Header="{x:Static properties:Resources.CremationPlace}" SortMemberPath="CremationPlace" CellTemplate="{StaticResource CremationPlaceColumnTemplate}" />
+                                    <DataGridTemplateColumn Header="{x:Static properties:Resources.CremationDate}" SortMemberPath="CremationDate" CellTemplate="{StaticResource CremationDateColumnTemplate}" />
+                                    <DataGridTemplateColumn Header="{x:Static properties:Resources.ID}" SortMemberPath="ID" CellTemplate="{StaticResource IDColumnTemplate}" />
+                                </DataGrid.Columns>
 
-                            </tk:DataGrid>
+                            </DataGrid>
 
                             <local:FamilyEditListView x:Name="FamilyEditor" Background="{x:Null}" Margin="-2,0,0,0" BorderBrush="{x:Null}"
             ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
