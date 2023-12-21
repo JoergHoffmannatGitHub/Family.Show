@@ -31,7 +31,6 @@
     <MinimumRequiredVersion>4.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>familyshow.htm</WebPage>
-    <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>4.2.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>

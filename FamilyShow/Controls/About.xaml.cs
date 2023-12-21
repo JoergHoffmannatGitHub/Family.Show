@@ -47,7 +47,7 @@ namespace Microsoft.FamilyShow
         {
             Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             VersionLabel.Content += string.Format(CultureInfo.CurrentCulture, 
-                "{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
+                "{0}.{1}.{2}", version.Major, version.Minor, version.Build);
         }
 
         private void Homepage_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
