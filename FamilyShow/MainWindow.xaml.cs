@@ -799,7 +799,7 @@ namespace Microsoft.FamilyShow
         {
             try
             {
-                System.Diagnostics.Process.Start(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).ToString() + @"\" + Microsoft.FamilyShow.Properties.Resources.HelpFileName);
+                System.Diagnostics.Process.Start(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\" + Microsoft.FamilyShow.Properties.Resources.HelpFileName);
             }
             catch { }
         }
@@ -1190,8 +1190,7 @@ namespace Microsoft.FamilyShow
             DetailsPane.Visibility = Visibility.Collapsed;
 
             // Remove the cloned columns from layers 0
-            if (DiagramPane.ColumnDefinitions.Contains(column1CloneForLayer0))
-                DiagramPane.ColumnDefinitions.Remove(column1CloneForLayer0);
+            DiagramPane.ColumnDefinitions.Remove(column1CloneForLayer0);
         }
 
         /// <summary>
@@ -1541,8 +1540,7 @@ namespace Microsoft.FamilyShow
             DetailsPane.Visibility = Visibility.Collapsed;
 
             // Remove the cloned columns from layers 0
-            if (DiagramPane.ColumnDefinitions.Contains(column1CloneForLayer0))
-                DiagramPane.ColumnDefinitions.Remove(column1CloneForLayer0);
+            DiagramPane.ColumnDefinitions.Remove(column1CloneForLayer0);
 
             disableMenus();
         }

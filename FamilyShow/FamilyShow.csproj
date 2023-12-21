@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <RootNamespace>Microsoft.FamilyShow</RootNamespace>
     <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>Microsoft.FamilyShow</RootNamespace>
     <MinFrameworkVersionRequired>3.0</MinFrameworkVersionRequired>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <SignManifests>false</SignManifests>
@@ -36,10 +36,11 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <Title>Family.Show</Title>
+    <Description>Family.Show, a WPF Best-Practice Application"</Description>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>.\bin\Debug\</OutputPath>
@@ -49,17 +50,18 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>.\bin\Release\</OutputPath>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CustomMarshalers" />
-    <Reference Include="ReachFramework" />
-    <Reference Include="System.Printing" />
-    <Reference Include="WindowsFormsIntegration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <!--<Reference Include="CustomMarshalers" />-->
+    <!--<Reference Include="ReachFramework" />-->
+    <!--<Reference Include="System.Printing" />-->
+    <!--<Reference Include="WindowsFormsIntegration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\..\..\Windows\assembly\GAC_MSIL\WindowsFormsIntegration\3.0.0.0__31bf3856ad364e35\WindowsFormsIntegration.dll</HintPath>
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
+    </Reference>-->
   </ItemGroup>
   <ItemGroup>
     <AppDesigner Include="Properties\" />
@@ -84,7 +86,8 @@
     <Resource Include="EULA.txt" />
     <Resource Include="Images\Calculator.png" />
     <Resource Include="Images\RightArrowBlue.png" />
-    <Resource Include="Images\Merge.png"></Resource>
+    <Resource Include="Images\Merge.png">
+    </Resource>
     <Resource Include="Images\RightArrowRed.png" />
     <Resource Include="Images\Globe.png" />
     <Resource Include="Images\ZippedFile.png" />
@@ -176,5 +179,18 @@
       <SubType>Designer</SubType>
     </Content>
     <ProjectReference Include="..\FamilyShowLib\FamilyShowLib.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 </Project>
