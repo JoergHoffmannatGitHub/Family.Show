@@ -40,6 +40,7 @@
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Title>Family.Show</Title>
     <Description>Family.Show, a WPF Best-Practice Application"</Description>
+    <HelpFile>..\Documentation\Help\FamilyShow.chm</HelpFile>
   </PropertyGroup>
   <ItemGroup>
     <Resource Include="Images\Search.png" />
@@ -174,4 +175,10 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+    <Copy SourceFiles="$(Helpfile)" DestinationFiles="$(OutDir)\help.chm" />
+  </Target>
+  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
+    <Copy SourceFiles="$(Helpfile)" DestinationFiles="$(PublishDir)\help.chm" />
+  </Target>
 </Project>

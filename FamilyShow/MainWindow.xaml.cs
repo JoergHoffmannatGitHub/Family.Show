@@ -799,7 +799,7 @@ namespace Microsoft.FamilyShow
         {
             try
             {
-                System.Diagnostics.Process.Start(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\" + Microsoft.FamilyShow.Properties.Resources.HelpFileName);
+                System.Windows.Forms.Help.ShowHelp(null, Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\" + Properties.Resources.HelpFileName);
             }
             catch { }
         }
