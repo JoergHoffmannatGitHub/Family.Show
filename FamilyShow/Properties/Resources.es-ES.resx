@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AllFiles" xml:space="preserve">
     <value>Todos los archivos (*.*)</value>
@@ -1077,11 +1077,8 @@
   <data name="DropPhotosHere" xml:space="preserve">
     <value>Suelta las fotos aquí.</value>
   </data>
-  <data name="Discussion" xml:space="preserve">
-    <value>Gente</value>
-  </data>
   <data name="Homepage" xml:space="preserve">
-    <value>Página de inicio</value>
+    <value>Página web del proyecto</value>
   </data>
   <data name="NoExistingPhotos" xml:space="preserve">
     <value>No hay fotos existentes.</value>

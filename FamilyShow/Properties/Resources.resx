@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AgeGroupMiddleAge" xml:space="preserve">
     <value>40-69</value>
@@ -702,9 +702,6 @@
   <data name="Continue" xml:space="preserve">
     <value>Continue</value>
   </data>
-  <data name="Copyright" xml:space="preserve">
-    <value>Copyright © 2009</value>
-  </data>
   <data name="CurrentPerson" xml:space="preserve">
     <value>Current person </value>
   </data>
@@ -1098,7 +1095,7 @@
   <data name="PrivateRecord" xml:space="preserve">
     <value>Private Record</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="KennedySampleFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Sample Files\Kennedy.ged;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -1165,9 +1162,6 @@
   <data name="NoExistingPhotos" xml:space="preserve">
     <value>There are no existing photos.</value>
   </data>
-  <data name="Discussion" xml:space="preserve">
-    <value>Discussion</value>
-  </data>
   <data name="EULA" xml:space="preserve">
     <value>This license governs use of the accompanying software. If you use the software, you accept this license. If you do not accept the license, do not use the software.
 
@@ -1200,7 +1194,7 @@ A "contributor" is any person that distributes its contribution under this licen
 (E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties of merchantability, fitness for a particular purpose and non-infringement.</value>
   </data>
   <data name="Homepage" xml:space="preserve">
-    <value>Homepage</value>
+    <value>Project website</value>
   </data>
   <data name="People" xml:space="preserve">
     <value>People</value>

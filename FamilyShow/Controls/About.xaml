@@ -20,18 +20,14 @@
                 <StackPanel Orientation="Horizontal" Margin="10,5,0,0">
                     <Image Margin="-3,2,3,0"  Source="..\FamilyShow.ico" Height="25"/>
                     <Label FontWeight="Bold" FontSize="13" Foreground="{DynamicResource InputFontColor}" Content="{x:Static properties:Resources.FamilyShow}"/>
-                    <!-- Company logos -->
-                    <Rectangle Fill="{DynamicResource OGITREV}" Stroke="{x:Null}" x:Name="Vertigo" Width="120" Height="18" Margin="90,0,0,0" VerticalAlignment="Center" MouseLeftButtonUp="Vertigo_MouseLeftButtonUp" Cursor="Hand"/>
                 </StackPanel>
                 <Separator Margin="40,5,10,-3"/>
 
                 <Label Margin="35,0,0,0" x:Name="VersionLabel" Foreground="{DynamicResource InputFontColor}" Content="{x:Static properties:Resources.Version}"/>
-                <Label Margin="35,0,0,0" Foreground="{DynamicResource InputFontColor}" Content="{x:Static properties:Resources.Copyright}"/>
+                <Label Margin="35,0,0,0" x:Name="CopyrightLabel" Foreground="{DynamicResource InputFontColor}" Content="Copyright"/>
                 <Separator Margin="40,5,10,-3"/>
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                 <Label Margin="35,0,0,0" Foreground="{DynamicResource InputFontColor}" FontWeight="Bold" Content="{x:Static properties:Resources.Homepage}" MouseLeftButtonUp="Homepage_MouseLeftButtonUp" Cursor="Hand"/>
-                <Label Margin="10,0,0,0" Foreground="{DynamicResource InputFontColor}" FontWeight="Bold" Content="{x:Static properties:Resources.Discussion}" MouseLeftButtonUp="Discussion_MouseLeftButtonUp" Cursor="Hand"/>
-                <Label Margin="10,0,0,0" Foreground="{DynamicResource InputFontColor}" FontWeight="Bold" Content="{x:Static properties:Resources.People}" MouseLeftButtonUp="People_MouseLeftButtonUp" Cursor="Hand"/>
                 </StackPanel>
                 <Separator Margin="40,5,10,-3"/>
                 <Label Margin="35,0,0,0" Foreground="{DynamicResource InputFontColor}" FontWeight="Bold" Content="Microsoft Permissive License (Ms-PL)"/>

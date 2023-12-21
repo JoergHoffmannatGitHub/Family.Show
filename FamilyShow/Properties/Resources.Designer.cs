@@ -718,15 +718,6 @@ namespace Microsoft.FamilyShow.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copyright © 2009.
-        /// </summary>
-        public static string Copyright {
-            get {
-                return ResourceManager.GetString("Copyright", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Create Relationship.
         /// </summary>
         public static string CreateRelationship {
@@ -1074,15 +1065,6 @@ namespace Microsoft.FamilyShow.Properties {
         public static string Died {
             get {
                 return ResourceManager.GetString("Died", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Discussion.
-        /// </summary>
-        public static string Discussion {
-            get {
-                return ResourceManager.GetString("Discussion", resourceCulture);
             }
         }
         
@@ -1862,7 +1844,7 @@ namespace Microsoft.FamilyShow.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Homepage.
+        ///   Looks up a localized string similar to Project website.
         /// </summary>
         public static string Homepage {
             get {

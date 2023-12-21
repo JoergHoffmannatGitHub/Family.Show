@@ -1,5 +1,7 @@
 using System;
 using System.Globalization;
+using System.Linq;
+using System.Reflection;
 using System.Windows;
 
 namespace Microsoft.FamilyShow
@@ -13,6 +15,7 @@ namespace Microsoft.FamilyShow
         {
             InitializeComponent();
             DisplayVersion();
+            DisplayCopyright();
         }
 
         #region routed events
@@ -50,42 +53,22 @@ namespace Microsoft.FamilyShow
                 "{0}.{1}.{2}", version.Major, version.Minor, version.Build);
         }
 
+        /// <summary>
+        /// Display the application version.
+        /// </summary>
+        private void DisplayCopyright()
+        {
+          // Get the application information.
+          var attribute = Assembly.GetExecutingAssembly().GetCustomAttributes<AssemblyCopyrightAttribute>().FirstOrDefault();
+          CopyrightLabel.Content = string.Format(CultureInfo.CurrentCulture, "Copyright {0}", attribute.Copyright);
+        }
+
         private void Homepage_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            // Open the CodePlex website in the user's default browser
+            // Open the GitHub website in the user's default browser
             try
             {
-                System.Diagnostics.Process.Start("http://familyshow.codeplex.com/");
-            }
-            catch { }
-        }
-
-        private void Discussion_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            // Open the CodePlex discussion website in the user's default browser
-            try
-            {
-                System.Diagnostics.Process.Start("http://familyshow.codeplex.com/Thread/List.aspx");
-            }
-            catch { }
-        }
-
-        private void People_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            // Open the CodePlex people in the user's default browser
-            try
-            {
-                System.Diagnostics.Process.Start("http://familyshow.codeplex.com/team/view");
-            }
-            catch { }
-        }
-
-        private void Vertigo_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            // Open the Vertigo website in the user's default browser
-            try
-            {
-                System.Diagnostics.Process.Start("http://www.vertigo.com/familyshow.aspx");
+                System.Diagnostics.Process.Start("https://github.com/fredatgithub/FamilyShow");
             }
             catch { }
         }

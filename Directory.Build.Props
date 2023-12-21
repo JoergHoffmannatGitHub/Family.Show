@@ -1,8 +1,9 @@
 <Project>
   <PropertyGroup>
-    <Version>4.5.1.17</Version>
+    <VersionPrefix>5.0.0</VersionPrefix>
+    <VersionSuffix>alpha</VersionSuffix>
     <Product>Family.Show</Product>
-    <Copyright>MS-PL � 2007-$([System.DateTime]::Now.ToString('yyyy'))</Copyright>
+    <Copyright>© $([System.DateTime]::Now.ToString('yyyy'))</Copyright>
     <PackageProjectUrl>https://github.com/fredatgithub/FamilyShow</PackageProjectUrl>
     <RepositoryUrl>https://github.com/fredatgithub/FamilyShow/releases</RepositoryUrl>
     <NoWarn>CA1416</NoWarn>
