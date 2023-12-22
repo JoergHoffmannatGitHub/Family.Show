@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -68,7 +69,11 @@ namespace Microsoft.FamilyShow
       // Open the GitHub website in the user's default browser
       try
       {
-        System.Diagnostics.Process.Start("https://github.com/fredatgithub/FamilyShow");
+        Process.Start(new ProcessStartInfo
+        {
+          FileName = "https://github.com/fredatgithub/FamilyShow",
+          UseShellExecute = true
+        });
       }
       catch { }
     }
