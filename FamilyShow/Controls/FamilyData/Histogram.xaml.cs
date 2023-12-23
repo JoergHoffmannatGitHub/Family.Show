@@ -11,7 +11,7 @@ namespace Microsoft.FamilyShow
   /// <summary>
   /// Interaction logic for Histogram.xaml
   /// </summary>
-  public partial class Histogram : System.Windows.Controls.UserControl
+  public partial class Histogram : UserControl
   {
     private ListCollectionView view;
     private Dictionary<object, string> categoryLabels;
@@ -176,7 +176,7 @@ namespace Microsoft.FamilyShow
   {
     #region IMultiValueConverter Members
 
-    public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
       try
       {
@@ -214,7 +214,7 @@ namespace Microsoft.FamilyShow
   {
     #region IMultiValueConverter Members
 
-    public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
       try
       {

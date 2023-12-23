@@ -147,7 +147,7 @@ namespace Microsoft.FamilyShowLib
     public void Save(string storyText, string storyFileName)
     {
       // Convert the text into a TextRange.  This will allow saving the story to disk as RTF.
-      TextBlock block = new System.Windows.Controls.TextBlock();
+      TextBlock block = new TextBlock();
       block.Text = storyText;
 
       TextRange range = new TextRange(block.ContentStart, block.ContentEnd);

@@ -15,7 +15,7 @@ namespace Microsoft.FamilyShow
   /// Interaction logic for Details.xaml
   /// </summary>
 
-  public partial class Details : System.Windows.Controls.UserControl
+  public partial class Details : UserControl
   {
     #region fields
 
@@ -141,7 +141,7 @@ namespace Microsoft.FamilyShow
       }
     }
 
-    private void AttachmentsListBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+    private void AttachmentsListBox_KeyDown(object sender, KeyEventArgs e)
     {
       Person person = (Person)this.DataContext;
 

@@ -10,7 +10,7 @@ namespace Microsoft.FamilyShow
   /// <summary>
   /// Interaction logic for AttachmentViewer.xaml
   /// </summary>
-  public partial class AttachmentViewer : System.Windows.Controls.UserControl
+  public partial class AttachmentViewer : UserControl
   {
     public AttachmentViewer()
     {

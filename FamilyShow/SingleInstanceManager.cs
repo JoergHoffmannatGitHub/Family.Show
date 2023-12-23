@@ -27,7 +27,7 @@ namespace Microsoft.FamilyShow
       IsSingleInstance = true;
     }
 
-    protected override bool OnStartup(Microsoft.VisualBasic.ApplicationServices.StartupEventArgs eventArgs)
+    protected override bool OnStartup(StartupEventArgs eventArgs)
     {
       // First time app is launched.
       _app = new App();

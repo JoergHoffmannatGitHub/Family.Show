@@ -13,7 +13,7 @@ namespace Microsoft.FamilyShow
   /// <summary>
   /// Interaction logic for StoryViewer.xaml
   /// </summary>
-  public partial class StoryViewer : System.Windows.Controls.UserControl
+  public partial class StoryViewer : UserControl
   {
     public StoryViewer()
     {

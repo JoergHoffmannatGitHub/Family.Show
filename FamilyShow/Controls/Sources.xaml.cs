@@ -10,7 +10,7 @@ namespace Microsoft.FamilyShow
   /// <summary>
   /// Interaction logic for Sources.xaml
   /// </summary>
-  public partial class Sources : System.Windows.Controls.UserControl
+  public partial class Sources : UserControl
   {
 
     #region fields

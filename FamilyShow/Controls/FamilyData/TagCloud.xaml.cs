@@ -10,7 +10,7 @@ namespace Microsoft.FamilyShow
   /// <summary>
   /// Interaction logic for TagCloud.xaml
   /// </summary>
-  public partial class TagCloud : System.Windows.Controls.UserControl
+  public partial class TagCloud : UserControl
   {
     private ListCollectionView view;
 
@@ -152,7 +152,7 @@ namespace Microsoft.FamilyShow
   {
     #region IMultiValueConverter Members
 
-    public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
       try
       {

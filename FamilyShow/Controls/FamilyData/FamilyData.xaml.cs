@@ -14,7 +14,7 @@ using Microsoft.FamilyShowLib;
 
 namespace Microsoft.FamilyShow
 {
-  public partial class FamilyData : System.Windows.Controls.UserControl
+  public partial class FamilyData : UserControl
   {
     // Event that is raised when the Back button is clicked.
     public static readonly RoutedEvent CloseButtonClickEvent = EventManager.RegisterRoutedEvent(
@@ -44,7 +44,7 @@ namespace Microsoft.FamilyShow
       FamilyEditor.ItemsSource = source.View;
 
       // When the family changes we'll update things in this view
-      App.Family.ContentChanged += new EventHandler<Microsoft.FamilyShowLib.ContentChangedEventArgs>(OnFamilyContentChanged);
+      App.Family.ContentChanged += new EventHandler<ContentChangedEventArgs>(OnFamilyContentChanged);
 
       // Setup the binding to the chart controls.
       ListCollectionView tagCloudView = CreateView("LastName", "LastName");
@@ -139,7 +139,7 @@ namespace Microsoft.FamilyShow
       GenderDistributionControl1.Refresh();
     }
 
-    void OnFamilyContentChanged(object sender, Microsoft.FamilyShowLib.ContentChangedEventArgs e)
+    void OnFamilyContentChanged(object sender, ContentChangedEventArgs e)
     {
       Refresh();
     }

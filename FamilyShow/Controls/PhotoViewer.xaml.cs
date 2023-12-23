@@ -12,7 +12,7 @@ namespace Microsoft.FamilyShow
   /// <summary>
   /// Interaction logic for PhotoViewer.xaml
   /// </summary>
-  public partial class PhotoViewer : System.Windows.Controls.UserControl
+  public partial class PhotoViewer : UserControl
   {
     public PhotoViewer()
     {

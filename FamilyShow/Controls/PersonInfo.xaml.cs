@@ -16,7 +16,7 @@ namespace Microsoft.FamilyShow
   /// <summary>
   /// Interaction logic for PersonInfo.xaml
   /// </summary>
-  public partial class PersonInfo : System.Windows.Controls.UserControl
+  public partial class PersonInfo : UserControl
   {
     public PersonInfo()
     {
@@ -678,7 +678,7 @@ namespace Microsoft.FamilyShow
 
     #endregion
 
-    private void PhotosListBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+    private void PhotosListBox_KeyDown(object sender, KeyEventArgs e)
     {
 
       Person person = (Person)this.DataContext;

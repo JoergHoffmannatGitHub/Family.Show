@@ -13,7 +13,7 @@ namespace Microsoft.FamilyShow
   /// Interaction logic for SharedBirthdays.xaml
   /// </summary>
 
-  public partial class SharedBirthdays : System.Windows.Controls.UserControl
+  public partial class SharedBirthdays : UserControl
   {
     private static ListCollectionView lcv;
 

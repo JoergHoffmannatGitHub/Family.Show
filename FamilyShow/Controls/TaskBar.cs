@@ -8,7 +8,7 @@ using System.Windows;
 namespace Microsoft.FamilyShow
 {
   /// <summary>
-  /// This class is a helper class for the <see cref="Microsoft.WindowsAPICodePack.Taskbar.TaskbarManager"/> type.
+  /// This class is a helper class for the <see cref="TaskbarManager"/> type.
   /// </summary>
   internal class TaskBar
   {

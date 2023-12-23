@@ -11,7 +11,7 @@ namespace Microsoft.FamilyShow
   /// <summary>
   /// Interaction logic for Syncing.xaml
   /// </summary>
-  public partial class Merge : System.Windows.Controls.UserControl
+  public partial class Merge : UserControl
   {
     int i = 0;      // A counter for all duplicate people
     int count = 0;  // Index of current person with differing info

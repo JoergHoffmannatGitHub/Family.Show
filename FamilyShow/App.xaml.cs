@@ -111,7 +111,7 @@ namespace Microsoft.FamilyShow
 
     private void InitializeDefaultTheme()
     {
-      Properties.Settings appSettings = Microsoft.FamilyShow.Properties.Settings.Default;
+      Settings appSettings = Microsoft.FamilyShow.Properties.Settings.Default;
 
       if (!string.IsNullOrEmpty(appSettings.Theme))
       {
