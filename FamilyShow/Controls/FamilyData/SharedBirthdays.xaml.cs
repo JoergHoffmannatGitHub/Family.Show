@@ -28,7 +28,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public Object PeopleCollection
     {
-      get { return (Object)GetValue(PeopleCollectionProperty); }
+      get { return GetValue(PeopleCollectionProperty); }
       set { SetValue(PeopleCollectionProperty, value); }
     }
 

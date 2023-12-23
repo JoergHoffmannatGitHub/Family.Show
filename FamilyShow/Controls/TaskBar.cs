@@ -86,7 +86,7 @@ namespace Microsoft.FamilyShow
     /// <param name="progress"></param>
     public virtual void Progress(int progress)
     {
-      TaskbarManager.Instance.SetProgressValue((int)progress, 100);
+      TaskbarManager.Instance.SetProgressValue(progress, 100);
     }
 
     /// <summary>

@@ -640,7 +640,7 @@ namespace Microsoft.FamilyShow
     {
       PrintDialog pd = new PrintDialog();
 
-      if ((bool)pd.ShowDialog().GetValueOrDefault())
+      if (pd.ShowDialog().GetValueOrDefault())
       {
         // Hide the zoom control and time control before the diagram is saved
         DiagramControl.ZoomSliderPanel.Visibility = Visibility.Hidden;

@@ -526,7 +526,7 @@ namespace Microsoft.FamilyShow
       //Animated progress bar does not render well on print
       FileProgressBar.Visibility = Visibility.Collapsed;
 
-      if ((bool)dlg.ShowDialog().GetValueOrDefault())
+      if (dlg.ShowDialog().GetValueOrDefault())
         Print(dlg, StatisticsPanel);
 
       //Animated progress bar does not render well on print

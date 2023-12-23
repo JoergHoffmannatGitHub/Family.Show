@@ -49,8 +49,8 @@ namespace Microsoft.FamilyShowLib
       set
       {
         relationTo = value;
-        personId = ((Person)value).Id;
-        personFullName = ((Person)value).Name;
+        personId = value.Id;
+        personFullName = value.Name;
       }
     }
 

@@ -427,7 +427,7 @@ namespace Microsoft.FamilyShow
           System.Globalization.CultureInfo.CurrentUICulture,
           FlowDirection.LeftToRight, new Typeface(connectionTextFont,
           FontStyles.Normal, FontWeights.Normal, FontStretches.Normal,
-          connectionTextFont), connectionTextSize, (Brush)Brushes.PaleVioletRed,
+          connectionTextFont), connectionTextSize, Brushes.PaleVioletRed,
           VisualTreeHelper.GetDpi(this).PixelsPerDip);
 
           if (rownumber != rows.Count)
