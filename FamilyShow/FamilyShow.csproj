@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>$(TargetFrameworkVersion)-windows</TargetFramework>
     <RootNamespace>Microsoft.FamilyShow</RootNamespace>
     <MinFrameworkVersionRequired>3.0</MinFrameworkVersionRequired>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -127,7 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell">
-      <Version>1.1.5</Version>
+      <Version>$(MicrosoftWindowsAPICodePackShellVersion)</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

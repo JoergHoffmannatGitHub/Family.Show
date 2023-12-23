@@ -7,5 +7,10 @@
     <PackageProjectUrl>https://github.com/fredatgithub/FamilyShow</PackageProjectUrl>
     <RepositoryUrl>https://github.com/fredatgithub/FamilyShow/releases</RepositoryUrl>
     <NoWarn>CA1416</NoWarn>
- </PropertyGroup>
+  </PropertyGroup>
+  <!-- Versioning projects -->
+  <PropertyGroup>
+    <TargetFrameworkVersion>net8.0</TargetFrameworkVersion>
+    <MicrosoftWindowsAPICodePackShellVersion>1.1.5</MicrosoftWindowsAPICodePackShellVersion>
+  </PropertyGroup>
 </Project>
