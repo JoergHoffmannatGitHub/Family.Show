@@ -88,8 +88,8 @@ namespace Microsoft.FamilyShowLib
     public ParentRelationship(Person personId, ParentChildModifier parentChildType)
     {
       RelationshipType = RelationshipType.Parent;
-      this.RelationTo = personId;
-      this.parentChildModifier = parentChildType;
+      RelationTo = personId;
+      parentChildModifier = parentChildType;
     }
   }
 
@@ -113,8 +113,8 @@ namespace Microsoft.FamilyShowLib
     public ChildRelationship(Person person, ParentChildModifier parentChildType)
     {
       RelationshipType = RelationshipType.Child;
-      this.RelationTo = person;
-      this.parentChildModifier = parentChildType;
+      RelationTo = person;
+      parentChildModifier = parentChildType;
     }
   }
 
@@ -255,8 +255,8 @@ namespace Microsoft.FamilyShowLib
     public SpouseRelationship(Person person, SpouseModifier spouseType)
     {
       RelationshipType = RelationshipType.Spouse;
-      this.spouseModifier = spouseType;
-      this.RelationTo = person;
+      spouseModifier = spouseType;
+      RelationTo = person;
     }
   }
 
@@ -272,7 +272,7 @@ namespace Microsoft.FamilyShowLib
     public SiblingRelationship(Person person)
     {
       RelationshipType = RelationshipType.Sibling;
-      this.RelationTo = person;
+      RelationTo = person;
     }
   }
 

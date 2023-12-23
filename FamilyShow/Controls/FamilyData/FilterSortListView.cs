@@ -44,7 +44,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public bool IsEmpty
     {
-      get { return string.IsNullOrEmpty(this.filterText); }
+      get { return string.IsNullOrEmpty(filterText); }
     }
 
     /// <summary>
@@ -52,8 +52,8 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public bool Matches(string text)
     {
-      return (this.filterText != null && text != null &&
-          text.ToLower(CultureInfo.CurrentCulture).Contains(this.filterText));
+      return (filterText != null && text != null &&
+          text.ToLower(CultureInfo.CurrentCulture).Contains(filterText));
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public bool Matches(DateTime? date)
     {
-      return (date != null && date.Value.ToShortDateString().Contains(this.filterText));
+      return (date != null && date.Value.ToShortDateString().Contains(filterText));
     }
 
     /// <summary>
@@ -69,7 +69,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public bool MatchesYear(DateTime? date)
     {
-      return (date != null && date.Value.Year.ToString(CultureInfo.CurrentCulture).Contains(this.filterText));
+      return (date != null && date.Value.Year.ToString(CultureInfo.CurrentCulture).Contains(filterText));
     }
 
     public bool MatchesPhotos(bool photo)
@@ -161,8 +161,8 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public bool MatchesMonth(DateTime? date)
     {
-      return (date != null && this.filterDate != null &&
-          date.Value.Month == this.filterDate.Value.Month);
+      return (date != null && filterDate != null &&
+          date.Value.Month == filterDate.Value.Month);
     }
 
     /// <summary>
@@ -170,8 +170,8 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public bool MatchesDay(DateTime? date)
     {
-      return (date != null && this.filterDate != null &&
-          date.Value.Day == this.filterDate.Value.Day);
+      return (date != null && filterDate != null &&
+          date.Value.Day == filterDate.Value.Day);
     }
 
     /// <summary>
@@ -184,16 +184,16 @@ namespace Microsoft.FamilyShow
         return false;
 
       // Check single age.
-      if (this.minimumAge != null && age.Value == this.minimumAge.Value)
+      if (minimumAge != null && age.Value == minimumAge.Value)
         return true;
 
       // Check for a range.
-      if (this.minimumAge != null && this.maximumAge != null &&
-          age.Value >= this.minimumAge && age <= this.maximumAge)
+      if (minimumAge != null && maximumAge != null &&
+          age.Value >= minimumAge && age <= maximumAge)
         return true;
 
       // Check for an ending age.
-      if (this.minimumAge == null && this.maximumAge != null && age.Value >= this.maximumAge)
+      if (minimumAge == null && maximumAge != null && age.Value >= maximumAge)
         return true;
 
       return false;
@@ -205,30 +205,30 @@ namespace Microsoft.FamilyShow
     public void Parse(string text)
     {
       // Initialize fields.
-      this.filterText = "";
-      this.gender = "";
-      this.filterDate = null;
-      this.minimumAge = null;
-      this.maximumAge = null;
+      filterText = "";
+      gender = "";
+      filterDate = null;
+      minimumAge = null;
+      maximumAge = null;
 
-      this.photos = false;
-      this.restrictions = false;
-      this.attachments = false;
-      this.notes = false;
-      this.images = false;
-      this.living = false;
-      this.citations = false;
+      photos = false;
+      restrictions = false;
+      attachments = false;
+      notes = false;
+      images = false;
+      living = false;
+      citations = false;
 
-      this.nophotos = false;
-      this.norestrictions = false;
-      this.noattachments = false;
-      this.nonotes = false;
-      this.noimages = false;
-      this.noliving = false;
-      this.nocitations = false;
+      nophotos = false;
+      norestrictions = false;
+      noattachments = false;
+      nonotes = false;
+      noimages = false;
+      noliving = false;
+      nocitations = false;
 
       // Store the filter text.
-      this.filterText = string.IsNullOrEmpty(text) ? "" : text.ToLower(CultureInfo.CurrentCulture).Trim();
+      filterText = string.IsNullOrEmpty(text) ? "" : text.ToLower(CultureInfo.CurrentCulture).Trim();
 
       // Parse date and age.
       ParseDate();
@@ -250,8 +250,8 @@ namespace Microsoft.FamilyShow
     private void ParseDate()
     {
       DateTime date;
-      if (DateTime.TryParse(this.filterText, out date))
-        this.filterDate = date;
+      if (DateTime.TryParse(filterText, out date))
+        filterDate = date;
     }
 
     /// <summary>
@@ -259,10 +259,10 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParsePhotos()
     {
-      if (this.filterText == (Properties.Resources.Photos.ToLower()))
-        this.photos = true;
-      if (this.filterText == ("!" + Properties.Resources.Photos.ToLower()))
-        this.nophotos = true;
+      if (filterText == (Properties.Resources.Photos.ToLower()))
+        photos = true;
+      if (filterText == ("!" + Properties.Resources.Photos.ToLower()))
+        nophotos = true;
     }
 
     /// <summary>
@@ -270,10 +270,10 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParseGender()
     {
-      if (this.filterText == Properties.Resources.Female.ToLower())
-        this.gender = Properties.Resources.Female.ToLower();
-      if (this.filterText == Properties.Resources.Male.ToLower())
-        this.gender = Properties.Resources.Male.ToLower();
+      if (filterText == Properties.Resources.Female.ToLower())
+        gender = Properties.Resources.Female.ToLower();
+      if (filterText == Properties.Resources.Male.ToLower())
+        gender = Properties.Resources.Male.ToLower();
     }
 
     /// <summary>
@@ -281,10 +281,10 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParseRestrictions()
     {
-      if (this.filterText == (Properties.Resources.Restriction.ToLower()))
-        this.restrictions = true;
-      if (this.filterText == ("!" + Properties.Resources.Restriction.ToLower()))
-        this.norestrictions = true;
+      if (filterText == (Properties.Resources.Restriction.ToLower()))
+        restrictions = true;
+      if (filterText == ("!" + Properties.Resources.Restriction.ToLower()))
+        norestrictions = true;
     }
 
     /// <summary>
@@ -292,10 +292,10 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParseImages()
     {
-      if (this.filterText == (Properties.Resources.Image.ToLower()))
-        this.images = true;
-      if (this.filterText == ("!" + Properties.Resources.Image.ToLower()))
-        this.noimages = true;
+      if (filterText == (Properties.Resources.Image.ToLower()))
+        images = true;
+      if (filterText == ("!" + Properties.Resources.Image.ToLower()))
+        noimages = true;
     }
 
     /// <summary>
@@ -303,10 +303,10 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParseNotes()
     {
-      if (this.filterText == (Properties.Resources.Note.ToLower()))
-        this.notes = true;
-      if (this.filterText == ("!" + Properties.Resources.Note.ToLower()))
-        this.nonotes = true;
+      if (filterText == (Properties.Resources.Note.ToLower()))
+        notes = true;
+      if (filterText == ("!" + Properties.Resources.Note.ToLower()))
+        nonotes = true;
     }
 
     /// <summary>
@@ -314,10 +314,10 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParseAttachments()
     {
-      if (this.filterText == (Properties.Resources.Attachment.ToLower()))
-        this.attachments = true;
-      if (this.filterText == ("!" + Properties.Resources.Attachment.ToLower()))
-        this.noattachments = true;
+      if (filterText == (Properties.Resources.Attachment.ToLower()))
+        attachments = true;
+      if (filterText == ("!" + Properties.Resources.Attachment.ToLower()))
+        noattachments = true;
     }
 
     /// <summary>
@@ -325,10 +325,10 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParseLiving()
     {
-      if (this.filterText == (Properties.Resources.Living.ToLower()))
-        this.living = true;
-      if (this.filterText == (Properties.Resources.Deceased.ToLower()))
-        this.noliving = true;
+      if (filterText == (Properties.Resources.Living.ToLower()))
+        living = true;
+      if (filterText == (Properties.Resources.Deceased.ToLower()))
+        noliving = true;
     }
 
     /// <summary>
@@ -336,10 +336,10 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParseCitations()
     {
-      if (this.filterText == (Properties.Resources.Citations.ToLower()))
-        this.citations = true;
-      if (this.filterText == ("!" + Properties.Resources.Citations.ToLower()))
-        this.nocitations = true;
+      if (filterText == (Properties.Resources.Citations.ToLower()))
+        citations = true;
+      if (filterText == ("!" + Properties.Resources.Citations.ToLower()))
+        nocitations = true;
     }
 
     /// <summary>
@@ -351,26 +351,26 @@ namespace Microsoft.FamilyShow
       int age;
 
       // Single age.
-      if (Int32.TryParse(this.filterText, out age))
-        this.minimumAge = age;
+      if (Int32.TryParse(filterText, out age))
+        minimumAge = age;
 
       // Age range.
-      if (this.filterText.Contains("-"))
+      if (filterText.Contains("-"))
       {
-        string[] list = this.filterText.Split('-');
+        string[] list = filterText.Split('-');
 
         if (Int32.TryParse(list[0], out age))
-          this.minimumAge = age;
+          minimumAge = age;
 
         if (Int32.TryParse(list[1], out age))
-          this.maximumAge = age;
+          maximumAge = age;
       }
 
       // Ending age.
-      if (this.filterText.EndsWith("+"))
+      if (filterText.EndsWith("+"))
       {
-        if (Int32.TryParse(this.filterText.Substring(0, this.filterText.Length - 1), out age))
-          this.maximumAge = age;
+        if (Int32.TryParse(filterText.Substring(0, filterText.Length - 1), out age))
+          maximumAge = age;
       }
     }
   }
@@ -389,7 +389,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     protected Filter Filter
     {
-      get { return this.filter; }
+      get { return filter; }
     }
 
     /// <summary>
@@ -401,7 +401,7 @@ namespace Microsoft.FamilyShow
       filter.Parse(text);
 
       // Start an async operation that filters the list.
-      this.Dispatcher.BeginInvoke(
+      Dispatcher.BeginInvoke(
           DispatcherPriority.ApplicationIdle,
           new FilterDelegate(FilterWorker));
     }
@@ -412,7 +412,7 @@ namespace Microsoft.FamilyShow
     private void FilterWorker()
     {
       // Get the data the ListView is bound to.
-      ICollectionView view = CollectionViewSource.GetDefaultView(this.ItemsSource);
+      ICollectionView view = CollectionViewSource.GetDefaultView(ItemsSource);
 
       // Clear the list if the filter is empty, otherwise filter the list.
       view.Filter = filter.IsEmpty ? null :

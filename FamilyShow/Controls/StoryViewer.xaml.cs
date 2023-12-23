@@ -20,7 +20,7 @@ namespace Microsoft.FamilyShow
       InitializeComponent();
 
       // Set the language of the spell checker to be the language used by the OS.
-      this.Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag);
+      Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag);
 
       StorysListBox.ItemsSource = App.Family;
 
@@ -52,7 +52,7 @@ namespace Microsoft.FamilyShow
 
     private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
-      if (this.Visibility == Visibility.Visible)
+      if (Visibility == Visibility.Visible)
       {
 
         // Reset the filter
@@ -94,7 +94,7 @@ namespace Microsoft.FamilyShow
     private void StorysListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
 
-      if (this.Visibility == Visibility.Visible)
+      if (Visibility == Visibility.Visible)
       {
         EditStoryButton.Visibility = Visibility.Visible;
         PrintStoryButton.Visibility = Visibility.Visible;

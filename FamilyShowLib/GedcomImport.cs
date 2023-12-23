@@ -55,9 +55,9 @@ namespace Microsoft.FamilyShowLib
 
       try
       {
-        this.people = peopleCollection;
-        this.sources = sourceCollection;
-        this.repositories = repositoryCollection;
+        people = peopleCollection;
+        sources = sourceCollection;
+        repositories = repositoryCollection;
 
         // Convert the GEDCOM file to a temp XML file.
         GedcomConverter.ConvertToXml(gedcomFilePath, xmlFilePath, true, disableCharacterCheck);

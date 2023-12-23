@@ -81,10 +81,10 @@ namespace Microsoft.FamilyShow
       string folderName = Properties.Resources.Unknown + " (" + DateTime.Now.Day + "-" + DateTime.Now.Month + "-" + DateTime.Now.Year + ")";
       string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + App.ApplicationFolderName;
 
-      if (!string.IsNullOrEmpty(this.familyCollection.FullyQualifiedFilename))
+      if (!string.IsNullOrEmpty(familyCollection.FullyQualifiedFilename))
       {
-        folderName = Path.GetFileNameWithoutExtension(this.familyCollection.FullyQualifiedFilename);
-        folderPath = Path.GetDirectoryName(this.familyCollection.FullyQualifiedFilename);
+        folderName = Path.GetFileNameWithoutExtension(familyCollection.FullyQualifiedFilename);
+        folderPath = Path.GetDirectoryName(familyCollection.FullyQualifiedFilename);
       }
 
       if (currentPersonOnly && family.Current != null)
@@ -178,7 +178,7 @@ namespace Microsoft.FamilyShow
           Directory.CreateDirectory(Path.Combine(folderPath, folderName + @"\" + Photo.PhotosFolderName));
           Directory.CreateDirectory(Path.Combine(folderPath, folderName + @"\" + Story.StoriesFolderName));
 
-          foreach (Photo p in this.family.Current.Photos)
+          foreach (Photo p in family.Current.Photos)
           {
             string file = p.FullyQualifiedPath;
 
@@ -192,12 +192,12 @@ namespace Microsoft.FamilyShow
 
           try
           {
-            FileInfo f = new FileInfo(this.family.Current.Story.AbsolutePath);
-            f.CopyTo(Path.Combine(Path.Combine(folderPath, folderName + @"\" + Story.StoriesFolderName), Path.GetFileName(this.family.Current.Story.AbsolutePath)), true);
+            FileInfo f = new FileInfo(family.Current.Story.AbsolutePath);
+            f.CopyTo(Path.Combine(Path.Combine(folderPath, folderName + @"\" + Story.StoriesFolderName), Path.GetFileName(family.Current.Story.AbsolutePath)), true);
           }
           catch { }
 
-          foreach (Attachment a in this.family.Current.Attachments)
+          foreach (Attachment a in family.Current.Attachments)
           {
             string file = a.FullyQualifiedPath;
 

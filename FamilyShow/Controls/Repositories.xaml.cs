@@ -96,7 +96,7 @@ namespace Microsoft.FamilyShow
       if (!string.IsNullOrEmpty(dialog.FileName))
       {
         RepositoriesExport repostories = new RepositoriesExport();
-        repostories.ExportRepositories(dialog.FileName, Path.GetFileName(this.familyCollection.FullyQualifiedFilename), repository);
+        repostories.ExportRepositories(dialog.FileName, Path.GetFileName(familyCollection.FullyQualifiedFilename), repository);
       }
 
       if (File.Exists(dialog.FileName))

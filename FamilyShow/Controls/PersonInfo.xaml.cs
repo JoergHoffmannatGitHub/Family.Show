@@ -23,7 +23,7 @@ namespace Microsoft.FamilyShow
       InitializeComponent();
 
       // Set the language of the spell checker to be the language used by the OS.
-      this.Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag);
+      Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag);
 
       foreach (FontFamily fontFamily in Fonts.SystemFontFamilies)
         FontsComboBox.Items.Add(fontFamily.Source);
@@ -43,7 +43,7 @@ namespace Microsoft.FamilyShow
 
     private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
-      if (this.Visibility == Visibility.Visible)
+      if (Visibility == Visibility.Visible)
       {
         // Show the story, hide the editor
         StoryViewBorder.Visibility = Visibility.Visible;
@@ -115,7 +115,7 @@ namespace Microsoft.FamilyShow
 
     private void SaveStoryButton_Click(object sender, RoutedEventArgs e)
     {
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
 
       if (person != null)
       {
@@ -149,13 +149,13 @@ namespace Microsoft.FamilyShow
     private void LoadStoryText(FlowDocument flowDocument)
     {
       // Ignore null cases
-      if (flowDocument == null || flowDocument.Blocks == null || this.DataContext == null)
+      if (flowDocument == null || flowDocument.Blocks == null || DataContext == null)
         return;
 
       // Clear out any existing text in the viewer 
       flowDocument.Blocks.Clear();
 
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
 
       // Load the story into the story viewer
       if (person != null && person.Story != null)
@@ -282,7 +282,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void Link_Click(object sender, RoutedEventArgs e)
     {
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
 
       string appLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
           App.ApplicationFolderName);
@@ -364,7 +364,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void Add_Click(object sender, RoutedEventArgs e)
     {
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
 
       string appLocation = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
       appLocation = Path.Combine(appLocation, App.AppDataFolderName);
@@ -406,7 +406,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void PhotosListBox_Drop(object sender, DragEventArgs e)
     {
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
 
       if (person.Restriction != Restriction.Locked)
       {
@@ -539,7 +539,7 @@ namespace Microsoft.FamilyShow
 
     private void PrimaryButton_Click(object sender, RoutedEventArgs e)
     {
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
 
       if (person.Photos != null && PhotosListBox.SelectedItem != null)
       {
@@ -565,7 +565,7 @@ namespace Microsoft.FamilyShow
     private void OpenPhotoButton_Click(object sender, RoutedEventArgs e)
     {
 
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
       Photo photo = (Photo)PhotosListBox.SelectedItem;
       string path = photo.FullyQualifiedPath;
 
@@ -594,7 +594,7 @@ namespace Microsoft.FamilyShow
     private void DeletePhotoButton_Click(object sender, RoutedEventArgs e)
     {
 
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
 
       Photo photo = (Photo)PhotosListBox.SelectedItem;
       if (photo != null)
@@ -627,7 +627,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void NoPrimaryButton_Click(object sender, RoutedEventArgs e)
     {
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
       Photo photo = (Photo)PhotosListBox.SelectedItem;
 
       if (person.Photos != null && PhotosListBox.SelectedItem != null)
@@ -681,7 +681,7 @@ namespace Microsoft.FamilyShow
     private void PhotosListBox_KeyDown(object sender, KeyEventArgs e)
     {
 
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
 
       if (person.Restriction != Restriction.Locked)
       {

@@ -114,7 +114,7 @@ namespace Microsoft.FamilyShow
 
     private void DeleteAttachmentsButton_Click(object sender, RoutedEventArgs e)
     {
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
 
       if (AttachmentsListBox.SelectedItem != null)
       {
@@ -143,7 +143,7 @@ namespace Microsoft.FamilyShow
 
     private void AttachmentsListBox_KeyDown(object sender, KeyEventArgs e)
     {
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
 
       if (person.Restriction != Restriction.Locked)
       {
@@ -188,7 +188,7 @@ namespace Microsoft.FamilyShow
     private void LinkAttachmentsButton_Click(object sender, RoutedEventArgs e)
     {
 
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
 
       string appLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
           App.ApplicationFolderName);
@@ -255,7 +255,7 @@ namespace Microsoft.FamilyShow
 
     private void AddAttachmentsButton_Click(object sender, RoutedEventArgs e)
     {
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
 
       CommonDialog dialog = new CommonDialog();
       dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -277,7 +277,7 @@ namespace Microsoft.FamilyShow
 
     private void AttachmentsListBox_Drop(object sender, DragEventArgs e)
     {
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
 
       if (person.Restriction != Restriction.Locked)
       {
@@ -380,11 +380,11 @@ namespace Microsoft.FamilyShow
         if (isExisting)
         {
           // Use animation to expand the Add Existing section
-          ((Storyboard)this.Resources["ExpandAddExisting"]).Begin(this);
+          ((Storyboard)Resources["ExpandAddExisting"]).Begin(this);
         }
         else
           // Use animation to expand the Details Add section
-          ((Storyboard)this.Resources["ExpandDetailsAdd"]).Begin(this);
+          ((Storyboard)Resources["ExpandDetailsAdd"]).Begin(this);
 
 
         Relationship.Text = relationship;
@@ -505,7 +505,7 @@ namespace Microsoft.FamilyShow
         else
         {
           // Use animation to hide the Details Add section
-          ((Storyboard)this.Resources["CollapseDetailsAdd"]).Begin(this);
+          ((Storyboard)Resources["CollapseDetailsAdd"]).Begin(this);
 
           FamilyMemberComboBox.SelectedIndex = -1;
           FamilyMemberAddButton.Focus();
@@ -558,7 +558,7 @@ namespace Microsoft.FamilyShow
         FamilyMemberAddButton.Focus();
 
         // Use animation to hide the Details Add Intermediate section
-        ((Storyboard)this.Resources["CollapseDetailsAddIntermediate"]).Begin(this);
+        ((Storyboard)Resources["CollapseDetailsAddIntermediate"]).Begin(this);
 
         family.OnContentChanged(newPerson);
         family.OnContentChanged(family.Current);
@@ -636,7 +636,7 @@ namespace Microsoft.FamilyShow
         {
           family.OnContentChanged();
           // Use animation to hide the Details Add section
-          ((Storyboard)this.Resources["CollapseAddExisting"]).Begin(this);
+          ((Storyboard)Resources["CollapseAddExisting"]).Begin(this);
 
           FamilyMemberComboBox.SelectedIndex = -1;
           FamilyMemberAddButton.Focus();
@@ -723,7 +723,7 @@ namespace Microsoft.FamilyShow
       if (!string.IsNullOrEmpty(dialog.FileName))
       {
 
-        Person p = this.family.Current;
+        Person p = family.Current;
         string filename = dialog.FileName;
 
         tw = new StreamWriter(filename);
@@ -1273,9 +1273,9 @@ namespace Microsoft.FamilyShow
     {
       try
       {
-        if (this.CitationLinkEditTextBox.Text.ToString() != null && this.CitationLinkEditTextBox.Text.ToString().Length > 0)
+        if (CitationLinkEditTextBox.Text.ToString() != null && CitationLinkEditTextBox.Text.ToString().Length > 0)
         {
-          string searchText = this.CitationLinkEditTextBox.Text.ToString(); ;
+          string searchText = CitationLinkEditTextBox.Text.ToString(); ;
           if (searchText.StartsWith(Properties.Resources.www) || searchText.StartsWith(Properties.Resources.http))
             System.Diagnostics.Process.Start(searchText);
           else
@@ -1291,32 +1291,32 @@ namespace Microsoft.FamilyShow
 
     private void SearchMapBirthPlace(object sender, RoutedEventArgs e)
     {
-      SearchMap(this.family.Current.BirthPlace.ToString());
+      SearchMap(family.Current.BirthPlace.ToString());
     }
 
     private void SearchMapDeathPlace(object sender, RoutedEventArgs e)
     {
-      SearchMap(this.family.Current.DeathPlace.ToString());
+      SearchMap(family.Current.DeathPlace.ToString());
     }
 
     private void ChangeBirthDescriptorForward(object sender, RoutedEventArgs e)
     {
-      this.family.Current.BirthDateDescriptor = forwardDateDescriptor(this.family.Current.BirthDateDescriptor);
+      family.Current.BirthDateDescriptor = forwardDateDescriptor(family.Current.BirthDateDescriptor);
     }
 
     private void ChangeBirthDescriptorBackward(object sender, RoutedEventArgs e)
     {
-      this.family.Current.BirthDateDescriptor = backwardDateDescriptor(this.family.Current.BirthDateDescriptor);
+      family.Current.BirthDateDescriptor = backwardDateDescriptor(family.Current.BirthDateDescriptor);
     }
 
     private void ChangeDeathDescriptorForward(object sender, RoutedEventArgs e)
     {
-      this.family.Current.DeathDateDescriptor = forwardDateDescriptor(this.family.Current.DeathDateDescriptor);
+      family.Current.DeathDateDescriptor = forwardDateDescriptor(family.Current.DeathDateDescriptor);
     }
 
     private void ChangeDeathDescriptorBackward(object sender, RoutedEventArgs e)
     {
-      this.family.Current.DeathDateDescriptor = backwardDateDescriptor(this.family.Current.DeathDateDescriptor);
+      family.Current.DeathDateDescriptor = backwardDateDescriptor(family.Current.DeathDateDescriptor);
     }
 
     private void DoneEditButton_Click(object sender, RoutedEventArgs e)
@@ -1361,32 +1361,32 @@ namespace Microsoft.FamilyShow
 
     private void ChangeBurialDescriptorForward(object sender, RoutedEventArgs e)
     {
-      this.family.Current.BurialDateDescriptor = forwardDateDescriptor(this.family.Current.BurialDateDescriptor);
+      family.Current.BurialDateDescriptor = forwardDateDescriptor(family.Current.BurialDateDescriptor);
     }
 
     private void ChangeBurialDescriptorBackward(object sender, RoutedEventArgs e)
     {
-      this.family.Current.BurialDateDescriptor = backwardDateDescriptor(this.family.Current.BurialDateDescriptor);
+      family.Current.BurialDateDescriptor = backwardDateDescriptor(family.Current.BurialDateDescriptor);
     }
 
     private void ChangeCremationDescriptorForward(object sender, RoutedEventArgs e)
     {
-      this.family.Current.CremationDateDescriptor = forwardDateDescriptor(this.family.Current.CremationDateDescriptor);
+      family.Current.CremationDateDescriptor = forwardDateDescriptor(family.Current.CremationDateDescriptor);
     }
 
     private void ChangeCremationDescriptorBackward(object sender, RoutedEventArgs e)
     {
-      this.family.Current.CremationDateDescriptor = backwardDateDescriptor(this.family.Current.CremationDateDescriptor);
+      family.Current.CremationDateDescriptor = backwardDateDescriptor(family.Current.CremationDateDescriptor);
     }
 
     private void SearchMapBurialPlace(object sender, RoutedEventArgs e)
     {
-      SearchMap(this.family.Current.BurialPlace.ToString());
+      SearchMap(family.Current.BurialPlace.ToString());
     }
 
     private void SearchMapCremationPlace(object sender, RoutedEventArgs e)
     {
-      SearchMap(this.family.Current.CremationPlace.ToString());
+      SearchMap(family.Current.CremationPlace.ToString());
     }
 
     #endregion
@@ -1401,9 +1401,9 @@ namespace Microsoft.FamilyShow
     {
       try
       {
-        if (this.RCitationLinkEditTextBox.Text.ToString() != null && this.RCitationLinkEditTextBox.Text.ToString().Length > 0)
+        if (RCitationLinkEditTextBox.Text.ToString() != null && RCitationLinkEditTextBox.Text.ToString().Length > 0)
         {
-          string searchText = this.RCitationLinkEditTextBox.Text.ToString(); ;
+          string searchText = RCitationLinkEditTextBox.Text.ToString(); ;
           if (searchText.StartsWith(Properties.Resources.www) || searchText.StartsWith(Properties.Resources.http))
             System.Diagnostics.Process.Start(searchText);
           else
@@ -1490,7 +1490,7 @@ namespace Microsoft.FamilyShow
       if (family.Current == null)
         return;
 
-      Person p = (Person)this.DataContext;
+      Person p = (Person)DataContext;
 
       RCitationDetailsEditTextBox.Text = string.Empty;
       RCitationActualTextEditTextBox.Text = string.Empty;
@@ -1976,7 +1976,7 @@ namespace Microsoft.FamilyShow
     private void Next_Click(object sender, RoutedEventArgs e)
     {
       //find the index of the current person
-      int i = family.IndexOf((Person)this.DataContext);
+      int i = family.IndexOf((Person)DataContext);
       //then get search for the person with the next index
       Person p = family.Next(i);
 
@@ -1994,7 +1994,7 @@ namespace Microsoft.FamilyShow
     private void Previous_Click(object sender, RoutedEventArgs e)
     {
       //find the index of the current person
-      int i = family.IndexOf((Person)this.DataContext);
+      int i = family.IndexOf((Person)DataContext);
       //then get search for the person with the previous index
       Person p = family.Previous(i);
 
@@ -2009,7 +2009,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void AvatarPhoto_Drop(object sender, DragEventArgs e)
     {
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
 
       if (person.Restriction != Restriction.Locked)
       {
@@ -2072,7 +2072,7 @@ namespace Microsoft.FamilyShow
         if (selected != null)
         {
           family.Current = selected;
-          this.DataContext = family.Current;
+          DataContext = family.Current;
         }
 
         ignoreSelection = false;
@@ -2201,7 +2201,7 @@ namespace Microsoft.FamilyShow
 
     private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
-      if (this.DataContext != null)
+      if (DataContext != null)
         SetFamilyMemberAddButton();
     }
 
@@ -2369,16 +2369,16 @@ namespace Microsoft.FamilyShow
 
     private void enableButtons()
     {
-      this.FamilyListView.IsEnabled = true;
-      this.FilterTextBox.IsEnabled = true;
-      this.DetailsList.Visibility = Visibility.Visible;
+      FamilyListView.IsEnabled = true;
+      FilterTextBox.IsEnabled = true;
+      DetailsList.Visibility = Visibility.Visible;
     }
 
     private void disableButtons()
     {
-      this.FamilyListView.IsEnabled = false;
-      this.FilterTextBox.IsEnabled = false;
-      this.DetailsList.Visibility = Visibility.Collapsed;
+      FamilyListView.IsEnabled = false;
+      FilterTextBox.IsEnabled = false;
+      DetailsList.Visibility = Visibility.Collapsed;
     }
 
     #endregion
@@ -2466,7 +2466,7 @@ namespace Microsoft.FamilyShow
     private void ShowDetailsAddIntermediate(ParentSetCollection possibleParents)
     {
       // Display the Details Add Intermediate section
-      ((Storyboard)this.Resources["ExpandDetailsAddIntermediate"]).Begin(this);
+      ((Storyboard)Resources["ExpandDetailsAddIntermediate"]).Begin(this);
 
       // Bind the possible parents
       ParentsListBox.ItemsSource = possibleParents;
@@ -2594,9 +2594,9 @@ namespace Microsoft.FamilyShow
         box.ToolTip = Properties.Resources.Unknown;  //Event is not known
       else
       {
-        if (this.sources.Find(sourceId) != null)  //Event has citation
+        if (sources.Find(sourceId) != null)  //Event has citation
         {
-          box.ToolTip = this.sources.Find(sourceId).SourceNameAndId;  //Use friendly name
+          box.ToolTip = sources.Find(sourceId).SourceNameAndId;  //Use friendly name
 
           if (!string.IsNullOrEmpty(citation))
             box.ToolTip += "\n" + citation;  //Only add the details if there is a valid source iD

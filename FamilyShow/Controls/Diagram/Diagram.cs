@@ -135,13 +135,13 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public double Scale
     {
-      get { return this.scale; }
+      get { return scale; }
       set
       {
-        if (this.scale != value)
+        if (scale != value)
         {
           scale = value;
-          this.LayoutTransform = new ScaleTransform(scale, scale);
+          LayoutTransform = new ScaleTransform(scale, scale);
         }
       }
     }
@@ -155,7 +155,7 @@ namespace Microsoft.FamilyShow
       {
         // Filter nodes and connections based on the year.
         logic.DisplayYear = value;
-        this.InvalidateVisual();
+        InvalidateVisual();
       }
     }
 
@@ -214,7 +214,7 @@ namespace Microsoft.FamilyShow
     protected override void OnInitialized(EventArgs e)
     {
       // Context menu so can display row and group borders.
-      this.ContextMenu = new ContextMenu();
+      ContextMenu = new ContextMenu();
 
       MenuItem outline = new MenuItem();
       outline.Header = Properties.Resources.ShowGenerationOutline;
@@ -286,25 +286,25 @@ namespace Microsoft.FamilyShow
       filtered.Click += new RoutedEventHandler(OnToggleFiltered);
       filtered.Foreground = SystemColors.MenuTextBrush;
 
-      this.ContextMenu.Items.Add(immediate); //1
-      this.ContextMenu.Items.Add(generations);//2
-      this.ContextMenu.Items.Add(descendants);//3
-      this.ContextMenu.Items.Add(ancestors); //4
+      ContextMenu.Items.Add(immediate); //1
+      ContextMenu.Items.Add(generations);//2
+      ContextMenu.Items.Add(descendants);//3
+      ContextMenu.Items.Add(ancestors); //4
 
-      this.ContextMenu.Items.Add(siblings);//5
-      this.ContextMenu.Items.Add(auntsUncles);//6
+      ContextMenu.Items.Add(siblings);//5
+      ContextMenu.Items.Add(auntsUncles);//6
 
-      this.ContextMenu.Items.Add(inLaws);//7
-      this.ContextMenu.Items.Add(currentSpouse);//8
-      this.ContextMenu.Items.Add(previousSpouse);//9
+      ContextMenu.Items.Add(inLaws);//7
+      ContextMenu.Items.Add(currentSpouse);//8
+      ContextMenu.Items.Add(previousSpouse);//9
 
-      this.ContextMenu.Items.Add(new Separator());//10
+      ContextMenu.Items.Add(new Separator());//10
 
-      this.ContextMenu.Items.Add(dates);//11
-      this.ContextMenu.Items.Add(photos);//12
-      this.ContextMenu.Items.Add(outline);//13
-      this.ContextMenu.Items.Add(bloodlines);//14
-      this.ContextMenu.Items.Add(filtered);//15
+      ContextMenu.Items.Add(dates);//11
+      ContextMenu.Items.Add(photos);//12
+      ContextMenu.Items.Add(outline);//13
+      ContextMenu.Items.Add(bloodlines);//14
+      ContextMenu.Items.Add(filtered);//15
 
       outline.IsChecked = displayBorder;
       photos.IsChecked = showPhotos;
@@ -500,10 +500,10 @@ namespace Microsoft.FamilyShow
       Properties.Settings.Default.Save();
 
       // Update check on menu.
-      MenuItem menuItem = this.ContextMenu.Items[12] as MenuItem;
+      MenuItem menuItem = ContextMenu.Items[12] as MenuItem;
       menuItem.IsChecked = displayBorder;
 
-      this.InvalidateVisual();
+      InvalidateVisual();
     }
 
     void OnToggleBloodlines(object sender, RoutedEventArgs e)
@@ -514,10 +514,10 @@ namespace Microsoft.FamilyShow
       Properties.Settings.Default.Save();
 
       // Update check on menu.
-      MenuItem menuItem = this.ContextMenu.Items[13] as MenuItem;
+      MenuItem menuItem = ContextMenu.Items[13] as MenuItem;
       menuItem.IsChecked = showBloodlines;
 
-      this.InvalidateVisual();
+      InvalidateVisual();
       UpdateDiagram();
     }
 
@@ -529,10 +529,10 @@ namespace Microsoft.FamilyShow
       Properties.Settings.Default.Save();
 
       // Update check on menu.
-      MenuItem menuItem = this.ContextMenu.Items[1] as MenuItem;
+      MenuItem menuItem = ContextMenu.Items[1] as MenuItem;
       menuItem.IsChecked = showGenerations;
 
-      this.InvalidateVisual();
+      InvalidateVisual();
       OnDiagramUpdated();
       UpdateDiagram();
 
@@ -547,10 +547,10 @@ namespace Microsoft.FamilyShow
       Properties.Settings.Default.Save();
 
       // Update check on menu.
-      MenuItem menuItem = this.ContextMenu.Items[10] as MenuItem;
+      MenuItem menuItem = ContextMenu.Items[10] as MenuItem;
       menuItem.IsChecked = !displayDates;
 
-      this.InvalidateVisual();
+      InvalidateVisual();
       UpdateDiagram();
     }
 
@@ -563,10 +563,10 @@ namespace Microsoft.FamilyShow
       Properties.Settings.Default.Save();
 
       // Update check on menu.
-      MenuItem menuItem = this.ContextMenu.Items[14] as MenuItem;
+      MenuItem menuItem = ContextMenu.Items[14] as MenuItem;
       menuItem.IsChecked = !displayFiltered;
 
-      this.InvalidateVisual();
+      InvalidateVisual();
       OnDiagramUpdated();
       UpdateDiagram();
     }
@@ -580,10 +580,10 @@ namespace Microsoft.FamilyShow
       Properties.Settings.Default.Save();
 
       // Update check on menu.
-      MenuItem menuItem = this.ContextMenu.Items[6] as MenuItem;
+      MenuItem menuItem = ContextMenu.Items[6] as MenuItem;
       menuItem.IsChecked = hideInLaws;
 
-      this.InvalidateVisual();
+      InvalidateVisual();
       OnDiagramUpdated();
       UpdateDiagram();
     }
@@ -597,10 +597,10 @@ namespace Microsoft.FamilyShow
       Properties.Settings.Default.Save();
 
       // Update check on menu.
-      MenuItem menuItem = this.ContextMenu.Items[3] as MenuItem;
+      MenuItem menuItem = ContextMenu.Items[3] as MenuItem;
       menuItem.IsChecked = hideAncestors;
 
-      this.InvalidateVisual();
+      InvalidateVisual();
       OnDiagramUpdated();
       UpdateDiagram();
     }
@@ -614,10 +614,10 @@ namespace Microsoft.FamilyShow
       Properties.Settings.Default.Save();
 
       // Update check on menu.
-      MenuItem menuItem = this.ContextMenu.Items[0] as MenuItem;
+      MenuItem menuItem = ContextMenu.Items[0] as MenuItem;
       menuItem.IsChecked = showImmediateFamily;
 
-      this.InvalidateVisual();
+      InvalidateVisual();
       OnDiagramUpdated();
       UpdateDiagram();
     }
@@ -631,10 +631,10 @@ namespace Microsoft.FamilyShow
       Properties.Settings.Default.Save();
 
       //// Update check on menu.
-      MenuItem menuItem = this.ContextMenu.Items[2] as MenuItem;
+      MenuItem menuItem = ContextMenu.Items[2] as MenuItem;
       menuItem.IsChecked = hideDescendants;
 
-      this.InvalidateVisual();
+      InvalidateVisual();
       OnDiagramUpdated();
       UpdateDiagram();
     }
@@ -648,10 +648,10 @@ namespace Microsoft.FamilyShow
       Properties.Settings.Default.Save();
 
       //// Update check on menu.
-      MenuItem menuItem = this.ContextMenu.Items[4] as MenuItem;
+      MenuItem menuItem = ContextMenu.Items[4] as MenuItem;
       menuItem.IsChecked = hideSiblings;
 
-      this.InvalidateVisual();
+      InvalidateVisual();
       OnDiagramUpdated();
       UpdateDiagram();
     }
@@ -665,10 +665,10 @@ namespace Microsoft.FamilyShow
       Properties.Settings.Default.Save();
 
       //// Update check on menu.
-      MenuItem menuItem = this.ContextMenu.Items[5] as MenuItem;
+      MenuItem menuItem = ContextMenu.Items[5] as MenuItem;
       menuItem.IsChecked = hideAuntsUncles;
 
-      this.InvalidateVisual();
+      InvalidateVisual();
       OnDiagramUpdated();
       UpdateDiagram();
 
@@ -683,10 +683,10 @@ namespace Microsoft.FamilyShow
       Properties.Settings.Default.Save();
 
       //// Update check on menu.
-      MenuItem menuItem = this.ContextMenu.Items[8] as MenuItem;
+      MenuItem menuItem = ContextMenu.Items[8] as MenuItem;
       menuItem.IsChecked = hidePreviousSpouses;
 
-      this.InvalidateVisual();
+      InvalidateVisual();
       OnDiagramUpdated();
       UpdateDiagram();
     }
@@ -700,10 +700,10 @@ namespace Microsoft.FamilyShow
       Properties.Settings.Default.Save();
 
       //// Update check on menu.
-      MenuItem menuItem = this.ContextMenu.Items[7] as MenuItem;
+      MenuItem menuItem = ContextMenu.Items[7] as MenuItem;
       menuItem.IsChecked = hideSpouses;
 
-      this.InvalidateVisual();
+      InvalidateVisual();
       OnDiagramUpdated();
       UpdateDiagram();
     }
@@ -717,10 +717,10 @@ namespace Microsoft.FamilyShow
       Properties.Settings.Default.Save();
 
       //// Update check on menu.
-      MenuItem menuItem = this.ContextMenu.Items[11] as MenuItem;
+      MenuItem menuItem = ContextMenu.Items[11] as MenuItem;
       menuItem.IsChecked = showPhotos;
 
-      this.InvalidateVisual();
+      InvalidateVisual();
       UpdateDiagram();
 
     }
@@ -735,7 +735,7 @@ namespace Microsoft.FamilyShow
       foreach (DiagramRow row in rows)
       {
         row.Clear();
-        this.RemoveVisualChild(row);
+        RemoveVisualChild(row);
       }
 
       rows.Clear();
@@ -762,9 +762,9 @@ namespace Microsoft.FamilyShow
       }
 
       // Required to update (hide) the connector lines.            
-      this.InvalidateVisual();
-      this.InvalidateArrange();
-      this.InvalidateMeasure();
+      InvalidateVisual();
+      InvalidateArrange();
+      InvalidateMeasure();
 
       // Pause before displaying the new nodes.
       animationTimer.Interval = App.GetAnimationDuration(Const.AnimationPauseDuration);
@@ -796,7 +796,7 @@ namespace Microsoft.FamilyShow
       }
 
       // Redraw connector lines.
-      this.InvalidateVisual();
+      InvalidateVisual();
 
       populating = false;
     }
@@ -834,7 +834,7 @@ namespace Microsoft.FamilyShow
       // Create as many rows as possible until exceed the max node limit.
       // Switch between child and parent rows to prevent only creating
       // child or parents rows (want to create as many of each as possible).
-      int nodeCount = this.NodeCount;
+      int nodeCount = NodeCount;
 
       // The scale values of future generations, this makes the nodes
       // in each row slightly smaller.
@@ -857,7 +857,7 @@ namespace Microsoft.FamilyShow
           break;
 
         // See if reached node limit yet.                                       
-        nodeCount = this.NodeCount;
+        nodeCount = NodeCount;
       }
 
       while (nodeCount < MaximumNodes && childRow != null && hideAncestors == true && hideDescendants == false)  //Const.
@@ -870,7 +870,7 @@ namespace Microsoft.FamilyShow
           break;
 
         // See if reached node limit yet.                                       
-        nodeCount = this.NodeCount;
+        nodeCount = NodeCount;
       }
 
 
@@ -891,7 +891,7 @@ namespace Microsoft.FamilyShow
           break;
 
         // See if reached node limit yet.                                       
-        nodeCount = this.NodeCount;
+        nodeCount = NodeCount;
       }
 
       // Raise event so others know the diagram was updated.
@@ -948,7 +948,7 @@ namespace Microsoft.FamilyShow
     {
       if (row != null && row.NodeCount > 0)
       {
-        this.AddVisualChild(row);
+        AddVisualChild(row);
         rows.Add(row);
       }
     }
@@ -960,7 +960,7 @@ namespace Microsoft.FamilyShow
     {
       if (row != null && row.NodeCount > 0)
       {
-        this.AddVisualChild(row);
+        AddVisualChild(row);
         rows.Insert(0, row);
       }
     }
@@ -998,9 +998,9 @@ namespace Microsoft.FamilyShow
 
       // Redraw the diagram.
       UpdateDiagram();
-      this.InvalidateMeasure();
-      this.InvalidateArrange();
-      this.InvalidateVisual();
+      InvalidateMeasure();
+      InvalidateArrange();
+      InvalidateVisual();
     }
 
     /// <summary>

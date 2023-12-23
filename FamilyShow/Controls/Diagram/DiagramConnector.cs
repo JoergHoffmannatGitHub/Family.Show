@@ -44,7 +44,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public Point Center
     {
-      get { return GetPoint(this.node.Center); }
+      get { return GetPoint(node.Center); }
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public Point LeftCenter
     {
-      get { return GetPoint(this.node.LeftCenter); }
+      get { return GetPoint(node.LeftCenter); }
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public Point RightCenter
     {
-      get { return GetPoint(this.node.RightCenter); }
+      get { return GetPoint(node.RightCenter); }
     }
 
     /// <summary>
@@ -68,7 +68,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public Point TopCenter
     {
-      get { return GetPoint(this.node.TopCenter); }
+      get { return GetPoint(node.TopCenter); }
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public Point TopRight
     {
-      get { return GetPoint(this.node.TopRight); }
+      get { return GetPoint(node.TopRight); }
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public Point TopLeft
     {
-      get { return GetPoint(this.node.TopLeft); }
+      get { return GetPoint(node.TopLeft); }
     }
 
     #endregion
@@ -102,8 +102,8 @@ namespace Microsoft.FamilyShow
     private Point GetPoint(Point point)
     {
       point.Offset(
-          this.row.Location.X + this.group.Location.X,
-          this.row.Location.Y + this.group.Location.Y);
+          row.Location.X + group.Location.X,
+          row.Location.Y + group.Location.Y);
 
       return point;
     }
@@ -202,10 +202,10 @@ namespace Microsoft.FamilyShow
       {
         // Make a copy of the resource pen so it can 
         // be modified, the resource pen is frozen.
-        Pen connectorPen = this.ResourcePen.Clone();
+        Pen connectorPen = ResourcePen.Clone();
 
         // Set opacity based on the filtered state.
-        connectorPen.Brush.Opacity = (this.isFiltered) ? Const.OpacityFiltered : Const.OpacityNormal;
+        connectorPen.Brush.Opacity = (isFiltered) ? Const.OpacityFiltered : Const.OpacityNormal;
 
         // Create animation if the filtered state has changed.
         if (animation != null)
@@ -247,8 +247,8 @@ namespace Microsoft.FamilyShow
     protected DiagramConnector(DiagramConnectorNode startConnector,
         DiagramConnectorNode endConnector)
     {
-      this.start = startConnector;
-      this.end = endConnector;
+      start = startConnector;
+      end = endConnector;
     }
 
     /// <summary>
@@ -280,7 +280,7 @@ namespace Microsoft.FamilyShow
       SolidColorBrush brush = new SolidColorBrush(color);
 
       // Set the opacity based on the filtered state.
-      brush.Opacity = (this.isFiltered) ? Const.OpacityFiltered : Const.OpacityNormal;
+      brush.Opacity = (isFiltered) ? Const.OpacityFiltered : Const.OpacityNormal;
 
       // Create animation if the filtered state has changed.
       if (animation != null)
@@ -296,11 +296,11 @@ namespace Microsoft.FamilyShow
     protected void CheckIfFilteredChanged()
     {
       // See if the filtered state has changed.
-      bool newFiltered = this.NewFilteredState;
-      if (newFiltered != this.IsFiltered)
+      bool newFiltered = NewFilteredState;
+      if (newFiltered != IsFiltered)
       {
         // Filtered state did change, create the animation.
-        this.IsFiltered = newFiltered;
+        IsFiltered = newFiltered;
         animation = new DoubleAnimation();
         animation.From = isFiltered ? Const.OpacityNormal : Const.OpacityFiltered;
         animation.To = isFiltered ? Const.OpacityFiltered : Const.OpacityNormal;
@@ -324,24 +324,24 @@ namespace Microsoft.FamilyShow
     {
       // Get the pen that is used to draw the connection line.
 
-      ChildRelationship rel = this.StartNode.Node.Person.GetParentChildRelationship(this.EndNode.Node.Person);
+      ChildRelationship rel = StartNode.Node.Person.GetParentChildRelationship(EndNode.Node.Person);
       if (rel != null)
       {
         if (rel.ParentChildModifier == ParentChildModifier.Adopted || rel.ParentChildModifier == ParentChildModifier.Foster)
         {
           if (rel.ParentChildModifier == ParentChildModifier.Adopted)
-            this.ResourcePen = (Pen)Application.Current.TryFindResource("AdoptedChildConnectionPen");
+            ResourcePen = (Pen)Application.Current.TryFindResource("AdoptedChildConnectionPen");
           if (rel.ParentChildModifier == ParentChildModifier.Foster)
-            this.ResourcePen = (Pen)Application.Current.TryFindResource("FosteredChildConnectionPen");
+            ResourcePen = (Pen)Application.Current.TryFindResource("FosteredChildConnectionPen");
         }
         else
         {
-          if ((this.StartNode.Node.Type == NodeType.Related && this.EndNode.Node.Type == NodeType.Related ||
-              this.StartNode.Node.Type == NodeType.Related && this.EndNode.Node.Type == NodeType.Primary ||
-              this.StartNode.Node.Type == NodeType.Primary && this.EndNode.Node.Type == NodeType.Related) && Diagram.showBloodlines)
-            this.ResourcePen = (Pen)Application.Current.TryFindResource("ChildPrimaryConnectionPen");
+          if ((StartNode.Node.Type == NodeType.Related && EndNode.Node.Type == NodeType.Related ||
+              StartNode.Node.Type == NodeType.Related && EndNode.Node.Type == NodeType.Primary ||
+              StartNode.Node.Type == NodeType.Primary && EndNode.Node.Type == NodeType.Related) && Diagram.showBloodlines)
+            ResourcePen = (Pen)Application.Current.TryFindResource("ChildPrimaryConnectionPen");
           else
-            this.ResourcePen = (Pen)Application.Current.TryFindResource("ChildConnectionPen");
+            ResourcePen = (Pen)Application.Current.TryFindResource("ChildConnectionPen");
 
         }
       }
@@ -357,7 +357,7 @@ namespace Microsoft.FamilyShow
       if (!base.Draw(drawingContext))
         return false;
 
-      drawingContext.DrawLine(this.Pen, this.StartNode.Center, this.EndNode.Center);
+      drawingContext.DrawLine(Pen, StartNode.Center, EndNode.Center);
       return true;
     }
   }
@@ -401,7 +401,7 @@ namespace Microsoft.FamilyShow
       {
         if (married)
         {
-          SpouseRelationship rel = this.StartNode.Node.Person.GetSpouseRelationship(this.EndNode.Node.Person);
+          SpouseRelationship rel = StartNode.Node.Person.GetSpouseRelationship(EndNode.Node.Person);
           if (rel != null)
             return rel.MarriageDate;
         }
@@ -418,7 +418,7 @@ namespace Microsoft.FamilyShow
       {
         if (!married)
         {
-          SpouseRelationship rel = this.StartNode.Node.Person.GetSpouseRelationship(this.EndNode.Node.Person);
+          SpouseRelationship rel = StartNode.Node.Person.GetSpouseRelationship(EndNode.Node.Person);
           if (rel != null)
             return rel.DivorceDate;
         }
@@ -440,16 +440,16 @@ namespace Microsoft.FamilyShow
           return true;
 
         // Check the married date for current and former spouses.
-        SpouseRelationship rel = this.StartNode.Node.Person.GetSpouseRelationship(this.EndNode.Node.Person);
+        SpouseRelationship rel = StartNode.Node.Person.GetSpouseRelationship(EndNode.Node.Person);
         if (rel != null && rel.MarriageDate != null &&
-            (this.StartNode.Node.DisplayYear < rel.MarriageDate.Value.Year))
+            (StartNode.Node.DisplayYear < rel.MarriageDate.Value.Year))
         {
           return true;
         }
 
         // Check the divorce date for former spouses.
         if (!married && rel != null && rel.DivorceDate != null &&
-            (this.StartNode.Node.DisplayYear < rel.DivorceDate.Value.Year))
+            (StartNode.Node.DisplayYear < rel.DivorceDate.Value.Year))
         {
           return true;
         }
@@ -478,7 +478,7 @@ namespace Microsoft.FamilyShow
       pixelsPerDip = dpiScale.PixelsPerDip;
 
       // Get resourced used to draw the connection line.
-      this.ResourcePen = (Pen)Application.Current.TryFindResource(
+      ResourcePen = (Pen)Application.Current.TryFindResource(
           married ? "MarriedConnectionPen" : "FormerConnectionPen");
     }
 
@@ -502,8 +502,8 @@ namespace Microsoft.FamilyShow
       const double TextSpace = 3;
 
       // Determine the start and ending points based on what node is on the left / right.
-      Point startPoint = (this.StartNode.TopCenter.X < this.EndNode.TopCenter.X) ? this.StartNode.TopCenter : this.EndNode.TopCenter;
-      Point endPoint = (this.StartNode.TopCenter.X < this.EndNode.TopCenter.X) ? this.EndNode.TopCenter : this.StartNode.TopCenter;
+      Point startPoint = (StartNode.TopCenter.X < EndNode.TopCenter.X) ? StartNode.TopCenter : EndNode.TopCenter;
+      Point endPoint = (StartNode.TopCenter.X < EndNode.TopCenter.X) ? EndNode.TopCenter : StartNode.TopCenter;
 
       // Use a higher arc when the nodes are further apart.
       double arcHeight = (endPoint.X - startPoint.X) / 4;
@@ -515,10 +515,10 @@ namespace Microsoft.FamilyShow
       Point middlePoint = new Point(startPoint.X + ((endPoint.X - startPoint.X) / 2), startPoint.Y - arcHeight);
 
       // Draw the arc, get the bounds so can draw connection text.
-      Rect bounds = DrawArc(drawingContext, this.Pen, startPoint, middlePoint, endPoint);
+      Rect bounds = DrawArc(drawingContext, Pen, startPoint, middlePoint, endPoint);
 
       // Get the relationship info so the dates can be displayed.
-      SpouseRelationship rel = this.StartNode.Node.Person.GetSpouseRelationship(this.EndNode.Node.Person);
+      SpouseRelationship rel = StartNode.Node.Person.GetSpouseRelationship(EndNode.Node.Person);
       if (rel != null)
       {
         // Marriage date.

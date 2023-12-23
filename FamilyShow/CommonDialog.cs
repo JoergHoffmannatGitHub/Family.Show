@@ -80,7 +80,7 @@ namespace Microsoft.FamilyShow
     private string SetFilter()
     {
       StringBuilder sb = new();
-      foreach (FilterEntry entry in this.Filter)
+      foreach (FilterEntry entry in Filter)
       {
         sb.AppendFormat("{0}|{1}|", entry.Display, entry.Extension);
       }

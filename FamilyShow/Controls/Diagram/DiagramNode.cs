@@ -137,7 +137,7 @@ namespace Microsoft.FamilyShow
         displayYear = value;
 
         // Update the filtered state based on the birth date.
-        this.IsFiltered = (person != null && person.BirthDate != null &&
+        IsFiltered = (person != null && person.BirthDate != null &&
             person.BirthDate.Value.Year > displayYear);
 
         // Recompuate the bottom label which contains the age,
@@ -166,16 +166,16 @@ namespace Microsoft.FamilyShow
           if (Properties.Settings.Default.ShowFiltered)
           {
             newOpacity = isFiltered ? Const.OpacityFiltered : Const.OpacityNormal;
-            this.BeginAnimation(OpacityProperty,
-            new DoubleAnimation(this.Opacity, newOpacity,
+            BeginAnimation(OpacityProperty,
+            new DoubleAnimation(Opacity, newOpacity,
             App.GetAnimationDuration(Const.AnimationDuration)));
           }
           else
           {
             if (isFiltered)
-              this.Visibility = Visibility.Collapsed;
+              Visibility = Visibility.Collapsed;
             else
-              this.Visibility = Visibility.Visible;
+              Visibility = Visibility.Visible;
           }
         }
       }
@@ -200,7 +200,7 @@ namespace Microsoft.FamilyShow
           if (!person.Age.HasValue)
             return string.Empty;
 
-          int age = person.Age.Value - (DateTime.Now.Year - (int)this.displayYear);
+          int age = person.Age.Value - (DateTime.Now.Year - (int)displayYear);
           return string.Format(CultureInfo.CurrentUICulture,
               "{0}{1} | {2}", person.BirthDateDescriptor, person.BirthDate.Value.Year, Math.Max(0, age));
         }
@@ -211,8 +211,8 @@ namespace Microsoft.FamilyShow
           if (!person.Age.HasValue)
             return string.Empty;
 
-          int age = (this.displayYear >= person.DeathDate.Value.Year) ?
-              person.Age.Value : person.Age.Value - (person.DeathDate.Value.Year - (int)this.displayYear);  //change the displayed age when the time slider is altered
+          int age = (displayYear >= person.DeathDate.Value.Year) ?
+              person.Age.Value : person.Age.Value - (person.DeathDate.Value.Year - (int)displayYear);  //change the displayed age when the time slider is altered
 
           return string.Format(CultureInfo.CurrentUICulture,
               "{0}{1} - {2}{3} | {4}", person.BirthDateDescriptor, person.BirthDate.Value.Year, person.DeathDateDescriptor, person.DeathDate.Value.Year, Math.Max(0, age));
@@ -245,7 +245,7 @@ namespace Microsoft.FamilyShow
       set
       {
         person = value;
-        this.DataContext = this;
+        DataContext = this;
 
         // Update the template to reflect the gender.
         UpdateTemplate();
@@ -299,12 +299,12 @@ namespace Microsoft.FamilyShow
       get
       {
         // The real center of the node.
-        Point point = new Point(location.X + (this.DesiredSize.Width / 2), location.Y);
+        Point point = new Point(location.X + (DesiredSize.Width / 2), location.Y);
 
         // Shift the center to the left. This is an estimate since we don't 
         // know the exact position of the person drawing within the node.
-        FrameworkElement personElement = this.Template.FindName("Person", this) as FrameworkElement;
-        double offset = (this.type == NodeType.Primary) ? 12 : 5;
+        FrameworkElement personElement = Template.FindName("Person", this) as FrameworkElement;
+        double offset = (type == NodeType.Primary) ? 12 : 5;
         point.X -= (personElement.ActualWidth / offset);
         return point;
       }
@@ -359,10 +359,10 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public NodeType Type
     {
-      get { return this.type; }
+      get { return type; }
       set
       {
-        this.type = value;
+        type = value;
         UpdateTemplate();
       }
     }
@@ -379,7 +379,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public string BottomLabel
     {
-      get { return (String)this.GetValue(BottomLabelProperty); }
+      get { return (String)GetValue(BottomLabelProperty); }
       set { SetValue(BottomLabelProperty, value); }
     }
 
@@ -390,13 +390,13 @@ namespace Microsoft.FamilyShow
     public override void OnApplyTemplate()
     {
       // The template has been applied to the node. See if the person drawing needs to be scaled.
-      if (this.scale != 1)
+      if (scale != 1)
       {
         // Scale the person drawing part of the node, not the entire node.
-        FrameworkElement personElement = this.Template.FindName("Person", this) as FrameworkElement;
+        FrameworkElement personElement = Template.FindName("Person", this) as FrameworkElement;
         if (personElement != null)
         {
-          ScaleTransform transform = new ScaleTransform(this.scale, this.scale);
+          ScaleTransform transform = new ScaleTransform(scale, scale);
           personElement.LayoutTransform = transform;
         }
       }
@@ -419,8 +419,8 @@ namespace Microsoft.FamilyShow
       string resourceName = string.Format(
           CultureInfo.InvariantCulture, "{0}{1}{2}{3}",
           (person.Gender == Gender.Female) ? "Female" : "Male",
-          this.type.ToString(),
-          (this.person.IsLiving) ? "Living" : "Deceased",
+          type.ToString(),
+          (person.IsLiving) ? "Living" : "Deceased",
           part);
 
       return (Brush)TryFindResource(resourceName);
@@ -430,7 +430,7 @@ namespace Microsoft.FamilyShow
     {
       // Format string, the resource is in the XAML file.
       string resourceName = string.Format(CultureInfo.InvariantCulture,
-          "{0}{1}", this.type.ToString(), part);
+          "{0}{1}", type.ToString(), part);
 
       return (Brush)TryFindResource(resourceName);
     }
@@ -444,11 +444,11 @@ namespace Microsoft.FamilyShow
       string template = string.Format(
           CultureInfo.InvariantCulture, "{0}{1}{2}NodeTemplate",
           (person.Gender == Gender.Female) ? "Female" : "Male",
-          (this.type == NodeType.Primary) ? "Primary" : "",
+          (type == NodeType.Primary) ? "Primary" : "",
           (person.Restriction != Restriction.Private && person.HasAvatar && Diagram.showPhotos) ? "Photo" : "");
 
       // Assign the node template.                
-      this.Template = (ControlTemplate)FindResource(template);
+      Template = (ControlTemplate)FindResource(template);
     }
 
     /// <summary>
@@ -457,13 +457,13 @@ namespace Microsoft.FamilyShow
     private void UpdateGroupIndicator()
     {
       // Primary templates don't have the group xaml section.
-      if (this.type == NodeType.Primary)
+      if (type == NodeType.Primary)
         return;
 
       // Determine if the group indicator should be displayed.
       bool isGrouping = ShouldDisplayGroupIndicator();
 
-      FrameworkElement element = this.Template.FindName("Group", this) as FrameworkElement;
+      FrameworkElement element = Template.FindName("Group", this) as FrameworkElement;
       if (element != null)
         element.Visibility = isGrouping ? Visibility.Visible : Visibility.Collapsed;
     }
@@ -474,24 +474,24 @@ namespace Microsoft.FamilyShow
     private bool ShouldDisplayGroupIndicator()
     {
       // Primary and related nodes never display the group indicator.
-      if ((this.type == NodeType.Primary || this.type == NodeType.Related))
+      if ((type == NodeType.Primary || type == NodeType.Related))
         return false;
 
       bool show = false;
-      switch (this.type)
+      switch (type)
       {
         // Spouse - if have parents, siblings, or ex spouses.
         case NodeType.Spouse:
-          if (this.person.Parents.Count > 0 ||
-              this.person.Siblings.Count > 0 ||
-              this.person.PreviousSpouses.Count > 1)   //1 because if this is a spouse node and they only have 1 previous spouse, then that spouse must be visible so there is no need to show the indicator
+          if (person.Parents.Count > 0 ||
+              person.Siblings.Count > 0 ||
+              person.PreviousSpouses.Count > 1)   //1 because if this is a spouse node and they only have 1 previous spouse, then that spouse must be visible so there is no need to show the indicator
             show = true;
           break;
 
         // Sibling - if have spouse, or children.
         case NodeType.Sibling:
-          if (this.person.Spouses.Count > 0 ||
-              this.person.Children.Count > 0)
+          if (person.Spouses.Count > 0 ||
+              person.Children.Count > 0)
             show = true;
           break;
 
@@ -499,8 +499,8 @@ namespace Microsoft.FamilyShow
         // group status from all parents.
         case NodeType.SiblingLeft:
         case NodeType.SiblingRight:
-          if (this.person.Spouses.Count > 0 ||
-              this.person.Children.Count > 0)
+          if (person.Spouses.Count > 0 ||
+              person.Children.Count > 0)
             show = true;
           break;
       }
@@ -517,11 +517,11 @@ namespace Microsoft.FamilyShow
       if (person.Restriction != Restriction.Private)
       {
         string label = string.Format(CultureInfo.CurrentCulture, "{0}\r{1}",
-            this.person.Name, this.DateInformation);
-        this.BottomLabel = label;
+            person.Name, DateInformation);
+        BottomLabel = label;
       }
       else
-        this.BottomLabel = Properties.Resources.PrivateRecord;  //restrict the bottom label for private records
+        BottomLabel = Properties.Resources.PrivateRecord;  //restrict the bottom label for private records
     }
 
     public void HideBottomLabel()
@@ -529,11 +529,11 @@ namespace Microsoft.FamilyShow
       if (person.Restriction != Restriction.Private)
       {
         string label = string.Format(CultureInfo.CurrentCulture, "{0}",
-            this.person.Name);
-        this.BottomLabel = label;
+            person.Name);
+        BottomLabel = label;
       }
       else
-        this.BottomLabel = Properties.Resources.PrivateRecord; //restrict the bottom label for private records
+        BottomLabel = Properties.Resources.PrivateRecord; //restrict the bottom label for private records
     }
   }
 }

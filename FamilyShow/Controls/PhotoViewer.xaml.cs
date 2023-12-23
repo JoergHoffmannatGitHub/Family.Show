@@ -37,7 +37,7 @@ namespace Microsoft.FamilyShow
 
     private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
-      if (this.Visibility == Visibility.Visible)
+      if (Visibility == Visibility.Visible)
       {
         // Hide the photo tags and photo edit buttons if there is no main photo.
         if (DisplayPhoto.Source == null)
@@ -91,7 +91,7 @@ namespace Microsoft.FamilyShow
     private void OpenPhotoButton_Click(object sender, RoutedEventArgs e)
     {
 
-      Person person = (Person)this.DataContext;
+      Person person = (Person)DataContext;
       Photo photo = (Photo)PhotosListBox.SelectedItem;
       string path = photo.FullyQualifiedPath;
 

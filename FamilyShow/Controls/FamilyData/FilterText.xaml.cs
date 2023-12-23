@@ -49,7 +49,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void FilterButton_Click(object sender, RoutedEventArgs e)
     {
-      this.Text = string.Empty;
+      Text = string.Empty;
       RaiseEvent(new RoutedEventArgs(ResetFilterEvent));
     }
 

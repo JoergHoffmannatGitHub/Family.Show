@@ -98,7 +98,7 @@ namespace Microsoft.FamilyShowLib
         using (FileStream stream = File.Create(storyAbsolutePath))
         {
           // Store the relative path to the story
-          this.relativePath = Path.Combine(StoriesFolderName, storyFileName);
+          relativePath = Path.Combine(StoriesFolderName, storyFileName);
 
           // Save the story to disk
           if (storyText.CanSave(dataFormat))
@@ -121,12 +121,12 @@ namespace Microsoft.FamilyShowLib
       // Data format for the person's story file.
       string dataFormat = DataFormats.Rtf;
 
-      if (File.Exists(this.AbsolutePath))
+      if (File.Exists(AbsolutePath))
       {
         try
         {
           // Open the file for reading
-          using (FileStream stream = File.OpenRead(this.AbsolutePath))
+          using (FileStream stream = File.OpenRead(AbsolutePath))
           {
             if (storyText.CanLoad(dataFormat))
               storyText.Load(stream, dataFormat);
@@ -159,11 +159,11 @@ namespace Microsoft.FamilyShowLib
     public void Delete()
     {
       // Delete the person's story if it exists
-      if (File.Exists(this.AbsolutePath))
+      if (File.Exists(AbsolutePath))
       {
         try
         {
-          File.Delete(this.AbsolutePath);
+          File.Delete(AbsolutePath);
         }
         catch
         {

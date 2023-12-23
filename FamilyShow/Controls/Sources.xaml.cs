@@ -112,7 +112,7 @@ namespace Microsoft.FamilyShow
       if (!string.IsNullOrEmpty(dialog.FileName))
       {
         SourcesExport sources = new SourcesExport();
-        sources.ExportSources(dialog.FileName, Path.GetFileName(this.familyCollection.FullyQualifiedFilename), source);
+        sources.ExportSources(dialog.FileName, Path.GetFileName(familyCollection.FullyQualifiedFilename), source);
       }
 
       if (File.Exists(dialog.FileName))

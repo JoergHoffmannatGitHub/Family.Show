@@ -21,7 +21,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public int Count
     {
-      get { return this.View.Count; }
+      get { return View.Count; }
     }
 
     public Dictionary<object, string> CategoryLabels
@@ -121,8 +121,8 @@ namespace Microsoft.FamilyShow
 
     public string GetCategoryLabel(object columnValue)
     {
-      if (this.CategoryLabels.ContainsKey(columnValue))
-        return this.CategoryLabels[columnValue];
+      if (CategoryLabels.ContainsKey(columnValue))
+        return CategoryLabels[columnValue];
       return columnValue.ToString();
     }
 
@@ -153,12 +153,12 @@ namespace Microsoft.FamilyShow
       // are no items, hide the histogram.
       if (view.Count == 0)
       {
-        this.LayoutRoot.Visibility = Visibility.Hidden;
+        LayoutRoot.Visibility = Visibility.Hidden;
       }
       else
       {
-        this.LayoutRoot.Visibility = Visibility.Visible;
-        this.TotalCountLabel.Content = view.Count;
+        LayoutRoot.Visibility = Visibility.Visible;
+        TotalCountLabel.Content = view.Count;
       }
     }
 

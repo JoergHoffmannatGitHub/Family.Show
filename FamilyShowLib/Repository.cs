@@ -86,7 +86,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public Repository()
     {
-      this.repositoryName = Properties.Resources.Unknown;
+      repositoryName = Properties.Resources.Unknown;
     }
 
     /// <summary>
@@ -96,7 +96,7 @@ namespace Microsoft.FamilyShowLib
     public Repository(string repositoryId, string repositoryName, string repositoryAddress) : this()
     {
       if (!string.IsNullOrEmpty(repositoryId))
-        this.id = repositoryId;
+        id = repositoryId;
       if (!string.IsNullOrEmpty(repositoryName))
         this.repositoryName = repositoryName;
       if (!string.IsNullOrEmpty(repositoryAddress))
@@ -112,7 +112,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public bool Equals(Repository other)
     {
-      return (this.Id == other.Id);
+      return (Id == other.Id);
     }
 
     #endregion

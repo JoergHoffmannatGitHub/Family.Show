@@ -64,14 +64,14 @@ namespace Microsoft.FamilyShow
     {
       PersonInfoControl.DataContext = family.Current;
       // Uses an animation to show the Person Info Control
-      ((Storyboard)this.Resources["ShowPersonInfo"]).Begin(this);
+      ((Storyboard)Resources["ShowPersonInfo"]).Begin(this);
     }
 
     private void DetailsControl_FamilyDataClick(object sender, RoutedEventArgs e)
     {
       FamilyDataControl.Refresh();
       // Uses an animation to show the Family Data Control
-      ((Storyboard)this.Resources["ShowFamilyData"]).Begin(this);
+      ((Storyboard)Resources["ShowFamilyData"]).Begin(this);
     }
 
     /// <summary>
@@ -86,7 +86,7 @@ namespace Microsoft.FamilyShow
     private void PersonInfoControl_CloseButtonClick(object sender, RoutedEventArgs e)
     {
       // Uses an animation to hide the Person Info Control
-      ((Storyboard)this.Resources["HidePersonInfo"]).Begin(this);
+      ((Storyboard)Resources["HidePersonInfo"]).Begin(this);
     }
 
     private void FamilyDataControl_CloseButtonClick(object sender, RoutedEventArgs e)
@@ -103,7 +103,7 @@ namespace Microsoft.FamilyShow
 
     private void HidePersonInfo_StoryboardCompleted(object sender, EventArgs e)
     {
-      this.family.OnContentChanged();
+      family.OnContentChanged();
       DetailsControl.SetDefaultFocus();
       enableButtons();
     }
@@ -191,9 +191,9 @@ namespace Microsoft.FamilyShow
         BuildOpenMenu();
       }
       else
-        this.familyCollection.FullyQualifiedFilename = string.Empty;
+        familyCollection.FullyQualifiedFilename = string.Empty;
 
-      this.family.OnContentChanged();
+      family.OnContentChanged();
       UpdateStatus();
       TaskBar.Current.Restore();
       removeControlFocus();
@@ -661,16 +661,16 @@ namespace Microsoft.FamilyShow
         //Print background when black theme is used because diagram has white text
         if (appSettings.Theme == @"Themes\Black\BlackResources.xaml")
         {
-          heightActual = this.DiagramBorder.ActualHeight;
-          widthActual = this.DiagramBorder.ActualWidth;
+          heightActual = DiagramBorder.ActualHeight;
+          widthActual = DiagramBorder.ActualWidth;
           diagramFill = new VisualBrush(DiagramBorder);
           diagram.Margin = new Thickness(0, 0, 0, 0);
           diagram.Fill = diagramFill;
         }
         else
         {
-          heightActual = this.DiagramBorder.ActualHeight;
-          widthActual = this.DiagramBorder.ActualWidth;
+          heightActual = DiagramBorder.ActualHeight;
+          widthActual = DiagramBorder.ActualWidth;
           diagramFill = new VisualBrush(DiagramControl);
           diagram.Stroke = Brushes.Black;
           diagram.StrokeThickness = 0.5;
@@ -775,7 +775,7 @@ namespace Microsoft.FamilyShow
       family.OnContentChanged();
       PersonInfoControl.OnThemeChange();
       UpdateStatus();
-      this.DiagramControl.TimeSlider.Value = DateTime.Now.Year;
+      DiagramControl.TimeSlider.Value = DateTime.Now.Year;
 
     }
 
@@ -1220,8 +1220,8 @@ namespace Microsoft.FamilyShow
     {
       if (DiagramBorder.Visibility == Visibility.Visible)
       {
-        this.DiagramControl.TimeSliderPanel.Visibility = Visibility.Hidden;
-        this.DiagramControl.ZoomSliderPanel.Visibility = Visibility.Hidden;
+        DiagramControl.TimeSliderPanel.Visibility = Visibility.Hidden;
+        DiagramControl.ZoomSliderPanel.Visibility = Visibility.Hidden;
         hideDiagramControls = true;
       }
     }
@@ -1233,8 +1233,8 @@ namespace Microsoft.FamilyShow
     {
       if (DiagramBorder.Visibility == Visibility.Visible)
       {
-        this.DiagramControl.TimeSliderPanel.Visibility = Visibility.Visible;
-        this.DiagramControl.ZoomSliderPanel.Visibility = Visibility.Visible;
+        DiagramControl.TimeSliderPanel.Visibility = Visibility.Visible;
+        DiagramControl.ZoomSliderPanel.Visibility = Visibility.Visible;
         hideDiagramControls = false;
       }
     }
@@ -1405,10 +1405,10 @@ namespace Microsoft.FamilyShow
       if (DetailsControl.DetailsEditCitations.Visibility == Visibility.Visible)
         ((Storyboard)DetailsControl.Resources["CollapseDetailsEditCitations"]).Begin(DetailsControl);
 
-      if (this.PersonInfoControl.Visibility == Visibility.Visible)
-        ((Storyboard)this.Resources["HidePersonInfo"]).Begin(this);
-      if (this.FamilyDataControl.Visibility == Visibility.Visible)
-        ((Storyboard)this.Resources["HideFamilyData"]).Begin(this);
+      if (PersonInfoControl.Visibility == Visibility.Visible)
+        ((Storyboard)Resources["HidePersonInfo"]).Begin(this);
+      if (FamilyDataControl.Visibility == Visibility.Visible)
+        ((Storyboard)Resources["HideFamilyData"]).Begin(this);
 
     }
 
@@ -1552,7 +1552,7 @@ namespace Microsoft.FamilyShow
     {
       // Uses an animation to hide the Family Data Control
       if (FamilyDataControl.IsVisible)
-        ((Storyboard)this.Resources["HideFamilyData"]).Begin(this);
+        ((Storyboard)Resources["HideFamilyData"]).Begin(this);
     }
 
     /// <summary>
@@ -1562,7 +1562,7 @@ namespace Microsoft.FamilyShow
     {
       // Uses an animation to hide the Family Data Control
       if (PersonInfoControl.IsVisible)
-        ((Storyboard)this.Resources["HidePersonInfo"]).Begin(this);
+        ((Storyboard)Resources["HidePersonInfo"]).Begin(this);
     }
 
     /// <summary>
@@ -1589,7 +1589,7 @@ namespace Microsoft.FamilyShow
       WelcomeUserControl.Visibility = Visibility.Collapsed;
 
       if (PersonInfoControl.Visibility == Visibility.Visible)
-        ((Storyboard)this.Resources["HidePersonInfo"]).Begin(this);
+        ((Storyboard)Resources["HidePersonInfo"]).Begin(this);
 
       NewUserControl.Visibility = Visibility.Visible;
       NewUserControl.ClearInputFields();

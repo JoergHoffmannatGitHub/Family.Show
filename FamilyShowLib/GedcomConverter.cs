@@ -185,8 +185,8 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public int Level
     {
-      get { return this.level; }
-      set { this.level = value; }
+      get { return level; }
+      set { level = value; }
     }
 
     /// <summary>
@@ -194,8 +194,8 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public string Tag
     {
-      get { return this.tag; }
-      set { this.tag = value; }
+      get { return tag; }
+      set { tag = value; }
     }
 
     /// <summary>
@@ -203,8 +203,8 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public string Data
     {
-      get { return this.data; }
-      set { this.data = value; }
+      get { return data; }
+      set { data = value; }
     }
 
     #endregion
@@ -238,28 +238,28 @@ namespace Microsoft.FamilyShowLib
 
         // Get the parts of the line.
         Match match = RegexToSplit().Match(text);
-        this.level = Convert.ToInt32(match.Groups["level"].Value, CultureInfo.InvariantCulture);
-        this.tag = match.Groups["tag"].Value.Trim();
-        this.data = match.Groups["data"].Value.Trim();
+        level = Convert.ToInt32(match.Groups["level"].Value, CultureInfo.InvariantCulture);
+        tag = match.Groups["tag"].Value.Trim();
+        data = match.Groups["data"].Value.Trim();
 
         // The pointer reference is specified in the tag, and the tag in the data,
         // swap these two values to make it more consistent, the tag contains the 
         // tag and data contains the pointer reference.
-        if (this.tag[0] == '@')
+        if (tag[0] == '@')
         {
-          string temp = this.tag;
-          this.tag = this.data;
-          this.data = temp;
-          int pos = this.tag.IndexOf(' ');
+          string temp = tag;
+          tag = data;
+          data = temp;
+          int pos = tag.IndexOf(' ');
 
           // Some GEDCOM files have additional info, 
           // we only handle the tag info.
           if (pos != -1)
-            this.tag = this.tag.Substring(0, pos);
+            tag = tag.Substring(0, pos);
         }
 
         // Make sure there are not any invalid characters in the tag.
-        this.tag = RegexForTag().Replace(this.tag, "");
+        tag = RegexForTag().Replace(tag, "");
 
         return true;
       }
@@ -276,9 +276,9 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     private void Clear()
     {
-      this.Level = 0;
-      this.Tag = "";
-      this.Data = "";
+      Level = 0;
+      Tag = "";
+      Data = "";
     }
   }
 

@@ -81,11 +81,11 @@ namespace Microsoft.FamilyShow
     {
       set
       {
-        if (this.displayYear != value)
+        if (displayYear != value)
         {
-          this.displayYear = value;
+          displayYear = value;
           foreach (DiagramConnectorNode connectorNode in personLookup.Values)
-            connectorNode.Node.DisplayYear = this.displayYear;
+            connectorNode.Node.DisplayYear = displayYear;
         }
       }
     }

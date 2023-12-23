@@ -159,8 +159,8 @@ namespace Microsoft.FamilyShow
     public void Activate()
     {
       // Reactivate application's main window
-      this.MainWindow.Activate();
-      this.MainWindow.Focus();
+      MainWindow.Activate();
+      MainWindow.Focus();
     }
 
     private void LoadLanguageResources()

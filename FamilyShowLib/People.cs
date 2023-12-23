@@ -294,12 +294,12 @@ namespace Microsoft.FamilyShowLib
     public void Save(bool privacy)
     {
       // Return right away if nothing to save.
-      if (this.PeopleCollection == null || this.PeopleCollection.Count == 0)
+      if (PeopleCollection == null || PeopleCollection.Count == 0)
         return;
 
       if (privacy == true)
       {
-        foreach (Person p in this.PeopleCollection)
+        foreach (Person p in PeopleCollection)
         {
           if (p.IsLiving)
           {
@@ -438,7 +438,7 @@ namespace Microsoft.FamilyShowLib
           }
         }
 
-        foreach (Person p1 in this.PeopleCollection)
+        foreach (Person p1 in PeopleCollection)
         {
           foreach (Relationship rel in p1.Relationships)
           {
@@ -448,14 +448,14 @@ namespace Microsoft.FamilyShowLib
       }
 
       // Set the current person id and name before serializing
-      this.CurrentPersonName = this.PeopleCollection.Current.Name;
-      this.CurrentPersonId = this.PeopleCollection.Current.Id;
-      this.Version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString();
-      this.DateSaved = DateTime.Now.ToString();
+      CurrentPersonName = PeopleCollection.Current.Name;
+      CurrentPersonId = PeopleCollection.Current.Id;
+      Version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString();
+      DateSaved = DateTime.Now.ToString();
 
       // Use the default path and filename if none was provided
-      if (string.IsNullOrEmpty(this.FullyQualifiedFilename))
-        this.FullyQualifiedFilename = DefaultFullyQualifiedFilename;
+      if (string.IsNullOrEmpty(FullyQualifiedFilename))
+        FullyQualifiedFilename = DefaultFullyQualifiedFilename;
 
       // Setup temp folders for this family to be packaged into OPC later
       string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -475,7 +475,7 @@ namespace Microsoft.FamilyShowLib
       // save to file package
       OPCUtility.CreatePackage(FullyQualifiedFilename, tempFolder);
 
-      this.PeopleCollection.IsDirty = false;
+      PeopleCollection.IsDirty = false;
 
     }
 
@@ -485,7 +485,7 @@ namespace Microsoft.FamilyShowLib
     /// <param name="FQFileName">Fully qualified path and filename of family tree file to save</param>
     public void Save(string FQFileName)
     {
-      this.fullyQualifiedFilename = FQFileName;
+      fullyQualifiedFilename = FQFileName;
       Save(false);
     }
 
@@ -495,7 +495,7 @@ namespace Microsoft.FamilyShowLib
     /// <param name="FQFileName">Fully qualified path and filename of family tree file to save</param>
     public void SavePrivacy(string FQFileName, bool privacy)
     {
-      this.fullyQualifiedFilename = FQFileName;
+      fullyQualifiedFilename = FQFileName;
       Save(privacy);
     }
 
@@ -506,9 +506,9 @@ namespace Microsoft.FamilyShowLib
     public void SaveDirect(string FQFileName, bool privacy)
     {
 
-      this.fullyQualifiedFilename = FQFileName;
+      fullyQualifiedFilename = FQFileName;
 
-      Person primaryPerson = this.PeopleCollection.Current;
+      Person primaryPerson = PeopleCollection.Current;
       PeopleCollection keep = new PeopleCollection();
       PeopleCollection delete = new PeopleCollection();
 
@@ -524,7 +524,7 @@ namespace Microsoft.FamilyShowLib
         keep.Add(child);
 
       //remove all people who are not in the keep collection
-      foreach (Person q in this.PeopleCollection)
+      foreach (Person q in PeopleCollection)
       {
         if (!keep.Contains(q))
           delete.Add(q);
@@ -546,7 +546,7 @@ namespace Microsoft.FamilyShowLib
           }
         }
         //Then remove the person, their photos and stories
-        this.PeopleCollection.Remove(q);
+        PeopleCollection.Remove(q);
         //q.DeletePhotos();
         q.DeleteStory();
 
@@ -562,9 +562,9 @@ namespace Microsoft.FamilyShowLib
     public void SaveCurrent(string FQFileName, bool privacy)
     {
 
-      this.fullyQualifiedFilename = FQFileName;
+      fullyQualifiedFilename = FQFileName;
 
-      Person primaryPerson = this.PeopleCollection.Current;
+      Person primaryPerson = PeopleCollection.Current;
       PeopleCollection keep = new PeopleCollection();
       PeopleCollection delete = new PeopleCollection();
 
@@ -572,7 +572,7 @@ namespace Microsoft.FamilyShowLib
       keep.Add(primaryPerson);
 
       //remove all people who are not the current person
-      foreach (Person q in this.PeopleCollection)
+      foreach (Person q in PeopleCollection)
       {
         if (!keep.Contains(q))
           delete.Add(q);
@@ -594,7 +594,7 @@ namespace Microsoft.FamilyShowLib
           }
         }
         //Then remove the person, their photos and stories
-        this.PeopleCollection.Remove(q);
+        PeopleCollection.Remove(q);
         //q.DeletePhotos();
         q.DeleteStory();
 
@@ -615,9 +615,9 @@ namespace Microsoft.FamilyShowLib
     public void SaveGenerations(string FQFileName, decimal ancestors, decimal descendants, bool privacy)
     {
 
-      this.fullyQualifiedFilename = FQFileName;
+      fullyQualifiedFilename = FQFileName;
 
-      Person primaryPerson = this.PeopleCollection.Current;
+      Person primaryPerson = PeopleCollection.Current;
       PeopleCollection keep = new PeopleCollection();
       PeopleCollection delete = new PeopleCollection();
 
@@ -781,7 +781,7 @@ namespace Microsoft.FamilyShowLib
       #endregion
 
       //remove all people who are not in the keep collection
-      foreach (Person q in this.PeopleCollection)
+      foreach (Person q in PeopleCollection)
       {
         if (!keep.Contains(q))
           delete.Add(q);
@@ -807,7 +807,7 @@ namespace Microsoft.FamilyShowLib
       foreach (Person q in delete)
       {
         //Then remove the person, their photos and stories
-        this.PeopleCollection.Remove(q);
+        PeopleCollection.Remove(q);
         //q.DeletePhotos();
         q.DeleteStory();
 
@@ -830,15 +830,15 @@ namespace Microsoft.FamilyShowLib
     {
 
       // Loading, clear existing nodes
-      this.PeopleCollection.Clear();
-      this.SourceCollection.Clear();
-      this.RepositoryCollection.Clear();
+      PeopleCollection.Clear();
+      SourceCollection.Clear();
+      RepositoryCollection.Clear();
 
       try
       {
         // Use the default path and filename if none were provided
-        if (string.IsNullOrEmpty(this.FullyQualifiedFilename))
-          this.FullyQualifiedFilename = DefaultFullyQualifiedFilename;
+        if (string.IsNullOrEmpty(FullyQualifiedFilename))
+          FullyQualifiedFilename = DefaultFullyQualifiedFilename;
 
         string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             App.ApplicationFolderName);
@@ -854,12 +854,12 @@ namespace Microsoft.FamilyShowLib
           stream.Close();
 
           foreach (Person person in pc.PeopleCollection)
-            this.PeopleCollection.Add(person);
+            PeopleCollection.Add(person);
 
           // To avoid circular references when serializing family data to xml, only the person Id
           // is seralized to express relationships. When family data is loaded, the correct
           // person object is found using the person Id and assigned to the appropriate relationship.
-          foreach (Person p in this.PeopleCollection)
+          foreach (Person p in PeopleCollection)
           {
 
             RelationshipCollection corruptRelationships = new RelationshipCollection();
@@ -867,8 +867,8 @@ namespace Microsoft.FamilyShowLib
             foreach (Relationship r in p.Relationships)
             {
               // If relationships are null remove them.
-              if (this.PeopleCollection.Find(r.PersonId) != null)
-                r.RelationTo = this.PeopleCollection.Find(r.PersonId);
+              if (PeopleCollection.Find(r.PersonId) != null)
+                r.RelationTo = PeopleCollection.Find(r.PersonId);
               else
                 corruptRelationships.Add(r);
             }
@@ -881,22 +881,22 @@ namespace Microsoft.FamilyShowLib
           }
 
           foreach (Source source in pc.SourceCollection)
-            this.SourceCollection.Add(source);
+            SourceCollection.Add(source);
 
           foreach (Repository repository in pc.RepositoryCollection)
-            this.RepositoryCollection.Add(repository);
+            RepositoryCollection.Add(repository);
 
           // Set the current person in the list
-          this.CurrentPersonId = pc.CurrentPersonId;
-          this.CurrentPersonName = pc.CurrentPersonName;
-          this.PeopleCollection.Current = this.PeopleCollection.Find(this.CurrentPersonId);
-          this.Version = pc.Version;
-          this.PeopleCollection.IsDirty = false;
+          CurrentPersonId = pc.CurrentPersonId;
+          CurrentPersonName = pc.CurrentPersonName;
+          PeopleCollection.Current = PeopleCollection.Find(CurrentPersonId);
+          Version = pc.Version;
+          PeopleCollection.IsDirty = false;
 
-          var majorVersion = double.Parse(this.Version);
+          var majorVersion = double.Parse(Version);
           var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
           // Prompt if old file major version has been opened.
-          if (string.IsNullOrEmpty(this.Version) || majorVersion < assemblyVersion.Major)
+          if (string.IsNullOrEmpty(Version) || majorVersion < assemblyVersion.Major)
           {
             MessageBox.Show(Properties.Resources.CompatabilityMessage, Properties.Resources.Compatability, MessageBoxButton.OK, MessageBoxImage.Information);
           }
@@ -908,7 +908,7 @@ namespace Microsoft.FamilyShowLib
       {
         // Could not load the file. Handle all exceptions
         // the same, ignore and continue.
-        this.fullyQualifiedFilename = string.Empty;
+        fullyQualifiedFilename = string.Empty;
         // Warn user of problem with file.
         return false;
       }
@@ -923,24 +923,24 @@ namespace Microsoft.FamilyShowLib
     {
 
       // Loading, clear existing nodes
-      this.PeopleCollection.Clear();
-      this.SourceCollection.Clear();
-      this.RepositoryCollection.Clear();
+      PeopleCollection.Clear();
+      SourceCollection.Clear();
+      RepositoryCollection.Clear();
 
       try
       {
         // Use the default path and filename if none were provided
-        if (string.IsNullOrEmpty(this.FullyQualifiedFilename))
-          this.FullyQualifiedFilename = DefaultFullyQualifiedFilename;
+        if (string.IsNullOrEmpty(FullyQualifiedFilename))
+          FullyQualifiedFilename = DefaultFullyQualifiedFilename;
 
         XmlSerializer xml = new XmlSerializer(typeof(People));
-        using (Stream stream = new FileStream(this.FullyQualifiedFilename, FileMode.Open, FileAccess.Read, FileShare.Read))
+        using (Stream stream = new FileStream(FullyQualifiedFilename, FileMode.Open, FileAccess.Read, FileShare.Read))
         {
           People pc = (People)xml.Deserialize(stream);
           stream.Close();
 
           foreach (Person person in pc.PeopleCollection)
-            this.PeopleCollection.Add(person);
+            PeopleCollection.Add(person);
 
           // Setup temp folders for this family to be packaged into OPC later
           string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.ApplicationFolderName);
@@ -957,7 +957,7 @@ namespace Microsoft.FamilyShowLib
           // To avoid circular references when serializing family data to xml, only the person Id
           // is seralized to express relationships. When family data is loaded, the correct
           // person object is found using the person Id and assigned to the appropriate relationship.
-          foreach (Person p in this.PeopleCollection)
+          foreach (Person p in PeopleCollection)
           {
 
             RelationshipCollection corruptRelationships = new RelationshipCollection();
@@ -965,8 +965,8 @@ namespace Microsoft.FamilyShowLib
             // If relationships are null remove them.
             foreach (Relationship r in p.Relationships)
             {
-              if (this.PeopleCollection.Find(r.PersonId) != null)
-                r.RelationTo = this.PeopleCollection.Find(r.PersonId);
+              if (PeopleCollection.Find(r.PersonId) != null)
+                r.RelationTo = PeopleCollection.Find(r.PersonId);
               else
                 corruptRelationships.Add(r);
             }
@@ -978,7 +978,7 @@ namespace Microsoft.FamilyShowLib
 
           }
 
-          foreach (Person p in this.PeopleCollection)
+          foreach (Person p in PeopleCollection)
           {
             string oldpId = p.Id;
             p.Id = Guid.NewGuid().ToString();  // Make sure we are using GUIDs.
@@ -1079,22 +1079,22 @@ namespace Microsoft.FamilyShowLib
           }
 
           // Set the current person in the list
-          this.CurrentPersonId = this.PeopleCollection[0].Id;
-          this.CurrentPersonName = this.PeopleCollection[0].FullName;
-          this.PeopleCollection.Current = this.PeopleCollection.Find(this.CurrentPersonId);
-          this.Version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString();
-          this.PeopleCollection.IsDirty = false;
+          CurrentPersonId = PeopleCollection[0].Id;
+          CurrentPersonName = PeopleCollection[0].FullName;
+          PeopleCollection.Current = PeopleCollection.Find(CurrentPersonId);
+          Version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString();
+          PeopleCollection.IsDirty = false;
 
         }
 
-        this.PeopleCollection.IsDirty = false;
+        PeopleCollection.IsDirty = false;
         return true;
       }
       catch
       {
         // Could not load the file. Handle all exceptions
         // the same, ignore and continue.
-        this.fullyQualifiedFilename = string.Empty;
+        fullyQualifiedFilename = string.Empty;
         // Warn user of problem with file.
         return false;
       }
@@ -1115,9 +1115,9 @@ namespace Microsoft.FamilyShowLib
       // They are paired  i.e. the ith person in each people collection forms a pair of people
       // who are thought to be the same person.
 
-      this.ExistingPeopleCollection.Clear();
-      this.DuplicatePeopleCollection.Clear();
-      this.NewPeopleCollection.Clear();
+      ExistingPeopleCollection.Clear();
+      DuplicatePeopleCollection.Clear();
+      NewPeopleCollection.Clear();
 
       string[,] summary = new string[3, 1];  //string array for message information
 
@@ -1125,9 +1125,9 @@ namespace Microsoft.FamilyShowLib
       {
         // Use the default path and filename if none were provided
         if (string.IsNullOrEmpty(fileName))
-          this.FullyQualifiedFilename = DefaultFullyQualifiedFilename;
+          FullyQualifiedFilename = DefaultFullyQualifiedFilename;
         else
-          this.FullyQualifiedFilename = fileName;
+          FullyQualifiedFilename = fileName;
 
         string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             App.ApplicationFolderName);
@@ -1139,7 +1139,7 @@ namespace Microsoft.FamilyShowLib
 
         OPCUtility.ExtractPackage(FullyQualifiedFilename, tempFolder, false);
 
-        Person reselectAfterMerge = this.PeopleCollection.Current;  //get the current person so they can be given focus after the merge
+        Person reselectAfterMerge = PeopleCollection.Current;  //get the current person so they can be given focus after the merge
 
         XmlSerializer xml = new XmlSerializer(typeof(People));
         using (Stream stream = new FileStream(tempFolder + OPCContentFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -1190,7 +1190,7 @@ namespace Microsoft.FamilyShowLib
           SourceCollection sameIds = new SourceCollection();
 
           //add sources in the old file to the safe id collection
-          foreach (Source s in this.SourceCollection)
+          foreach (Source s in SourceCollection)
             safeIds.Add(s);
 
 
@@ -1199,7 +1199,7 @@ namespace Microsoft.FamilyShowLib
           {
             source.SourceName = source.SourceName.Trim();  //trailing spaces trick comparison
 
-            foreach (Source oldsource in this.SourceCollection) //...compare with the old source
+            foreach (Source oldsource in SourceCollection) //...compare with the old source
             {
               oldsource.SourceName = oldsource.SourceName.Trim();  //trailing spaces trick comparison
 
@@ -1248,7 +1248,7 @@ namespace Microsoft.FamilyShowLib
 
             i = 0;
 
-            foreach (Source oldSource in this.SourceCollection)
+            foreach (Source oldSource in SourceCollection)
             {
               if (oldSource.SourceName.Trim() == source.SourceName.Trim())
                 i++;
@@ -1537,7 +1537,7 @@ namespace Microsoft.FamilyShowLib
           RepositoryCollection safeRIds = new RepositoryCollection();
           RepositoryCollection sameRIds = new RepositoryCollection();
 
-          foreach (Repository r in this.RepositoryCollection)
+          foreach (Repository r in RepositoryCollection)
             safeRIds.Add(r);
 
           //duplicates
@@ -1545,7 +1545,7 @@ namespace Microsoft.FamilyShowLib
           {
             repository.RepositoryName = repository.RepositoryName.Trim();  //trailing spaces trick comparison
 
-            foreach (Repository oldrepository in this.RepositoryCollection) //...compare with the old repository
+            foreach (Repository oldrepository in RepositoryCollection) //...compare with the old repository
             {
               oldrepository.RepositoryName = oldrepository.RepositoryName.Trim();  //trailing spaces trick comparison
 
@@ -1591,7 +1591,7 @@ namespace Microsoft.FamilyShowLib
 
             i = 0;
 
-            foreach (Repository r in this.RepositoryCollection)
+            foreach (Repository r in RepositoryCollection)
             {
               if (r.RepositoryName == repository.RepositoryName)
                 i++;
@@ -1677,7 +1677,7 @@ namespace Microsoft.FamilyShowLib
 
             #region name, date and id checks
 
-            foreach (Person oldperson in this.PeopleCollection)
+            foreach (Person oldperson in PeopleCollection)
             {
 
               if (duplicated == false && oldperson.Gender == person.Gender)
@@ -1770,7 +1770,7 @@ namespace Microsoft.FamilyShowLib
 
             #region relationship checks
 
-            foreach (Person oldperson in this.PeopleCollection)
+            foreach (Person oldperson in PeopleCollection)
             {
               //Compare full name with relationships
               if (person.Name == oldperson.Name && duplicated == false && oldperson.Gender == person.Gender)
@@ -1888,11 +1888,11 @@ namespace Microsoft.FamilyShowLib
 
           //now add imports to the source collection...
           foreach (Source source in imports.SourceCollection)
-            this.SourceCollection.Add(source);
+            SourceCollection.Add(source);
 
           //now add repositories to the repositories collection...
           foreach (Repository r in imports.RepositoryCollection)
-            this.RepositoryCollection.Add(r);
+            RepositoryCollection.Add(r);
 
           //Remove the duplicate people from merge
           foreach (Person duplicate in duplicates.PeopleCollection)
@@ -1916,15 +1916,15 @@ namespace Microsoft.FamilyShowLib
 
           //Now add non duplicate people to main people collection...
           foreach (Person p in merge.PeopleCollection)
-            this.PeopleCollection.Add(p);
+            PeopleCollection.Add(p);
         }
 
         //give focus to the person who was selected before the merge
-        this.CurrentPersonId = reselectAfterMerge.Id;
-        this.CurrentPersonName = reselectAfterMerge.Name;
-        this.PeopleCollection.Current = reselectAfterMerge;
+        CurrentPersonId = reselectAfterMerge.Id;
+        CurrentPersonName = reselectAfterMerge.Name;
+        PeopleCollection.Current = reselectAfterMerge;
 
-        this.PeopleCollection.IsDirty = false;
+        PeopleCollection.IsDirty = false;
       }
       catch
       {
@@ -2236,8 +2236,8 @@ namespace Microsoft.FamilyShowLib
     public void AddSource(Source source)
     {
       //add the source to the main source list
-      if (!this.Contains(source))
-        this.Add(source);
+      if (!Contains(source))
+        Add(source);
     }
 
     #endregion
@@ -2345,8 +2345,8 @@ namespace Microsoft.FamilyShowLib
     public void AddRepository(Repository repository)
     {
       //add the repository to the main repository list
-      if (!this.Contains(repository))
-        this.Add(repository);
+      if (!Contains(repository))
+        Add(repository);
     }
 
     #endregion
@@ -2476,8 +2476,8 @@ namespace Microsoft.FamilyShowLib
       child.Relationships.Add(new ParentRelationship(person, parentChildType));
 
       //add the child to the main people list
-      if (!this.Contains(child))
-        this.Add(child);
+      if (!Contains(child))
+        Add(child);
     }
 
     /// <summary>
@@ -2490,8 +2490,8 @@ namespace Microsoft.FamilyShowLib
       spouse.Relationships.Add(new SpouseRelationship(person, spouseType));
 
       //add the spouse to the main people list
-      if (!this.Contains(spouse))
-        this.Add(spouse);
+      if (!Contains(spouse))
+        Add(spouse);
     }
 
     /// <summary>
@@ -2504,8 +2504,8 @@ namespace Microsoft.FamilyShowLib
       sibling.Relationships.Add(new SiblingRelationship(person));
 
       //add the sibling to the main people list
-      if (!this.Contains(sibling))
-        this.Add(sibling);
+      if (!Contains(sibling))
+        Add(sibling);
     }
 
     #endregion
@@ -2530,7 +2530,7 @@ namespace Microsoft.FamilyShowLib
 
       foreach (Person person in this)
       {
-        if (this.IndexOf(person) == i + 1)
+        if (IndexOf(person) == i + 1)
         {
           return person;
         }
@@ -2549,7 +2549,7 @@ namespace Microsoft.FamilyShowLib
 
       foreach (Person person in this)
       {
-        if (this.IndexOf(person) == i)
+        if (IndexOf(person) == i)
         {
           return person;
         }

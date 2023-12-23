@@ -128,7 +128,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public Source()
     {
-      this.sourceName = Properties.Resources.Unknown;
+      sourceName = Properties.Resources.Unknown;
     }
 
     /// <summary>
@@ -139,7 +139,7 @@ namespace Microsoft.FamilyShowLib
         : this()
     {
       if (!string.IsNullOrEmpty(sourceId))
-        this.id = sourceId;
+        id = sourceId;
       if (!string.IsNullOrEmpty(sourceName))
         this.sourceName = sourceName;
       if (!string.IsNullOrEmpty(sourceAuthor))
@@ -161,7 +161,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public bool Equals(Source other)
     {
-      return (this.Id == other.Id);
+      return (Id == other.Id);
     }
 
     #endregion

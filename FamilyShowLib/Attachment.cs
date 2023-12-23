@@ -86,7 +86,7 @@ namespace Microsoft.FamilyShowLib
 
       if (!string.IsNullOrEmpty(attachmentPath))
         // Copy the attachment to the attachments folder
-        this.relativePath = Copy(attachmentPath);
+        relativePath = Copy(attachmentPath);
     }
 
     #endregion
