@@ -393,14 +393,14 @@ namespace Microsoft.FamilyShow
       string newOccupationCitation = citationString(newPerson.OccupationSource, newPerson.OccupationCitation, newPerson.OccupationCitationActualText, newPerson.OccupationCitationNote, newPerson.OccupationLink);
       string newReligionCitation = citationString(newPerson.ReligionSource, newPerson.ReligionCitation, newPerson.ReligionCitationActualText, newPerson.ReligionCitationNote, newPerson.ReligionLink);
 
-      BirthImage.ToolTip = Microsoft.FamilyShow.Properties.Resources.ExistingCitation + " \n" + existingBirthCitation + "\n" + Microsoft.FamilyShow.Properties.Resources.NewCitation + " \n" + newBirthCitation;
-      DeathImage.ToolTip = Microsoft.FamilyShow.Properties.Resources.ExistingCitation + " \n" + existingDeathCitation + "\n" + Microsoft.FamilyShow.Properties.Resources.NewCitation + " \n" + newDeathCitation;
-      CremationImage.ToolTip = Microsoft.FamilyShow.Properties.Resources.ExistingCitation + " \n" + existingCremationCitation + "\n" + Microsoft.FamilyShow.Properties.Resources.NewCitation + " \n" + newCremationCitation;
-      BurialImage.ToolTip = Microsoft.FamilyShow.Properties.Resources.ExistingCitation + " \n" + existingBurialCitation + "\n" + Microsoft.FamilyShow.Properties.Resources.NewCitation + " \n" + newBurialCitation;
+      BirthImage.ToolTip = Properties.Resources.ExistingCitation + " \n" + existingBirthCitation + "\n" + Properties.Resources.NewCitation + " \n" + newBirthCitation;
+      DeathImage.ToolTip = Properties.Resources.ExistingCitation + " \n" + existingDeathCitation + "\n" + Properties.Resources.NewCitation + " \n" + newDeathCitation;
+      CremationImage.ToolTip = Properties.Resources.ExistingCitation + " \n" + existingCremationCitation + "\n" + Properties.Resources.NewCitation + " \n" + newCremationCitation;
+      BurialImage.ToolTip = Properties.Resources.ExistingCitation + " \n" + existingBurialCitation + "\n" + Properties.Resources.NewCitation + " \n" + newBurialCitation;
 
-      OccupationImage.ToolTip = Microsoft.FamilyShow.Properties.Resources.ExistingCitation + " \n" + existingOccupationCitation + "\n" + Microsoft.FamilyShow.Properties.Resources.NewCitation + " \n" + newOccupationCitation;
-      EducationImage.ToolTip = Microsoft.FamilyShow.Properties.Resources.ExistingCitation + " \n" + existingEducationCitation + "\n" + Microsoft.FamilyShow.Properties.Resources.NewCitation + " \n" + newEducationCitation;
-      ReligionImage.ToolTip = Microsoft.FamilyShow.Properties.Resources.ExistingCitation + " \n" + existingReligionCitation + "\n" + Microsoft.FamilyShow.Properties.Resources.NewCitation + " \n" + newReligionCitation;
+      OccupationImage.ToolTip = Properties.Resources.ExistingCitation + " \n" + existingOccupationCitation + "\n" + Properties.Resources.NewCitation + " \n" + newOccupationCitation;
+      EducationImage.ToolTip = Properties.Resources.ExistingCitation + " \n" + existingEducationCitation + "\n" + Properties.Resources.NewCitation + " \n" + newEducationCitation;
+      ReligionImage.ToolTip = Properties.Resources.ExistingCitation + " \n" + existingReligionCitation + "\n" + Properties.Resources.NewCitation + " \n" + newReligionCitation;
 
       //Handle notes
 

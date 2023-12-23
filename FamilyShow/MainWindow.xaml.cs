@@ -1073,7 +1073,7 @@ namespace Microsoft.FamilyShow
         ReleasePhotos();
 
         string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.ApplicationFolderName);
-        tempFolder = Path.Combine(tempFolder, Microsoft.FamilyShowLib.App.AppDataFolderName);
+        tempFolder = Path.Combine(tempFolder, FamilyShowLib.App.AppDataFolderName);
 
         People.RecreateDirectory(tempFolder);
         People.RecreateDirectory(Path.Combine(tempFolder, Photo.PhotosFolderName));
@@ -1597,7 +1597,7 @@ namespace Microsoft.FamilyShow
 
       // Delete to clear existing files and re-create the necessary folders.
       string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.ApplicationFolderName);
-      tempFolder = Path.Combine(tempFolder, Microsoft.FamilyShowLib.App.AppDataFolderName);
+      tempFolder = Path.Combine(tempFolder, FamilyShowLib.App.AppDataFolderName);
 
       People.RecreateDirectory(tempFolder);
       People.RecreateDirectory(Path.Combine(tempFolder, Photo.PhotosFolderName));
@@ -1670,7 +1670,7 @@ namespace Microsoft.FamilyShow
         foreach (string file in App.RecentFiles)
         {
           MenuItem item = new MenuItem();
-          item.Header = i + ". " + System.IO.Path.GetFileName(file);
+          item.Header = i + ". " + Path.GetFileName(file);
           item.CommandParameter = file;
           item.Click += new RoutedEventHandler(OpenRecentFile);
           OpenMenu.Items.Add(item);

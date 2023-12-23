@@ -125,7 +125,7 @@ namespace Microsoft.FamilyShowLib
     private string fullyQualifiedFilename;
 
     // Version of the file. Used to handle previous file formats.
-    private string fileVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major.ToString();
+    private string fileVersion = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString();
 
     private string OPCContentFileName = "content.xml";
 
@@ -450,12 +450,12 @@ namespace Microsoft.FamilyShowLib
       // Set the current person id and name before serializing
       this.CurrentPersonName = this.PeopleCollection.Current.Name;
       this.CurrentPersonId = this.PeopleCollection.Current.Id;
-      this.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major.ToString();
+      this.Version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString();
       this.DateSaved = DateTime.Now.ToString();
 
       // Use the default path and filename if none was provided
       if (string.IsNullOrEmpty(this.FullyQualifiedFilename))
-        this.FullyQualifiedFilename = People.DefaultFullyQualifiedFilename;
+        this.FullyQualifiedFilename = DefaultFullyQualifiedFilename;
 
       // Setup temp folders for this family to be packaged into OPC later
       string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -838,7 +838,7 @@ namespace Microsoft.FamilyShowLib
       {
         // Use the default path and filename if none were provided
         if (string.IsNullOrEmpty(this.FullyQualifiedFilename))
-          this.FullyQualifiedFilename = People.DefaultFullyQualifiedFilename;
+          this.FullyQualifiedFilename = DefaultFullyQualifiedFilename;
 
         string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             App.ApplicationFolderName);
@@ -898,7 +898,7 @@ namespace Microsoft.FamilyShowLib
           // Prompt if old file major version has been opened.
           if (string.IsNullOrEmpty(this.Version) || majorVersion < assemblyVersion.Major)
           {
-            MessageBox.Show(Properties.Resources.CompatabilityMessage, Properties.Resources.Compatability, System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+            MessageBox.Show(Properties.Resources.CompatabilityMessage, Properties.Resources.Compatability, MessageBoxButton.OK, MessageBoxImage.Information);
           }
 
           return true;
@@ -931,7 +931,7 @@ namespace Microsoft.FamilyShowLib
       {
         // Use the default path and filename if none were provided
         if (string.IsNullOrEmpty(this.FullyQualifiedFilename))
-          this.FullyQualifiedFilename = People.DefaultFullyQualifiedFilename;
+          this.FullyQualifiedFilename = DefaultFullyQualifiedFilename;
 
         XmlSerializer xml = new XmlSerializer(typeof(People));
         using (Stream stream = new FileStream(this.FullyQualifiedFilename, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -944,15 +944,15 @@ namespace Microsoft.FamilyShowLib
 
           // Setup temp folders for this family to be packaged into OPC later
           string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.ApplicationFolderName);
-          tempFolder = Path.Combine(tempFolder, Microsoft.FamilyShowLib.App.AppDataFolderName);
+          tempFolder = Path.Combine(tempFolder, App.AppDataFolderName);
 
           string photoFolder = Path.Combine(tempFolder, Photo.PhotosFolderName);
           string storyFolder = Path.Combine(tempFolder, Story.StoriesFolderName);
 
-          People.RecreateDirectory(tempFolder);
-          People.RecreateDirectory(Path.Combine(tempFolder, Photo.PhotosFolderName));
-          People.RecreateDirectory(Path.Combine(tempFolder, Story.StoriesFolderName));
-          People.RecreateDirectory(Path.Combine(tempFolder, Attachment.AttachmentsFolderName));
+          RecreateDirectory(tempFolder);
+          RecreateDirectory(Path.Combine(tempFolder, Photo.PhotosFolderName));
+          RecreateDirectory(Path.Combine(tempFolder, Story.StoriesFolderName));
+          RecreateDirectory(Path.Combine(tempFolder, Attachment.AttachmentsFolderName));
 
           // To avoid circular references when serializing family data to xml, only the person Id
           // is seralized to express relationships. When family data is loaded, the correct
@@ -1082,7 +1082,7 @@ namespace Microsoft.FamilyShowLib
           this.CurrentPersonId = this.PeopleCollection[0].Id;
           this.CurrentPersonName = this.PeopleCollection[0].FullName;
           this.PeopleCollection.Current = this.PeopleCollection.Find(this.CurrentPersonId);
-          this.Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major.ToString();
+          this.Version = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString();
           this.PeopleCollection.IsDirty = false;
 
         }
@@ -1125,7 +1125,7 @@ namespace Microsoft.FamilyShowLib
       {
         // Use the default path and filename if none were provided
         if (string.IsNullOrEmpty(fileName))
-          this.FullyQualifiedFilename = People.DefaultFullyQualifiedFilename;
+          this.FullyQualifiedFilename = DefaultFullyQualifiedFilename;
         else
           this.FullyQualifiedFilename = fileName;
 
@@ -1499,12 +1499,12 @@ namespace Microsoft.FamilyShowLib
           int duplicateS = merge.SourceCollection.Count - imports.SourceCollection.Count;
 
           if (duplicateS > 0 && imports.SourceCollection.Count > 0)
-            summary[1, 0] = "\n\n" + Microsoft.FamilyShowLib.Properties.Resources.ImportedSources + " " + imports.SourceCollection.Count + "\n"
-                 + Microsoft.FamilyShowLib.Properties.Resources.MergedSources + " " + duplicateS;
+            summary[1, 0] = "\n\n" + Properties.Resources.ImportedSources + " " + imports.SourceCollection.Count + "\n"
+                 + Properties.Resources.MergedSources + " " + duplicateS;
           else if (imports.SourceCollection.Count > 0 && duplicateS == 0)
-            summary[1, 0] = "\n\n" + Microsoft.FamilyShowLib.Properties.Resources.All + " " + imports.SourceCollection.Count + " " + Microsoft.FamilyShowLib.Properties.Resources.SourcesImported;
+            summary[1, 0] = "\n\n" + Properties.Resources.All + " " + imports.SourceCollection.Count + " " + Properties.Resources.SourcesImported;
           else if (imports.SourceCollection.Count == 0)
-            summary[1, 0] = "\n\n" + Microsoft.FamilyShowLib.Properties.Resources.NoSources;
+            summary[1, 0] = "\n\n" + Properties.Resources.NoSources;
 
           #endregion
 
@@ -1657,12 +1657,12 @@ namespace Microsoft.FamilyShowLib
           int duplicateR = merge.RepositoryCollection.Count - imports.RepositoryCollection.Count;
 
           if (duplicateR > 0 && imports.RepositoryCollection.Count > 0)
-            summary[2, 0] = "\n\n" + Microsoft.FamilyShowLib.Properties.Resources.ImportedRepositories + " " + imports.RepositoryCollection.Count + "\n"
-                + Microsoft.FamilyShowLib.Properties.Resources.MergedRepositories + " " + duplicates.RepositoryCollection.Count;
+            summary[2, 0] = "\n\n" + Properties.Resources.ImportedRepositories + " " + imports.RepositoryCollection.Count + "\n"
+                + Properties.Resources.MergedRepositories + " " + duplicates.RepositoryCollection.Count;
           else if (imports.RepositoryCollection.Count > 0 && duplicateR == 0)
-            summary[2, 0] = "\n\n" + Microsoft.FamilyShowLib.Properties.Resources.All + " " + imports.RepositoryCollection.Count + " " + Microsoft.FamilyShowLib.Properties.Resources.RepositoriesImported;
+            summary[2, 0] = "\n\n" + Properties.Resources.All + " " + imports.RepositoryCollection.Count + " " + Properties.Resources.RepositoriesImported;
           else if (imports.RepositoryCollection.Count == 0)
-            summary[2, 0] = "\n\n" + Microsoft.FamilyShowLib.Properties.Resources.NoRepositories;
+            summary[2, 0] = "\n\n" + Properties.Resources.NoRepositories;
 
           #endregion
 
@@ -1880,9 +1880,9 @@ namespace Microsoft.FamilyShowLib
 
 
           if (duplicates.PeopleCollection.Count > 0)
-            summary[0, 0] = Microsoft.FamilyShowLib.Properties.Resources.ImportedPeople + " " + imports.PeopleCollection.Count + "\n" + Microsoft.FamilyShowLib.Properties.Resources.DuplicatePeople + " " + duplicates.PeopleCollection.Count;
+            summary[0, 0] = Properties.Resources.ImportedPeople + " " + imports.PeopleCollection.Count + "\n" + Properties.Resources.DuplicatePeople + " " + duplicates.PeopleCollection.Count;
           else
-            summary[0, 0] = Microsoft.FamilyShowLib.Properties.Resources.All + " " + imports.PeopleCollection.Count + " " + Microsoft.FamilyShowLib.Properties.Resources.PeopleImported;
+            summary[0, 0] = Properties.Resources.All + " " + imports.PeopleCollection.Count + " " + Properties.Resources.PeopleImported;
 
           #endregion
 
@@ -1977,7 +1977,7 @@ namespace Microsoft.FamilyShowLib
         if (firstName != surname)
           return firstName + " " + surname;
         else
-          return Microsoft.FamilyShowLib.Properties.Resources.Unknown + " " + surname;
+          return Properties.Resources.Unknown + " " + surname;
       }
       else
         return string.Empty;

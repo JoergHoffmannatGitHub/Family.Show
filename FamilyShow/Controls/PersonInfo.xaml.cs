@@ -218,7 +218,7 @@ namespace Microsoft.FamilyShow
         FontsComboBox.SelectedItem = result.ToString();
 
       // Align buttons.
-      result = StoryRichTextBox.Selection.GetPropertyValue(Paragraph.TextAlignmentProperty);
+      result = StoryRichTextBox.Selection.GetPropertyValue(Block.TextAlignmentProperty);
       AlignLeftButton.IsChecked = (result != null && result is TextAlignment
           && (TextAlignment)result == TextAlignment.Left);
       AlignCenterButton.IsChecked = (result != null && result is TextAlignment
@@ -645,7 +645,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private static bool HasMetaData(string fileName)
     {
-      string extension = System.IO.Path.GetExtension(fileName);
+      string extension = Path.GetExtension(fileName);
 
       if (string.Compare(extension, ".jpg", true, CultureInfo.InvariantCulture) == 0 ||
           string.Compare(extension, ".jpeg", true, CultureInfo.InvariantCulture) == 0)

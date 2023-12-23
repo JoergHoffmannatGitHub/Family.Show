@@ -36,9 +36,9 @@ namespace Microsoft.FamilyShowLib
       tw.WriteLine(CSSprinting(4));
 
       tw.WriteLine("</head><body>");
-      tw.WriteLine("<h2>" + Microsoft.FamilyShowLib.Properties.Resources.FamilyShow + "</h2>");
+      tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
 
-      tw.WriteLine("<i>" + Microsoft.FamilyShowLib.Properties.Resources.SummaryOfRepositoriesForFile + " " + familyFileName + "</i><br/><br/>");
+      tw.WriteLine("<i>" + Properties.Resources.SummaryOfRepositoriesForFile + " " + familyFileName + "</i><br/><br/>");
       //Write the table headers
       tw.WriteLine(NormalRepositoryColumns());
 
@@ -59,9 +59,9 @@ namespace Microsoft.FamilyShowLib
       return "<table id=\"reositorytable\" border=\"1\" rules=\"all\" frame=\"box\">\n" +
       "<thead>\n" +
       "<tr>\n" +
-      "<th width=\"10%\">" + Microsoft.FamilyShowLib.Properties.Resources.Repository + "</th>\n" +
-      "<th width=\"15%\">" + Microsoft.FamilyShowLib.Properties.Resources.Name + "</th>\n" +
-      "<th width=\"15%\">" + Microsoft.FamilyShowLib.Properties.Resources.Address + "</th>\n" +
+      "<th width=\"10%\">" + Properties.Resources.Repository + "</th>\n" +
+      "<th width=\"15%\">" + Properties.Resources.Name + "</th>\n" +
+      "<th width=\"15%\">" + Properties.Resources.Address + "</th>\n" +
       "</tr>\n" +
       "</thead>";
 
@@ -77,7 +77,7 @@ namespace Microsoft.FamilyShowLib
               "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
               "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n" +
               "<head>\n" +
-              "<title>" + Microsoft.FamilyShowLib.Properties.Resources.FamilyShow + "</title>";
+              "<title>" + Properties.Resources.FamilyShow + "</title>";
     }
 
     /// <summary>
@@ -129,7 +129,7 @@ namespace Microsoft.FamilyShowLib
       Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
       string versionlabel = string.Format(CultureInfo.CurrentCulture, "{0}.{1}.{2}", version.Major, version.Minor, version.Build);
       string date = DateTime.Now.ToString();
-      return "</table><br/><p><i>" + Microsoft.FamilyShowLib.Properties.Resources.GeneratedByFamilyShow + " " + versionlabel + " " + Microsoft.FamilyShowLib.Properties.Resources.On + " " + date + "</i></p></body></html>";
+      return "</table><br/><p><i>" + Properties.Resources.GeneratedByFamilyShow + " " + versionlabel + " " + Properties.Resources.On + " " + date + "</i></p></body></html>";
     }
 
     #endregion

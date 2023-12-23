@@ -1976,7 +1976,7 @@ namespace Microsoft.FamilyShowLib
     {
       get
       {
-        if (gender == Microsoft.FamilyShowLib.Gender.Male)
+        if (gender == Gender.Male)
           return Properties.Resources.Son;
         else
           return Properties.Resources.Daughter;
@@ -2026,7 +2026,7 @@ namespace Microsoft.FamilyShowLib
     {
       get
       {
-        if (gender == Microsoft.FamilyShowLib.Gender.Male)
+        if (gender == Gender.Male)
           return Properties.Resources.Brother;
         else
           return Properties.Resources.Sister;
@@ -2077,7 +2077,7 @@ namespace Microsoft.FamilyShowLib
     {
       get
       {
-        if (gender == Microsoft.FamilyShowLib.Gender.Male)
+        if (gender == Gender.Male)
           return Properties.Resources.Husband;
         else
           return Properties.Resources.Wife;
@@ -2128,7 +2128,7 @@ namespace Microsoft.FamilyShowLib
       get
       {
 
-        if (gender == Microsoft.FamilyShowLib.Gender.Male)
+        if (gender == Gender.Male)
           return Properties.Resources.Father;
         else
           return Properties.Resources.Mother;
@@ -2190,7 +2190,7 @@ namespace Microsoft.FamilyShowLib
       this.relationships = new RelationshipCollection();
       this.photos = new PhotoCollection();
       this.attachments = new AttachmentCollection();
-      this.firstName = Microsoft.FamilyShowLib.Properties.Resources.Unknown;
+      this.firstName = Properties.Resources.Unknown;
       this.isLiving = true;
       this.restriction = Restriction.None;
     }

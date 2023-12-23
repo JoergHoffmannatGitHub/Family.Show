@@ -568,7 +568,7 @@ namespace Microsoft.FamilyShow
       Rect container = new Rect(0, 0, border.ActualWidth, border.ActualHeight + titlepadding);
       pageArea.Arrange(container);
 
-      string title = System.IO.Path.GetFileName(App.FamilyCollection.FullyQualifiedFilename) + " " + Properties.Resources.StatisticsReport;
+      string title = Path.GetFileName(App.FamilyCollection.FullyQualifiedFilename) + " " + Properties.Resources.StatisticsReport;
 
       // Print
       pd.PrintVisual(pageArea, title);

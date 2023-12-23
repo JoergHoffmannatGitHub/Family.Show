@@ -365,7 +365,7 @@ namespace Microsoft.FamilyShowLib
         foreach (Person c in p.NaturalChildren)
         {
           if (c != child && !family.Current.Siblings.Contains(c))
-            RelationshipHelper.AddExistingSibling(family, family.Current, c);
+            AddExistingSibling(family, family.Current, c);
         }
 
       }

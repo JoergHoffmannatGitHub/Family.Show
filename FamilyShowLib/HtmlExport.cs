@@ -53,13 +53,13 @@ namespace Microsoft.FamilyShowLib
       tw.WriteLine("</head><body onload=\"javascript:showhideall('hide_all')\">");
       tw.WriteLine(Buttons());
 
-      tw.WriteLine("<h2>" + Microsoft.FamilyShowLib.Properties.Resources.FamilyShow + "</h2>");
-      tw.WriteLine("<i>" + Microsoft.FamilyShowLib.Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
+      tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
+      tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
 
       if (!string.IsNullOrEmpty(familyxFileName))
-        tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Microsoft.FamilyShowLib.Properties.Resources.FamilyTree + "</b><br/>");
+        tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
 
-      tw.WriteLine(Microsoft.FamilyShowLib.Properties.Resources.NumberOfPeople + " <b>" + peopleCollection.Count + "</b><br/><br/>");
+      tw.WriteLine(Properties.Resources.NumberOfPeople + " <b>" + peopleCollection.Count + "</b><br/><br/>");
 
       tw.WriteLine(NormalTableColumns());
 
@@ -72,9 +72,9 @@ namespace Microsoft.FamilyShowLib
           sourceArray = Sources(p);
 
         if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
-          tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Microsoft.FamilyShowLib.Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+          tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
         else if (p.Restriction == Restriction.Private) //a private record should not be exported
-          tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Microsoft.FamilyShowLib.Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+          tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
         else
         {
           if (p.Note != null)
@@ -139,11 +139,11 @@ namespace Microsoft.FamilyShowLib
 
       tw.WriteLine("</head><body onload=\"javascripts\">");
       tw.WriteLine(Buttons());
-      tw.WriteLine("<h2>" + Microsoft.FamilyShowLib.Properties.Resources.FamilyShow + "</h2>");
-      tw.WriteLine("<i>" + Microsoft.FamilyShowLib.Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
+      tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
+      tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
 
       if (!string.IsNullOrEmpty(familyxFileName))
-        tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Microsoft.FamilyShowLib.Properties.Resources.FamilyTree + "</b><br/>");
+        tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
 
       int i = pc.Count;
 
@@ -151,27 +151,27 @@ namespace Microsoft.FamilyShowLib
         i = 0;
 
       tw.WriteLine(CurrentPersonString(peopleCollection.Current, privacy));
-      tw.WriteLine(Microsoft.FamilyShowLib.Properties.Resources.SummaryOfPeople + " <b>" + i + "</b><br/><br/>");
+      tw.WriteLine(Properties.Resources.SummaryOfPeople + " <b>" + i + "</b><br/><br/>");
 
       tw.WriteLine("<table id=\"qstable\" border=\"1\" rules=\"all\" frame=\"box\">\n" +
       "<thead>\n" +
       "<tr>\n" +
-      "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.RelationshipToCurrentPerson + "</th> \n" +
-      "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.Names + "</th> \n" +
-      "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.Surname + "</th>\n" +
-      "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.Age + "</th>\n" +
-      "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.BirthDate + "</th>\n" +
-      "<th width=\"8.5%\">" + Microsoft.FamilyShowLib.Properties.Resources.BirthPlace + "</th>\n" +
-      "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.DeathDate + "</th> \n" +
-      "<th width=\"8.5%\">" + Microsoft.FamilyShowLib.Properties.Resources.DeathPlace + "</th>\n" +
-      "<th width=\"8.5%\">" + Microsoft.FamilyShowLib.Properties.Resources.Occupation + "</th>\n" +
-      "<th width=\"8.5%\">" + Microsoft.FamilyShowLib.Properties.Resources.Education + "</th>\n" +
-      "<th width=\"8.5%\">" + Microsoft.FamilyShowLib.Properties.Resources.Religion + "</th>\n" +
-      "<th width=\"8.5%\">" + Microsoft.FamilyShowLib.Properties.Resources.BurialPlace + "</th>\n" +
-      "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.BurialDate + "</th>\n" +
-      "<th width=\"8.5%\">" + Microsoft.FamilyShowLib.Properties.Resources.CremationPlace + "</th>\n" +
-      "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.CremationDate + "</th>\n" +
-      "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.AdditionalInfo + "</th>\n" +
+      "<th width=\"5%\">" + Properties.Resources.RelationshipToCurrentPerson + "</th> \n" +
+      "<th width=\"5%\">" + Properties.Resources.Names + "</th> \n" +
+      "<th width=\"5%\">" + Properties.Resources.Surname + "</th>\n" +
+      "<th width=\"5%\">" + Properties.Resources.Age + "</th>\n" +
+      "<th width=\"5%\">" + Properties.Resources.BirthDate + "</th>\n" +
+      "<th width=\"8.5%\">" + Properties.Resources.BirthPlace + "</th>\n" +
+      "<th width=\"5%\">" + Properties.Resources.DeathDate + "</th> \n" +
+      "<th width=\"8.5%\">" + Properties.Resources.DeathPlace + "</th>\n" +
+      "<th width=\"8.5%\">" + Properties.Resources.Occupation + "</th>\n" +
+      "<th width=\"8.5%\">" + Properties.Resources.Education + "</th>\n" +
+      "<th width=\"8.5%\">" + Properties.Resources.Religion + "</th>\n" +
+      "<th width=\"8.5%\">" + Properties.Resources.BurialPlace + "</th>\n" +
+      "<th width=\"5%\">" + Properties.Resources.BurialDate + "</th>\n" +
+      "<th width=\"8.5%\">" + Properties.Resources.CremationPlace + "</th>\n" +
+      "<th width=\"5%\">" + Properties.Resources.CremationDate + "</th>\n" +
+      "<th width=\"5%\">" + Properties.Resources.AdditionalInfo + "</th>\n" +
       "</tr>\n" +
       "</thead>");
 
@@ -196,29 +196,29 @@ namespace Microsoft.FamilyShowLib
             {
               ParentRelationship parentRel = ((ParentRelationship)rel);
 
-              relstring = Microsoft.FamilyShowLib.Properties.Resources.Parent;
+              relstring = Properties.Resources.Parent;
 
               if (parentRel.ParentChildModifier == ParentChildModifier.Natural)
-                relstringmodifier = Microsoft.FamilyShowLib.Properties.Resources.Natural;
+                relstringmodifier = Properties.Resources.Natural;
               if (parentRel.ParentChildModifier == ParentChildModifier.Adopted)
-                relstringmodifier = Microsoft.FamilyShowLib.Properties.Resources.Adopted;
+                relstringmodifier = Properties.Resources.Adopted;
               if (parentRel.ParentChildModifier == ParentChildModifier.Foster)
-                relstringmodifier = Microsoft.FamilyShowLib.Properties.Resources.Foster;
+                relstringmodifier = Properties.Resources.Foster;
 
               relationship = relstring + " (" + relstringmodifier + ")";
 
             }
             else if (rel.RelationshipType == RelationshipType.Child)
-              relationship = Microsoft.FamilyShowLib.Properties.Resources.Child;
+              relationship = Properties.Resources.Child;
             else if (rel.RelationshipType == RelationshipType.Spouse)
-              relationship = Microsoft.FamilyShowLib.Properties.Resources.Spouse;
+              relationship = Properties.Resources.Spouse;
             else if (rel.RelationshipType == RelationshipType.Sibling)
-              relationship = Microsoft.FamilyShowLib.Properties.Resources.Sibling;
+              relationship = Properties.Resources.Sibling;
 
             if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
-              tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + relationship + "</td><td>" + Microsoft.FamilyShowLib.Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+              tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + relationship + "</td><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
             else if (p.Restriction == Restriction.Private) //a private record should not be exported
-              tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Microsoft.FamilyShowLib.Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+              tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
             else
             {
               if (p.Note != null)
@@ -238,7 +238,7 @@ namespace Microsoft.FamilyShowLib
                     + p.CremationDateDescriptor + " " + dateformat(p.CremationDate) + sourceArray[0, 6] + "</td>"
                     + "</td><td><p class=\"notelink\">[<a href=\"javascript:showhide('id_" + p.Id + "')\">Note</a>]</p></td></tr>");
 
-                tw.WriteLine("<tr id=\"note_id_" + p.Id + "\" class=\"noteshown\"><td colspan=\"16\"><b>" + Microsoft.FamilyShowLib.Properties.Resources.Note + "</b>: <pre>" + p.Note + "</pre></td></tr>");
+                tw.WriteLine("<tr id=\"note_id_" + p.Id + "\" class=\"noteshown\"><td colspan=\"16\"><b>" + Properties.Resources.Note + "</b>: <pre>" + p.Note + "</pre></td></tr>");
 
               }
               else
@@ -305,14 +305,14 @@ namespace Microsoft.FamilyShowLib
       tw.WriteLine(CSSprinting(15));
 
       tw.WriteLine("</head><body>");
-      tw.WriteLine("<h2>" + Microsoft.FamilyShowLib.Properties.Resources.FamilyShow + "</h2>");
-      tw.WriteLine("<i>" + Microsoft.FamilyShowLib.Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
+      tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
+      tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
 
       if (!string.IsNullOrEmpty(familyxFileName))
-        tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Microsoft.FamilyShowLib.Properties.Resources.FamilyTree + "</b><br/>");
+        tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
 
       tw.WriteLine(CurrentPersonString(peopleCollection.Current, privacy));
-      tw.WriteLine(Microsoft.FamilyShowLib.Properties.Resources.NumberOfPeople + " <b>" + pc.Count + "</b><br/><br/>");
+      tw.WriteLine(Properties.Resources.NumberOfPeople + " <b>" + pc.Count + "</b><br/><br/>");
       tw.WriteLine(NormalTableColumns());
 
 
@@ -326,9 +326,9 @@ namespace Microsoft.FamilyShowLib
           sourceArray = Sources(p);
 
         if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
-          tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Microsoft.FamilyShowLib.Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+          tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
         else if (p.Restriction == Restriction.Private) //a private record should not be exported
-          tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Microsoft.FamilyShowLib.Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+          tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
         else
         {
           if (p.Note != null)
@@ -527,15 +527,15 @@ namespace Microsoft.FamilyShowLib
 
       tw.WriteLine("</head><body onload=\"javascript:showhideall('hide_all')\">");
       tw.WriteLine(Buttons());
-      tw.WriteLine("<h2>" + Microsoft.FamilyShowLib.Properties.Resources.FamilyShow + "</h2>");
-      tw.WriteLine("<i>" + Microsoft.FamilyShowLib.Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
+      tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
+      tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
 
       if (!string.IsNullOrEmpty(familyxFileName))
-        tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Microsoft.FamilyShowLib.Properties.Resources.FamilyTree + "</b><br/>");
+        tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
 
-      tw.WriteLine(Microsoft.FamilyShowLib.Properties.Resources.FilteredOn + " <b>" + searchfield + "</b><br/>");
+      tw.WriteLine(Properties.Resources.FilteredOn + " <b>" + searchfield + "</b><br/>");
       tw.WriteLine(searchfield + ": <b>" + searchtext + "</b><br/>");
-      tw.WriteLine(Microsoft.FamilyShowLib.Properties.Resources.NumberOfPeople + " <b>" + pc.Count + "</b><br/><br/>");
+      tw.WriteLine(Properties.Resources.NumberOfPeople + " <b>" + pc.Count + "</b><br/><br/>");
       tw.WriteLine(NormalTableColumns());
 
       //write all the appropriate people to the html file including relationship to current person
@@ -547,9 +547,9 @@ namespace Microsoft.FamilyShowLib
           sourceArray = Sources(p);
 
         if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
-          tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Microsoft.FamilyShowLib.Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+          tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
         else if (p.Restriction == Restriction.Private) //a private record should not be exported
-          tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Microsoft.FamilyShowLib.Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+          tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
         else
         {
           if (p.Note != null)
@@ -763,16 +763,16 @@ namespace Microsoft.FamilyShowLib
 
       tw.WriteLine("</head><body onload=\"javascript:showhideall('hide_all')\">");
       tw.WriteLine(Buttons());
-      tw.WriteLine("<h2>" + Microsoft.FamilyShowLib.Properties.Resources.FamilyShow + "</h2>");
-      tw.WriteLine("<i>" + Microsoft.FamilyShowLib.Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
+      tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
+      tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
 
       if (!string.IsNullOrEmpty(familyxFileName))
-        tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Microsoft.FamilyShowLib.Properties.Resources.FamilyTree + "</b><br/>");
+        tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
 
       tw.WriteLine(CurrentPersonString(peopleCollection.Current, privacy));
-      tw.WriteLine(Microsoft.FamilyShowLib.Properties.Resources.AncestralGenerations + " <b>" + ancestors + "</b><br/>");
-      tw.WriteLine(Microsoft.FamilyShowLib.Properties.Resources.DescendantGenerations + " <b>" + descendants + "</b><br/>");
-      tw.WriteLine(Microsoft.FamilyShowLib.Properties.Resources.FamilyShow + " <b>" + pc.Count + "</b><br/><br/>");
+      tw.WriteLine(Properties.Resources.AncestralGenerations + " <b>" + ancestors + "</b><br/>");
+      tw.WriteLine(Properties.Resources.DescendantGenerations + " <b>" + descendants + "</b><br/>");
+      tw.WriteLine(Properties.Resources.FamilyShow + " <b>" + pc.Count + "</b><br/><br/>");
 
       tw.WriteLine(NormalTableColumns());
 
@@ -785,9 +785,9 @@ namespace Microsoft.FamilyShowLib
           sourceArray = Sources(p);
 
         if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
-          tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Microsoft.FamilyShowLib.Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+          tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
         else if (p.Restriction == Restriction.Private) //a private record should not be exported
-          tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Microsoft.FamilyShowLib.Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+          tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
         else
         {
           if (p.Note != null)
@@ -833,10 +833,10 @@ namespace Microsoft.FamilyShowLib
       tw.WriteLine(CSSevents());
 
       tw.WriteLine("</head><body>");
-      tw.WriteLine("<h2>" + Microsoft.FamilyShowLib.Properties.Resources.FamilyShow + "</h2>");
-      tw.WriteLine("<i>" + Microsoft.FamilyShowLib.Properties.Resources.Events + " " + startYear.ToString() + " - " + endYear.ToString() + "</i><br/><br/>");
+      tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
+      tw.WriteLine("<i>" + Properties.Resources.Events + " " + startYear.ToString() + " - " + endYear.ToString() + "</i><br/><br/>");
       if (!string.IsNullOrEmpty(familyxFileName))
-        tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Microsoft.FamilyShowLib.Properties.Resources.FamilyTree + "</b><br/>");
+        tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
       tw.WriteLine("<div class=\"timeline\">");
 
       // Ensure we use actual decades and not just 10 year periods
@@ -972,7 +972,7 @@ namespace Microsoft.FamilyShowLib
                       + p.CremationPlace + sourceArray[0, 6] + "</td><td>"
                       + p.CremationDateDescriptor + " " + dateformat(p.CremationDate) + sourceArray[0, 6]
                       + "</td><td><p class=\"notelink\">[<a href=\"javascript:showhide('id_" + p.Id + "')\">Note</a>]</p></td></tr>"
-                      + "<tr id=\"note_id_" + p.Id + "\" class=\"noteshown\"><td colspan=\"15\"><b>" + Microsoft.FamilyShowLib.Properties.Resources.Note + "</b>: <pre>" + p.Note + "</pre></td></tr>";
+                      + "<tr id=\"note_id_" + p.Id + "\" class=\"noteshown\"><td colspan=\"15\"><b>" + Properties.Resources.Note + "</b>: <pre>" + p.Note + "</pre></td></tr>";
 
     }
 
@@ -1001,17 +1001,17 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     private static string NormalSourceColumns()
     {
-      return "<br/><br/><i>" + Microsoft.FamilyShowLib.Properties.Resources.SummaryOfSources + "</i><br/><br/>\n" +
+      return "<br/><br/><i>" + Properties.Resources.SummaryOfSources + "</i><br/><br/>\n" +
 
       "<table id=\"sourcetable\" border=\"1\" rules=\"all\" frame=\"box\">\n" +
       "<thead>\n" +
       "<tr>\n" +
-      "<th width=\"10%\">" + Microsoft.FamilyShowLib.Properties.Resources.Source + "</th>\n" +
-      "<th width=\"15%\">" + Microsoft.FamilyShowLib.Properties.Resources.Name + "</th>\n" +
-      "<th width=\"15%\">" + Microsoft.FamilyShowLib.Properties.Resources.Author + "</th>\n" +
-      "<th width=\"15%\">" + Microsoft.FamilyShowLib.Properties.Resources.Publisher + "</th>\n" +
-      "<th width=\"15%\">" + Microsoft.FamilyShowLib.Properties.Resources.Note + "</th>\n" +
-      "<th width=\"10%\">" + Microsoft.FamilyShowLib.Properties.Resources.Repository + "</th>\n" +
+      "<th width=\"10%\">" + Properties.Resources.Source + "</th>\n" +
+      "<th width=\"15%\">" + Properties.Resources.Name + "</th>\n" +
+      "<th width=\"15%\">" + Properties.Resources.Author + "</th>\n" +
+      "<th width=\"15%\">" + Properties.Resources.Publisher + "</th>\n" +
+      "<th width=\"15%\">" + Properties.Resources.Note + "</th>\n" +
+      "<th width=\"10%\">" + Properties.Resources.Repository + "</th>\n" +
       "</tr>\n" +
       "</thead>";
 
@@ -1025,21 +1025,21 @@ namespace Microsoft.FamilyShowLib
       return "<table id=\"peopletable\" border=\"1\" rules=\"all\" frame=\"box\">\n" +
           "<thead>\n" +
           "<tr>\n" +
-          "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.Names + "</th> \n" +
-          "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.Surname + "</th>\n" +
-          "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.Age + "</th>\n" +
-          "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.BirthDate + "</th>\n" +
-          "<th width=\"8.5%\">" + Microsoft.FamilyShowLib.Properties.Resources.BirthPlace + "</th>\n" +
-          "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.DeathDate + "</th> \n" +
-          "<th width=\"8.5%\">" + Microsoft.FamilyShowLib.Properties.Resources.DeathPlace + "</th>\n" +
-          "<th width=\"8.5%\">" + Microsoft.FamilyShowLib.Properties.Resources.Occupation + "</th>\n" +
-          "<th width=\"8.5%\">" + Microsoft.FamilyShowLib.Properties.Resources.Education + "</th>\n" +
-          "<th width=\"8.5%\">" + Microsoft.FamilyShowLib.Properties.Resources.Religion + "</th>\n" +
-          "<th width=\"8.5%\">" + Microsoft.FamilyShowLib.Properties.Resources.BurialPlace + "</th>\n" +
-          "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.BurialDate + "</th>\n" +
-          "<th width=\"8.5%\">" + Microsoft.FamilyShowLib.Properties.Resources.CremationPlace + "</th>\n" +
-          "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.CremationDate + "</th>\n" +
-          "<th width=\"5%\">" + Microsoft.FamilyShowLib.Properties.Resources.AdditionalInfo + "</th>\n" +
+          "<th width=\"5%\">" + Properties.Resources.Names + "</th> \n" +
+          "<th width=\"5%\">" + Properties.Resources.Surname + "</th>\n" +
+          "<th width=\"5%\">" + Properties.Resources.Age + "</th>\n" +
+          "<th width=\"5%\">" + Properties.Resources.BirthDate + "</th>\n" +
+          "<th width=\"8.5%\">" + Properties.Resources.BirthPlace + "</th>\n" +
+          "<th width=\"5%\">" + Properties.Resources.DeathDate + "</th> \n" +
+          "<th width=\"8.5%\">" + Properties.Resources.DeathPlace + "</th>\n" +
+          "<th width=\"8.5%\">" + Properties.Resources.Occupation + "</th>\n" +
+          "<th width=\"8.5%\">" + Properties.Resources.Education + "</th>\n" +
+          "<th width=\"8.5%\">" + Properties.Resources.Religion + "</th>\n" +
+          "<th width=\"8.5%\">" + Properties.Resources.BurialPlace + "</th>\n" +
+          "<th width=\"5%\">" + Properties.Resources.BurialDate + "</th>\n" +
+          "<th width=\"8.5%\">" + Properties.Resources.CremationPlace + "</th>\n" +
+          "<th width=\"5%\">" + Properties.Resources.CremationDate + "</th>\n" +
+          "<th width=\"5%\">" + Properties.Resources.AdditionalInfo + "</th>\n" +
           "</tr>\n" +
           "</thead>";
     }
@@ -1049,14 +1049,14 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     private static string NormalRepositoryColumns()
     {
-      return "<br/><br/><i>" + Microsoft.FamilyShowLib.Properties.Resources.SummaryOfRepositories + "</i><br/><br/>\n" +
+      return "<br/><br/><i>" + Properties.Resources.SummaryOfRepositories + "</i><br/><br/>\n" +
 
       "<table id=\"reositorytable\" border=\"1\" rules=\"all\" frame=\"box\">\n" +
       "<thead>\n" +
       "<tr>\n" +
-      "<th width=\"10%\">" + Microsoft.FamilyShowLib.Properties.Resources.Repository + "</th>\n" +
-      "<th width=\"15%\">" + Microsoft.FamilyShowLib.Properties.Resources.Name + "</th>\n" +
-      "<th width=\"15%\">" + Microsoft.FamilyShowLib.Properties.Resources.Address + "</th>\n" +
+      "<th width=\"10%\">" + Properties.Resources.Repository + "</th>\n" +
+      "<th width=\"15%\">" + Properties.Resources.Name + "</th>\n" +
+      "<th width=\"15%\">" + Properties.Resources.Address + "</th>\n" +
       "</tr>\n" +
       "</thead>";
 
@@ -1142,7 +1142,7 @@ namespace Microsoft.FamilyShowLib
               "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
               "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n" +
               "<head>\n" +
-              "<title>" + Microsoft.FamilyShowLib.Properties.Resources.FamilyShow + "</title>";
+              "<title>" + Properties.Resources.FamilyShow + "</title>";
     }
 
     /// <summary>
@@ -1213,10 +1213,10 @@ namespace Microsoft.FamilyShowLib
     private static string Buttons()
     {
 
-      return "<input type=\"button\" onclick=\"showhideall('hide_all')\" value=\"" + Microsoft.FamilyShowLib.Properties.Resources.HideNotes + "\" />\n" +
-         "<input type=\"button\" onclick=\"showhideall('show_all')\" value=\"" + Microsoft.FamilyShowLib.Properties.Resources.ShowNotes + "\" />\n" +
+      return "<input type=\"button\" onclick=\"showhideall('hide_all')\" value=\"" + Properties.Resources.HideNotes + "\" />\n" +
+         "<input type=\"button\" onclick=\"showhideall('show_all')\" value=\"" + Properties.Resources.ShowNotes + "\" />\n" +
          "<noscript>\n" +
-         "<p>[" + Microsoft.FamilyShowLib.Properties.Resources.HidingNotes + "]</p>\n" +
+         "<p>[" + Properties.Resources.HidingNotes + "]</p>\n" +
          "</noscript>";
     }
 
@@ -1282,7 +1282,7 @@ namespace Microsoft.FamilyShowLib
       Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
       string versionlabel = string.Format(CultureInfo.CurrentCulture, "{0}.{1}.{2}", version.Major, version.Minor, version.Build);
       string date = DateTime.Now.ToString();
-      return "</table><br/><p><i>" + Microsoft.FamilyShowLib.Properties.Resources.GeneratedByFamilyShow + " " + versionlabel + " " + Microsoft.FamilyShowLib.Properties.Resources.On + " " + date + "</i></p></body></html>";
+      return "</table><br/><p><i>" + Properties.Resources.GeneratedByFamilyShow + " " + versionlabel + " " + Properties.Resources.On + " " + date + "</i></p></body></html>";
     }
 
     #endregion
@@ -1297,11 +1297,11 @@ namespace Microsoft.FamilyShowLib
       string CurrentPerson = string.Empty;
 
       if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
-        CurrentPerson = Microsoft.FamilyShowLib.Properties.Resources.CurrentPerson + " <b>" + Microsoft.FamilyShowLib.Properties.Resources.Living + " " + p.LastName + "</b><br/>";
+        CurrentPerson = Properties.Resources.CurrentPerson + " <b>" + Properties.Resources.Living + " " + p.LastName + "</b><br/>";
       else if (p.Restriction == Restriction.Private) //a private record should not be exported
-        CurrentPerson = Microsoft.FamilyShowLib.Properties.Resources.CurrentPerson + " <b>" + Microsoft.FamilyShowLib.Properties.Resources.PrivateRecord + "</b><br/>";
+        CurrentPerson = Properties.Resources.CurrentPerson + " <b>" + Properties.Resources.PrivateRecord + "</b><br/>";
       else
-        CurrentPerson = Microsoft.FamilyShowLib.Properties.Resources.CurrentPerson + " <b>" + p.FullName + "</b><br/>";
+        CurrentPerson = Properties.Resources.CurrentPerson + " <b>" + p.FullName + "</b><br/>";
 
       return CurrentPerson;
     }

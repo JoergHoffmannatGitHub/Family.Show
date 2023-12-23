@@ -343,24 +343,24 @@ namespace Microsoft.FamilyShow
         switch ((FamilyMemberComboBoxValue)FamilyMemberComboBox.SelectedValue)
         {
           case FamilyMemberComboBoxValue.Father:
-            relationship = Microsoft.FamilyShow.Properties.Resources.Father;
+            relationship = Properties.Resources.Father;
             break;
           case FamilyMemberComboBoxValue.Mother:
-            relationship = Microsoft.FamilyShow.Properties.Resources.Mother;
+            relationship = Properties.Resources.Mother;
             break;
           case FamilyMemberComboBoxValue.Sister:
-            relationship = Microsoft.FamilyShow.Properties.Resources.Sister;
+            relationship = Properties.Resources.Sister;
             break;
           case FamilyMemberComboBoxValue.Brother:
-            relationship = Microsoft.FamilyShow.Properties.Resources.Brother;
+            relationship = Properties.Resources.Brother;
             // Assume that the new person has the same last name.
             surname = family.Current.LastName;
             break;
           case FamilyMemberComboBoxValue.Daughter:
-            relationship = Microsoft.FamilyShow.Properties.Resources.Daughter;
+            relationship = Properties.Resources.Daughter;
             break;
           case FamilyMemberComboBoxValue.Son:
-            relationship = Microsoft.FamilyShow.Properties.Resources.Son;
+            relationship = Properties.Resources.Son;
             // Assume that the new person has the same last name as the husband
             if ((family.Current.Gender == Gender.Female) && (family.Current.Spouses.Count > 0) && (family.Current.Spouses[0].Gender == Gender.Male))
               surname = family.Current.Spouses[0].LastName;
@@ -368,7 +368,7 @@ namespace Microsoft.FamilyShow
               surname = family.Current.LastName;
             break;
           case FamilyMemberComboBoxValue.Spouse:
-            relationship = Microsoft.FamilyShow.Properties.Resources.Spouse;
+            relationship = Properties.Resources.Spouse;
             break;
           case FamilyMemberComboBoxValue.Existing:
             isExisting = true;
@@ -1422,10 +1422,10 @@ namespace Microsoft.FamilyShow
         switch ((SpouseModifier)SpouseStatusListbox.SelectedItem)
         {
           case SpouseModifier.Former:
-            SpouseModifer.Content = Microsoft.FamilyShow.Properties.Resources.Former;
+            SpouseModifer.Content = Properties.Resources.Former;
             break;
           case SpouseModifier.Current:
-            SpouseModifer.Content = Microsoft.FamilyShow.Properties.Resources.Current;
+            SpouseModifer.Content = Properties.Resources.Current;
             break;
         }
 
@@ -1755,13 +1755,13 @@ namespace Microsoft.FamilyShow
       switch ((ParentChildModifier)ParentChildListbox.SelectedItem)
       {
         case ParentChildModifier.Adopted:
-          ParentModifer.Content = Microsoft.FamilyShow.Properties.Resources.Adopted;
+          ParentModifer.Content = Properties.Resources.Adopted;
           break;
         case ParentChildModifier.Foster:
-          ParentModifer.Content = Microsoft.FamilyShow.Properties.Resources.Fostered;
+          ParentModifer.Content = Properties.Resources.Fostered;
           break;
         case ParentChildModifier.Natural:
-          ParentModifer.Content = Microsoft.FamilyShow.Properties.Resources.Natural;
+          ParentModifer.Content = Properties.Resources.Natural;
           break;
       }
 
@@ -2591,7 +2591,7 @@ namespace Microsoft.FamilyShow
     private void UpdateToolTip(TextBox box, string sourceId, string citation)
     {
       if (string.IsNullOrEmpty(box.Text))
-        box.ToolTip = Microsoft.FamilyShow.Properties.Resources.Unknown;  //Event is not known
+        box.ToolTip = Properties.Resources.Unknown;  //Event is not known
       else
       {
         if (this.sources.Find(sourceId) != null)  //Event has citation
@@ -2602,7 +2602,7 @@ namespace Microsoft.FamilyShow
             box.ToolTip += "\n" + citation;  //Only add the details if there is a valid source iD
         }
         else
-          box.ToolTip = Microsoft.FamilyShow.Properties.Resources.Uncited;  //Event has no citation
+          box.ToolTip = Properties.Resources.Uncited;  //Event has no citation
 
       }
     }

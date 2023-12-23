@@ -87,7 +87,7 @@ namespace Microsoft.FamilyShowLib
         WriteLine(2, "DATA", Path.GetFileName(familyxFilePath));
 
       string Date = ExportDate(DateTime.Now);  //GEDCOM dates must be of the form 01 JAN 2009
-      string filename = System.IO.Path.GetFileName(gedcomFilePath);
+      string filename = Path.GetFileName(gedcomFilePath);
       string Time = DateTime.Now.ToLongTimeString();
 
       WriteLine(1, "DATE", Date);
@@ -184,7 +184,7 @@ namespace Microsoft.FamilyShowLib
         ExportRestriction(person);
 
         if (person.Restriction == Restriction.Private)
-          WriteLine(1, "NAME", Microsoft.FamilyShowLib.Properties.Resources.PrivateRecord);
+          WriteLine(1, "NAME", Properties.Resources.PrivateRecord);
         else
         {
 
@@ -521,8 +521,8 @@ namespace Microsoft.FamilyShowLib
       foreach (Photo photo in person.Photos)
       {
         WriteLine(1, "OBJE", "");
-        WriteLine(2, "FORM", System.IO.Path.GetExtension(photo.FullyQualifiedPath).Replace(".", ""));
-        WriteLine(2, "FILE", @"\PathToFile\Images\" + System.IO.Path.GetFileName(photo.FullyQualifiedPath));
+        WriteLine(2, "FORM", Path.GetExtension(photo.FullyQualifiedPath).Replace(".", ""));
+        WriteLine(2, "FILE", @"\PathToFile\Images\" + Path.GetFileName(photo.FullyQualifiedPath));
       }
     }
 
@@ -531,8 +531,8 @@ namespace Microsoft.FamilyShowLib
       foreach (Attachment attachment in person.Attachments)
       {
         WriteLine(1, "OBJE", "");
-        WriteLine(2, "FORM", System.IO.Path.GetExtension(attachment.FullyQualifiedPath).Replace(".", ""));
-        WriteLine(2, "FILE", @"\PathToFile\Attachments\" + System.IO.Path.GetFileName(attachment.FullyQualifiedPath));
+        WriteLine(2, "FORM", Path.GetExtension(attachment.FullyQualifiedPath).Replace(".", ""));
+        WriteLine(2, "FILE", @"\PathToFile\Attachments\" + Path.GetFileName(attachment.FullyQualifiedPath));
       }
     }
 

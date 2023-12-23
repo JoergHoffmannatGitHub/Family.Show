@@ -57,7 +57,7 @@ namespace Microsoft.FamilyShow
     protected override void OnInitialized(EventArgs e)
     {
       // Handle the event when a header is clicked.
-      this.AddHandler(GridViewColumnHeader.ClickEvent, new RoutedEventHandler(OnHeaderClicked));
+      this.AddHandler(System.Windows.Controls.Primitives.ButtonBase.ClickEvent, new RoutedEventHandler(OnHeaderClicked));
       base.OnInitialized(e);
     }
 

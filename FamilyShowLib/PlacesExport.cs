@@ -126,10 +126,10 @@ namespace Microsoft.FamilyShowLib
         #region places with no time information
 
         tw.WriteLine("<Folder>\n" +
-                     "<name>" + Microsoft.FamilyShowLib.Properties.Resources.People + "</name>\n" +
+                     "<name>" + Properties.Resources.People + "</name>\n" +
                      "<open>0</open>\n" +
                      "<Folder>\n" +
-                     "<name>" + Microsoft.FamilyShowLib.Properties.Resources.Births + "</name>\n" +
+                     "<name>" + Properties.Resources.Births + "</name>\n" +
                      "<open>0</open>");
 
         if (births)
@@ -165,7 +165,7 @@ namespace Microsoft.FamilyShowLib
         if (deaths)
         {
 
-          tw.WriteLine("<Folder>\n<name>" + Microsoft.FamilyShowLib.Properties.Resources.Deaths + "</name>\n" +
+          tw.WriteLine("<Folder>\n<name>" + Properties.Resources.Deaths + "</name>\n" +
                        "<open>0</open>");
 
           foreach (Person p in peopleCollection)
@@ -196,7 +196,7 @@ namespace Microsoft.FamilyShowLib
         if (burials)
         {
           tw.WriteLine("<Folder>\n" +
-                       "<name>" + Microsoft.FamilyShowLib.Properties.Resources.Burials + "</name>\n" +
+                       "<name>" + Properties.Resources.Burials + "</name>\n" +
                        "<open>0</open>");
 
           foreach (Person p in peopleCollection)
@@ -228,7 +228,7 @@ namespace Microsoft.FamilyShowLib
         {
 
           tw.WriteLine("<Folder>\n" +
-                       "<name>" + Microsoft.FamilyShowLib.Properties.Resources.Cremations + "</name>\n" +
+                       "<name>" + Properties.Resources.Cremations + "</name>\n" +
                        "<open>0</open>");
 
           foreach (Person p in peopleCollection)
@@ -261,7 +261,7 @@ namespace Microsoft.FamilyShowLib
         {
 
           tw.WriteLine("<Folder>\n" +
-                       "<name>" + Microsoft.FamilyShowLib.Properties.Resources.Marriages + "</name>\n" +
+                       "<name>" + Properties.Resources.Marriages + "</name>\n" +
                        "<open>0</open>");
 
           foreach (Person p in peopleCollection)
@@ -309,14 +309,14 @@ namespace Microsoft.FamilyShowLib
         #region place with time information
 
         tw.WriteLine("<Folder>\n" +
-                     "<name>" + Microsoft.FamilyShowLib.Properties.Resources.Events + "</name>\n" +
+                     "<name>" + Properties.Resources.Events + "</name>\n" +
                      "<open>0</open>");
 
         if (births)
         {
 
           tw.WriteLine("<Folder>\n" +
-                       "<name>" + Microsoft.FamilyShowLib.Properties.Resources.Births + "</name>\n" +
+                       "<name>" + Properties.Resources.Births + "</name>\n" +
                        "<open>0</open>");
 
           foreach (Person p in peopleCollection)
@@ -351,7 +351,7 @@ namespace Microsoft.FamilyShowLib
         {
 
           tw.WriteLine("<Folder>\n" +
-                       "<name>" + Microsoft.FamilyShowLib.Properties.Resources.Deaths + "</name>\n" +
+                       "<name>" + Properties.Resources.Deaths + "</name>\n" +
                        "<open>0</open>");
 
           foreach (Person p in peopleCollection)
@@ -385,7 +385,7 @@ namespace Microsoft.FamilyShowLib
         {
 
           tw.WriteLine("<Folder>\n" +
-                       "<name>" + Microsoft.FamilyShowLib.Properties.Resources.Burials + "</name>\n" +
+                       "<name>" + Properties.Resources.Burials + "</name>\n" +
                        "<open>0</open>");
 
           foreach (Person p in peopleCollection)
@@ -424,7 +424,7 @@ namespace Microsoft.FamilyShowLib
         {
 
           tw.WriteLine("<Folder>\n" +
-                       "<name>" + Microsoft.FamilyShowLib.Properties.Resources.Cremations + "</name>\n" +
+                       "<name>" + Properties.Resources.Cremations + "</name>\n" +
                        "<open>0</open>");
 
           foreach (Person p in peopleCollection)
@@ -463,7 +463,7 @@ namespace Microsoft.FamilyShowLib
         {
 
           tw.WriteLine("<Folder>\n" +
-                       "<name>" + Microsoft.FamilyShowLib.Properties.Resources.Marriages + "</name>\n" +
+                       "<name>" + Properties.Resources.Marriages + "</name>\n" +
                        "<open>0</open>");
 
           foreach (Person p in peopleCollection)
@@ -516,7 +516,7 @@ namespace Microsoft.FamilyShowLib
         #region lifespans
 
         tw.WriteLine("<Folder>\n" +
-                     "<name>" + Microsoft.FamilyShowLib.Properties.Resources.People + "</name>\n" +
+                     "<name>" + Properties.Resources.People + "</name>\n" +
                      "<open>0</open>");
 
         foreach (Person p in peopleCollection)
@@ -567,13 +567,13 @@ namespace Microsoft.FamilyShowLib
 
       string[] summary = new string[2];
 
-      summary[0] = i.ToString() + " " + Microsoft.FamilyShowLib.Properties.Resources.PlacesExported;
+      summary[0] = i.ToString() + " " + Properties.Resources.PlacesExported;
       summary[1] = fileName.ToString();
 
       if (i == 0)
       {
         File.Delete(fileName);
-        summary[0] = Microsoft.FamilyShowLib.Properties.Resources.NoPlaces;
+        summary[0] = Properties.Resources.NoPlaces;
         summary[1] = "No file";
       }
 

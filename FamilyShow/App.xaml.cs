@@ -111,15 +111,15 @@ namespace Microsoft.FamilyShow
 
     private void InitializeDefaultTheme()
     {
-      Settings appSettings = Microsoft.FamilyShow.Properties.Settings.Default;
+      Settings appSettings = Settings.Default;
 
       if (!string.IsNullOrEmpty(appSettings.Theme))
       {
         try
         {
           ResourceDictionary rd = new ResourceDictionary();
-          rd.MergedDictionaries.Add(Application.LoadComponent(new Uri(appSettings.Theme, UriKind.Relative)) as ResourceDictionary);
-          Application.Current.Resources = rd;
+          rd.MergedDictionaries.Add(LoadComponent(new Uri(appSettings.Theme, UriKind.Relative)) as ResourceDictionary);
+          Current.Resources = rd;
         }
         catch { }
       }
@@ -131,17 +131,17 @@ namespace Microsoft.FamilyShow
       string applicationFilePath = Assembly.GetExecutingAssembly().Location;
       var taskBar = TaskBar.Create(window, Settings.Default.AppId, new JumpListLink[]
       {
-                new JumpListLink(applicationFilePath, Microsoft.FamilyShow.Properties.Resources.StartANewFamilyTree)
+                new JumpListLink(applicationFilePath, FamilyShow.Properties.Resources.StartANewFamilyTree)
                 {
                     Arguments = "/n",
                     IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 0),
                 },
-                new JumpListLink(applicationFilePath, Microsoft.FamilyShow.Properties.Resources.OpenMenu)
+                new JumpListLink(applicationFilePath, FamilyShow.Properties.Resources.OpenMenu)
                 {
                     Arguments = "/o",
                     IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 4),
                 },
-                new JumpListLink(applicationFilePath, Microsoft.FamilyShow.Properties.Resources.GedcomMenu)
+                new JumpListLink(applicationFilePath, FamilyShow.Properties.Resources.GedcomMenu)
                 {
                     Arguments = "/i",
                     IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 4),
@@ -166,27 +166,27 @@ namespace Microsoft.FamilyShow
     private void LoadLanguageResources()
     {
       // Load language resources and use en-US incase of errors.
-      Microsoft.FamilyShow.Properties.Resources.Culture = new CultureInfo("en-US");
-      Microsoft.FamilyShowLib.Properties.Resources.Culture = new CultureInfo("en-US");
+      FamilyShow.Properties.Resources.Culture = new CultureInfo("en-US");
+      FamilyShowLib.Properties.Resources.Culture = new CultureInfo("en-US");
 
-      if (File.Exists(Microsoft.FamilyShow.Properties.Settings.Default.LanguagesFileName))
+      if (File.Exists(Settings.Default.LanguagesFileName))
       {
         try
         {
-          Microsoft.FamilyShow.Properties.Resources.Culture = new CultureInfo(Microsoft.FamilyShow.Properties.Settings.Default.Language);
-          Microsoft.FamilyShowLib.Properties.Resources.Culture = new CultureInfo(Microsoft.FamilyShow.Properties.Settings.Default.Language);
+          FamilyShow.Properties.Resources.Culture = new CultureInfo(Settings.Default.Language);
+          FamilyShowLib.Properties.Resources.Culture = new CultureInfo(Settings.Default.Language);
         }
         catch
         {
           // Error with selected language, reset to default.
-          Microsoft.FamilyShow.Properties.Settings.Default.Language = "en-US";
-          Microsoft.FamilyShow.Properties.Settings.Default.Save();
+          Settings.Default.Language = "en-US";
+          Settings.Default.Save();
         }
       }
       else
       {
-        Microsoft.FamilyShow.Properties.Settings.Default.Language = "en-US";
-        Microsoft.FamilyShow.Properties.Settings.Default.Save();
+        Settings.Default.Language = "en-US";
+        Settings.Default.Save();
       }
     }
 
@@ -214,7 +214,7 @@ namespace Microsoft.FamilyShow
           foreach (string file in Directory.GetFiles(folder))
           {
             FileInfo fileInfo = new FileInfo(file);
-            if (string.Compare(fileInfo.Extension, Microsoft.FamilyShow.Properties.Resources.XamlExtension,
+            if (string.Compare(fileInfo.Extension, FamilyShow.Properties.Resources.XamlExtension,
                 true, CultureInfo.InvariantCulture) == 0)
             {
               // Use the first part of the resource file name for the menu item name.
@@ -310,8 +310,8 @@ namespace Microsoft.FamilyShow
     private static void CleanUpTempDirectory()
     {
       string appLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-              App.ApplicationFolderName);
-      appLocation = Path.Combine(appLocation, App.AppDataFolderName);
+              ApplicationFolderName);
+      appLocation = Path.Combine(appLocation, AppDataFolderName);
 
       try
       {
@@ -427,7 +427,7 @@ namespace Microsoft.FamilyShow
     /// <returns></returns>
     internal static bool IsPhotoFileSupported(string fileName)
     {
-      string extension = System.IO.Path.GetExtension(fileName);
+      string extension = Path.GetExtension(fileName);
 
       if (string.Compare(extension, ".jpg", true, CultureInfo.InvariantCulture) == 0 ||
           string.Compare(extension, ".jpeg", true, CultureInfo.InvariantCulture) == 0 ||
@@ -448,7 +448,7 @@ namespace Microsoft.FamilyShow
     internal static bool IsAttachmentFileSupported(string fileName)
     {
 
-      string extension = System.IO.Path.GetExtension(fileName);
+      string extension = Path.GetExtension(fileName);
 
       // Only allow certain file types
       if (string.Compare(extension, ".docx", true, CultureInfo.InvariantCulture) == 0 ||

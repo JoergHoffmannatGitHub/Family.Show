@@ -166,7 +166,7 @@ namespace Microsoft.FamilyShow
           if (Properties.Settings.Default.ShowFiltered)
           {
             newOpacity = isFiltered ? Const.OpacityFiltered : Const.OpacityNormal;
-            this.BeginAnimation(DiagramNode.OpacityProperty,
+            this.BeginAnimation(OpacityProperty,
             new DoubleAnimation(this.Opacity, newOpacity,
             App.GetAnimationDuration(Const.AnimationDuration)));
           }
@@ -379,8 +379,8 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public string BottomLabel
     {
-      get { return (String)this.GetValue(DiagramNode.BottomLabelProperty); }
-      set { SetValue(DiagramNode.BottomLabelProperty, value); }
+      get { return (String)this.GetValue(BottomLabelProperty); }
+      set { SetValue(BottomLabelProperty, value); }
     }
 
     #endregion

@@ -280,7 +280,7 @@ namespace Microsoft.FamilyShow
         FontsComboBox.SelectedItem = result.ToString();
 
       // Align buttons.
-      result = StoryRichTextBox.Selection.GetPropertyValue(Paragraph.TextAlignmentProperty);
+      result = StoryRichTextBox.Selection.GetPropertyValue(Block.TextAlignmentProperty);
       AlignLeftButton.IsChecked = (result != null && result is TextAlignment
           && (TextAlignment)result == TextAlignment.Left);
       AlignCenterButton.IsChecked = (result != null && result is TextAlignment

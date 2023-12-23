@@ -181,7 +181,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private static bool HasMetaData(string fileName)
     {
-      string extension = System.IO.Path.GetExtension(fileName);
+      string extension = Path.GetExtension(fileName);
 
       if (string.Compare(extension, ".jpg", true, CultureInfo.InvariantCulture) == 0 ||
           string.Compare(extension, ".jpeg", true, CultureInfo.InvariantCulture) == 0)
