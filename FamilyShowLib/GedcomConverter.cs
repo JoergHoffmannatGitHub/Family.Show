@@ -149,26 +149,32 @@ namespace Microsoft.FamilyShowLib
   /// <summary>
   /// Parses one line in a GEDCOM file.
   /// </summary>
-  class GedcomLine
+  partial class GedcomLine
   {
+    #region regex
+
+    // Expression pattern used to parse the GEDCOM line.
+    [GeneratedRegex(@"(?<level>\d+)\s+(?<tag>[\S]+)(\s+(?<data>.+))?")]
+    private static partial Regex RegexToSplit();
+
+    // Expression pattern used to clean up the GEDCOM line.
+    // Only allow viewable characters.
+    [GeneratedRegex(@"[^\x20-\x7e]")]
+    private static partial Regex RegexToClean();
+
+    // Expression pattern used to clean up the GEDCOM tag.
+    // Tag can contain alphanumeric characters, _, ., or -.
+    [GeneratedRegex(@"[^\w.-]")]
+    private static partial Regex RegexForTag();
+
+    #endregion
+
     #region fields
 
     // Parts of the GEDCOM line.
     private int level;
     private string tag;
     private string data;
-
-    // Expression pattern used to parse the GEDCOM line.
-    private readonly Regex regSplit = new Regex(
-        @"(?<level>\d+)\s+(?<tag>[\S]+)(\s+(?<data>.+))?");
-
-    // Expression pattern used to clean up the GEDCOM line.
-    // Only allow viewable characters.
-    private readonly Regex regClean = new Regex(@"[^\x20-\x7e]");
-
-    // Expression pattern used to clean up the GEDCOM tag.
-    // Tag can contain alphanumeric characters, _, ., or -.
-    private readonly Regex regTag = new Regex(@"[^\w.-]");
 
     #endregion
 
@@ -226,12 +232,12 @@ namespace Microsoft.FamilyShowLib
         //Clean up the line by only allowing viewable characters.
         //Allow override for if UTF-8 encoded GEDCOM file is being used.
         if (!disableCharacterCheck)
-          text = regClean.Replace(text, "");
+          text = RegexToClean().Replace(text, "");
 
         text = text.Replace("@@", "@");  // in GEDCOM @ is encoded as @ for content.
 
         // Get the parts of the line.
-        Match match = regSplit.Match(text);
+        Match match = RegexToSplit().Match(text);
         this.level = Convert.ToInt32(match.Groups["level"].Value, CultureInfo.InvariantCulture);
         this.tag = match.Groups["tag"].Value.Trim();
         this.data = match.Groups["data"].Value.Trim();
@@ -253,7 +259,7 @@ namespace Microsoft.FamilyShowLib
         }
 
         // Make sure there are not any invalid characters in the tag.
-        this.tag = regTag.Replace(this.tag, "");
+        this.tag = RegexForTag().Replace(this.tag, "");
 
         return true;
       }
