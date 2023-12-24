@@ -8,8 +8,6 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Threading;
 
-using Microsoft.FamilyShowLib;
-
 namespace Microsoft.FamilyShow
 {
   /// <summary>

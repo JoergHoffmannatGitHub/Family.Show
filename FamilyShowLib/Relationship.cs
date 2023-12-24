@@ -1,10 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Xml.Serialization;
-using System.Resources;
-using System.Reflection;
-using System.Globalization;
-using System.ComponentModel;
 
 
 namespace Microsoft.FamilyShowLib

@@ -1,18 +1,14 @@
 using System;
 using System.IO;
 using System.IO.Packaging;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
+
 using Microsoft.FamilyShowLib;
-using Microsoft.WindowsAPICodePack.Taskbar;
-using Microsoft.WindowsAPICodePack.Shell;
-using Microsoft.FamilyShow;
 
 namespace Microsoft.FamilyShow
 {
