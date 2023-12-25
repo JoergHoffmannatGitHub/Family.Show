@@ -112,8 +112,38 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public bool Equals(Repository other)
     {
-      return (Id == other.Id);
+      if (other is null) return false;
+      // Optimization for a common success case.
+      if (ReferenceEquals(this, other)) return true;
+      // If run-time types are not exactly the same, return false.
+      if (GetType() != other.GetType()) return false;
+      // Return true if the Id match.
+      return Id == other.Id;
     }
+
+    #endregion
+
+    #region Equals Methods
+
+    /// <summary>
+    /// Determines whether the specified object is equal to the current repository.
+    /// </summary>
+    public override bool Equals(object obj) => Equals(obj as Repository);
+
+    /// <summary>
+    /// Returns the hash code of this repository.
+    /// </summary>
+    public override int GetHashCode()
+    {
+      return Id.GetHashCode();
+    }
+
+    public static bool operator ==(Repository lhs, Repository rhs)
+    {
+      return lhs is null ? rhs is null : lhs.Equals(rhs);
+    }
+
+    public static bool operator !=(Repository lhs, Repository rhs) => !(lhs == rhs);
 
     #endregion
 

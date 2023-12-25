@@ -2240,12 +2240,42 @@ namespace Microsoft.FamilyShowLib
     #region IEquatable Members
 
     /// <summary>
-    /// Determine equality between two person classes
+    /// Determine equality between two persons.
     /// </summary>
     public bool Equals(Person other)
     {
-      return (Id == other.Id);
+      if (other is null) return false;
+      // Optimization for a common success case.
+      if (ReferenceEquals(this, other)) return true;
+      // If run-time types are not exactly the same, return false.
+      if (GetType() != other.GetType()) return false;
+      // Return true if the Id match.
+      return Id == other.Id;
     }
+
+    #endregion
+
+    #region Equals Methods
+
+    /// <summary>
+    /// Determines whether the specified object is equal to the current person.
+    /// </summary>
+    public override bool Equals(object obj) => Equals(obj as Person);
+
+    /// <summary>
+    /// Returns the hash code of this person.
+    /// </summary>
+    public override int GetHashCode()
+    {
+      return Id.GetHashCode();
+    }
+
+    public static bool operator ==(Person lhs, Person rhs)
+    {
+      return lhs is null ? rhs is null : lhs.Equals(rhs);
+    }
+
+    public static bool operator !=(Person lhs, Person rhs) => !(lhs == rhs);
 
     #endregion
 
@@ -2396,40 +2426,36 @@ namespace Microsoft.FamilyShowLib
   /// </summary>
   public class ParentSet : IEquatable<ParentSet>
   {
-    private Person firstParent;
+    #region Properties
 
-    private Person secondParent;
+    public Person FirstParent { get; set; }
 
-    public Person FirstParent
-    {
-      get { return firstParent; }
-      set { firstParent = value; }
-    }
-
-    public Person SecondParent
-    {
-      get { return secondParent; }
-      set { secondParent = value; }
-    }
-
-    public ParentSet(Person firstParent, Person secondParent)
-    {
-      this.firstParent = firstParent;
-      this.secondParent = secondParent;
-    }
+    public Person SecondParent { get; set; }
 
     public string Name
     {
       get
       {
         string name = "";
-        name += firstParent.Name + " + " + secondParent.Name;
+        name += FirstParent.Name + " + " + SecondParent.Name;
         return name;
       }
     }
 
+    #endregion
+
+    #region Constructors
+
+    public ParentSet(Person firstParent, Person secondParent)
+    {
+      FirstParent = firstParent;
+      SecondParent = secondParent;
+    }
+
     // Parameterless contstructor required for serialization
     public ParentSet() { }
+
+    #endregion
 
     #region IEquatable<ParentSet> Members
 
@@ -2438,17 +2464,39 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public bool Equals(ParentSet other)
     {
-      if (other != null)
-      {
-        if (firstParent.Equals(other.firstParent) && secondParent.Equals(other.secondParent))
-          return true;
-
-        if (firstParent.Equals(other.secondParent) && secondParent.Equals(other.firstParent))
-          return true;
-      }
-
-      return false;
+      if (other is null) return false;
+      // Optimization for a common success case.
+      if (ReferenceEquals(this, other)) return true;
+      // If run-time types are not exactly the same, return false.
+      if (GetType() != other.GetType()) return false;
+      // Return true if the parents match.
+      return FirstParent.Equals(other.FirstParent) && SecondParent.Equals(other.SecondParent) ||
+        FirstParent.Equals(other.SecondParent) && SecondParent.Equals(other.FirstParent);
     }
+
+    #endregion
+
+    #region Equals Methods
+
+    /// <summary>
+    /// Determines whether the specified object is equal to the current parents.
+    /// </summary>
+    public override bool Equals(object obj) => Equals(obj as ParentSet);
+
+    /// <summary>
+    /// Returns the hash code of the parents.
+    /// </summary>
+    public override int GetHashCode()
+    {
+      return 17 * 31 + FirstParent.GetHashCode() + SecondParent.GetHashCode();
+    }
+
+    public static bool operator ==(ParentSet lhs, ParentSet rhs)
+    {
+      return lhs is null ? rhs is null : lhs.Equals(rhs);
+    }
+
+    public static bool operator !=(ParentSet lhs, ParentSet rhs) => !(lhs == rhs);
 
     #endregion
   }
