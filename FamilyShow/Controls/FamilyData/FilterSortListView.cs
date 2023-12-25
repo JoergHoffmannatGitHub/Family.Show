@@ -286,8 +286,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParseDate()
     {
-      DateTime date;
-      if (DateTime.TryParse(filterText, out date))
+      if (DateTime.TryParse(filterText, out DateTime date))
       {
         filterDate = date;
       }
@@ -427,10 +426,9 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParseAge()
     {
-      int age;
 
       // Single age.
-      if (Int32.TryParse(filterText, out age))
+      if (Int32.TryParse(filterText, out int age))
       {
         minimumAge = age;
       }
