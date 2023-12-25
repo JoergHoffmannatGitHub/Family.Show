@@ -122,7 +122,10 @@ namespace Microsoft.FamilyShow
     public string GetCategoryLabel(object columnValue)
     {
       if (CategoryLabels.ContainsKey(columnValue))
+      {
         return CategoryLabels[columnValue];
+      }
+
       return columnValue.ToString();
     }
 
@@ -188,9 +191,13 @@ namespace Microsoft.FamilyShow
         double total = System.Convert.ToDouble(histogram.Count);
 
         if (total <= 0)
+        {
           return 0;
+        }
         else
+        {
           return System.Convert.ToDouble((count / total) * 80);
+        }
       }
       catch { }
 

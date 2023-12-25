@@ -139,17 +139,34 @@ namespace Microsoft.FamilyShowLib
         : this()
     {
       if (!string.IsNullOrEmpty(sourceId))
+      {
         id = sourceId;
+      }
+
       if (!string.IsNullOrEmpty(sourceName))
+      {
         this.sourceName = sourceName;
+      }
+
       if (!string.IsNullOrEmpty(sourceAuthor))
+      {
         this.sourceAuthor = sourceAuthor;
+      }
+
       if (!string.IsNullOrEmpty(sourcePublisher))
+      {
         this.sourcePublisher = sourcePublisher;
+      }
+
       if (!string.IsNullOrEmpty(sourceNote))
+      {
         this.sourceNote = sourceNote;
+      }
+
       if (!string.IsNullOrEmpty(sourceRepository))
+      {
         this.sourceRepository = sourceRepository;
+      }
     }
 
     #endregion
@@ -161,11 +178,20 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public bool Equals(Source other)
     {
-      if (other is null) return false;
+      if (other is null)
+      {
+        return false;
+      }
       // Optimization for a common success case.
-      if (ReferenceEquals(this, other)) return true;
+      if (ReferenceEquals(this, other))
+      {
+        return true;
+      }
       // If run-time types are not exactly the same, return false.
-      if (GetType() != other.GetType()) return false;
+      if (GetType() != other.GetType())
+      {
+        return false;
+      }
       // Return true if the Id match.
       return (Id == other.Id);
     }
@@ -209,7 +235,9 @@ namespace Microsoft.FamilyShowLib
     public virtual void OnPropertyChanged(string propertyName)
     {
       if (PropertyChanged != null)
+      {
         PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+      }
     }
 
     #endregion

@@ -19,7 +19,9 @@ namespace Microsoft.FamilyShow
     {
 
       if (value != null)
+      {
         return ((DateTime)value).ToShortDateString();
+      }
 
       return string.Empty;
     }
@@ -28,14 +30,17 @@ namespace Microsoft.FamilyShow
     {
 
       if (string.IsNullOrEmpty((string)value))
+      {
         return null;
+      }
 
       string dateString = (string)value;
 
       // Append first month and day if just the year was entered
       if (dateString.Length == 4)
+      {
         dateString = "1/1/" + dateString;
-
+      }
 
       DateTime date;
       DateTime.TryParse(dateString, out date);
@@ -62,9 +67,9 @@ namespace Microsoft.FamilyShow
           return value.ToString() + "'s ";
         }
         else
+        {
           return string.Empty;
-
-
+        }
       }
 
       return string.Empty;
@@ -88,9 +93,13 @@ namespace Microsoft.FamilyShow
     public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {
       if ((bool)value)
+      {
         return Visibility.Visible;
+      }
       else
+      {
         return Visibility.Collapsed;
+      }
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -111,9 +120,13 @@ namespace Microsoft.FamilyShow
     public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {
       if ((bool)value)
+      {
         return Visibility.Collapsed;
+      }
       else
+      {
         return Visibility.Visible;
+      }
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -255,22 +268,32 @@ namespace Microsoft.FamilyShow
     public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {
       if (parameter.ToString() == null)
+      {
         return DependencyProperty.UnsetValue;
+      }
 
       if (Enum.IsDefined(value.GetType(), value) == false)
+      {
         return DependencyProperty.UnsetValue;
+      }
 
       if (Enum.Parse(value.GetType(), parameter.ToString()).Equals(value))
+      {
         return true;
+      }
       else
+      {
         return false;
+      }
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {
 
       if (parameter.ToString() == null)
+      {
         return DependencyProperty.UnsetValue;
+      }
 
       return Enum.Parse(targetType, parameter.ToString());
 
@@ -293,26 +316,34 @@ namespace Microsoft.FamilyShow
       {
 
         if (value is Enum == false)
+        {
           return string.Empty;
+        }
 
         if (value.ToString() == "Foster")
+        {
           return Properties.Resources.Fostered;
-
+        }
         else if (value.ToString() == "Adopted")
+        {
           return Properties.Resources.Adopted;
-
+        }
         else if (value.ToString() == "Natural")
+        {
           return Properties.Resources.Natural;
-
+        }
         else if (value.ToString() == "Current")
+        {
           return Properties.Resources.Current;
-
+        }
         else if (value.ToString() == "Former")
+        {
           return Properties.Resources.Former;
-
+        }
         else
+        {
           return string.Empty;
-
+        }
       }
       catch { return string.Empty; }
     }

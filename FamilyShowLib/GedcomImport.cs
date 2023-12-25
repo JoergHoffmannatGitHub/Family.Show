@@ -76,7 +76,9 @@ namespace Microsoft.FamilyShowLib
         // The collection requires a primary-person, use the first
         // person added to the collection as the primary-person.
         if (peopleCollection.Count > 0)
+        {
           peopleCollection.Current = peopleCollection[0];
+        }
 
         // Update IDs to match Family.Show standards
         UpdatePeopleIDs();
@@ -114,7 +116,9 @@ namespace Microsoft.FamilyShowLib
 
         // If no name or surname, call them unknown rather than an empty string
         if (string.IsNullOrEmpty(person.FirstName) && string.IsNullOrEmpty(person.LastName))
+        {
           person.FirstName = Properties.Resources.Unknown;
+        }
 
         person.Suffix = GetSuffix(node);
         person.Id = GetId(node);
@@ -148,7 +152,9 @@ namespace Microsoft.FamilyShowLib
           foreach (Relationship r2 in r1.RelationTo.Relationships)
           {
             if (oldpId == r2.PersonId)
+            {
               r2.PersonId = p.Id;
+            }
           }
         }
 
@@ -402,13 +408,24 @@ namespace Microsoft.FamilyShowLib
           ParentChildModifier wifeModifier = ParentChildModifier.Natural;
 
           if (husbandChildModifier == "Adopted")
+          {
             husbandModifier = ParentChildModifier.Adopted;
+          }
+
           if (husbandChildModifier == "Foster")
+          {
             husbandModifier = ParentChildModifier.Foster;
+          }
+
           if (wifeChildModifier == "Adopted")
+          {
             wifeModifier = ParentChildModifier.Adopted;
+          }
+
           if (wifeChildModifier == "Foster")
+          {
             wifeModifier = ParentChildModifier.Foster;
+          }
 
           if (husbandPerson != null && wifePerson != null & childPerson != null)
           {
@@ -425,14 +442,18 @@ namespace Microsoft.FamilyShowLib
             foreach (Person child1 in firstParentChildren)
             {
               if (secondParentChildren.Contains(child1))
+              {
                 naturalChildren.Add(child1);
+              }
             }
 
             // Go through and add natural siblings
             foreach (Person s in naturalChildren)
             {
               if (s != childPerson && wifeModifier == ParentChildModifier.Natural && husbandModifier == ParentChildModifier.Natural)
+              {
                 people.AddSibling(childPerson, s);
+              }
             }
 
           }
@@ -445,7 +466,9 @@ namespace Microsoft.FamilyShowLib
             foreach (Person s in wifePerson.NaturalChildren)
             {
               if (s != childPerson && wifeModifier == ParentChildModifier.Natural)
+              {
                 people.AddSibling(childPerson, s);
+              }
             }
           }
 
@@ -457,7 +480,9 @@ namespace Microsoft.FamilyShowLib
             foreach (Person s in husbandPerson.NaturalChildren)
             {
               if (s != childPerson && husbandModifier == ParentChildModifier.Natural)
+              {
                 people.AddSibling(childPerson, s);
+              }
             }
           }
 
@@ -473,7 +498,9 @@ namespace Microsoft.FamilyShowLib
     {
       // Return right away if there are not two people.
       if (husband == null || wife == null)
+      {
         return;
+      }
 
       // See if a marriage (or divorce) is specified.
       if (node.SelectSingleNode("MARR") != null || node.SelectSingleNode("DIV") != null)
@@ -489,10 +516,14 @@ namespace Microsoft.FamilyShowLib
         string marriageLink = string.Empty;
 
         if (GetValue(node, "MARR/SOUR/OBJE/FORM") == "URL")  //get correct link if present
+        {
           marriageLink = GetValue(node, "MARR/SOUR/OBJE/TITL");
+        }
 
         if (string.IsNullOrEmpty(marriageLink))  //if no link see if there is one in the note
+        {
           marriageLink = GetLink(marriageCitationNote);
+        }
 
         string divorceDateDescriptor = GetValueDateDescriptor(node, "DIV/DATE");
         DateTime? divorceDate = GetValueDate(node, "DIV/DATE");
@@ -504,10 +535,14 @@ namespace Microsoft.FamilyShowLib
         string divorceLink = string.Empty;
 
         if (GetValue(node, "DIV/SOUR/OBJE/FORM") == "URL")  //get correct link if present
+        {
           divorceLink = GetValue(node, "DIV/SOUR/OBJE/TITL");
+        }
 
         if (string.IsNullOrEmpty(divorceLink))  //if no link see if there is one in the note
+        {
           divorceLink = GetLink(divorceCitationNote);
+        }
 
         SpouseModifier modifier = GetDivorced(node) ? SpouseModifier.Former : SpouseModifier.Current;
 
@@ -587,7 +622,9 @@ namespace Microsoft.FamilyShowLib
         // Get list of photos and attachments for this person.
         string[] files = GetFiles(node);
         if (files == null || files.Length == 0)
+        {
           return;
+        }
 
         // Import each photo/attachment. Make the first photo specified
         // the default photo (avatar).
@@ -662,11 +699,14 @@ namespace Microsoft.FamilyShowLib
       person.BirthCitationNote = ImportEventNote(node, "BIRT/SOUR/NOTE", doc);
 
       if (GetValue(node, "BIRT/SOUR/OBJE/FORM") == "URL")  //get correct link if present
+      {
         person.BirthLink = GetValue(node, "BIRT/SOUR/OBJE/TITL");
+      }
 
       if (string.IsNullOrEmpty(person.BirthLink))  //if no link see if there is one in the note
+      {
         person.BirthLink = GetLink(person.BirthCitationNote);
-
+      }
     }
 
     /// <summary>
@@ -678,13 +718,20 @@ namespace Microsoft.FamilyShowLib
       person.IsLiving = (node.SelectSingleNode("DEAT") == null) ? true : false;
 
       if (node.SelectSingleNode("DEAT") == null)  //if no DEAT tag check burial tag
+      {
         person.IsLiving = (node.SelectSingleNode("BURI") == null) ? true : false;
+      }
 
       if (node.SelectSingleNode("DEAT") == null && node.SelectSingleNode("BURI") == null)  //if no deat tag and no buial tagcheck cremation tag
+      {
         person.IsLiving = (node.SelectSingleNode("CREM") == null) ? true : false;
+      }
 
       if (person.Age > 90 && person.IsLiving == true)
+      {
         person.IsLiving = false;  //make an assumption that anyone without a death date and over 90 is dead.  This leads to far less people imported as living when then are dead since GEDCOM does not have an IsLiving field.
+      }
+
       person.DeathDateDescriptor = GetValueDateDescriptor(node, "DEAT/DATE");
       person.DeathDate = GetValueDate(node, "DEAT/DATE");
       person.DeathPlace = GetValue(node, "DEAT/PLAC");
@@ -696,11 +743,14 @@ namespace Microsoft.FamilyShowLib
       person.DeathCitationNote = ImportEventNote(node, "DEAT/SOUR/NOTE", doc);
 
       if (GetValue(node, "DEAT/SOUR/OBJE/FORM") == "URL")  //get correct link if present
+      {
         person.DeathLink = GetValue(node, "DEAT/SOUR/OBJE/TITL");
+      }
 
       if (string.IsNullOrEmpty(person.DeathLink))  //if no link see if there is one in the note
+      {
         person.DeathLink = GetLink(person.DeathCitationNote);
-
+      }
     }
 
     /// <summary>
@@ -719,10 +769,14 @@ namespace Microsoft.FamilyShowLib
       person.BurialCitationNote = ImportEventNote(node, "BURI/SOUR/NOTE", doc);
 
       if (GetValue(node, "BURI/SOUR/OBJE/FORM") == "URL")  //get correct link if present
+      {
         person.BurialLink = GetValue(node, "BURI/SOUR/OBJE/TITL");
+      }
 
       if (string.IsNullOrEmpty(person.BurialLink))  //if no link see if there is one in the note
+      {
         person.BurialLink = GetLink(person.BurialCitationNote);
+      }
     }
 
     /// <summary>
@@ -741,10 +795,14 @@ namespace Microsoft.FamilyShowLib
       person.CremationCitationNote = ImportEventNote(node, "CREM/SOUR/NOTE", doc);
 
       if (GetValue(node, "CREM/SOUR/OBJE/FORM") == "URL")  //get correct link if present
+      {
         person.CremationLink = GetValue(node, "CREM/SOUR/OBJE/TITL");
+      }
 
       if (string.IsNullOrEmpty(person.CremationLink))  //if no link see if there is one in the note
+      {
         person.CremationLink = GetLink(person.CremationCitationNote);
+      }
     }
 
     /// <summary>
@@ -763,10 +821,14 @@ namespace Microsoft.FamilyShowLib
       person.ReligionCitationNote = ImportEventNote(node, "RELI/SOUR/NOTE", doc);
 
       if (GetValue(node, "RELI/SOUR/OBJE/FORM") == "URL")  //get correct link if present
+      {
         person.ReligionLink = GetValue(node, "RELI/SOUR/OBJE/TITL");
+      }
 
       if (string.IsNullOrEmpty(person.ReligionLink))  //if no link see if there is one in the note
+      {
         person.ReligionLink = GetLink(person.ReligionCitationNote);
+      }
     }
 
     /// <summary>
@@ -785,10 +847,14 @@ namespace Microsoft.FamilyShowLib
       person.OccupationCitationNote = ImportEventNote(node, "OCCU/SOUR/NOTE", doc);
 
       if (GetValue(node, "OCCU/SOUR/OBJE/FORM") == "URL")  //get correct link if present
+      {
         person.OccupationLink = GetValue(node, "OCCU/SOUR/OBJE/TITL");
+      }
 
       if (string.IsNullOrEmpty(person.OccupationLink))  //if no link see if there is one in the note
+      {
         person.OccupationLink = GetLink(person.OccupationCitationNote);
+      }
     }
 
     /// <summary>
@@ -807,10 +873,14 @@ namespace Microsoft.FamilyShowLib
       person.EducationCitationNote = ImportEventNote(node, "EDUC/SOUR/NOTE", doc);
 
       if (GetValue(node, "EDUC/SOUR/OBJE/FORM") == "URL")  //get correct link if present
+      {
         person.EducationLink = GetValue(node, "EDUC/SOUR/OBJE/TITL");
+      }
 
       if (string.IsNullOrEmpty(person.EducationLink))  //if no link see if there is one in the note
+      {
         person.EducationLink = GetLink(person.EducationCitationNote);
+      }
     }
 
     /// <summary>
@@ -823,7 +893,9 @@ namespace Microsoft.FamilyShowLib
       files = new string[list.Count];
 
       for (int i = 0; i < list.Count; i++)
+      {
         files[i] = GetValue(list[i], "FILE");
+      }
 
       return files;
     }
@@ -842,13 +914,17 @@ namespace Microsoft.FamilyShowLib
         foreach (string s in Link)
         {
           if ((s.StartsWith("http://") || s.StartsWith("www.")))
+          {
             return s;  //only extract one link
+          }
         }
 
         return string.Empty;
       }
       else
+      {
         return string.Empty;
+      }
     }
 
     /// <summary>
@@ -887,12 +963,16 @@ namespace Microsoft.FamilyShowLib
       do
       {
         if (value.StartsWith("@"))
+        {
           value = value.Remove(0, 1);
+        }
       }
       while (value.StartsWith("@"));
 
       if (value.Contains("  "))
+      {
         value = value.Replace("  ", " ");
+      }
 
       value = value.Trim();
 
@@ -919,7 +999,10 @@ namespace Microsoft.FamilyShowLib
     {
       string value = GetValue(node, "SEX");
       if (string.Compare(value, "f", true, CultureInfo.InvariantCulture) == 0)
+      {
         return Gender.Female;
+      }
+
       return Gender.Male;
     }
 
@@ -927,18 +1010,26 @@ namespace Microsoft.FamilyShowLib
     {
       string value = GetValue(node, "RESN");
       if (string.Compare(value, "privacy", true, CultureInfo.InvariantCulture) == 0)
+      {
         return Restriction.Private;
+      }
       else if (string.Compare(value, "locked", true, CultureInfo.InvariantCulture) == 0)
+      {
         return Restriction.Locked;
+      }
       else
+      {
         return Restriction.None;
+      }
     }
 
     private static bool GetDivorced(XmlNode node)
     {
       string value = GetValue(node, "DIV");
       if (string.Compare(value, "n", true, CultureInfo.InvariantCulture) == 0)
+      {
         return false;
+      }
 
       // Divorced if the tag exists.
       return node.SelectSingleNode("DIV") != null ? true : false;
@@ -952,7 +1043,9 @@ namespace Microsoft.FamilyShowLib
       children = new string[list.Count];
 
       for (int i = 0; i < list.Count; i++)
+      {
         children[i] = GetId(list[i]);
+      }
 
       return children;
     }
@@ -989,7 +1082,10 @@ namespace Microsoft.FamilyShowLib
       string name = GetValue(node, "NAME");
       string[] parts = name.Split('/');
       if (parts.Length > 0)
+      {
         return parts[0].Trim();
+      }
+
       return string.Empty;
     }
 
@@ -998,7 +1094,10 @@ namespace Microsoft.FamilyShowLib
       string name = GetValue(node, "NAME");
       string[] parts = name.Split('/');
       if (parts.Length > 1)
+      {
         return parts[1].Trim();
+      }
+
       return string.Empty;
     }
 
@@ -1017,39 +1116,73 @@ namespace Microsoft.FamilyShowLib
         value = value.ToLower(new CultureInfo("en-GB", false));  // dates are of DD/MM/YYYY format so always use en-GB culture info.
 
         if (value.Contains("abt"))
+        {
           value = value.Replace("abt", string.Empty);
+        }
+
         if (value.Contains("aft"))
+        {
           value = value.Replace("aft", string.Empty);
+        }
+
         if (value.Contains("bef"))
+        {
           value = value.Replace("bef", string.Empty);
+        }
 
         //look for quarter abbreviations and remove
 
         if (value.Contains("jan-feb-mar"))  //Q1
+        {
           value = value.Replace("-feb-mar", string.Empty);
+        }
+
         if (value.Contains("apr-may-jun"))  //Q2
+        {
           value = value.Replace("-may-jun", string.Empty);
+        }
+
         if (value.Contains("jul-aug-sep"))  //Q3
+        {
           value = value.Replace("-aug-sep", string.Empty);
+        }
+
         if (value.Contains("oct-nov-dec"))  //Q4
+        {
           value = value.Replace("-nov-dec", string.Empty);
+        }
 
         if (value.Contains("jan feb mar"))  //Q1
+        {
           value = value.Replace(" feb mar", string.Empty);
+        }
+
         if (value.Contains("apr may jun"))  //Q2
+        {
           value = value.Replace(" may jun", string.Empty);
+        }
+
         if (value.Contains("jul aug sep"))  //Q3
+        {
           value = value.Replace(" aug sep", string.Empty);
+        }
+
         if (value.Contains("oct nov dec"))  //Q4
+        {
           value = value.Replace(" nov dec", string.Empty);
+        }
 
         value = value.Trim();  //remove leading and trailing spaces which will confuse when looking for only year
 
         if (value.Length == 4)
+        {
           value = "1/1/" + value;
+        }
 
         if (!string.IsNullOrEmpty(value))
+        {
           result = DateTime.Parse(value, new CultureInfo("en-GB", false));  // dates are of DD/MM/YYYY format so always use en-GB culture info.
+        }
       }
       catch
       {
@@ -1068,30 +1201,59 @@ namespace Microsoft.FamilyShowLib
         value = value.ToLower(new CultureInfo("en-GB", false));
 
         if (value.Contains("jan-feb-mar"))  //Q1
+        {
           return "ABT ";
+        }
+
         if (value.Contains("apr-may-jun"))  //Q2
+        {
           return "ABT ";
+        }
+
         if (value.Contains("jul-aug-sep"))  //Q3
+        {
           return "ABT ";
+        }
+
         if (value.Contains("oct-nov-dec"))  //Q4
+        {
           return "ABT ";
+        }
 
         if (value.Contains("jan feb mar"))  //Q1
+        {
           return "ABT ";
+        }
+
         if (value.Contains("apr may jun"))  //Q2
+        {
           return "ABT ";
+        }
+
         if (value.Contains("jul aug sep"))  //Q3
+        {
           return "ABT ";
+        }
+
         if (value.Contains("oct nov dec"))  //Q4
+        {
           return "ABT ";
+        }
 
         if (value.Contains("abt"))
+        {
           return "ABT ";
-        if (value.Contains("aft"))
-          return "AFT ";
-        if (value.Contains("bef"))
-          return "BEF ";
+        }
 
+        if (value.Contains("aft"))
+        {
+          return "AFT ";
+        }
+
+        if (value.Contains("bef"))
+        {
+          return "BEF ";
+        }
       }
       catch
       {
@@ -1107,7 +1269,9 @@ namespace Microsoft.FamilyShowLib
       try
       {
         if (node != null)
+        {
           return node.Attributes["Value"].Value.Trim();
+        }
       }
       catch
       {
@@ -1123,7 +1287,9 @@ namespace Microsoft.FamilyShowLib
       {
         XmlNode valueNode = node.SelectSingleNode(xpath);
         if (valueNode != null)
+        {
           return valueNode.Attributes["Value"].Value.Trim();
+        }
       }
       catch
       {
@@ -1140,7 +1306,9 @@ namespace Microsoft.FamilyShowLib
         XmlNode valueNode = node.SelectSingleNode(xpath);
 
         if (valueNode != null)
+        {
           return valueNode.Attributes["Value"].Value.Trim();
+        }
       }
       catch
       {

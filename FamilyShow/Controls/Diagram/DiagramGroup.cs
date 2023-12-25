@@ -57,7 +57,9 @@ namespace Microsoft.FamilyShow
       // Let each node determine how large they want to be.
       Size size = new Size(double.PositiveInfinity, double.PositiveInfinity);
       foreach (DiagramNode node in nodes)
+      {
         node.Measure(size);
+      }
 
       // Return the total size of the group.
       return ArrangeNodes(false);
@@ -98,7 +100,9 @@ namespace Microsoft.FamilyShow
     public void Clear()
     {
       foreach (DiagramNode node in nodes)
+      {
         RemoveVisualChild(node);
+      }
 
       nodes.Clear();
     }

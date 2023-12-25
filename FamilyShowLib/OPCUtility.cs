@@ -74,95 +74,164 @@ namespace Microsoft.FamilyShowLib
             break;
           case ".doc":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
+            }
+
             break;
           case ".docx":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
+            }
+
             break;
           case ".xls":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
+            }
+
             break;
           case ".xlsx":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
+            }
+
             break;
           case ".ppt":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
+            }
+
             break;
           case ".pptx":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
+            }
+
             break;
           case ".odp":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
+            }
+
             break;
           case ".odt":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
+            }
+
             break;
           case ".ods":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
+            }
+
             break;
           case ".xps":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
+            }
+
             break;
           case ".htm":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Text.Html, storeInDirectory);
+            }
+
             break;
           case ".html":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Text.Html, storeInDirectory);
+            }
+
             break;
           case ".pdf":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Application.Pdf, storeInDirectory);
+            }
+
             break;
           case ".txt":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Text.Plain, storeInDirectory);
+            }
+
             break;
           case ".kml":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
+            }
+
             break;
           case ".kmz":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
+            }
+
             break;
           case ".jpeg":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Image.Jpeg, storeInDirectory);
+            }
+
             break;
           case ".jpg":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Image.Jpeg, storeInDirectory);
+            }
+
             break;
           case ".png":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Image.Jpeg, storeInDirectory);
+            }
+
             break;
           case ".gif":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Image.Gif, storeInDirectory);
+            }
+
             break;
           case ".tif":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Image.Tiff, storeInDirectory);
+            }
+
             break;
           case ".tiff":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Image.Tiff, storeInDirectory);
+            }
+
             break;
           case ".rtf":
             if (content.Contains(file.ToString()))
+            {
               CreateDocumentPart(package, file, MediaTypeNames.Text.RichText, storeInDirectory);
+            }
+
             break;
         }
       }
@@ -179,9 +248,13 @@ namespace Microsoft.FamilyShowLib
 
       // Convert system path and file names to Part URIs.
       if (storeInDirectory)
+      {
         partUriDocument = PackUriHelper.CreatePartUri(new Uri(Path.Combine(file.Directory.Name, file.Name), UriKind.Relative));
+      }
       else
+      {
         partUriDocument = PackUriHelper.CreatePartUri(new Uri(file.Name, UriKind.Relative));
+      }
 
       // Add the Document part to the Package
       PackagePart packagePartDocument = package.CreatePart(
@@ -220,7 +293,10 @@ namespace Microsoft.FamilyShowLib
           // exists, first delete it and then create a new empty one.
           DirectoryInfo directoryInfo = new DirectoryInfo(targetDirectory);
           if (directoryInfo.Exists)
+          {
             directoryInfo.Delete(true);
+          }
+
           directoryInfo.Create();
         }
         catch
@@ -257,9 +333,13 @@ namespace Microsoft.FamilyShowLib
           // Open the Resource Part and write the contents to a file.
           resourcePart = package.GetPart(uriResourceTarget);
           if (isOpen)
+          {
             ExtractPart(resourcePart, targetDirectory);
+          }
           else if (!isOpen)
+          {
             MergeExtractPart(resourcePart, targetDirectory);
+          }
         }
       }
     }
@@ -344,7 +424,9 @@ namespace Microsoft.FamilyShowLib
       int bytesRead = 0;
 
       while ((bytesRead = source.Read(buf, 0, bufSize)) > 0)
+      {
         target.Write(buf, 0, bytesRead);
+      }
     }
   }
 }

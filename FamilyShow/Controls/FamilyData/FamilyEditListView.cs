@@ -16,7 +16,9 @@ namespace Microsoft.FamilyShow
     {
       Person person = item as Person;
       if (person == null)
+      {
         return false;
+      }
 
       // Check for match.
       // Additional filters to search other columns
@@ -36,13 +38,17 @@ namespace Microsoft.FamilyShow
           Filter.Matches(person.BirthDate) ||
           Filter.Matches(person.BirthPlace) ||
           Filter.Matches(person.Age))
+      {
         return true;
+      }
 
       // Check for the special case of birthdays, if
       // matches the month and day, but don't check year.
       if (Filter.MatchesMonth(person.BirthDate) &&
           Filter.MatchesDay(person.BirthDate))
+      {
         return true;
+      }
 
       //Special filters
       if (Filter.MatchesImages(person.HasAvatar) ||
@@ -52,18 +58,24 @@ namespace Microsoft.FamilyShow
           Filter.MatchesLiving(person.IsLiving) ||
           Filter.MatchesNotes(person.HasNote) ||
           Filter.MatchesAttachments(person.HasAttachments))
+      {
         return true;
+      }
 
       //filter for gender
       if (person.Gender == Gender.Male)
       {
         if (Filter.MatchesGender(Properties.Resources.Male.ToLower()))
+        {
           return true;
+        }
       }
       if (person.Gender == Gender.Female)
       {
         if (Filter.MatchesGender(Properties.Resources.Female.ToLower()))
+        {
           return true;
+        }
       }
 
       return false;

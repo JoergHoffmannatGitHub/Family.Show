@@ -252,7 +252,9 @@ namespace Microsoft.FamilyShowLib
 
         // Create the directory if it doesn't exist
         if (!Directory.Exists(appLocation))
+        {
           Directory.CreateDirectory(appLocation);
+        }
 
         return Path.Combine(appLocation, Const.DataFileName);
       }
@@ -294,7 +296,9 @@ namespace Microsoft.FamilyShowLib
     {
       // Return right away if nothing to save.
       if (PeopleCollection == null || PeopleCollection.Count == 0)
+      {
         return;
+      }
 
       if (privacy == true)
       {
@@ -454,7 +458,9 @@ namespace Microsoft.FamilyShowLib
 
       // Use the default path and filename if none was provided
       if (string.IsNullOrEmpty(FullyQualifiedFilename))
+      {
         FullyQualifiedFilename = DefaultFullyQualifiedFilename;
+      }
 
       // Setup temp folders for this family to be packaged into OPC later
       string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -514,19 +520,32 @@ namespace Microsoft.FamilyShowLib
       //add current person and all directly related to the keep people collection
       keep.Add(primaryPerson);
       foreach (Person parent in primaryPerson.Parents)
+      {
         keep.Add(parent);
+      }
+
       foreach (Person sibling in primaryPerson.Siblings)
+      {
         keep.Add(sibling);
+      }
+
       foreach (Person spouse in primaryPerson.Spouses)
+      {
         keep.Add(spouse);
+      }
+
       foreach (Person child in primaryPerson.Children)
+      {
         keep.Add(child);
+      }
 
       //remove all people who are not in the keep collection
       foreach (Person q in PeopleCollection)
       {
         if (!keep.Contains(q))
+        {
           delete.Add(q);
+        }
       }
 
       //remove relationships of people who are in the keep collection
@@ -574,7 +593,9 @@ namespace Microsoft.FamilyShowLib
       foreach (Person q in PeopleCollection)
       {
         if (!keep.Contains(q))
+        {
           delete.Add(q);
+        }
       }
 
       //remove relationships of people who are not the current person
@@ -626,13 +647,19 @@ namespace Microsoft.FamilyShowLib
 
       //0 generations
       foreach (Person sibling in primaryPerson.Siblings)
+      {
         keep.Add(sibling);
+      }
 
       foreach (Person spouse in primaryPerson.Spouses)
+      {
         keep.Add(spouse);
+      }
 
       foreach (Person previousSpouse in primaryPerson.PreviousSpouses)
+      {
         keep.Add(previousSpouse);
+      }
 
 
       #region ancestors
@@ -645,7 +672,9 @@ namespace Microsoft.FamilyShowLib
           foreach (Person p in ancestorGenerations(parent))
           {
             if (!keep.Contains(p))
+            {
               keep.Add(p);
+            }
           }
 
           //2 ancestor generations
@@ -657,7 +686,9 @@ namespace Microsoft.FamilyShowLib
               foreach (Person p in ancestorGenerations(grandparent))
               {
                 if (!keep.Contains(p))
+                {
                   keep.Add(p);
+                }
               }
 
               //3 ancestor generations
@@ -669,7 +700,9 @@ namespace Microsoft.FamilyShowLib
                   foreach (Person p in ancestorGenerations(greatgrandparent))
                   {
                     if (!keep.Contains(p))
+                    {
                       keep.Add(p);
+                    }
                   }
 
                   //4 ancestor generations
@@ -681,7 +714,9 @@ namespace Microsoft.FamilyShowLib
                       foreach (Person p in ancestorGenerations(greatgreatgrandparent))
                       {
                         if (!keep.Contains(p))
+                        {
                           keep.Add(p);
+                        }
                       }
 
                       //5 ancestor generations
@@ -693,7 +728,9 @@ namespace Microsoft.FamilyShowLib
                           foreach (Person p in ancestorGenerations(greatgreatgreatgrandparent))
                           {
                             if (!keep.Contains(p))
+                            {
                               keep.Add(p);
+                            }
                           }
                         }
                       }
@@ -718,7 +755,9 @@ namespace Microsoft.FamilyShowLib
           foreach (Person p in descendentGenerations(child))
           {
             if (!keep.Contains(p))
+            {
               keep.Add(p);
+            }
           }
 
           //2 descendant generations
@@ -730,7 +769,9 @@ namespace Microsoft.FamilyShowLib
               foreach (Person p in descendentGenerations(grandchild))
               {
                 if (!keep.Contains(p))
+                {
                   keep.Add(p);
+                }
               }
 
               //3 descendent generations
@@ -741,7 +782,9 @@ namespace Microsoft.FamilyShowLib
                   foreach (Person p in descendentGenerations(greatgrandchild))
                   {
                     if (!keep.Contains(p))
+                    {
                       keep.Add(p);
+                    }
                   }
 
                   //4 descendent generations
@@ -752,7 +795,9 @@ namespace Microsoft.FamilyShowLib
                       foreach (Person p in descendentGenerations(greatgreatgrandchild))
                       {
                         if (!keep.Contains(p))
+                        {
                           keep.Add(p);
+                        }
                       }
 
                       //5 descendent generations
@@ -763,7 +808,9 @@ namespace Microsoft.FamilyShowLib
                           foreach (Person p in descendentGenerations(greatgreatgreatgrandchild))
                           {
                             if (!keep.Contains(p))
+                            {
                               keep.Add(p);
+                            }
                           }
 
                         }
@@ -783,7 +830,9 @@ namespace Microsoft.FamilyShowLib
       foreach (Person q in PeopleCollection)
       {
         if (!keep.Contains(q))
+        {
           delete.Add(q);
+        }
       }
 
       //remove relationships of people who are not in the keep collection
@@ -837,7 +886,9 @@ namespace Microsoft.FamilyShowLib
       {
         // Use the default path and filename if none were provided
         if (string.IsNullOrEmpty(FullyQualifiedFilename))
+        {
           FullyQualifiedFilename = DefaultFullyQualifiedFilename;
+        }
 
         string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             App.ApplicationFolderName);
@@ -853,7 +904,9 @@ namespace Microsoft.FamilyShowLib
           stream.Close();
 
           foreach (Person person in pc.PeopleCollection)
+          {
             PeopleCollection.Add(person);
+          }
 
           // To avoid circular references when serializing family data to xml, only the person Id
           // is seralized to express relationships. When family data is loaded, the correct
@@ -867,9 +920,13 @@ namespace Microsoft.FamilyShowLib
             {
               // If relationships are null remove them.
               if (PeopleCollection.Find(r.PersonId) != null)
+              {
                 r.RelationTo = PeopleCollection.Find(r.PersonId);
+              }
               else
+              {
                 corruptRelationships.Add(r);
+              }
             }
 
             foreach (Relationship r in corruptRelationships)
@@ -880,10 +937,14 @@ namespace Microsoft.FamilyShowLib
           }
 
           foreach (Source source in pc.SourceCollection)
+          {
             SourceCollection.Add(source);
+          }
 
           foreach (Repository repository in pc.RepositoryCollection)
+          {
             RepositoryCollection.Add(repository);
+          }
 
           // Set the current person in the list
           CurrentPersonId = pc.CurrentPersonId;
@@ -930,7 +991,9 @@ namespace Microsoft.FamilyShowLib
       {
         // Use the default path and filename if none were provided
         if (string.IsNullOrEmpty(FullyQualifiedFilename))
+        {
           FullyQualifiedFilename = DefaultFullyQualifiedFilename;
+        }
 
         XmlSerializer xml = new XmlSerializer(typeof(People));
         using (Stream stream = new FileStream(FullyQualifiedFilename, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -939,7 +1002,9 @@ namespace Microsoft.FamilyShowLib
           stream.Close();
 
           foreach (Person person in pc.PeopleCollection)
+          {
             PeopleCollection.Add(person);
+          }
 
           // Setup temp folders for this family to be packaged into OPC later
           string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), App.ApplicationFolderName);
@@ -965,9 +1030,13 @@ namespace Microsoft.FamilyShowLib
             foreach (Relationship r in p.Relationships)
             {
               if (PeopleCollection.Find(r.PersonId) != null)
+              {
                 r.RelationTo = PeopleCollection.Find(r.PersonId);
+              }
               else
+              {
                 corruptRelationships.Add(r);
+              }
             }
 
             foreach (Relationship r in corruptRelationships)
@@ -987,7 +1056,9 @@ namespace Microsoft.FamilyShowLib
               foreach (Relationship r2 in r1.RelationTo.Relationships)
               {
                 if (oldpId == r2.PersonId)
+                {
                   r2.PersonId = p.Id;
+                }
               }
             }
 
@@ -1124,9 +1195,13 @@ namespace Microsoft.FamilyShowLib
       {
         // Use the default path and filename if none were provided
         if (string.IsNullOrEmpty(fileName))
+        {
           FullyQualifiedFilename = DefaultFullyQualifiedFilename;
+        }
         else
+        {
           FullyQualifiedFilename = fileName;
+        }
 
         string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             App.ApplicationFolderName);
@@ -1150,7 +1225,9 @@ namespace Microsoft.FamilyShowLib
           foreach (Person p in merge.PeopleCollection)
           {
             foreach (Relationship r in p.Relationships)
+            {
               r.RelationTo = merge.PeopleCollection.Find(r.PersonId);
+            }
           }
 
           People duplicates = new People();   //collection for duplicates
@@ -1190,7 +1267,9 @@ namespace Microsoft.FamilyShowLib
 
           //add sources in the old file to the safe id collection
           foreach (Source s in SourceCollection)
+          {
             safeIds.Add(s);
+          }
 
 
           //duplicates
@@ -1250,7 +1329,9 @@ namespace Microsoft.FamilyShowLib
             foreach (Source oldSource in SourceCollection)
             {
               if (oldSource.SourceName.Trim() == source.SourceName.Trim())
+              {
                 i++;
+              }
             }
 
             if (i == 0)
@@ -1498,12 +1579,18 @@ namespace Microsoft.FamilyShowLib
           int duplicateS = merge.SourceCollection.Count - imports.SourceCollection.Count;
 
           if (duplicateS > 0 && imports.SourceCollection.Count > 0)
+          {
             summary[1, 0] = "\n\n" + Properties.Resources.ImportedSources + " " + imports.SourceCollection.Count + "\n"
                  + Properties.Resources.MergedSources + " " + duplicateS;
+          }
           else if (imports.SourceCollection.Count > 0 && duplicateS == 0)
+          {
             summary[1, 0] = "\n\n" + Properties.Resources.All + " " + imports.SourceCollection.Count + " " + Properties.Resources.SourcesImported;
+          }
           else if (imports.SourceCollection.Count == 0)
+          {
             summary[1, 0] = "\n\n" + Properties.Resources.NoSources;
+          }
 
           #endregion
 
@@ -1537,7 +1624,9 @@ namespace Microsoft.FamilyShowLib
           RepositoryCollection sameRIds = new RepositoryCollection();
 
           foreach (Repository r in RepositoryCollection)
+          {
             safeRIds.Add(r);
+          }
 
           //duplicates
           foreach (Repository repository in merge.RepositoryCollection)  //for each new repository... 
@@ -1593,7 +1682,9 @@ namespace Microsoft.FamilyShowLib
             foreach (Repository r in RepositoryCollection)
             {
               if (r.RepositoryName == repository.RepositoryName)
+              {
                 i++;
+              }
             }
 
             if (i == 0)
@@ -1656,12 +1747,18 @@ namespace Microsoft.FamilyShowLib
           int duplicateR = merge.RepositoryCollection.Count - imports.RepositoryCollection.Count;
 
           if (duplicateR > 0 && imports.RepositoryCollection.Count > 0)
+          {
             summary[2, 0] = "\n\n" + Properties.Resources.ImportedRepositories + " " + imports.RepositoryCollection.Count + "\n"
                 + Properties.Resources.MergedRepositories + " " + duplicates.RepositoryCollection.Count;
+          }
           else if (imports.RepositoryCollection.Count > 0 && duplicateR == 0)
+          {
             summary[2, 0] = "\n\n" + Properties.Resources.All + " " + imports.RepositoryCollection.Count + " " + Properties.Resources.RepositoriesImported;
+          }
           else if (imports.RepositoryCollection.Count == 0)
+          {
             summary[2, 0] = "\n\n" + Properties.Resources.NoRepositories;
+          }
 
           #endregion
 
@@ -1777,19 +1874,25 @@ namespace Microsoft.FamilyShowLib
                 if (duplicated == false && person.Siblings.Count > 0 && oldperson.Siblings.Count > 0 && person.Siblings.Count == oldperson.Siblings.Count)
                 {
                   if (CompareStrings(oldperson.SiblingsText, person.SiblingsText) && CompareStrings(oldperson.ParentsText, person.ParentsText))
+                  {
                     duplicated = true;
+                  }
                 }
 
                 if (duplicated == false && person.Siblings.Count == 0 && oldperson.Siblings.Count == 0 && person.Siblings.Count == oldperson.Siblings.Count)
                 {
                   if (CompareStrings(oldperson.ParentsText, person.ParentsText))
+                  {
                     duplicated = true;
+                  }
                 }
 
                 if (duplicated == false && person.Spouses.Count > 0 && oldperson.Spouses.Count > 0 && person.Spouses.Count == oldperson.Spouses.Count)
                 {
                   if (CompareStrings(oldperson.SpousesText, person.SpousesText))
+                  {
                     duplicated = true;
+                  }
                 }
 
                 if (duplicated == true && !DuplicatePeopleCollection.Contains(person) && !ExistingPeopleCollection.Contains(oldperson))
@@ -1808,19 +1911,25 @@ namespace Microsoft.FamilyShowLib
                   if (duplicated == false && person.Siblings.Count > 0 && oldperson.Siblings.Count > 0 && person.Siblings.Count == oldperson.Siblings.Count)
                   {
                     if (CompareStrings(oldperson.SiblingsText, person.SiblingsText) && CompareStrings(oldperson.ParentsText, person.ParentsText))
+                    {
                       duplicated = true;
+                    }
                   }
 
                   if (duplicated == false && person.Siblings.Count == 0 && oldperson.Siblings.Count == 0 && person.Siblings.Count == oldperson.Siblings.Count)
                   {
                     if (CompareStrings(oldperson.ParentsText, person.ParentsText))
+                    {
                       duplicated = true;
+                    }
                   }
 
                   if (duplicated == false && person.Spouses.Count > 0 && oldperson.Spouses.Count > 0 && person.Spouses.Count == oldperson.Spouses.Count)
                   {
                     if (CompareStrings(oldperson.SpousesText, person.SpousesText))
+                    {
                       duplicated = true;
+                    }
                   }
 
                   if (duplicated == true && !DuplicatePeopleCollection.Contains(person) && !ExistingPeopleCollection.Contains(oldperson))
@@ -1840,19 +1949,25 @@ namespace Microsoft.FamilyShowLib
                   if (duplicated == false && person.Siblings.Count > 0 && oldperson.Siblings.Count > 0 && person.Siblings.Count == oldperson.Siblings.Count)
                   {
                     if (CompareStrings(oldperson.SiblingsText, person.SiblingsText) && CompareStrings(oldperson.ParentsText, person.ParentsText))
+                    {
                       duplicated = true;
+                    }
                   }
 
                   if (duplicated == false && person.Siblings.Count == 0 && oldperson.Siblings.Count == 0 && person.Siblings.Count == oldperson.Siblings.Count)
                   {
                     if (CompareStrings(oldperson.ParentsText, person.ParentsText))
+                    {
                       duplicated = true;
+                    }
                   }
 
                   if (duplicated == false && person.Spouses.Count > 0 && oldperson.Spouses.Count > 0 && person.Spouses.Count == oldperson.Spouses.Count)
                   {
                     if (CompareStrings(oldperson.SpousesText, person.SpousesText))
+                    {
                       duplicated = true;
+                    }
                   }
 
                   if (duplicated == true && !DuplicatePeopleCollection.Contains(person) && !ExistingPeopleCollection.Contains(oldperson))
@@ -1874,24 +1989,34 @@ namespace Microsoft.FamilyShowLib
 
             }
             else
+            {
               duplicates.PeopleCollection.Add(person);
+            }
           }
 
 
           if (duplicates.PeopleCollection.Count > 0)
+          {
             summary[0, 0] = Properties.Resources.ImportedPeople + " " + imports.PeopleCollection.Count + "\n" + Properties.Resources.DuplicatePeople + " " + duplicates.PeopleCollection.Count;
+          }
           else
+          {
             summary[0, 0] = Properties.Resources.All + " " + imports.PeopleCollection.Count + " " + Properties.Resources.PeopleImported;
+          }
 
           #endregion
 
           //now add imports to the source collection...
           foreach (Source source in imports.SourceCollection)
+          {
             SourceCollection.Add(source);
+          }
 
           //now add repositories to the repositories collection...
           foreach (Repository r in imports.RepositoryCollection)
+          {
             RepositoryCollection.Add(r);
+          }
 
           //Remove the duplicate people from merge
           foreach (Person duplicate in duplicates.PeopleCollection)
@@ -1915,7 +2040,9 @@ namespace Microsoft.FamilyShowLib
 
           //Now add non duplicate people to main people collection...
           foreach (Person p in merge.PeopleCollection)
+          {
             PeopleCollection.Add(p);
+          }
         }
 
         //give focus to the person who was selected before the merge
@@ -1946,7 +2073,10 @@ namespace Microsoft.FamilyShowLib
       try
       {
         if (Directory.Exists(folderToDelete))
+        {
           Directory.Delete(folderToDelete, true);
+        }
+
         Directory.CreateDirectory(folderToDelete);
       }
       catch
@@ -1965,7 +2095,9 @@ namespace Microsoft.FamilyShowLib
       string firstName = string.Empty;
 
       if (!string.IsNullOrEmpty(p.LastName))
+      {
         surname = p.LastName;
+      }
 
       string[] splitName = p.FirstName.Split(' ');
 
@@ -1974,13 +2106,18 @@ namespace Microsoft.FamilyShowLib
         firstName = splitName[0];
 
         if (firstName != surname)
+        {
           return firstName + " " + surname;
+        }
         else
+        {
           return Properties.Resources.Unknown + " " + surname;
+        }
       }
       else
+      {
         return string.Empty;
-
+      }
     }
 
     private static bool CompareStrings(string oldString, string newString)
@@ -2009,10 +2146,13 @@ namespace Microsoft.FamilyShowLib
       }
 
       if (list2.ToString() == list1.ToString())
+      {
         return true;
+      }
       else
+      {
         return false;
-
+      }
     }
 
 
@@ -2026,7 +2166,9 @@ namespace Microsoft.FamilyShowLib
       string oldSourceIDs = string.Empty;
 
       foreach (Source s in source)
+      {
         oldSourceIDs += s.Id + "E";
+      }
 
       do
       {
@@ -2047,7 +2189,9 @@ namespace Microsoft.FamilyShowLib
       string oldRIDs = string.Empty;
 
       foreach (Repository r in repository)
+      {
         oldRIDs += r.Id + "E";
+      }
 
       do
       {
@@ -2066,12 +2210,16 @@ namespace Microsoft.FamilyShowLib
       PeopleCollection pc = new PeopleCollection();
 
       if (!pc.Contains(child))
+      {
         pc.Add(child);
+      }
 
       foreach (Person p in getSpouses(child))
       {
         if (!pc.Contains(p))
+        {
           pc.Add(p);
+        }
       }
 
       return pc;
@@ -2085,12 +2233,16 @@ namespace Microsoft.FamilyShowLib
       PeopleCollection pc = new PeopleCollection();
 
       if (!pc.Contains(parent))
+      {
         pc.Add(parent);
+      }
 
       foreach (Person p in getSiblingsSpousesChildren(parent))
       {
         if (!pc.Contains(p))
+        {
           pc.Add(p);
+        }
       }
 
       return pc;
@@ -2106,24 +2258,32 @@ namespace Microsoft.FamilyShowLib
       foreach (Person sibling in parent.Siblings)
       {
         if (!pc.Contains(sibling))
+        {
           pc.Add(sibling);
+        }
       }
       foreach (Person child in parent.Children)
       {
         if (!pc.Contains(child))
+        {
           pc.Add(child);
+        }
       }
 
       foreach (Person spouse in parent.Spouses)
       {
         if (!pc.Contains(spouse))
+        {
           pc.Add(spouse);
+        }
       }
 
       foreach (Person previousSpouse in parent.PreviousSpouses)
       {
         if (!pc.Contains(previousSpouse))
+        {
           pc.Add(previousSpouse);
+        }
       }
 
       return pc;
@@ -2140,12 +2300,16 @@ namespace Microsoft.FamilyShowLib
       foreach (Person spouse in child.Spouses)
       {
         if (!pc.Contains(spouse))
+        {
           pc.Add(spouse);
+        }
       }
       foreach (Person previousSpouse in child.PreviousSpouses)
       {
         if (!pc.Contains(previousSpouse))
+        {
           pc.Add(previousSpouse);
+        }
       }
 
       return pc;
@@ -2204,7 +2368,9 @@ namespace Microsoft.FamilyShowLib
     {
       dirty = true;
       if (ContentChanged != null)
+      {
         ContentChanged(this, new SourceContentChangedEventArgs(null));
+      }
     }
 
     /// <summary>
@@ -2214,7 +2380,9 @@ namespace Microsoft.FamilyShowLib
     {
       dirty = true;
       if (ContentChanged != null)
+      {
         ContentChanged(this, new SourceContentChangedEventArgs(newSource));
+      }
     }
 
     /// <summary> 
@@ -2224,7 +2392,9 @@ namespace Microsoft.FamilyShowLib
     protected void OnCurrentChanged()
     {
       if (CurrentChanged != null)
+      {
         CurrentChanged(this, EventArgs.Empty);
+      }
     }
 
     #region Add new source
@@ -2236,7 +2406,9 @@ namespace Microsoft.FamilyShowLib
     {
       //add the source to the main source list
       if (!Contains(source))
+      {
         Add(source);
+      }
     }
 
     #endregion
@@ -2246,7 +2418,9 @@ namespace Microsoft.FamilyShowLib
       foreach (Source source in this)
       {
         if (source.Id == id)
+        {
           return source;
+        }
       }
 
       return null;
@@ -2259,7 +2433,9 @@ namespace Microsoft.FamilyShowLib
     protected virtual void OnPropertyChanged(string propertyName)
     {
       if (PropertyChanged != null)
+      {
         PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+      }
     }
 
     #endregion
@@ -2313,7 +2489,9 @@ namespace Microsoft.FamilyShowLib
     {
       dirty = true;
       if (ContentChanged != null)
+      {
         ContentChanged(this, new RepositoryContentChangedEventArgs(null));
+      }
     }
 
     /// <summary>
@@ -2323,7 +2501,9 @@ namespace Microsoft.FamilyShowLib
     {
       dirty = true;
       if (ContentChanged != null)
+      {
         ContentChanged(this, new RepositoryContentChangedEventArgs(newRepository));
+      }
     }
 
     /// <summary> 
@@ -2333,7 +2513,9 @@ namespace Microsoft.FamilyShowLib
     protected void OnCurrentChanged()
     {
       if (CurrentChanged != null)
+      {
         CurrentChanged(this, EventArgs.Empty);
+      }
     }
 
     #region Add new repository
@@ -2345,7 +2527,9 @@ namespace Microsoft.FamilyShowLib
     {
       //add the repository to the main repository list
       if (!Contains(repository))
+      {
         Add(repository);
+      }
     }
 
     #endregion
@@ -2355,7 +2539,9 @@ namespace Microsoft.FamilyShowLib
       foreach (Repository repository in this)
       {
         if (repository.Id == id)
+        {
           return repository;
+        }
       }
 
       return null;
@@ -2368,7 +2554,9 @@ namespace Microsoft.FamilyShowLib
     protected virtual void OnPropertyChanged(string propertyName)
     {
       if (PropertyChanged != null)
+      {
         PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+      }
     }
 
     #endregion
@@ -2438,7 +2626,9 @@ namespace Microsoft.FamilyShowLib
     {
       dirty = true;
       if (ContentChanged != null)
+      {
         ContentChanged(this, new ContentChangedEventArgs(null));
+      }
     }
 
     /// <summary>
@@ -2448,7 +2638,9 @@ namespace Microsoft.FamilyShowLib
     {
       dirty = true;
       if (ContentChanged != null)
+      {
         ContentChanged(this, new ContentChangedEventArgs(newPerson));
+      }
     }
 
     /// <summary> 
@@ -2458,7 +2650,9 @@ namespace Microsoft.FamilyShowLib
     protected void OnCurrentChanged()
     {
       if (CurrentChanged != null)
+      {
         CurrentChanged(this, EventArgs.Empty);
+      }
     }
 
     #region Add new people / relationships
@@ -2476,7 +2670,9 @@ namespace Microsoft.FamilyShowLib
 
       //add the child to the main people list
       if (!Contains(child))
+      {
         Add(child);
+      }
     }
 
     /// <summary>
@@ -2490,7 +2686,9 @@ namespace Microsoft.FamilyShowLib
 
       //add the spouse to the main people list
       if (!Contains(spouse))
+      {
         Add(spouse);
+      }
     }
 
     /// <summary>
@@ -2504,7 +2702,9 @@ namespace Microsoft.FamilyShowLib
 
       //add the sibling to the main people list
       if (!Contains(sibling))
+      {
         Add(sibling);
+      }
     }
 
     #endregion
@@ -2514,7 +2714,9 @@ namespace Microsoft.FamilyShowLib
       foreach (Person person in this)
       {
         if (person.Id == id)
+        {
           return person;
+        }
       }
 
       return null;
@@ -2565,7 +2767,9 @@ namespace Microsoft.FamilyShowLib
     {
 
       if (PropertyChanged != null)
+      {
         PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+      }
     }
 
     #endregion

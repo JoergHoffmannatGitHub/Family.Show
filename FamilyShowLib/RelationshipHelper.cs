@@ -44,8 +44,12 @@ namespace Microsoft.FamilyShowLib
 
         // Add the new child as a sibling to any existing natural children of the natural parents.
         foreach (Person existingSibling in person.NaturalChildren)
+        {
           if (existingSibling != child)
+          {
             family.AddSibling(existingSibling, child);
+          }
+        }
       }
     }
 
@@ -83,7 +87,9 @@ namespace Microsoft.FamilyShowLib
       foreach (Person p in person.Parents)
       {
         if (p.Gender == parentGender)
+        {
           i++;
+        }
       }
 
       if (i >= 1) //if a person already has a parent with the same gender, then add as an adopted parent (could be foster)
@@ -99,7 +105,9 @@ namespace Microsoft.FamilyShowLib
         family.Add(parent);
 
         if (person.Parents.Count == 0)// No exisiting parents
+        {
           family.AddChild(parent, person, ParentChildModifier.Natural);
+        }
         else
         {
           // One existing parent
@@ -173,7 +181,9 @@ namespace Microsoft.FamilyShowLib
       foreach (Person sibling in siblings)
       {
         if (sibling != person)
+        {
           family.AddSibling(person, sibling);
+        }
       }
     }
 
@@ -193,7 +203,9 @@ namespace Microsoft.FamilyShowLib
       foreach (Person child in firstParentChildren)
       {
         if (secondParentChildren.Contains(child))
+        {
           children.Add(child);
+        }
       }
 
       return children;
@@ -210,9 +222,13 @@ namespace Microsoft.FamilyShowLib
     {
       // Assume the spouse's gender based on the counterpart of the person's gender
       if (person.Gender == Gender.Male)
+      {
         spouse.Gender = Gender.Female;
+      }
       else
+      {
         spouse.Gender = Gender.Male;
+      }
 
       if (person.Spouses != null)
       {
@@ -240,7 +256,9 @@ namespace Microsoft.FamilyShowLib
               foreach (Relationship relationship in person.Relationships)
               {
                 if (relationship.RelationshipType == RelationshipType.Spouse)
+                {
                   ((SpouseRelationship)relationship).SpouseModifier = SpouseModifier.Former;
+                }
               }
             }
 
@@ -261,9 +279,13 @@ namespace Microsoft.FamilyShowLib
     {
       // Assume the spouse's gender based on the counterpart of the person's gender
       if (person.Gender == Gender.Male)
+      {
         spouse.Gender = Gender.Female;
+      }
       else
+      {
         spouse.Gender = Gender.Male;
+      }
 
       if (person.Spouses != null)
       {
@@ -273,7 +295,9 @@ namespace Microsoft.FamilyShowLib
           foreach (Relationship relationship in person.Relationships)
           {
             if (relationship.RelationshipType == RelationshipType.Spouse)
+            {
               ((SpouseRelationship)relationship).SpouseModifier = SpouseModifier.Former;
+            }
           }
         }
         family.AddSpouse(person, spouse, modifier);
@@ -325,7 +349,9 @@ namespace Microsoft.FamilyShowLib
         foreach (Person existingSibling in person.Siblings)
         {
           if (existingSibling != sibling)
+          {
             family.AddSibling(existingSibling, sibling);
+          }
         }
       }
 
@@ -351,7 +377,9 @@ namespace Microsoft.FamilyShowLib
     public static void AddExistingSibling(PeopleCollection family, Person person, Person sibling)
     {
       if (person.Parents != null)
+      {
         family.AddSibling(person, sibling);
+      }
     }
 
     /// <summary>
@@ -365,7 +393,9 @@ namespace Microsoft.FamilyShowLib
         foreach (Person c in p.NaturalChildren)
         {
           if (c != child && !family.Current.Siblings.Contains(c))
+          {
             AddExistingSibling(family, family.Current, c);
+          }
         }
 
       }
@@ -848,7 +878,9 @@ namespace Microsoft.FamilyShowLib
     public static void DeletePerson(PeopleCollection family, Person personToDelete)
     {
       if (!personToDelete.IsDeletable)
+      {
         return;
+      }
 
       // Remove the personToDelete from the relationships that contains the personToDelete.
       foreach (Relationship relationship in personToDelete.Relationships)

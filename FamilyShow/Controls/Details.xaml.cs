@@ -148,7 +148,9 @@ namespace Microsoft.FamilyShow
       if (person.Restriction != Restriction.Locked)
       {
         if (e.Key == Key.Delete)
+        {
           DeleteAttachmentsButton_Click(sender, e);
+        }
       }
     }
 
@@ -200,7 +202,9 @@ namespace Microsoft.FamilyShow
       int attachmentCount = 0;
 
       if (Directory.Exists(attachmentLocation))
+      {
         attachmentCount = Directory.GetFiles(attachmentLocation).Length;
+      }
 
       if (attachmentCount > 0)
       {
@@ -237,20 +241,21 @@ namespace Microsoft.FamilyShow
 
             }
             else
+            {
               MessageBox.Show(Properties.Resources.LinkAddMessage, Properties.Resources.LinkFailed, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
           }
 
           else
+          {
             MessageBox.Show(Properties.Resources.AttachmentExists, Properties.Resources.LinkFailed, MessageBoxButton.OK, MessageBoxImage.Warning);
-
+          }
         }
       }
       else
+      {
         MessageBox.Show(Properties.Resources.NoExistingAttachments, Properties.Resources.Link, MessageBoxButton.OK, MessageBoxImage.Warning);
-
-
-
-
+      }
     }
 
     private void AddAttachmentsButton_Click(object sender, RoutedEventArgs e)
@@ -297,7 +302,9 @@ namespace Microsoft.FamilyShow
               person.Attachments.Add(attachment);
             }
             else
+            {
               MessageBox.Show(Properties.Resources.NotSupportedExtension1 + Path.GetExtension(fileName) + " " + Properties.Resources.NotSupportedExtension2 + " " + Properties.Resources.UnsupportedAttachmentMessage, Properties.Resources.Unsupported, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
           }
         }
       }
@@ -363,9 +370,14 @@ namespace Microsoft.FamilyShow
             relationship = Properties.Resources.Son;
             // Assume that the new person has the same last name as the husband
             if ((family.Current.Gender == Gender.Female) && (family.Current.Spouses.Count > 0) && (family.Current.Spouses[0].Gender == Gender.Male))
+            {
               surname = family.Current.Spouses[0].LastName;
+            }
             else
+            {
               surname = family.Current.LastName;
+            }
+
             break;
           case FamilyMemberComboBoxValue.Spouse:
             relationship = Properties.Resources.Spouse;
@@ -383,9 +395,10 @@ namespace Microsoft.FamilyShow
           ((Storyboard)Resources["ExpandAddExisting"]).Begin(this);
         }
         else
+        {
           // Use animation to expand the Details Add section
           ((Storyboard)Resources["ExpandDetailsAdd"]).Begin(this);
-
+        }
 
         Relationship.Text = relationship;
         SurnameInputTextBox.Text = surname;
@@ -410,7 +423,9 @@ namespace Microsoft.FamilyShow
 
         DateTime birthdate = App.StringToDate(BirthDateInputTextBox.Text);
         if (birthdate != DateTime.MinValue)
+        {
           newPerson.BirthDate = birthdate;
+        }
 
         newPerson.BirthPlace = BirthPlaceInputTextBox.Text;
 
@@ -427,10 +442,15 @@ namespace Microsoft.FamilyShow
             RelationshipHelper.AddParent(family, family.Current, newPerson);
 
             if (family.Current.Parents.Count == 2)
+            {
               // Person has parents, choice another default.
               SetNextFamilyMemberAction(FamilyMemberComboBoxValue.Brother);
+            }
             else
+            {
               SetNextFamilyMemberAction(FamilyMemberComboBoxValue.Mother);
+            }
+
             break;
 
           case FamilyMemberComboBoxValue.Mother:
@@ -439,10 +459,15 @@ namespace Microsoft.FamilyShow
             RelationshipHelper.AddParent(family, family.Current, newPerson);
 
             if (family.Current.Parents.Count == 2)
+            {
               // Person has parents, choice another default.
               SetNextFamilyMemberAction(FamilyMemberComboBoxValue.Brother);
+            }
             else
+            {
               SetNextFamilyMemberAction(FamilyMemberComboBoxValue.Father);
+            }
+
             break;
 
           case FamilyMemberComboBoxValue.Brother:
@@ -450,9 +475,14 @@ namespace Microsoft.FamilyShow
 
             // Check to see if there are multiple parents
             if (possibleParents.Count > 1)
+            {
               SelectParent = true;
+            }
             else
+            {
               RelationshipHelper.AddSibling(family, family.Current, newPerson);
+            }
+
             break;
 
           case FamilyMemberComboBoxValue.Sister:
@@ -460,9 +490,14 @@ namespace Microsoft.FamilyShow
 
             // Check to see if there are multiple parents
             if (possibleParents.Count > 1)
+            {
               SelectParent = true;
+            }
             else
+            {
               RelationshipHelper.AddSibling(family, family.Current, newPerson);
+            }
+
             break;
 
           case FamilyMemberComboBoxValue.Spouse:
@@ -479,7 +514,10 @@ namespace Microsoft.FamilyShow
               SelectParent = true;
             }
             else
+            {
               RelationshipHelper.AddChild(family, family.Current, newPerson, ParentChildModifier.Natural);
+            }
+
             break;
 
           case FamilyMemberComboBoxValue.Daughter:
@@ -490,7 +528,10 @@ namespace Microsoft.FamilyShow
               SelectParent = true;
             }
             else
+            {
               RelationshipHelper.AddChild(family, family.Current, newPerson, ParentChildModifier.Natural);
+            }
+
             break;
           case FamilyMemberComboBoxValue.Unrelated:
             family.Add(newPerson);
@@ -501,7 +542,9 @@ namespace Microsoft.FamilyShow
         }
 
         if (SelectParent)
+        {
           ShowDetailsAddIntermediate(possibleParents);
+        }
         else
         {
           // Use animation to hide the Details Add section
@@ -528,7 +571,9 @@ namespace Microsoft.FamilyShow
 
         DateTime birthdate = App.StringToDate(BirthDateInputTextBox.Text);
         if (birthdate != DateTime.MinValue)
+        {
           newPerson.BirthDate = birthdate;
+        }
 
         newPerson.BirthPlace = BirthPlaceInputTextBox.Text;
 
@@ -583,44 +628,62 @@ namespace Microsoft.FamilyShow
 
             case ExistingFamilyMemberComboBoxValue.Father:
               if (existingPerson.Gender == Gender.Male)
+              {
                 RelationshipHelper.AddExistingParent(family, family.Current, existingPerson, ParentChildModifier.Natural);
+              }
 
               break;
 
             case ExistingFamilyMemberComboBoxValue.Mother:
               if (existingPerson.Gender == Gender.Female)
+              {
                 RelationshipHelper.AddExistingParent(family, family.Current, existingPerson, ParentChildModifier.Natural);
+              }
 
               break;
 
             case ExistingFamilyMemberComboBoxValue.Brother:
               if (existingPerson.Gender == Gender.Male)
+              {
                 RelationshipHelper.AddExistingSibling(family, family.Current, existingPerson);
+              }
 
               break;
 
             case ExistingFamilyMemberComboBoxValue.Sister:
 
               if (existingPerson.Gender == Gender.Female)
+              {
                 RelationshipHelper.AddExistingSibling(family, family.Current, existingPerson);
+              }
+
               break;
 
 
             case ExistingFamilyMemberComboBoxValue.Spouse:
               if (!existingPerson.Spouses.Contains(family.Current))
+              {
                 RelationshipHelper.AddExistingSpouse(family, family.Current, existingPerson, SpouseModifier.Current);
+              }
+
               break;
 
             case ExistingFamilyMemberComboBoxValue.Son:
 
               if (existingPerson.Gender == Gender.Male)
+              {
                 RelationshipHelper.AddExistingChild(family, family.Current, existingPerson, ParentChildModifier.Natural);
+              }
+
               break;
 
             case ExistingFamilyMemberComboBoxValue.Daughter:
 
               if (existingPerson.Gender == Gender.Female)
+              {
                 RelationshipHelper.AddExistingChild(family, family.Current, existingPerson, ParentChildModifier.Natural);
+              }
+
               break;
           }
           SetNextFamilyMemberAction(FamilyMemberComboBoxValue.Father);
@@ -761,13 +824,24 @@ namespace Microsoft.FamilyShow
         //ensure only fields with link values are exported
 
         if (!string.IsNullOrEmpty(p.BirthLink) && (p.BirthLink.StartsWith(Properties.Resources.www) || p.BirthLink.StartsWith(Properties.Resources.http)))
+        {
           birthLink = "[<a href=\"" + p.BirthLink + "\">Link</a>]";
+        }
+
         if (!string.IsNullOrEmpty(p.OccupationLink) && (p.OccupationLink.StartsWith(Properties.Resources.www) || p.OccupationLink.StartsWith(Properties.Resources.http)))
+        {
           occupationLink = "[<a href=\"" + p.OccupationLink + "\">Link</a>]";
+        }
+
         if (!string.IsNullOrEmpty(p.EducationLink) && (p.EducationLink.StartsWith(Properties.Resources.www) || p.EducationLink.StartsWith(Properties.Resources.http)))
+        {
           educationLink = "[<a href=\"" + p.EducationLink + "\">Link</a>]";
+        }
+
         if (!string.IsNullOrEmpty(p.ReligionLink) && (p.ReligionLink.StartsWith(Properties.Resources.www) || p.ReligionLink.StartsWith(Properties.Resources.http)))
+        {
           religionLink = "[<a href=\"" + p.ReligionLink + "\">Link</a>]";
+        }
 
         tw.WriteLine("<tr><td>Birth</td><td>" + p.BirthDateDescriptor + " " + dateformat(p.BirthDate) + " " + p.BirthPlace + "</td><td>" + p.BirthCitation + "</td><td>" + p.BirthCitationActualText + "</td><td>" + p.BirthCitationNote + "</td><td>" + birthLink + "</td><td>" + p.BirthSource + "</td></tr>");
         tw.WriteLine("<tr><td>Occupation</td><td>" + p.Occupation + "</td><td>" + p.OccupationCitation + "</td><td>" + p.OccupationCitationActualText + "</td><td>" + p.OccupationCitationNote + "</td><td>" + occupationLink + "</td><td>" + p.OccupationSource + "</td></tr>");
@@ -788,24 +862,46 @@ namespace Microsoft.FamilyShow
             string m8 = string.Empty;  //actual text
 
             if (!string.IsNullOrEmpty(((SpouseRelationship)rel).MarriageDateDescriptor))
+            {
               m1 = ((SpouseRelationship)rel).MarriageDateDescriptor.ToString();
+            }
+
             if (!string.IsNullOrEmpty(((SpouseRelationship)rel).MarriageDate.ToString()))
+            {
               m2 = dateformat(((SpouseRelationship)rel).MarriageDate);
+            }
+
             if (!string.IsNullOrEmpty(((SpouseRelationship)rel).MarriagePlace))
+            {
               m3 = ((SpouseRelationship)rel).MarriagePlace;
+            }
+
             if (!string.IsNullOrEmpty(((SpouseRelationship)rel).MarriageCitation))
+            {
               m4 = ((SpouseRelationship)rel).MarriageCitation;
+            }
+
             if (!string.IsNullOrEmpty(((SpouseRelationship)rel).MarriageSource))
+            {
               m5 = ((SpouseRelationship)rel).MarriageSource;
+            }
+
             if (!string.IsNullOrEmpty(((SpouseRelationship)rel).MarriageLink))  //ensure only fields with link values are exported
             {
               if (((SpouseRelationship)rel).MarriageLink.StartsWith(Properties.Resources.www) || ((SpouseRelationship)rel).MarriageLink.StartsWith(Properties.Resources.http))
+              {
                 m6 = "[<a href=\"" + ((SpouseRelationship)rel).MarriageLink + "\">Link</a>]";
+              }
             }
             if (!string.IsNullOrEmpty(((SpouseRelationship)rel).MarriageCitationNote))
+            {
               m7 = ((SpouseRelationship)rel).MarriageCitationNote;
+            }
+
             if (!string.IsNullOrEmpty(((SpouseRelationship)rel).MarriageCitationActualText))
+            {
               m8 = ((SpouseRelationship)rel).MarriageCitationActualText;
+            }
 
             tw.WriteLine("<tr><td>Marriage</td><td>" + rel.RelationTo + " " + m1 + " " + m2 + " " + m3 + "</td><td>" + m4 + "</td><td>" + m8 + "</td><td>" + m7 + "</td><td>" + m6 + "</td><td>" + m5 + "</td><td></td></tr>");
 
@@ -820,22 +916,41 @@ namespace Microsoft.FamilyShow
               string d8 = string.Empty;  //divorce citation actual text 
 
               if (!string.IsNullOrEmpty(((SpouseRelationship)rel).DivorceDateDescriptor))
+              {
                 d1 = ((SpouseRelationship)rel).DivorceDateDescriptor.ToString();
+              }
+
               if (!string.IsNullOrEmpty(((SpouseRelationship)rel).DivorceDate.ToString()))
+              {
                 d2 = dateformat(((SpouseRelationship)rel).DivorceDate);
+              }
+
               if (!string.IsNullOrEmpty(((SpouseRelationship)rel).DivorceCitation))
+              {
                 d3 = ((SpouseRelationship)rel).DivorceCitation;
+              }
+
               if (!string.IsNullOrEmpty(((SpouseRelationship)rel).DivorceSource))
+              {
                 d4 = ((SpouseRelationship)rel).DivorceSource;
+              }
+
               if (!string.IsNullOrEmpty(((SpouseRelationship)rel).DivorceLink))  //ensure only fields with link values are exported
               {
                 if (((SpouseRelationship)rel).DivorceLink.StartsWith(Properties.Resources.www) || ((SpouseRelationship)rel).DivorceLink.StartsWith(Properties.Resources.http))
+                {
                   d6 = "[<a href=\"" + ((SpouseRelationship)rel).DivorceLink + "\">Link</a>]";
+                }
               }
               if (!string.IsNullOrEmpty(((SpouseRelationship)rel).DivorceCitationNote))
+              {
                 d7 = ((SpouseRelationship)rel).DivorceCitationNote;
+              }
+
               if (!string.IsNullOrEmpty(((SpouseRelationship)rel).DivorceCitationActualText))
+              {
                 d8 = ((SpouseRelationship)rel).DivorceCitationActualText;
+              }
 
               tw.WriteLine("<tr><td>Divorce</td><td>" + rel.RelationTo + " " + d1 + " " + d2 + "</td><td>" + d8 + "</td><td>" + d7 + "</td><td>" + d6 + "</td><td>" + d4 + "</td><td></td></tr>");
 
@@ -852,11 +967,19 @@ namespace Microsoft.FamilyShow
           //ensure only fields with link values are exported
 
           if (!string.IsNullOrEmpty(p.DeathLink) && (p.DeathLink.StartsWith(Properties.Resources.www) || p.DeathLink.StartsWith(Properties.Resources.http)))
+          {
             deathLink = "[<a href=\"" + p.DeathLink + "\">Link</a>]";
+          }
+
           if (!string.IsNullOrEmpty(p.BurialLink) && (p.BurialLink.StartsWith(Properties.Resources.www) || p.BurialLink.StartsWith(Properties.Resources.http)))
+          {
             burialLink = "[<a href=\"" + p.BurialLink + "\">Link</a>]";
+          }
+
           if (!string.IsNullOrEmpty(p.CremationLink) && (p.CremationLink.StartsWith(Properties.Resources.www) || p.CremationLink.StartsWith(Properties.Resources.http)))
+          {
             cremationLink = "[<a href=\"" + p.CremationLink + "\">Link</a>]";
+          }
 
           tw.WriteLine("<tr><td>Death</td><td>" + p.DeathDateDescriptor + " " + dateformat(p.DeathDate) + " " + p.DeathPlace + "</td><td>" + p.DeathCitation + "</td><td>" + p.DeathCitationActualText + "</td><td>" + p.DeathCitationNote + "</td><td>" + deathLink + "</td><td>" + p.DeathSource + "</td></tr>");
           tw.WriteLine("<tr><td>Burial</td><td>" + p.BurialDateDescriptor + " " + dateformat(p.BurialDate) + " " + p.BurialPlace + "</td><td>" + p.BurialCitation + "</td><td>" + p.BurialCitationActualText + "</td><td>" + p.BurialCitationNote + "</td><td>" + burialLink + "</td><td>" + p.BurialSource + "</td></tr>");
@@ -874,7 +997,9 @@ namespace Microsoft.FamilyShow
 
           //Export Sources
           foreach (Source s in sources)
+          {
             tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
+          }
         }
         tw.WriteLine(Footer());
         tw.Close();
@@ -887,7 +1012,9 @@ namespace Microsoft.FamilyShow
         try
         {
           if (result == MessageBoxResult.Yes)
+          {
             System.Diagnostics.Process.Start(dialog.FileName);
+          }
         }
         catch { }
 
@@ -956,9 +1083,13 @@ namespace Microsoft.FamilyShow
       for (int j = 1; j <= i; j++)
       {
         if (i != j)
+        {
           printstyle += "*+";
+        }
         else
+        {
           printstyle += "*";
+        }
       }
 
       printstyle += "{display: none; }\n" +
@@ -1014,7 +1145,9 @@ namespace Microsoft.FamilyShow
     private void UpdateCitationsCombobox()
     {
       if (family.Current == null)
+      {
         return;
+      }
 
       Person p = family.Current;
       {
@@ -1070,32 +1203,63 @@ namespace Microsoft.FamilyShow
             case CitationsComboBoxValue.Birth:
 
               if (p.BirthCitation != null)
+              {
                 CitationDetailsEditTextBox.Text = p.BirthCitation;
+              }
+
               if (p.BirthCitationNote != null)
+              {
                 CitationNoteEditTextBox.Text = p.BirthCitationNote;
+              }
+
               if (p.BirthCitationActualText != null)
+              {
                 CitationActualTextEditTextBox.Text = p.BirthCitationActualText;
+              }
+
               if (p.BirthLink != null)
+              {
                 CitationLinkEditTextBox.Text = p.BirthLink;
+              }
+
               if (p.BirthSource != null)
+              {
                 SourceEditTextBox.Text = p.BirthSource;
+              }
 
               s = sources.Find(p.BirthSource);
 
               if (p.BirthSource != null && s != null)
+              {
                 SourceEditTextBox.ToolTip = s.SourceName;
+              }
+
               break;
             case CitationsComboBoxValue.Death:
               if (p.DeathCitation != null)
+              {
                 CitationDetailsEditTextBox.Text = p.DeathCitation;
+              }
+
               if (p.DeathCitationNote != null)
+              {
                 CitationNoteEditTextBox.Text = p.DeathCitationNote;
+              }
+
               if (p.DeathCitationActualText != null)
+              {
                 CitationActualTextEditTextBox.Text = p.DeathCitationActualText;
+              }
+
               if (p.DeathLink != null)
+              {
                 CitationLinkEditTextBox.Text = p.DeathLink;
+              }
+
               if (p.DeathSource != null)
+              {
                 SourceEditTextBox.Text = p.DeathSource;
+              }
 
               s = sources.Find(p.DeathSource);
 
@@ -1106,88 +1270,172 @@ namespace Microsoft.FamilyShow
               break;
             case CitationsComboBoxValue.Education:
               if (p.EducationCitation != null)
+              {
                 CitationDetailsEditTextBox.Text = p.EducationCitation;
+              }
+
               if (p.EducationCitationNote != null)
+              {
                 CitationNoteEditTextBox.Text = p.EducationCitationNote;
+              }
+
               if (p.EducationCitationActualText != null)
+              {
                 CitationActualTextEditTextBox.Text = p.EducationCitationActualText;
+              }
+
               if (p.EducationLink != null)
+              {
                 CitationLinkEditTextBox.Text = p.EducationLink;
+              }
+
               if (p.EducationSource != null)
+              {
                 SourceEditTextBox.Text = p.EducationSource;
+              }
 
               s = sources.Find(p.EducationSource);
 
               if (p.EducationSource != null && s != null)
+              {
                 SourceEditTextBox.ToolTip = s.SourceName;
+              }
+
               break;
             case CitationsComboBoxValue.Occupation:
               if (p.OccupationCitation != null)
+              {
                 CitationDetailsEditTextBox.Text = p.OccupationCitation;
+              }
+
               if (p.OccupationCitationNote != null)
+              {
                 CitationNoteEditTextBox.Text = p.OccupationCitationNote;
+              }
+
               if (p.OccupationCitationActualText != null)
+              {
                 CitationActualTextEditTextBox.Text = p.OccupationCitationActualText;
+              }
+
               if (p.OccupationLink != null)
+              {
                 CitationLinkEditTextBox.Text = p.OccupationLink;
+              }
+
               if (p.OccupationSource != null)
+              {
                 SourceEditTextBox.Text = p.OccupationSource;
+              }
 
               s = sources.Find(p.OccupationSource);
 
               if (p.OccupationSource != null && s != null)
+              {
                 SourceEditTextBox.ToolTip = s.SourceName;
+              }
+
               break;
             case CitationsComboBoxValue.Religion:
               if (p.ReligionCitation != null)
+              {
                 CitationDetailsEditTextBox.Text = p.ReligionCitation;
+              }
+
               if (p.ReligionCitationNote != null)
+              {
                 CitationNoteEditTextBox.Text = p.ReligionCitationNote;
+              }
+
               if (p.ReligionCitationActualText != null)
+              {
                 CitationActualTextEditTextBox.Text = p.ReligionCitationActualText;
+              }
+
               if (p.ReligionLink != null)
+              {
                 CitationLinkEditTextBox.Text = p.ReligionLink;
+              }
+
               if (p.ReligionSource != null)
+              {
                 SourceEditTextBox.Text = p.ReligionSource;
+              }
 
               s = sources.Find(p.ReligionSource);
 
               if (p.ReligionSource != null && s != null)
+              {
                 SourceEditTextBox.ToolTip = s.SourceName;
+              }
+
               break;
             case CitationsComboBoxValue.Burial:
               if (p.BurialCitation != null)
+              {
                 CitationDetailsEditTextBox.Text = p.BurialCitation;
+              }
+
               if (p.BurialCitationNote != null)
+              {
                 CitationNoteEditTextBox.Text = p.BurialCitationNote;
+              }
+
               if (p.BurialCitationActualText != null)
+              {
                 CitationActualTextEditTextBox.Text = p.BurialCitationActualText;
+              }
+
               if (p.BurialLink != null)
+              {
                 CitationLinkEditTextBox.Text = p.BurialLink;
+              }
+
               if (p.BurialSource != null)
+              {
                 SourceEditTextBox.Text = p.BurialSource;
+              }
 
               s = sources.Find(p.BurialSource);
 
               if (p.BurialSource != null && s != null)
+              {
                 SourceEditTextBox.ToolTip = s.SourceName;
+              }
+
               break;
             case CitationsComboBoxValue.Cremation:
               if (p.CremationCitation != null)
+              {
                 CitationDetailsEditTextBox.Text = p.CremationCitation;
+              }
+
               if (p.CremationCitationNote != null)
+              {
                 CitationNoteEditTextBox.Text = p.CremationCitationNote;
+              }
+
               if (p.CremationCitationActualText != null)
+              {
                 CitationActualTextEditTextBox.Text = p.CremationCitationActualText;
+              }
+
               if (p.CremationLink != null)
+              {
                 CitationLinkEditTextBox.Text = p.CremationLink;
+              }
+
               if (p.CremationSource != null)
+              {
                 SourceEditTextBox.Text = p.CremationSource;
+              }
 
               s = sources.Find(p.CremationSource);
 
               if (p.CremationSource != null && s != null)
+              {
                 SourceEditTextBox.ToolTip = s.SourceName;
+              }
 
               break;
           }
@@ -1199,7 +1447,9 @@ namespace Microsoft.FamilyShow
     private void CitationTextBox_LostFocus(object sender, RoutedEventArgs e)
     {
       if (family.Current == null)
+      {
         return;
+      }
 
       Person p = family.Current;
 
@@ -1277,9 +1527,13 @@ namespace Microsoft.FamilyShow
         {
           string searchText = CitationLinkEditTextBox.Text.ToString(); ;
           if (searchText.StartsWith(Properties.Resources.www) || searchText.StartsWith(Properties.Resources.http))
+          {
             System.Diagnostics.Process.Start(searchText);
+          }
           else
+          {
             MessageBox.Show(Properties.Resources.InvalidURL, Properties.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+          }
         }
       }
       catch { }
@@ -1326,9 +1580,14 @@ namespace Microsoft.FamilyShow
       // but the text field has not lost focus yet, so it does not update binding. This
       // manually updates the binding for those fields.
       if (BirthDateEditTextBox.IsFocused)
+      {
         BirthDateEditTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+      }
+
       if (DeathDateEditTextBox.IsFocused)
+      {
         DeathDateEditTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+      }
 
       // Let the collection know that it has been updated so that the diagram control will update.
       family.OnContentChanged();
@@ -1351,9 +1610,14 @@ namespace Microsoft.FamilyShow
       // but the text field has not lost focus yet, so it does not update binding. This
       // manually updates the binding for those fields.
       if (BurialDateEditTextBox.IsFocused)
+      {
         BurialDateEditTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+      }
+
       if (CremationDateEditTextBox.IsFocused)
+      {
         CremationDateEditTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+      }
 
       // Let the collection know that it has been updated so that the diagram control will update.
       family.OnContentChanged();
@@ -1405,9 +1669,13 @@ namespace Microsoft.FamilyShow
         {
           string searchText = RCitationLinkEditTextBox.Text.ToString(); ;
           if (searchText.StartsWith(Properties.Resources.www) || searchText.StartsWith(Properties.Resources.http))
+          {
             System.Diagnostics.Process.Start(searchText);
+          }
           else
+          {
             MessageBox.Show(Properties.Resources.InvalidURL, Properties.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+          }
         }
       }
       catch { }
@@ -1444,7 +1712,9 @@ namespace Microsoft.FamilyShow
     {
 
       if (family.Current == null)
+      {
         return;
+      }
 
       if (SpousesCombobox.SelectedItem != null)
       {
@@ -1464,15 +1734,29 @@ namespace Microsoft.FamilyShow
             FromDescriptor.Content = string.Empty;
 
             if (spouseRel.MarriageDate.HasValue)
+            {
               FromEditTextBox.Text = ((DateTime)spouseRel.MarriageDate).ToShortDateString();
+            }
+
             if (spouseRel.DivorceDate.HasValue)
+            {
               ToEditTextBox.Text = ((DateTime)spouseRel.DivorceDate).ToShortDateString();
+            }
+
             if (spouseRel.MarriagePlace != null)
+            {
               PlaceEditTextBox.Text = spouseRel.MarriagePlace;
+            }
+
             if (spouseRel.MarriageDateDescriptor != null)
+            {
               FromDescriptor.Content = spouseRel.MarriageDateDescriptor;
+            }
+
             if (spouseRel.DivorceDateDescriptor != null)
+            {
               ToDescriptor.Content = spouseRel.DivorceDateDescriptor;
+            }
 
             UpdateRCitationsComboBox();
           }
@@ -1488,7 +1772,9 @@ namespace Microsoft.FamilyShow
     private void UpdateRCitationsComboBox()
     {
       if (family.Current == null)
+      {
         return;
+      }
 
       Person p = (Person)DataContext;
 
@@ -1543,43 +1829,79 @@ namespace Microsoft.FamilyShow
                 case RCitationsComboBoxValue.Divorce:
 
                   if (spouseRel.DivorceCitation != null)
+                  {
                     RCitationDetailsEditTextBox.Text = spouseRel.DivorceCitation;
+                  }
+
                   if (spouseRel.DivorceCitationNote != null)
+                  {
                     RCitationNoteEditTextBox.Text = spouseRel.DivorceCitationNote;
+                  }
+
                   if (spouseRel.DivorceLink != null)
+                  {
                     RCitationLinkEditTextBox.Text = spouseRel.DivorceLink;
+                  }
+
                   if (spouseRel.DivorceSource != null)
+                  {
                     RSourceEditTextBox.Text = spouseRel.DivorceSource;
+                  }
+
                   if (spouseRel.DivorceCitationActualText != null)
+                  {
                     RCitationActualTextEditTextBox.Text = spouseRel.DivorceCitationActualText;
+                  }
 
                   Source s = sources.Find(spouseRel.DivorceSource);
 
                   if (s != null)
+                  {
                     RSourceEditTextBox.ToolTip = s.SourceName;
+                  }
                   else
+                  {
                     RSourceEditTextBox.ToolTip = null;
+                  }
 
                   break;
                 case RCitationsComboBoxValue.Marriage:
 
                   if (spouseRel.MarriageCitation != null)
+                  {
                     RCitationDetailsEditTextBox.Text = spouseRel.MarriageCitation;
+                  }
+
                   if (spouseRel.MarriageCitationNote != null)
+                  {
                     RCitationNoteEditTextBox.Text = spouseRel.MarriageCitationNote;
+                  }
+
                   if (spouseRel.MarriageLink != null)
+                  {
                     RCitationLinkEditTextBox.Text = spouseRel.MarriageLink;
+                  }
+
                   if (spouseRel.MarriageSource != null)
+                  {
                     RSourceEditTextBox.Text = spouseRel.MarriageSource;
+                  }
+
                   if (spouseRel.MarriageCitationActualText != null)
+                  {
                     RCitationActualTextEditTextBox.Text = spouseRel.MarriageCitationActualText;
+                  }
 
                   Source s1 = sources.Find(spouseRel.MarriageSource);
 
                   if (s1 != null)
+                  {
                     RSourceEditTextBox.ToolTip = s1.SourceName;
+                  }
                   else
+                  {
                     RSourceEditTextBox.ToolTip = null;
+                  }
 
                   break;
 
@@ -1594,7 +1916,9 @@ namespace Microsoft.FamilyShow
     private void RCitationLinkEditTextBox_LostFocus(object sender, RoutedEventArgs e)
     {
       if (family.Current == null)
+      {
         return;
+      }
 
       if (RelationshipsCitationsComboBox.SelectedItem != null)
       {
@@ -1618,7 +1942,9 @@ namespace Microsoft.FamilyShow
     {
 
       if (family.Current == null)
+      {
         return;
+      }
 
       if (RelationshipsCitationsComboBox.SelectedItem != null)
       {
@@ -1643,7 +1969,9 @@ namespace Microsoft.FamilyShow
     {
 
       if (family.Current == null)
+      {
         return;
+      }
 
       if (RelationshipsCitationsComboBox.SelectedItem != null)
       {
@@ -1666,7 +1994,9 @@ namespace Microsoft.FamilyShow
     private void RCitationNoteEditTextBox_LostFocus(object sender, RoutedEventArgs e)
     {
       if (family.Current == null)
+      {
         return;
+      }
 
       if (RelationshipsCitationsComboBox.SelectedItem != null)
       {
@@ -1688,14 +2018,20 @@ namespace Microsoft.FamilyShow
     private void RSourceEditTextBox_LostFocus(object sender, RoutedEventArgs e)
     {
       if (family.Current == null)
+      {
         return;
+      }
 
       Source s = sources.Find(RSourceEditTextBox.Text.ToString());
 
       if (s != null)
+      {
         RSourceEditTextBox.ToolTip = s.SourceName;
+      }
       else
+      {
         RSourceEditTextBox.ToolTip = null;
+      }
 
       if (RelationshipsCitationsComboBox.SelectedItem != null)
       {
@@ -1718,7 +2054,9 @@ namespace Microsoft.FamilyShow
     {
 
       if (family.Current == null)
+      {
         return;
+      }
 
       foreach (Relationship rel in family.Current.Relationships)
       {
@@ -1746,9 +2084,13 @@ namespace Microsoft.FamilyShow
         {
           ParentRelationship parentRel = ((ParentRelationship)rel);
           if (parentRel.ParentChildModifier.ToString() == ParentChildListbox.SelectedItem.ToString())
+          {
             needsUpdate = false;
+          }
           else
+          {
             needsUpdate = true;
+          }
         }
       }
 
@@ -1863,10 +2205,14 @@ namespace Microsoft.FamilyShow
         DateTime marriageDate = App.StringToDate(FromEditTextBox.Text);
 
         if (marriageDate == DateTime.MinValue)
+        {
           // Clear the marriage date
           RelationshipHelper.UpdateMarriageDate(family.Current, (Person)SpousesCombobox.SelectedItem, null);
+        }
         else
+        {
           RelationshipHelper.UpdateMarriageDate(family.Current, (Person)SpousesCombobox.SelectedItem, marriageDate);
+        }
 
         // Let the collection know that it has been updated
         family.OnContentChanged();
@@ -1885,10 +2231,14 @@ namespace Microsoft.FamilyShow
         DateTime divorceDate = App.StringToDate(ToEditTextBox.Text);
 
         if (divorceDate == DateTime.MinValue)
+        {
           // Clear the divorce date
           RelationshipHelper.UpdateDivorceDate(family.Current, (Person)SpousesCombobox.SelectedItem, null);
+        }
         else
+        {
           RelationshipHelper.UpdateDivorceDate(family.Current, (Person)SpousesCombobox.SelectedItem, divorceDate);
+        }
 
         // Let the collection know that it has been updated
         family.OnContentChanged();
@@ -1982,10 +2332,13 @@ namespace Microsoft.FamilyShow
 
       //if not null, set to the next person
       if (p != null)
+      {
         family.Current = p;
+      }
       else  //otherwise the person is at the end of the list so go to the start of the list
+      {
         family.Current = family.Next(-1);
-
+      }
     }
 
     /// <summary>
@@ -1999,9 +2352,13 @@ namespace Microsoft.FamilyShow
       Person p = family.Previous(i);
 
       if (p != null)  //if not null, set to the previous person
+      {
         family.Current = p;
+      }
       else  //otherwise the person is at the start of the list so go to the end of the list
+      {
         family.Current = family.Previous(family.Count);
+      }
     }
 
     /// <summary>
@@ -2029,7 +2386,9 @@ namespace Microsoft.FamilyShow
             // 2. The user does not have an existing avatar.
             // Do not change an existing avatar and do not choose avatar when multiple photos are dropped. 
             if (!person.HasAvatar && fileNames.Length == 1)
+            {
               photo.IsAvatar = true;
+            }
 
             // Associate the photo with the person.
             person.Photos.Add(photo);
@@ -2084,7 +2443,9 @@ namespace Microsoft.FamilyShow
       FamilyListView.FilterList(FilterTextBox.Text);
 
       if (FamilyListView.Items.Count > 0)
+      {
         FamilyListView.ScrollIntoView(FamilyListView.Items[0]);
+      }
     }
 
     /// <summary>
@@ -2161,17 +2522,26 @@ namespace Microsoft.FamilyShow
 
 
           if (family.Current.HasSpouse)
+          {
             nextPerson = family.Current.Spouses[0];
+          }
           else if (family.Current.HasSiblings)
+          {
             nextPerson = family.Current.Siblings[0];
+          }
           else if (family.Current.HasParents)
+          {
             nextPerson = family.Current.Parents[0];
+          }
           else
+          {
             nextPerson = null;
-
+          }
         }
         else
+        {
           nextPerson = null;
+        }
 
 
         // Deleting a person requires deleting that person from their relations with other people
@@ -2183,9 +2553,13 @@ namespace Microsoft.FamilyShow
           // Current person is deleted, choose someone else as the current person
 
           if (nextPerson != null)
+          {
             family.Current = nextPerson;
+          }
           else
+          {
             family.Current = family[0];
+          }
 
           family.OnContentChanged();
           SetDefaultFocus();
@@ -2202,7 +2576,9 @@ namespace Microsoft.FamilyShow
     private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
       if (DataContext != null)
+      {
         SetFamilyMemberAddButton();
+      }
     }
 
     #endregion
@@ -2399,8 +2775,9 @@ namespace Microsoft.FamilyShow
           System.Diagnostics.Process.Start("http://www.bing.com/maps/default.aspx?&v=&where1=" + s);
         }
         else
+        {
           System.Diagnostics.Process.Start("http://www.bing.com/maps/");
-
+        }
       }
       catch { }
     }
@@ -2411,17 +2788,33 @@ namespace Microsoft.FamilyShow
     private static string forwardDateDescriptor(string s)
     {
       if (string.IsNullOrEmpty(s))
+      {
         return "ABT ";
+      }
+
       if (s == "ABT ")
+      {
         return "AFT ";
+      }
+
       if (s == "AFT ")
+      {
         return "BEF ";
+      }
+
       if (s == "BEF ")
+      {
         return "";
+      }
+
       if (s == "")
+      {
         return "ABT ";
+      }
       else
+      {
         return "";
+      }
     }
 
     /// <summary>
@@ -2430,17 +2823,33 @@ namespace Microsoft.FamilyShow
     private static string backwardDateDescriptor(string s)
     {
       if (string.IsNullOrEmpty(s))
+      {
         return "BEF ";
+      }
+
       if (s == "BEF ")
+      {
         return "AFT ";
+      }
+
       if (s == "AFT ")
+      {
         return "ABT ";
+      }
+
       if (s == "ABT ")
+      {
         return "";
+      }
+
       if (s == "")
+      {
         return "BEF ";
+      }
       else
+      {
         return "";
+      }
     }
 
     /// <summary>
@@ -2517,11 +2926,15 @@ namespace Microsoft.FamilyShow
     private void SetFamilyMemberAddButton()
     {
       if (family.Current.Parents.Count == 2)
+      {
         // Person has parents, choice another default.
         SetNextFamilyMemberAction(FamilyMemberComboBoxValue.Brother);
+      }
       else
+      {
         // Default for everything else
         SetNextFamilyMemberAction(FamilyMemberComboBoxValue.Father);
+      }
     }
 
     /// <summary>
@@ -2539,43 +2952,73 @@ namespace Microsoft.FamilyShow
 
         //filter the current person
         if (family.Current == person)
+        {
           return false;
+        }
+
         if (family.Current.Parents.Contains(person)) //filter the current person's parents
+        {
           return false;
+        }
+
         if (family.Current.Spouses.Contains(person)) //filter the current person's spouses
+        {
           return false;
+        }
+
         if (family.Current.PreviousSpouses.Contains(person)) //filter the current persons previous spouses
+        {
           return false;
+        }
+
         if (family.Current.Siblings.Contains(person))  //filter the current persons siblings
+        {
           return false;
+        }
+
         if (family.Current.Children.Contains(person)) //filter the current persons children
+        {
           return false;
+        }
 
         if (ignoreGender == false)
         {
           if (!string.IsNullOrEmpty(ExistingFilterTextBox.Text))
           {
             if (person.Gender == genderFilter && person.FullName.ToLower().Contains(ExistingFilterTextBox.Text.ToLower()))
+            {
               return true;
+            }
             else
+            {
               return false;
+            }
           }
           else
           {
             if (person.Gender == genderFilter)
+            {
               return true;
+            }
             else
+            {
               return false;
+            }
           }
         }
         else
+        {
           return (person.FullName.ToLower().Contains(ExistingFilterTextBox.Text.ToLower()));
-
+        }
       }
       else if (ResetFilter == true)  //quick reset
+      {
         return true;
+      }
       else
+      {
         return (person.FullName.ToLower().Contains(ExistingFilterTextBox.Text.ToLower()));
+      }
     }
 
     #endregion
@@ -2591,7 +3034,9 @@ namespace Microsoft.FamilyShow
     private void UpdateToolTip(TextBox box, string sourceId, string citation)
     {
       if (string.IsNullOrEmpty(box.Text))
+      {
         box.ToolTip = Properties.Resources.Unknown;  //Event is not known
+      }
       else
       {
         if (sources.Find(sourceId) != null)  //Event has citation
@@ -2599,11 +3044,14 @@ namespace Microsoft.FamilyShow
           box.ToolTip = sources.Find(sourceId).SourceNameAndId;  //Use friendly name
 
           if (!string.IsNullOrEmpty(citation))
+          {
             box.ToolTip += "\n" + citation;  //Only add the details if there is a valid source iD
+          }
         }
         else
+        {
           box.ToolTip = Properties.Resources.Uncited;  //Event has no citation
-
+        }
       }
     }
 

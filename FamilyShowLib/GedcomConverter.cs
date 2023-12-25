@@ -61,7 +61,9 @@ namespace Microsoft.FamilyShowLib
                 // Determine how many elements to close.
                 int count = prevLevel - line.Level + 1;
                 for (int i = 0; i < count; i++)
+                {
                   writer.WriteEndElement();
+                }
               }
 
               // Create new xml element.
@@ -84,7 +86,9 @@ namespace Microsoft.FamilyShowLib
         writer.Close();
 
         if (combineSplitValues)
+        {
           CombineSplitValues(xmlFilePath);
+        }
       }
     }
 
@@ -104,7 +108,9 @@ namespace Microsoft.FamilyShowLib
       XmlNodeList list = doc.SelectNodes("//CONT/.. | //CONC/..");
       // Go through each node and append child continue nodes.
       foreach (XmlNode node in list)
+      {
         AppendValues(node);
+      }
 
       // Write the updates to the file system.
       doc.Save(xmlFilePath);
@@ -227,12 +233,16 @@ namespace Microsoft.FamilyShowLib
 
         // Return right away is nothing to parse.
         if (string.IsNullOrEmpty(text))
+        {
           return false;
+        }
 
         //Clean up the line by only allowing viewable characters.
         //Allow override for if UTF-8 encoded GEDCOM file is being used.
         if (!disableCharacterCheck)
+        {
           text = RegexToClean().Replace(text, "");
+        }
 
         text = text.Replace("@@", "@");  // in GEDCOM @ is encoded as @ for content.
 
@@ -255,7 +265,9 @@ namespace Microsoft.FamilyShowLib
           // Some GEDCOM files have additional info, 
           // we only handle the tag info.
           if (pos != -1)
+          {
             tag = tag.Substring(0, pos);
+          }
         }
 
         // Make sure there are not any invalid characters in the tag.

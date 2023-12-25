@@ -73,9 +73,14 @@ namespace Microsoft.FamilyShow
     public bool MatchesPhotos(bool photo)
     {
       if (photo == true && photos == true)
+      {
         return true;
+      }
+
       if (nophotos == true && photo == false)
+      {
         return true;
+      }
 
       return false;
     }
@@ -83,10 +88,14 @@ namespace Microsoft.FamilyShow
     public bool MatchesRestrictions(bool restriction)
     {
       if (restriction == true && restrictions == true)
+      {
         return true;
+      }
 
       if (norestrictions == true && restriction == false)
+      {
         return true;
+      }
 
       return false;
     }
@@ -94,10 +103,14 @@ namespace Microsoft.FamilyShow
     public bool MatchesCitations(bool citation)
     {
       if (citation == true && citations == true)
+      {
         return true;
+      }
 
       if (nocitations == true && citation == false)
+      {
         return true;
+      }
 
       return false;
     }
@@ -105,10 +118,14 @@ namespace Microsoft.FamilyShow
     public bool MatchesAttachments(bool attachment)
     {
       if (attachment == true && attachments == true)
+      {
         return true;
+      }
 
       if (noattachments == true && attachment == false)
+      {
         return true;
+      }
 
       return false;
     }
@@ -116,10 +133,14 @@ namespace Microsoft.FamilyShow
     public bool MatchesNotes(bool note)
     {
       if (note == true && notes == true)
+      {
         return true;
+      }
 
       if (nonotes == true && note == false)
+      {
         return true;
+      }
 
       return false;
     }
@@ -127,10 +148,14 @@ namespace Microsoft.FamilyShow
     public bool MatchesLiving(bool isliving)
     {
       if (isliving == true && living == true)
+      {
         return true;
+      }
 
       if (noliving == true && isliving == false)
+      {
         return true;
+      }
 
       return false;
     }
@@ -138,10 +163,14 @@ namespace Microsoft.FamilyShow
     public bool MatchesImages(bool image)
     {
       if (image == true && images == true)
+      {
         return true;
+      }
 
       if (noimages == true && image == false)
+      {
         return true;
+      }
 
       return false;
     }
@@ -149,7 +178,9 @@ namespace Microsoft.FamilyShow
     public bool MatchesGender(string genders)
     {
       if (genders == gender)
+      {
         return true;
+      }
 
       return false;
     }
@@ -179,20 +210,28 @@ namespace Microsoft.FamilyShow
     public bool Matches(int? age)
     {
       if (age == null)
+      {
         return false;
+      }
 
       // Check single age.
       if (minimumAge != null && age.Value == minimumAge.Value)
+      {
         return true;
+      }
 
       // Check for a range.
       if (minimumAge != null && maximumAge != null &&
           age.Value >= minimumAge && age <= maximumAge)
+      {
         return true;
+      }
 
       // Check for an ending age.
       if (minimumAge == null && maximumAge != null && age.Value >= maximumAge)
+      {
         return true;
+      }
 
       return false;
     }
@@ -249,7 +288,9 @@ namespace Microsoft.FamilyShow
     {
       DateTime date;
       if (DateTime.TryParse(filterText, out date))
+      {
         filterDate = date;
+      }
     }
 
     /// <summary>
@@ -258,9 +299,14 @@ namespace Microsoft.FamilyShow
     private void ParsePhotos()
     {
       if (filterText == (Properties.Resources.Photos.ToLower()))
+      {
         photos = true;
+      }
+
       if (filterText == ("!" + Properties.Resources.Photos.ToLower()))
+      {
         nophotos = true;
+      }
     }
 
     /// <summary>
@@ -269,9 +315,14 @@ namespace Microsoft.FamilyShow
     private void ParseGender()
     {
       if (filterText == Properties.Resources.Female.ToLower())
+      {
         gender = Properties.Resources.Female.ToLower();
+      }
+
       if (filterText == Properties.Resources.Male.ToLower())
+      {
         gender = Properties.Resources.Male.ToLower();
+      }
     }
 
     /// <summary>
@@ -280,9 +331,14 @@ namespace Microsoft.FamilyShow
     private void ParseRestrictions()
     {
       if (filterText == (Properties.Resources.Restriction.ToLower()))
+      {
         restrictions = true;
+      }
+
       if (filterText == ("!" + Properties.Resources.Restriction.ToLower()))
+      {
         norestrictions = true;
+      }
     }
 
     /// <summary>
@@ -291,9 +347,14 @@ namespace Microsoft.FamilyShow
     private void ParseImages()
     {
       if (filterText == (Properties.Resources.Image.ToLower()))
+      {
         images = true;
+      }
+
       if (filterText == ("!" + Properties.Resources.Image.ToLower()))
+      {
         noimages = true;
+      }
     }
 
     /// <summary>
@@ -302,9 +363,14 @@ namespace Microsoft.FamilyShow
     private void ParseNotes()
     {
       if (filterText == (Properties.Resources.Note.ToLower()))
+      {
         notes = true;
+      }
+
       if (filterText == ("!" + Properties.Resources.Note.ToLower()))
+      {
         nonotes = true;
+      }
     }
 
     /// <summary>
@@ -313,9 +379,14 @@ namespace Microsoft.FamilyShow
     private void ParseAttachments()
     {
       if (filterText == (Properties.Resources.Attachment.ToLower()))
+      {
         attachments = true;
+      }
+
       if (filterText == ("!" + Properties.Resources.Attachment.ToLower()))
+      {
         noattachments = true;
+      }
     }
 
     /// <summary>
@@ -324,9 +395,14 @@ namespace Microsoft.FamilyShow
     private void ParseLiving()
     {
       if (filterText == (Properties.Resources.Living.ToLower()))
+      {
         living = true;
+      }
+
       if (filterText == (Properties.Resources.Deceased.ToLower()))
+      {
         noliving = true;
+      }
     }
 
     /// <summary>
@@ -335,9 +411,14 @@ namespace Microsoft.FamilyShow
     private void ParseCitations()
     {
       if (filterText == (Properties.Resources.Citations.ToLower()))
+      {
         citations = true;
+      }
+
       if (filterText == ("!" + Properties.Resources.Citations.ToLower()))
+      {
         nocitations = true;
+      }
     }
 
     /// <summary>
@@ -350,7 +431,9 @@ namespace Microsoft.FamilyShow
 
       // Single age.
       if (Int32.TryParse(filterText, out age))
+      {
         minimumAge = age;
+      }
 
       // Age range.
       if (filterText.Contains("-"))
@@ -358,17 +441,23 @@ namespace Microsoft.FamilyShow
         string[] list = filterText.Split('-');
 
         if (Int32.TryParse(list[0], out age))
+        {
           minimumAge = age;
+        }
 
         if (Int32.TryParse(list[1], out age))
+        {
           maximumAge = age;
+        }
       }
 
       // Ending age.
       if (filterText.EndsWith("+"))
       {
         if (Int32.TryParse(filterText.Substring(0, filterText.Length - 1), out age))
+        {
           maximumAge = age;
+        }
       }
     }
   }

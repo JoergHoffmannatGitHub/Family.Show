@@ -123,7 +123,9 @@ namespace Microsoft.FamilyShow
         try
         {
           if (result == MessageBoxResult.Yes)
+          {
             System.Diagnostics.Process.Start(dialog.FileName);
+          }
         }
         catch { }
       }
@@ -206,13 +208,17 @@ namespace Microsoft.FamilyShow
                   if (spouseRel.MarriageSource != null)
                   {
                     if (spouseRel.MarriageSource == sourceToRemove.Id)
+                    {
                       deletable = false;
+                    }
                   }
 
                   if (spouseRel.DivorceSource != null)
                   {
                     if (spouseRel.DivorceSource == sourceToRemove.Id)
+                    {
                       deletable = false;
+                    }
                   }
 
                 }
@@ -229,7 +235,9 @@ namespace Microsoft.FamilyShow
                 p.BurialCitation == sourceToRemove.Id ||
                 p.CremationSource == sourceToRemove.Id
                 )
+            {
               deletable = false;
+            }
           }
           else { }
 
@@ -249,8 +257,9 @@ namespace Microsoft.FamilyShow
           }
         }
         else
+        {
           MessageBox.Show(Properties.Resources.UnableDeleteSource1 + " " + sourceToRemove.Id + " " + Properties.Resources.UnableDeleteSource2, Properties.Resources.Source, MessageBoxButton.OK, MessageBoxImage.Warning);
-
+        }
       }
     }
 

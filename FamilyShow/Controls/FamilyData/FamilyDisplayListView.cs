@@ -17,13 +17,17 @@ namespace Microsoft.FamilyShow
     {
       Person person = item as Person;
       if (person == null)
+      {
         return false;
+      }
 
       if (Filter.Matches(person.Name) ||
           Filter.MatchesYear(person.BirthDate) ||
           Filter.MatchesYear(person.DeathDate) ||
           Filter.Matches(person.Age))
+      {
         return true;
+      }
 
       return false;
     }

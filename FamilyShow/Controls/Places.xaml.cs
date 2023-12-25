@@ -88,11 +88,20 @@ namespace Microsoft.FamilyShow
       {
         string choice = "0";
         if (Option1.IsChecked == true)
+        {
           choice = "1";
+        }
+
         if (Option2.IsChecked == true)
+        {
           choice = "2";
+        }
+
         if (Option3.IsChecked == true)
+        {
           choice = "3";
+        }
+
         return choice;
       }
     }
@@ -100,49 +109,73 @@ namespace Microsoft.FamilyShow
     private bool Privacy()
     {
       if (PrivacyPlaces.IsChecked == true)
+      {
         return true;
+      }
       else
+      {
         return false;
+      }
     }
 
     private bool Births()
     {
       if (BirthsCheckBox.IsChecked == true)
+      {
         return true;
+      }
       else
+      {
         return false;
+      }
     }
 
     private bool Deaths()
     {
       if (DeathsCheckBox.IsChecked == true)
+      {
         return true;
+      }
       else
+      {
         return false;
+      }
     }
 
     private bool Marriages()
     {
       if (MarriagesCheckBox.IsChecked == true)
+      {
         return true;
+      }
       else
+      {
         return false;
+      }
     }
 
     private bool Burials()
     {
       if (BurialsCheckBox.IsChecked == true)
+      {
         return true;
+      }
       else
+      {
         return false;
+      }
     }
 
     private bool Cremations()
     {
       if (CremationsCheckBox.IsChecked == true)
+      {
         return true;
+      }
       else
+      {
         return false;
+      }
     }
 
 
@@ -186,12 +219,19 @@ namespace Microsoft.FamilyShow
             string[] summary = null;
 
             if (Options() == "1")
+            {
               summary = places.ExportPlaces(family, filename, Privacy(), false, false, true, Burials(), Deaths(), Cremations(), Births(), Marriages());
-            if (Options() == "2")
-              summary = places.ExportPlaces(family, filename, Privacy(), true, false, false, Burials(), Deaths(), Cremations(), Births(), Marriages());
-            if (Options() == "3")
-              summary = places.ExportPlaces(family, filename, Privacy(), false, true, false, Burials(), Deaths(), Cremations(), Births(), Marriages());
+            }
 
+            if (Options() == "2")
+            {
+              summary = places.ExportPlaces(family, filename, Privacy(), true, false, false, Burials(), Deaths(), Cremations(), Births(), Marriages());
+            }
+
+            if (Options() == "3")
+            {
+              summary = places.ExportPlaces(family, filename, Privacy(), false, true, false, Burials(), Deaths(), Cremations(), Births(), Marriages());
+            }
 
             if (summary[1] == "No file")
             {

@@ -255,13 +255,16 @@ namespace Microsoft.FamilyShow
         for (int i = 0; i < recentFiles.Count; i++)
         {
           if (!File.Exists(recentFiles[i]))
+          {
             recentFiles.RemoveAt(i);
+          }
         }
 
         // Only keep the 5 most recent files, trim the rest.
         while (recentFiles.Count > NumberOfRecentFiles)
+        {
           recentFiles.RemoveAt(NumberOfRecentFiles);
-
+        }
       }
     }
 
@@ -288,7 +291,9 @@ namespace Microsoft.FamilyShow
 
       // Return right away if the data file already exist.
       if (Directory.Exists(location))
+      {
         return;
+      }
 
       try
       {
@@ -314,7 +319,10 @@ namespace Microsoft.FamilyShow
       {
         // Creates the working directory
         if (Directory.Exists(appLocation))
+        {
           Directory.Delete(appLocation, true);
+        }
+
         Directory.CreateDirectory(appLocation);
       }
       catch
@@ -336,7 +344,9 @@ namespace Microsoft.FamilyShow
 
       // Return right away if the data file already exist.
       if (Directory.Exists(location))
+      {
         return;
+      }
 
       try
       {
@@ -363,7 +373,9 @@ namespace Microsoft.FamilyShow
 
       // Return right away if the file already exists.
       if (File.Exists(path))
+      {
         return;
+      }
 
       // Create the file.
       using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create)))
@@ -381,7 +393,9 @@ namespace Microsoft.FamilyShow
 
       //Append first month and day if just the year was entered.
       if (dateString.Length == 4)
+      {
         dateString = "1/1/" + dateString;
+      }
 
       DateTime date;
       DateTime.TryParse(dateString, out date);
@@ -398,10 +412,13 @@ namespace Microsoft.FamilyShow
     {
 
       if (date == null)
+      {
         return string.Empty;
+      }
       else
+      {
         return date.Value.ToShortDateString();
-
+      }
     }
 
     /// <summary>
@@ -432,7 +449,9 @@ namespace Microsoft.FamilyShow
           string.Compare(extension, ".gif", true, CultureInfo.InvariantCulture) == 0 ||
           string.Compare(extension, ".tiff", true, CultureInfo.InvariantCulture) == 0 ||
           string.Compare(extension, ".tif", true, CultureInfo.InvariantCulture) == 0)
+      {
         return true;
+      }
 
       return false;
     }
@@ -471,7 +490,9 @@ namespace Microsoft.FamilyShow
           string.Compare(extension, ".gif", true, CultureInfo.InvariantCulture) == 0 ||
           string.Compare(extension, ".tiff", true, CultureInfo.InvariantCulture) == 0 ||
           string.Compare(extension, ".tif", true, CultureInfo.InvariantCulture) == 0)
+      {
         return true;
+      }
 
       return false;
     }

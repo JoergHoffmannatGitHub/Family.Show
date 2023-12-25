@@ -47,7 +47,9 @@ namespace Microsoft.FamilyShow
     private void People_CurrentChanged(object sender, EventArgs e)
     {
       if (family.Current != null)
+      {
         DetailsControl.DataContext = family.Current;
+      }
     }
 
     private void NewUserControl_AddButtonClick(object sender, RoutedEventArgs e)
@@ -187,7 +189,9 @@ namespace Microsoft.FamilyShow
         BuildOpenMenu();
       }
       else
+      {
         familyCollection.FullyQualifiedFilename = string.Empty;
+      }
 
       family.OnContentChanged();
       UpdateStatus();
@@ -425,7 +429,9 @@ namespace Microsoft.FamilyShow
         {
           //if the merge fails, reload the original file and continue. Prompt the user.
           if (LoadFamily(oldFilePath))
+          {
             MessageBox.Show(Properties.Resources.MergeFailed1, Properties.Resources.Merge, MessageBoxButton.OK, MessageBoxImage.Error);
+          }
           else
           {
             MessageBox.Show(Properties.Resources.MergeFailed2, Properties.Resources.Merge, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -435,7 +441,9 @@ namespace Microsoft.FamilyShow
         }
       }
       else
+      {
         UpdateStatus();
+      }
     }
 
     private void OpenRecentFile(object sender, RoutedEventArgs e)
@@ -973,7 +981,9 @@ namespace Microsoft.FamilyShow
       }
 
       if (family.Count == 0)
+      {
         ShowWelcomeScreen();
+      }
 
       UpdateStatus();
       App.canExecuteJumpList = true;
@@ -1004,13 +1014,24 @@ namespace Microsoft.FamilyShow
           bool privacy = SaveControl.Privacy();
 
           if (SaveControl.Options() == "1")
+          {
             familyCollection.SavePrivacy(dialog.FileName, privacy);
+          }
+
           if (SaveControl.Options() == "2")
+          {
             familyCollection.SaveCurrent(dialog.FileName, privacy);
+          }
+
           if (SaveControl.Options() == "3")
+          {
             familyCollection.SaveDirect(dialog.FileName, privacy);
+          }
+
           if (SaveControl.Options() == "4")
+          {
             familyCollection.SaveGenerations(dialog.FileName, SaveControl.Ancestors(), SaveControl.Descendants(), privacy);     //then save and load the new family
+          }
         }
       }
 
@@ -1121,9 +1142,13 @@ namespace Microsoft.FamilyShow
       bool fileLoaded = familyCollection.LoadOPC();
 
       if (fileLoaded)
+      {
         familyCollection.FullyQualifiedFilename = fileName;
+      }
       else
+      {
         familyCollection.FullyQualifiedFilename = string.Empty;
+      }
 
       UpdateStatus();
 
@@ -1154,8 +1179,9 @@ namespace Microsoft.FamilyShow
         SaveFamilyAs();
       }
       else
+      {
         familyCollection.FullyQualifiedFilename = string.Empty;
-
+      }
 
       UpdateStatus();
 
@@ -1197,11 +1223,14 @@ namespace Microsoft.FamilyShow
       if (WelcomeUserControl.Visibility != Visibility.Visible)
       {
         if (!DiagramPane.ColumnDefinitions.Contains(column1CloneForLayer0))
+        {
           DiagramPane.ColumnDefinitions.Add(column1CloneForLayer0);
+        }
 
         if (family.Current != null)
+        {
           DetailsControl.DataContext = family.Current;
-
+        }
 
         DetailsPane.Visibility = Visibility.Visible;
       }
@@ -1258,9 +1287,13 @@ namespace Microsoft.FamilyShow
             bool loaded = true;
 
             if (App.args.EndsWith(Properties.Resources.DefaultFamilyxExtension))
+            {
               loaded = LoadFamily(App.args);
+            }
             else if (App.args.EndsWith(Properties.Resources.DefaultFamilyExtension))
+            {
               loaded = LoadVersion2(App.args);
+            }
 
             if (!loaded)
             {
@@ -1285,7 +1318,9 @@ namespace Microsoft.FamilyShow
             }
 
             if (family.Count == 0)
+            {
               ShowWelcomeScreen();
+            }
 
             UpdateStatus();
           }
@@ -1312,7 +1347,9 @@ namespace Microsoft.FamilyShow
           }
         }
         else
+        {
           ShowWelcomeScreen();
+        }
       }
 
     }
@@ -1360,10 +1397,14 @@ namespace Microsoft.FamilyShow
     {
       // Add the cloned column to layer 0:
       if (!DiagramPane.ColumnDefinitions.Contains(column1CloneForLayer0))
+      {
         DiagramPane.ColumnDefinitions.Add(column1CloneForLayer0);
+      }
 
       if (family.Current != null)
+      {
         DetailsControl.DataContext = family.Current;
+      }
 
       DetailsPane.Visibility = Visibility.Visible;
       DetailsControl.SetDefaultFocus();
@@ -1385,7 +1426,10 @@ namespace Microsoft.FamilyShow
     private void CollapseDetailsPanels()
     {
       if (DetailsControl.DetailsEdit.Visibility == Visibility.Visible)
+      {
         ((Storyboard)DetailsControl.Resources["CollapseDetailsEdit"]).Begin(DetailsControl);
+      }
+
       if (DetailsControl.DetailsEditMore.Visibility == Visibility.Visible)
       {
         ((Storyboard)DetailsControl.Resources["CollapseDetailsEditMore"]).Begin(DetailsControl);
@@ -1393,19 +1437,29 @@ namespace Microsoft.FamilyShow
       }
 
       if (DetailsControl.DetailsEditRelationship.Visibility == Visibility.Visible)
+      {
         ((Storyboard)DetailsControl.Resources["CollapseDetailsEditRelationship"]).Begin(DetailsControl);
+      }
 
       if (DetailsControl.DetailsEditAttachments.Visibility == Visibility.Visible)
+      {
         ((Storyboard)DetailsControl.Resources["CollapseDetailsEditAttachments"]).Begin(DetailsControl);
+      }
 
       if (DetailsControl.DetailsEditCitations.Visibility == Visibility.Visible)
+      {
         ((Storyboard)DetailsControl.Resources["CollapseDetailsEditCitations"]).Begin(DetailsControl);
+      }
 
       if (PersonInfoControl.Visibility == Visibility.Visible)
+      {
         ((Storyboard)Resources["HidePersonInfo"]).Begin(this);
-      if (FamilyDataControl.Visibility == Visibility.Visible)
-        ((Storyboard)Resources["HideFamilyData"]).Begin(this);
+      }
 
+      if (FamilyDataControl.Visibility == Visibility.Visible)
+      {
+        ((Storyboard)Resources["HideFamilyData"]).Begin(this);
+      }
     }
 
     /// <summary>
@@ -1498,7 +1552,9 @@ namespace Microsoft.FamilyShow
       DiagramControl.Visibility = Visibility.Visible;
 
       if (family.Current != null)
+      {
         DetailsControl.DataContext = family.Current;
+      }
     }
 
     /// <summary>
@@ -1522,9 +1578,13 @@ namespace Microsoft.FamilyShow
       else
       {
         if (string.IsNullOrEmpty(filename))
+        {
           Title = Properties.Resources.FamilyShow + " " + Properties.Resources.UnsavedStatus;
+        }
         else
+        {
           Title = filename + " - " + Properties.Resources.FamilyShow;
+        }
       }
     }
 
@@ -1548,7 +1608,9 @@ namespace Microsoft.FamilyShow
     {
       // Uses an animation to hide the Family Data Control
       if (FamilyDataControl.IsVisible)
+      {
         ((Storyboard)Resources["HideFamilyData"]).Begin(this);
+      }
     }
 
     /// <summary>
@@ -1558,7 +1620,9 @@ namespace Microsoft.FamilyShow
     {
       // Uses an animation to hide the Family Data Control
       if (PersonInfoControl.IsVisible)
+      {
         ((Storyboard)Resources["HidePersonInfo"]).Begin(this);
+      }
     }
 
     /// <summary>
@@ -1571,7 +1635,9 @@ namespace Microsoft.FamilyShow
       enableButtons();
 
       if (family.Current != null)
+      {
         DetailsControl.DataContext = family.Current;
+      }
     }
 
     /// <summary>
@@ -1585,7 +1651,9 @@ namespace Microsoft.FamilyShow
       WelcomeUserControl.Visibility = Visibility.Collapsed;
 
       if (PersonInfoControl.Visibility == Visibility.Visible)
+      {
         ((Storyboard)Resources["HidePersonInfo"]).Begin(this);
+      }
 
       NewUserControl.Visibility = Visibility.Visible;
       NewUserControl.ClearInputFields();
@@ -1639,11 +1707,19 @@ namespace Microsoft.FamilyShow
         if (item != null)
         {
           if (item.Header.ToString() == Properties.Resources.OpenMenu)
+          {
             open = item;
+          }
+
           if (item.Header.ToString() == Properties.Resources.MergeMenu)
+          {
             merge = item;
+          }
+
           if (item.Header.ToString() == Properties.Resources.GedcomMenu)
+          {
             import = item;
+          }
         }
       }
 
@@ -1723,7 +1799,9 @@ namespace Microsoft.FamilyShow
       // Allows user to cancel close request, save the file or to close without saving.
 
       if (!family.IsDirty)
+      {
         return;
+      }
 
       MessageBoxResult result = MessageBox.Show(Properties.Resources.NotSavedMessage,
           Properties.Resources.Save, MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
@@ -1779,7 +1857,9 @@ namespace Microsoft.FamilyShow
     public void PromptToSave()
     {
       if (!family.IsDirty)
+      {
         return;
+      }
 
       MessageBoxResult result = MessageBox.Show(Properties.Resources.NotSavedMessage,
               Properties.Resources.Save, MessageBoxButton.YesNo, MessageBoxImage.Warning);

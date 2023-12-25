@@ -85,8 +85,10 @@ namespace Microsoft.FamilyShowLib
     {
 
       if (!string.IsNullOrEmpty(attachmentPath))
+      {
         // Copy the attachment to the attachments folder
         relativePath = Copy(attachmentPath);
+      }
     }
 
     #endregion
@@ -126,11 +128,15 @@ namespace Microsoft.FamilyShowLib
 
       // Create the appLocation directory if it doesn't exist
       if (!Directory.Exists(appLocation))
+      {
         Directory.CreateDirectory(appLocation);
+      }
 
       // Create the attachments directory if it doesn't exist
       if (!Directory.Exists(attachmentLocation))
+      {
         Directory.CreateDirectory(attachmentLocation);
+      }
 
       // Copy the attachment.
       try
@@ -174,7 +180,9 @@ namespace Microsoft.FamilyShowLib
     protected virtual void OnPropertyChanged(string propertyName)
     {
       if (PropertyChanged != null)
+      {
         PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+      }
     }
 
     #endregion

@@ -212,7 +212,9 @@ namespace Microsoft.FamilyShow
 
       // Empty offset if the diagram is empty.
       if (Diagram.ActualWidth == 0 || Diagram.ActualHeight == 0)
+      {
         return offset;
+      }
 
       // Get the size of the diagram.
       Size diagramSize = new Size(
@@ -233,7 +235,9 @@ namespace Microsoft.FamilyShow
     {
       // Nothing to do if the diagram is empty.
       if (ActualWidth == 0 || ActualHeight == 0)
+      {
         return;
+      }
 
       Size diagramSize = new Size(
           Diagram.ActualWidth * Zoom,
@@ -252,7 +256,9 @@ namespace Microsoft.FamilyShow
     {
       // Don't scroll if the diagram is empty.
       if (Diagram.ActualWidth == 0 || Diagram.ActualHeight == 0)
+      {
         return;
+      }
 
       // This is the offset that will be scrolled. First get the offset 
       // that positions the diagram in the top-left corner.

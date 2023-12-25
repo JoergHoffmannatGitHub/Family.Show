@@ -26,7 +26,9 @@ namespace Microsoft.FamilyShow
       Language = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag);
 
       foreach (FontFamily fontFamily in Fonts.SystemFontFamilies)
+      {
         FontsComboBox.Items.Add(fontFamily.Source);
+      }
     }
 
     public static readonly RoutedEvent CloseButtonClickEvent = EventManager.RegisterRoutedEvent(
@@ -150,7 +152,9 @@ namespace Microsoft.FamilyShow
     {
       // Ignore null cases
       if (flowDocument == null || flowDocument.Blocks == null || DataContext == null)
+      {
         return;
+      }
 
       // Clear out any existing text in the viewer 
       flowDocument.Blocks.Clear();
@@ -215,7 +219,9 @@ namespace Microsoft.FamilyShow
       // Font list.
       result = StoryRichTextBox.Selection.GetPropertyValue(FlowDocument.FontFamilyProperty);
       if (result != null && result is FontFamily)
+      {
         FontsComboBox.SelectedItem = result.ToString();
+      }
 
       // Align buttons.
       result = StoryRichTextBox.Selection.GetPropertyValue(Block.TextAlignmentProperty);
@@ -237,7 +243,9 @@ namespace Microsoft.FamilyShow
             decorations[0].Location == TextDecorationLocation.Underline);
       }
       else
+      {
         UnderlineButton.IsChecked = false;
+      }
 
       // bullets
       UpdateBulletButtons();
@@ -294,7 +302,9 @@ namespace Microsoft.FamilyShow
       int photoCount = 0;
 
       if (Directory.Exists(photoLocation))
+      {
         photoCount = Directory.GetFiles(photoLocation).Length;
+      }
 
       if (photoCount > 0)
       {
@@ -315,7 +325,9 @@ namespace Microsoft.FamilyShow
               foreach (Photo p in person.Photos)
               {
                 if (p.RelativePath.ToString() == Path.Combine(Photo.PhotosFolderName, Path.GetFileName(dialog.FileName)))
+                {
                   i++;
+                }
               }
 
               if (i == 0)
@@ -459,8 +471,9 @@ namespace Microsoft.FamilyShow
         // Make sure that the file exists
         FileInfo fi = new FileInfo(path);
         if (fi.Exists)
+        {
           SetDisplayPhoto(path);
-
+        }
       }
       else
       {
@@ -612,8 +625,10 @@ namespace Microsoft.FamilyShow
             person.Avatar = person.Photos[0].FullyQualifiedPath;
           }
           else
+          {
             // Setter for property change notification
             person.Avatar = "";
+          }
 
           person.OnPropertyChanged("HasPhoto");
         }
@@ -634,7 +649,9 @@ namespace Microsoft.FamilyShow
       {
         // Set IsAvatar to false for existing photos
         foreach (Photo existingPhoto in person.Photos)
+        {
           existingPhoto.IsAvatar = false;
+        }
 
         person.Avatar = "";
       }
@@ -649,7 +666,9 @@ namespace Microsoft.FamilyShow
 
       if (string.Compare(extension, ".jpg", true, CultureInfo.InvariantCulture) == 0 ||
           string.Compare(extension, ".jpeg", true, CultureInfo.InvariantCulture) == 0)
+      {
         return true;
+      }
 
       return false;
     }
@@ -686,7 +705,9 @@ namespace Microsoft.FamilyShow
       if (person.Restriction != Restriction.Locked)
       {
         if (e.Key == Key.Delete)
+        {
           DeletePhotoButton_Click(sender, e);
+        }
       }
     }
   }

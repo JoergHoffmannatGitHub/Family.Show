@@ -53,15 +53,22 @@ namespace Microsoft.FamilyShow
         DateTime s2 = App.StringToDate(Date2TextBox.Text);
 
         if (!string.IsNullOrEmpty(Date1TextBox.Text))
+        {
           Date1TextBox.Text = s1.ToShortDateString();
+        }
+
         if (!string.IsNullOrEmpty(Date2TextBox.Text))
+        {
           Date2TextBox.Text = s2.ToShortDateString();
+        }
 
         int age = 0;
 
         // Get any input age
         if (!string.IsNullOrEmpty(AgeTextBox.Text))
+        {
           age = int.Parse(AgeTextBox.Text);
+        }
 
         // If a birth date and death date are specified, calculate an age
         if (!string.IsNullOrEmpty(Date1TextBox.Text) && !string.IsNullOrEmpty(Date2TextBox.Text))
@@ -139,14 +146,21 @@ namespace Microsoft.FamilyShow
         //Get the date input and try to add/subtract the specified number of days, months and years.
         DateTime s = App.StringToDate(ToBox.Text);
         if (!string.IsNullOrEmpty(ToBox.Text))
+        {
           ToBox.Text = s.ToShortDateString();
+        }
 
         int i = 1;
 
         if (AddSubtractComboBox.SelectedIndex == 0)
+        {
           i = 1;
+        }
+
         if ((AddSubtractComboBox.SelectedIndex == 1))
+        {
           i = -1;
+        }
 
         double days = 0;
         int months = 0;
@@ -237,9 +251,13 @@ namespace Microsoft.FamilyShow
       if (AddSubtractComboBox.SelectedItem != null)
       {
         if (AddSubtractComboBox.SelectedIndex == 0)
+        {
           DateTo.Content = Properties.Resources.To.ToLower();
+        }
         else
+        {
           DateTo.Content = Properties.Resources.From.ToLower();
+        }
       }
     }
 

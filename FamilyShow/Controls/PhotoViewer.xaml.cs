@@ -68,8 +68,9 @@ namespace Microsoft.FamilyShow
         // Make sure that the file exists
         FileInfo fi = new FileInfo(path);
         if (fi.Exists)
+        {
           SetDisplayPhoto(path);
-
+        }
       }
       else
       {
@@ -185,7 +186,9 @@ namespace Microsoft.FamilyShow
 
       if (string.Compare(extension, ".jpg", true, CultureInfo.InvariantCulture) == 0 ||
           string.Compare(extension, ".jpeg", true, CultureInfo.InvariantCulture) == 0)
+      {
         return true;
+      }
 
       return false;
     }
@@ -213,7 +216,9 @@ namespace Microsoft.FamilyShow
           {
 
             if (string.IsNullOrEmpty(photo.RelativePath))
+            {
               add = false;
+            }
 
             if (existingPhoto.RelativePath == photo.RelativePath)
             {
@@ -223,23 +228,31 @@ namespace Microsoft.FamilyShow
 
           }
           if (add == true)
+          {
             allPhotos.Add(photo);
-
+          }
         }
 
         if (allPhotos.Count == 0)
+        {
           View.Visibility = Visibility.Collapsed;
+        }
         else
+        {
           View.Visibility = Visibility.Visible;
-
+        }
       }
 
 
       foreach (Photo photo in allPhotos)
+      {
         PhotosListBox.Items.Add(photo);
+      }
 
       if (PhotosListBox.Items.Count > 0)
+      {
         PhotosListBox.SelectedIndex = 0;
+      }
     }
 
     #endregion

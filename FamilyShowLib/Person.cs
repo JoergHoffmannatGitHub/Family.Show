@@ -216,9 +216,15 @@ namespace Microsoft.FamilyShowLib
       {
         string name = "";
         if (!string.IsNullOrEmpty(FirstName))
+        {
           name += firstName;
+        }
+
         if (!string.IsNullOrEmpty(LastName))
+        {
           name += " " + lastName;
+        }
+
         return name;
       }
     }
@@ -232,11 +238,20 @@ namespace Microsoft.FamilyShowLib
       {
         string fullName = "";
         if (!string.IsNullOrEmpty(FirstName))
+        {
           fullName += firstName;
+        }
+
         if (!string.IsNullOrEmpty(LastName))
+        {
           fullName += " " + lastName;
+        }
+
         if (!string.IsNullOrEmpty(suffix))
+        {
           fullName += " " + suffix;
+        }
+
         return fullName;
       }
     }
@@ -272,11 +287,15 @@ namespace Microsoft.FamilyShowLib
       get
       {
         if (BirthDate == null)
+        {
           return null;
+        }
 
         //Do not show  age  of dead person if no death date is entered.
         if (!isLiving && DeathDate == null)
+        {
           return null;
+        }
 
         // Determine the age of the person based on just the year.
         DateTime startDate = BirthDate.Value;
@@ -286,7 +305,9 @@ namespace Microsoft.FamilyShowLib
         // Compensate for the month and day of month (if they have not had a birthday this year).
         if (endDate.Month < startDate.Month ||
             (endDate.Month == startDate.Month && endDate.Day < startDate.Day))
+        {
           age--;
+        }
 
         return Math.Max(0, age);
       }
@@ -308,13 +329,21 @@ namespace Microsoft.FamilyShowLib
           // The AgeGroup enumeration is defined later in this file. It is up to the Person
           // class to define the ages that fall into the particular age groups  
           if (Age >= 0 && Age < 20)
+          {
             ageGroup = AgeGroup.Youth;
+          }
           else if (Age >= 20 && Age < 40)
+          {
             ageGroup = AgeGroup.Adult;
+          }
           else if (Age >= 40 && Age < 70)
+          {
             ageGroup = AgeGroup.MiddleAge;
+          }
           else
+          {
             ageGroup = AgeGroup.Senior;
+          }
         }
         return ageGroup;
       }
@@ -329,9 +358,13 @@ namespace Microsoft.FamilyShowLib
       get
       {
         if (birthDate.HasValue)
+        {
           return birthDate.Value.Year.ToString(CultureInfo.CurrentCulture);
+        }
         else
+        {
           return "-";
+        }
       }
     }
 
@@ -344,9 +377,13 @@ namespace Microsoft.FamilyShowLib
       get
       {
         if (deathDate.HasValue && !isLiving)
+        {
           return deathDate.Value.Year.ToString(CultureInfo.CurrentCulture);
+        }
         else
+        {
           return "-";
+        }
       }
     }
 
@@ -520,7 +557,9 @@ namespace Microsoft.FamilyShowLib
       get
       {
         if (birthDate == null)
+        {
           return null;
+        }
         else
         {
           return birthDate.Value.ToString(
@@ -539,7 +578,9 @@ namespace Microsoft.FamilyShowLib
       get
       {
         if (birthDate == null)
+        {
           return null;
+        }
         else
         {
           StringBuilder returnValue = new StringBuilder();
@@ -1351,7 +1392,9 @@ namespace Microsoft.FamilyShowLib
           foreach (Photo photo in photos)
           {
             if (photo.IsAvatar)
+            {
               return photo.FullyQualifiedPath;
+            }
           }
         }
 
@@ -1375,22 +1418,30 @@ namespace Microsoft.FamilyShowLib
       {
         // This person is locked so you cannot delete them
         if (restriction == Restriction.Locked)
+        {
           return false;
+        }
 
         // With a few exceptions, anyone with less than 3 relationships is deletable
         if (relationships.Count < 3)
         {
           // The person has 2 spouses. Since they connect their spouses, they are not deletable.
           if (Spouses.Count == 2)
+          {
             return false;
+          }
 
           // The person is connecting two generations
           if (Parents.Count == 1 && Children.Count == 1)
+          {
             return false;
+          }
 
           // The person is connecting inlaws
           if (Parents.Count == 1 && Spouses.Count == 1)
+          {
             return false;
+          }
 
           // Anyone else with less than 3 relationships is deletable
           return true;
@@ -1398,11 +1449,15 @@ namespace Microsoft.FamilyShowLib
 
         // More than 3 relationships, however the relationships are from only Children. 
         if (Children.Count > 0 && Parents.Count == 0 && Siblings.Count == 0 && Spouses.Count == 0)
+        {
           return true;
+        }
 
         // More than 3 relationships. The relationships are from siblings. Deletable since siblings are connected to each other or the parent.
         if (Siblings.Count > 0 && Parents.Count >= 0 && Spouses.Count == 0 && Children.Count == 0)
+        {
           return true;
+        }
 
         // This person has complicated dependencies that does not allow deletion.
         return false;
@@ -1433,7 +1488,9 @@ namespace Microsoft.FamilyShowLib
         foreach (Relationship rel in relationships)
         {
           if (rel.RelationshipType == RelationshipType.Spouse)
+          {
             spouses.Add(rel.RelationTo);
+          }
         }
         return spouses;
       }
@@ -1451,7 +1508,9 @@ namespace Microsoft.FamilyShowLib
           {
             SpouseRelationship spouseRel = rel as SpouseRelationship;
             if (spouseRel != null && spouseRel.SpouseModifier == SpouseModifier.Current)
+            {
               spouses.Add(rel.RelationTo);
+            }
           }
         }
         return spouses;
@@ -1470,7 +1529,9 @@ namespace Microsoft.FamilyShowLib
           {
             SpouseRelationship spouseRel = rel as SpouseRelationship;
             if (spouseRel != null && spouseRel.SpouseModifier == SpouseModifier.Former)
+            {
               spouses.Add(rel.RelationTo);
+            }
           }
         }
         return spouses;
@@ -1489,7 +1550,9 @@ namespace Microsoft.FamilyShowLib
         foreach (Relationship rel in relationships)
         {
           if (rel.RelationshipType == RelationshipType.Child)
+          {
             children.Add(rel.RelationTo);
+          }
         }
         return children;
       }
@@ -1507,7 +1570,9 @@ namespace Microsoft.FamilyShowLib
           {
             ChildRelationship childRel = rel as ChildRelationship;
             if (childRel != null && childRel.ParentChildModifier == ParentChildModifier.Natural)
+            {
               children.Add(rel.RelationTo);
+            }
           }
         }
         return children;
@@ -1526,7 +1591,9 @@ namespace Microsoft.FamilyShowLib
           {
             ChildRelationship childRel = rel as ChildRelationship;
             if (childRel != null && childRel.ParentChildModifier == ParentChildModifier.Adopted)
+            {
               children.Add(rel.RelationTo);
+            }
           }
         }
         return children;
@@ -1545,7 +1612,9 @@ namespace Microsoft.FamilyShowLib
           {
             ChildRelationship childRel = rel as ChildRelationship;
             if (childRel != null && childRel.ParentChildModifier == ParentChildModifier.Foster)
+            {
               children.Add(rel.RelationTo);
+            }
           }
         }
         return children;
@@ -1568,7 +1637,9 @@ namespace Microsoft.FamilyShowLib
           {
             ParentRelationship parentRel = rel as ParentRelationship;
             if (parentRel != null && parentRel.ParentChildModifier == ParentChildModifier.Natural)
+            {
               parents.Add(rel.RelationTo);
+            }
           }
         }
         return parents;
@@ -1588,7 +1659,9 @@ namespace Microsoft.FamilyShowLib
         foreach (Relationship rel in relationships)
         {
           if (rel.RelationshipType == RelationshipType.Parent)
+          {
             parents.Add(rel.RelationTo);
+          }
         }
         return parents;
       }
@@ -1606,7 +1679,9 @@ namespace Microsoft.FamilyShowLib
         foreach (Relationship rel in relationships)
         {
           if (rel.RelationshipType == RelationshipType.Sibling)
+          {
             siblings.Add(rel.RelationTo);
+          }
         }
         return siblings;
       }
@@ -1660,7 +1735,10 @@ namespace Microsoft.FamilyShowLib
           ParentSet parentSet = new ParentSet(Parents[0], Parents[1]);
           return parentSet;
         }
-        else return null;
+        else
+        {
+          return null;
+        }
       }
     }
 
@@ -1682,7 +1760,9 @@ namespace Microsoft.FamilyShowLib
 
             // Don't add the same parent set twice.
             if (!parentSets.Contains(ps))
+            {
               parentSets.Add(ps);
+            }
           }
         }
 
@@ -1827,7 +1907,9 @@ namespace Microsoft.FamilyShowLib
           foreach (Photo photo in photos)
           {
             if (photo.IsAvatar)
+            {
               return true;
+            }
           }
         }
 
@@ -1844,9 +1926,13 @@ namespace Microsoft.FamilyShowLib
       get
       {
         if (photos.Count > 0)
+        {
           return true;
+        }
         else
+        {
           return false;
+        }
       }
     }
 
@@ -1859,9 +1945,13 @@ namespace Microsoft.FamilyShowLib
       get
       {
         if (birthPlace == null || birthPlace.Length == 0)
+        {
           return false;
+        }
         else
+        {
           return true;
+        }
       }
     }
 
@@ -1874,9 +1964,13 @@ namespace Microsoft.FamilyShowLib
       get
       {
         if (deathPlace == null || deathPlace.Length == 0)
+        {
           return false;
+        }
         else
+        {
           return true;
+        }
       }
     }
 
@@ -1889,9 +1983,13 @@ namespace Microsoft.FamilyShowLib
       get
       {
         if (cremationPlace == null || cremationPlace.Length == 0)
+        {
           return false;
+        }
         else
+        {
           return true;
+        }
       }
     }
 
@@ -1904,9 +2002,13 @@ namespace Microsoft.FamilyShowLib
       get
       {
         if (burialPlace == null || burialPlace.Length == 0)
+        {
           return false;
+        }
         else
+        {
           return true;
+        }
       }
     }
 
@@ -1925,10 +2027,13 @@ namespace Microsoft.FamilyShowLib
              ((birthSource == null || birthSource.Length == 0) || (birthCitation == null || birthCitation.Length == 0)) &&
              ((occupationSource == null || occupationSource.Length == 0) || (occupationCitation == null || occupationCitation.Length == 0)) &&
              ((cremationSource == null || cremationSource.Length == 0) || (cremationCitation == null || cremationCitation.Length == 0)))
+        {
           return false;
+        }
         else
+        {
           return true;
-
+        }
       }
     }
 
@@ -1941,9 +2046,13 @@ namespace Microsoft.FamilyShowLib
       get
       {
         if (note == null || note.ToString().Length == 0)
+        {
           return false;
+        }
         else
+        {
           return true;
+        }
       }
     }
 
@@ -1957,10 +2066,13 @@ namespace Microsoft.FamilyShowLib
       {
 
         if (attachments.Count > 0)
+        {
           return true;
+        }
         else
+        {
           return false;
-
+        }
       }
     }
 
@@ -1977,9 +2089,13 @@ namespace Microsoft.FamilyShowLib
       get
       {
         if (gender == Gender.Male)
+        {
           return Properties.Resources.Son;
+        }
         else
+        {
           return Properties.Resources.Daughter;
+        }
       }
     }
 
@@ -2003,18 +2119,28 @@ namespace Microsoft.FamilyShowLib
             if (parents != null && parents.ParentChildModifier == ParentChildModifier.Natural)
             {
               if (i == 1)
+              {
                 parentsText += parents.PersonFullName;
+              }
+
               if (i != 1)
+              {
                 parentsText += " " + Properties.Resources.And + " " + parents.PersonFullName;
+              }
+
               i += 1;
             }
           }
 
         }
         if (!string.IsNullOrEmpty(parentsText))
+        {
           return " " + Properties.Resources.Of + " " + parentsText;
+        }
         else
+        {
           return parentsText;
+        }
       }
     }
 
@@ -2027,9 +2153,13 @@ namespace Microsoft.FamilyShowLib
       get
       {
         if (gender == Gender.Male)
+        {
           return Properties.Resources.Brother;
+        }
         else
+        {
           return Properties.Resources.Sister;
+        }
       }
     }
 
@@ -2049,23 +2179,33 @@ namespace Microsoft.FamilyShowLib
           siblingsText = siblings[0].Name;
 
           if (siblings.Count == 2)
+          {
             siblingsText += " " + Properties.Resources.And + " " + siblings[1].Name;
+          }
           else
           {
             for (int i = 1; i < siblings.Count; i++)
             {
               if (i == siblings.Count - 1)
+              {
                 siblingsText += " " + Properties.Resources.And + " " + siblings[i].Name;
+              }
               else
+              {
                 siblingsText += ", " + siblings[i].Name;
+              }
             }
           }
         }
 
         if (!string.IsNullOrEmpty(siblingsText))
+        {
           return " " + Properties.Resources.To + " " + siblingsText;
+        }
         else
+        {
           return siblingsText;
+        }
       }
     }
 
@@ -2078,9 +2218,13 @@ namespace Microsoft.FamilyShowLib
       get
       {
         if (gender == Gender.Male)
+        {
           return Properties.Resources.Husband;
+        }
         else
+        {
           return Properties.Resources.Wife;
+        }
       }
     }
 
@@ -2100,22 +2244,32 @@ namespace Microsoft.FamilyShowLib
           spousesText = spouses[0].Name;
 
           if (spouses.Count == 2)
+          {
             spousesText += " " + Properties.Resources.And + " " + spouses[1].Name;
+          }
           else
           {
             for (int i = 1; i < spouses.Count; i++)
             {
               if (i == spouses.Count - 1)
+              {
                 spousesText += ", " + Properties.Resources.And + " " + spouses[i].Name;
+              }
               else
+              {
                 spousesText += ", " + spouses[i].Name;
+              }
             }
           }
         }
         if (!string.IsNullOrEmpty(spousesText))
+        {
           return " " + Properties.Resources.To + " " + spousesText;
+        }
         else
+        {
           return spousesText;
+        }
       }
     }
 
@@ -2129,10 +2283,13 @@ namespace Microsoft.FamilyShowLib
       {
 
         if (gender == Gender.Male)
+        {
           return Properties.Resources.Father;
+        }
         else
+        {
           return Properties.Resources.Mother;
-
+        }
       }
     }
 
@@ -2156,9 +2313,15 @@ namespace Microsoft.FamilyShowLib
             if (children != null && children.ParentChildModifier == ParentChildModifier.Natural)
             {
               if (i == 1)
+              {
                 childrensText += children.PersonFullName;
+              }
+
               if (i != 1)
+              {
                 childrensText += " " + Properties.Resources.And + " " + children.PersonFullName;
+              }
+
               i += 1;
             }
           }
@@ -2166,9 +2329,13 @@ namespace Microsoft.FamilyShowLib
         }
 
         if (!string.IsNullOrEmpty(childrensText))
+        {
           return " " + Properties.Resources.To + " " + childrensText;
+        }
         else
+        {
           return childrensText;
+        }
       }
 
     }
@@ -2203,7 +2370,9 @@ namespace Microsoft.FamilyShowLib
     {
       //Use the first name if specified, if not, the default first name is used.
       if (!string.IsNullOrEmpty(firstNames))
+      {
         firstName = firstNames;
+      }
 
       this.lastName = lastName;
     }
@@ -2232,7 +2401,9 @@ namespace Microsoft.FamilyShowLib
     public virtual void OnPropertyChanged(string propertyName)
     {
       if (PropertyChanged != null)
+      {
         PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+      }
     }
 
     #endregion
@@ -2244,11 +2415,20 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public bool Equals(Person other)
     {
-      if (other is null) return false;
+      if (other is null)
+      {
+        return false;
+      }
       // Optimization for a common success case.
-      if (ReferenceEquals(this, other)) return true;
+      if (ReferenceEquals(this, other))
+      {
+        return true;
+      }
       // If run-time types are not exactly the same, return false.
-      if (GetType() != other.GetType()) return false;
+      if (GetType() != other.GetType())
+      {
+        return false;
+      }
       // Return true if the Id match.
       return Id == other.Id;
     }
@@ -2292,7 +2472,9 @@ namespace Microsoft.FamilyShowLib
         if (spouseRelationship != null)
         {
           if (spouseRelationship.RelationTo.Equals(spouse))
+          {
             return spouseRelationship;
+          }
         }
       }
 
@@ -2307,7 +2489,9 @@ namespace Microsoft.FamilyShowLib
         if (childRelationship != null)
         {
           if (childRelationship.RelationTo.Equals(child))
+          {
             return childRelationship;
+          }
         }
       }
 
@@ -2328,7 +2512,9 @@ namespace Microsoft.FamilyShowLib
 
         // Don't add the same parent set twice.
         if (!parentSets.Contains(ps))
+        {
           parentSets.Add(ps);
+        }
       }
 
       return parentSets;
@@ -2369,25 +2555,33 @@ namespace Microsoft.FamilyShowLib
         if (columnName == "BirthDate")
         {
           if (BirthDate == DateTime.MinValue)
+          {
             result = Properties.Resources.InvalidDate;
+          }
         }
 
         if (columnName == "DeathDate")
         {
           if (DeathDate == DateTime.MinValue)
+          {
             result = Properties.Resources.InvalidDate;
+          }
         }
 
         if (columnName == "CremationDate")
         {
           if (CremationDate == DateTime.MinValue)
+          {
             result = Properties.Resources.InvalidDate;
+          }
         }
 
         if (columnName == "BurialDate")
         {
           if (BurialDate == DateTime.MinValue)
+          {
             result = Properties.Resources.InvalidDate;
+          }
         }
 
         return result;
@@ -2464,11 +2658,20 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public bool Equals(ParentSet other)
     {
-      if (other is null) return false;
+      if (other is null)
+      {
+        return false;
+      }
       // Optimization for a common success case.
-      if (ReferenceEquals(this, other)) return true;
+      if (ReferenceEquals(this, other))
+      {
+        return true;
+      }
       // If run-time types are not exactly the same, return false.
-      if (GetType() != other.GetType()) return false;
+      if (GetType() != other.GetType())
+      {
+        return false;
+      }
       // Return true if the parents match.
       return FirstParent.Equals(other.FirstParent) && SecondParent.Equals(other.SecondParent) ||
         FirstParent.Equals(other.SecondParent) && SecondParent.Equals(other.FirstParent);

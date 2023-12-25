@@ -115,9 +115,13 @@ namespace Microsoft.FamilyShow
         #region top names
 
         if (p.Gender == Gender.Male)
+        {
           maleNames[i] = p.FirstName.Split()[0];
+        }
         else
+        {
           femaleNames[i] = p.FirstName.Split()[0];
+        }
 
         surnames[i] = p.LastName;
 
@@ -134,7 +138,9 @@ namespace Microsoft.FamilyShow
           {
 
             if (string.IsNullOrEmpty(photo.RelativePath))
+            {
               add = false;
+            }
 
             if (existingPhoto.RelativePath == photo.RelativePath)
             {
@@ -144,7 +150,9 @@ namespace Microsoft.FamilyShow
 
           }
           if (add == true)
+          {
             allPhotos.Add(photo);
+          }
         }
 
         #endregion
@@ -160,7 +168,9 @@ namespace Microsoft.FamilyShow
           {
 
             if (string.IsNullOrEmpty(attachment.RelativePath))
+            {
               add = false;
+            }
 
             if (existingAttachment.RelativePath == attachment.RelativePath)
             {
@@ -170,30 +180,54 @@ namespace Microsoft.FamilyShow
 
           }
           if (add == true)
+          {
             allAttachments.Add(attachment);
+          }
         }
 
         #endregion
 
         if (p.HasNote)
+        {
           notes++;
+        }
 
         #region events and citations
 
         if ((!string.IsNullOrEmpty(p.ReligionSource)) && (!string.IsNullOrEmpty(p.ReligionCitation)) && (!string.IsNullOrEmpty(p.Religion)))
+        {
           citations++;
+        }
+
         if ((!string.IsNullOrEmpty(p.CremationSource)) && (!string.IsNullOrEmpty(p.CremationCitation)) && (!string.IsNullOrEmpty(p.CremationPlace) || p.CremationDate > DateTime.MinValue))
+        {
           citations++;
+        }
+
         if ((!string.IsNullOrEmpty(p.OccupationSource)) && (!string.IsNullOrEmpty(p.OccupationCitation)) && (!string.IsNullOrEmpty(p.Occupation)))
+        {
           citations++;
+        }
+
         if ((!string.IsNullOrEmpty(p.EducationSource)) && (!string.IsNullOrEmpty(p.EducationCitation)) && (!string.IsNullOrEmpty(p.Education)))
+        {
           citations++;
+        }
+
         if ((!string.IsNullOrEmpty(p.BirthSource)) && (!string.IsNullOrEmpty(p.BirthCitation)) && ((!string.IsNullOrEmpty(p.BirthPlace)) || p.BirthDate > DateTime.MinValue))
+        {
           citations++;
+        }
+
         if ((!string.IsNullOrEmpty(p.DeathSource)) && (!string.IsNullOrEmpty(p.DeathCitation)) && ((!string.IsNullOrEmpty(p.DeathPlace)) || p.DeathDate > DateTime.MinValue))
+        {
           citations++;
+        }
+
         if ((!string.IsNullOrEmpty(p.BurialSource)) && (!string.IsNullOrEmpty(p.BurialCitation)) && ((!string.IsNullOrEmpty(p.BurialPlace)) || p.BurialDate > DateTime.MinValue))
+        {
           citations++;
+        }
 
         foreach (Relationship rel in p.Relationships)
         {
@@ -206,10 +240,14 @@ namespace Microsoft.FamilyShow
             marriages++;
 
             if (!string.IsNullOrEmpty(spouseRel.MarriageCitation) && !string.IsNullOrEmpty(spouseRel.MarriageSource) && (!string.IsNullOrEmpty(spouseRel.MarriagePlace) || spouseRel.MarriageDate > DateTime.MinValue))
+            {
               relationshipCitations++;
+            }
 
             if (!string.IsNullOrEmpty(spouseRel.MarriagePlace))
+            {
               progress++;
+            }
 
             if (spouseRel.MarriageDate != null)
             {
@@ -234,46 +272,84 @@ namespace Microsoft.FamilyShow
               }
 
               if (!string.IsNullOrEmpty(spouseRel.DivorceCitation) && !string.IsNullOrEmpty(spouseRel.DivorceSource) && spouseRel.DivorceDate > DateTime.MinValue)
+              {
                 relationshipCitations++;
+              }
             }
           }
         }
 
         if (!string.IsNullOrEmpty(p.Religion))
+        {
           religions++;
+        }
+
         if (!string.IsNullOrEmpty(p.Education))
+        {
           educations++;
+        }
+
         if (!string.IsNullOrEmpty(p.Occupation))
+        {
           occupations++;
+        }
+
         if (p.BurialDate > DateTime.MinValue || !string.IsNullOrEmpty(p.BurialPlace))
+        {
           burials++;
+        }
+
         if (p.CremationDate > DateTime.MinValue || !string.IsNullOrEmpty(p.CremationPlace))
+        {
           cremations++;
+        }
+
         if (p.DeathDate > DateTime.MinValue || !string.IsNullOrEmpty(p.DeathPlace))
+        {
           deaths++;
+        }
+
         if (p.BirthDate > DateTime.MinValue || !string.IsNullOrEmpty(p.BirthPlace))
+        {
           births++;
+        }
 
         #endregion
 
         #region min/max dates
 
         if (p.BirthDate != null)
+        {
           birthDate = p.BirthDate;
+        }
+
         if (p.DeathDate != null)
+        {
           deathDate = p.DeathDate;
+        }
+
         if (p.CremationDate != null)
+        {
           cremationDate = p.CremationDate;
+        }
+
         if (p.BurialDate != null)
+        {
           burialDate = p.BurialDate;
+        }
 
         DateTime? yearmin = year(marriageDate, divorceDate, birthDate, deathDate, cremationDate, burialDate, "min");
         DateTime? yearmax = year(marriageDate, divorceDate, birthDate, deathDate, cremationDate, burialDate, "max");
 
         if (minimumYear > yearmin.Value.Year)
+        {
           minimumYear = yearmin.Value.Year;
+        }
+
         if (maximumYear < yearmax.Value.Year && yearmax.Value.Year <= DateTime.Now.Year)
+        {
           maximumYear = yearmax.Value.Year;
+        }
 
         #endregion
 
@@ -282,19 +358,39 @@ namespace Microsoft.FamilyShow
         #region progress
 
         if (!string.IsNullOrEmpty(p.FirstName))
+        {
           progress++;
+        }
+
         if (!string.IsNullOrEmpty(p.LastName))
+        {
           progress++;
+        }
+
         if (!string.IsNullOrEmpty(p.BirthPlace))
+        {
           progress++;
+        }
+
         if (p.BirthDate > DateTime.MinValue)
+        {
           progress++;
+        }
+
         if (!string.IsNullOrEmpty(p.Occupation))
+        {
           progress++;
+        }
+
         if (!string.IsNullOrEmpty(p.Education))
+        {
           progress++;
+        }
+
         if (!string.IsNullOrEmpty(p.Religion))
+        {
           progress++;
+        }
 
         if (!p.IsLiving)
         {
@@ -304,25 +400,42 @@ namespace Microsoft.FamilyShow
           if (p.CremationDate > DateTime.MinValue || !string.IsNullOrEmpty(p.CremationPlace))
           {
             if (p.CremationDate > DateTime.MinValue)
+            {
               progress++;
+            }
+
             if (!string.IsNullOrEmpty(p.CremationPlace))
+            {
               progress++;
+            }
           }
           else
           {
             if (p.BurialDate > DateTime.MinValue)
+            {
               progress++;
+            }
+
             if (!string.IsNullOrEmpty(p.BurialPlace))
+            {
               progress++;
+            }
           }
 
           if (p.DeathDate > DateTime.MinValue)
+          {
             progress++;
+          }
+
           if (!string.IsNullOrEmpty(p.DeathPlace))
+          {
             progress++;
+          }
         }
         else
+        {
           living++;
+        }
 
         #endregion
 
@@ -359,9 +472,13 @@ namespace Microsoft.FamilyShow
       MinYear.Text = Properties.Resources.EarliestKnownEvent + ": " + minimumYear;
 
       if (maximumYear == DateTime.MinValue.Year)
+      {
         MaxYear.Text = Properties.Resources.LatestKnownEvent + ": " + DateTime.Now.Year;
+      }
       else
+      {
         MaxYear.Text = Properties.Resources.LatestKnownEvent + ": " + maximumYear;
+      }
 
       if (totalEvents == 0)
       {
@@ -403,15 +520,29 @@ namespace Microsoft.FamilyShow
         star5.ToolTip = tooltip;
 
         if (dataQuality >= 0)
+        {
           star1.Visibility = Visibility.Visible;
+        }
+
         if (dataQuality >= 0.2)
+        {
           star2.Visibility = Visibility.Visible;
+        }
+
         if (dataQuality >= 0.4)
+        {
           star3.Visibility = Visibility.Visible;
+        }
+
         if (dataQuality >= 0.6)
+        {
           star4.Visibility = Visibility.Visible;
+        }
+
         if (dataQuality >= 0.8)
+        {
           star5.Visibility = Visibility.Visible;
+        }
       }
 
       #endregion
@@ -458,20 +589,38 @@ namespace Microsoft.FamilyShow
       long currentSize = 0;
 
       if (Directory.Exists(photoLocation))
+      {
         photoSize = FileSize(Directory.GetFiles(photoLocation, "*.*"));
+      }
+
       if (Directory.Exists(noteLocation))
+      {
         noteSize = FileSize(Directory.GetFiles(noteLocation, "*.*"));
+      }
+
       if (Directory.Exists(attachmentLocation))
+      {
         attachmentSize = FileSize(Directory.GetFiles(attachmentLocation, "*.*"));
+      }
+
       if (File.Exists(xmlLocation))
+      {
         xmlSize = (new FileInfo(xmlLocation).Length) / 1024;  //convert to Kb
+      }
+
       if (File.Exists(currentLocation))
+      {
         currentSize = (new FileInfo(currentLocation).Length) / 1024;  //convert to Kb
+      }
 
       if (currentSize > 0)
+      {
         DataSize.Text = Properties.Resources.DataSize + ": " + currentSize + " KB - (" + Properties.Resources.Photos + " " + photoSize + " KB, " + Properties.Resources.Notes + " " + noteSize + " KB, " + Properties.Resources.Attachments + " " + attachmentSize + " KB, " + Properties.Resources.Xml + " " + xmlSize + " KB)";
+      }
       else
+      {
         DataSize.Text = Properties.Resources.DataSize + ": ";
+      }
 
       #endregion
 
@@ -526,7 +675,9 @@ namespace Microsoft.FamilyShow
       FileProgressBar.Visibility = Visibility.Collapsed;
 
       if (dlg.ShowDialog().GetValueOrDefault())
+      {
         Print(dlg, StatisticsPanel);
+      }
 
       //Animated progress bar does not render well on print
       FileProgressBar.Visibility = Visibility.Visible;
@@ -547,9 +698,13 @@ namespace Microsoft.FamilyShow
       // Titles
       TextBlock titles = new TextBlock();
       if (!string.IsNullOrEmpty(App.FamilyCollection.FullyQualifiedFilename))
+      {
         titles.Text = Properties.Resources.StatisticsReportFor + " " + Path.GetFileName(App.FamilyCollection.FullyQualifiedFilename);
+      }
       else
+      {
         titles.Text = Properties.Resources.StatisticsReport;
+      }
 
       // Data
       System.Windows.Shapes.Rectangle diagram = new System.Windows.Shapes.Rectangle();
@@ -579,12 +734,17 @@ namespace Microsoft.FamilyShow
 
       // Apply sorting
       if (!string.IsNullOrEmpty(sort))
+      {
         view.SortDescriptions.Add(new SortDescription(sort, ListSortDirection.Ascending));
+      }
 
       // Group the collection into tags. The tag cloud will be based on the group Name and ItemCount
       PropertyGroupDescription groupDescription = new PropertyGroupDescription();
       if (!string.IsNullOrEmpty(group))
+      {
         groupDescription.PropertyName = group;
+      }
+
       view.GroupDescriptions.Add(groupDescription);
 
       return view;
@@ -608,37 +768,49 @@ namespace Microsoft.FamilyShow
       if (marriageDate != null)
       {
         if (marriageDate.Value > DateTime.MinValue)
+        {
           dates.Add(marriageDate);
+        }
       }
 
       if (divorceDate != null)
       {
         if (divorceDate.Value > DateTime.MinValue)
+        {
           dates.Add(divorceDate);
+        }
       }
 
       if (birthDate != null)
       {
         if (birthDate.Value > DateTime.MinValue)
+        {
           dates.Add(birthDate);
+        }
       }
 
       if (deathDate != null)
       {
         if (deathDate.Value > DateTime.MinValue)
+        {
           dates.Add(deathDate);
+        }
       }
 
       if (cremationDate != null)
       {
         if (burialDate.Value > DateTime.MinValue)
+        {
           dates.Add(cremationDate);
+        }
       }
 
       if (burialDate != null)
       {
         if (burialDate.Value > DateTime.MinValue)
+        {
           dates.Add(burialDate);
+        }
       }
 
       if (sort == "min")
@@ -649,7 +821,9 @@ namespace Microsoft.FamilyShow
           return dates[0];
         }
         else
+        {
           return DateTime.MaxValue;
+        }
       }
       else
       {
@@ -659,7 +833,9 @@ namespace Microsoft.FamilyShow
           return dates[dates.Count - 1];
         }
         else
+        {
           return DateTime.MinValue;
+        }
       }
 
 
@@ -695,16 +871,23 @@ namespace Microsoft.FamilyShow
             if (!string.IsNullOrEmpty(s))
             {
               if (n.Trim() == s.Trim())
+              {
                 z++;
+              }
             }
           }
 
           if (z >= y1)
           {
             if (z > y1)
+            {
               firstTie = false; // Unique
+            }
+
             if (z == y1 && !string.IsNullOrEmpty(Top3[0, 0]) && Top3[0, 0] != n.Trim())
+            {
               firstTie = true;  // Tied
+            }
 
             y1 = z;
 
@@ -716,9 +899,14 @@ namespace Microsoft.FamilyShow
           {
 
             if (z > y2)
+            {
               secondTie = false; // Unique
+            }
+
             if (z == y2 && !string.IsNullOrEmpty(Top3[1, 0]) && Top3[1, 0] != n.Trim())
+            {
               secondTie = true;  // Tied
+            }
 
             y2 = z;
 
@@ -730,9 +918,14 @@ namespace Microsoft.FamilyShow
           {
 
             if (z > y3)
+            {
               thirdTie = false; // Unique
+            }
+
             if (z == y3 && !string.IsNullOrEmpty(Top3[2, 0]) && Top3[2, 0] != n.Trim())
+            {
               thirdTie = true;  // Tied
+            }
 
             y3 = z;
 
@@ -749,11 +942,19 @@ namespace Microsoft.FamilyShow
 
       // Append * if tied
       if (firstTie)
+      {
         Top3[0, 0] += "*";
+      }
+
       if (secondTie)
+      {
         Top3[1, 0] += "*";
+      }
+
       if (thirdTie)
+      {
         Top3[2, 0] += "*";
+      }
 
       return Top3;
     }

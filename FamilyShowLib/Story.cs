@@ -50,9 +50,13 @@ namespace Microsoft.FamilyShowLib
         tempFolder = Path.Combine(tempFolder, App.AppDataFolderName);
 
         if (relativePath != null)
+        {
           return Path.Combine(tempFolder, relativePath);
+        }
         else
+        {
           return string.Empty;
+        }
       }
     }
 
@@ -92,7 +96,9 @@ namespace Microsoft.FamilyShowLib
       {
         // Create the stories directory if it doesn't exist
         if (!Directory.Exists(storiesLocation))
+        {
           Directory.CreateDirectory(storiesLocation);
+        }
 
         // Open the file for writing the richtext
         using (FileStream stream = File.Create(storyAbsolutePath))
@@ -102,7 +108,9 @@ namespace Microsoft.FamilyShowLib
 
           // Save the story to disk
           if (storyText.CanSave(dataFormat))
+          {
             storyText.Save(stream, dataFormat);
+          }
         }
       }
       catch
@@ -129,7 +137,9 @@ namespace Microsoft.FamilyShowLib
           using (FileStream stream = File.OpenRead(AbsolutePath))
           {
             if (storyText.CanLoad(dataFormat))
+            {
               storyText.Load(stream, dataFormat);
+            }
           }
         }
         catch
@@ -184,7 +194,9 @@ namespace Microsoft.FamilyShowLib
       // Remove all invalid characters.
       int pos;
       while ((pos = fileName.IndexOfAny(invalid)) != -1)
+      {
         fileName = fileName.Remove(pos, 1);
+      }
 
       return fileName;
     }
@@ -198,7 +210,9 @@ namespace Microsoft.FamilyShowLib
     protected virtual void OnPropertyChanged(string propertyName)
     {
       if (PropertyChanged != null)
+      {
         PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+      }
     }
 
     #endregion

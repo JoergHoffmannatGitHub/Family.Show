@@ -53,7 +53,9 @@ namespace Microsoft.FamilyShow
 
       DateTime birthdate = App.StringToDate(BirthDateInputTextBox.Text);
       if (birthdate != DateTime.MinValue)
+      {
         newPerson.BirthDate = birthdate;
+      }
 
       family.Current = newPerson;
       family.Add(newPerson);

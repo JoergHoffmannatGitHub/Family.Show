@@ -96,11 +96,19 @@ namespace Microsoft.FamilyShowLib
     public Repository(string repositoryId, string repositoryName, string repositoryAddress) : this()
     {
       if (!string.IsNullOrEmpty(repositoryId))
+      {
         id = repositoryId;
+      }
+
       if (!string.IsNullOrEmpty(repositoryName))
+      {
         this.repositoryName = repositoryName;
+      }
+
       if (!string.IsNullOrEmpty(repositoryAddress))
+      {
         this.repositoryAddress = repositoryAddress;
+      }
     }
 
     #endregion
@@ -112,11 +120,20 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public bool Equals(Repository other)
     {
-      if (other is null) return false;
+      if (other is null)
+      {
+        return false;
+      }
       // Optimization for a common success case.
-      if (ReferenceEquals(this, other)) return true;
+      if (ReferenceEquals(this, other))
+      {
+        return true;
+      }
       // If run-time types are not exactly the same, return false.
-      if (GetType() != other.GetType()) return false;
+      if (GetType() != other.GetType())
+      {
+        return false;
+      }
       // Return true if the Id match.
       return Id == other.Id;
     }
@@ -160,7 +177,9 @@ namespace Microsoft.FamilyShowLib
     public virtual void OnPropertyChanged(string propertyName)
     {
       if (PropertyChanged != null)
+      {
         PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+      }
     }
 
     #endregion

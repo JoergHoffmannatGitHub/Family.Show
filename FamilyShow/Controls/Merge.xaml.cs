@@ -105,7 +105,9 @@ namespace Microsoft.FamilyShow
         anyHighlighted = CurrentPerson(i);
         i++;
         if (anyHighlighted)
+        {
           total++;
+        }
       }
       while (i < App.FamilyCollection.ExistingPeopleCollection.Count);
 
@@ -129,7 +131,9 @@ namespace Microsoft.FamilyShow
           anyHighlighted = CurrentPerson(i);
 
           if (anyHighlighted)
+          {
             count++;
+          }
 
           if (total != 0)
           {
@@ -144,7 +148,9 @@ namespace Microsoft.FamilyShow
       while (!anyHighlighted && i < App.FamilyCollection.ExistingPeopleCollection.Count);  //find next differeing record
 
       if (i >= App.FamilyCollection.ExistingPeopleCollection.Count)
+      {
         ShowSummary();
+      }
     }
 
     /// <summary>
@@ -162,13 +168,19 @@ namespace Microsoft.FamilyShow
         Person p3 = App.Family.Find(p1.Id);
 
         if (NameCheck.IsChecked == true)
+        {
           p3.FirstName = p2.FirstName;
+        }
 
         if (LastNameCheck.IsChecked == true)
+        {
           p3.LastName = p2.LastName;
+        }
 
         if (SuffixCheck.IsChecked == true)
+        {
           p3.Suffix = p2.Suffix;
+        }
 
         if (BirthPlaceCheck.IsChecked == true)
         {
@@ -454,9 +466,14 @@ namespace Microsoft.FamilyShow
 
 
       if (existingPerson.HasNote)
+      {
         OldNote.Text = existingPerson.Note;
+      }
+
       if (newPerson.HasNote)
+      {
         NewNote.Text = newPerson.Note;
+      }
 
       // Add new photos but keep existing primary image when present
       foreach (Photo p in newPerson.Photos)
@@ -467,14 +484,21 @@ namespace Microsoft.FamilyShow
         {
 
           if (existingPerson.HasAvatar)
+          {
             p.IsAvatar = false;
+          }
 
           if (p.RelativePath == existingPhoto.RelativePath)
+          {
             add = false;
+          }
         }
 
         if (add)
+        {
           existingPerson.Photos.Add(p);
+        }
+
         existingPerson.OnPropertyChanged("Photos");
       }
 
@@ -487,11 +511,16 @@ namespace Microsoft.FamilyShow
         {
 
           if (a.RelativePath != existingAttachment.RelativePath)
+          {
             add = false;
+          }
         }
 
         if (add)
+        {
           existingPerson.Attachments.Add(a);
+        }
+
         existingPerson.OnPropertyChanged("Attachments");
       }
 
@@ -501,63 +530,130 @@ namespace Microsoft.FamilyShow
 
       //check for conflicting info
       if (Highlight(NameCheck, OldName, NewName))
+      {
         highlightCount++;
+      }
+
       if (Highlight(LastNameCheck, OldLastName, NewLastName))
+      {
         highlightCount++;
+      }
+
       if (Highlight(SuffixCheck, OldSuffix, NewSuffix))
+      {
         highlightCount++;
+      }
+
       if (Highlight(BirthDateCheck, OldBirthDate, NewBirthDate))
+      {
         highlightCount++;
+      }
+
       if (Highlight(BirthPlaceCheck, OldBirthPlace, NewBirthPlace))
+      {
         highlightCount++;
+      }
+
       if (Highlight(DeathDateCheck, OldDeathDate, NewDeathDate))
+      {
         highlightCount++;
+      }
+
       if (Highlight(DeathPlaceCheck, OldDeathPlace, NewDeathPlace))
+      {
         highlightCount++;
+      }
+
       if (Highlight(OccupationCheck, OldOccupation, NewOccupation))
+      {
         highlightCount++;
+      }
+
       if (Highlight(EducationCheck, OldEducation, NewEducation))
+      {
         highlightCount++;
+      }
+
       if (Highlight(ReligionCheck, OldReligion, NewReligion))
+      {
         highlightCount++;
+      }
+
       if (Highlight(CremationPlaceCheck, OldCremationPlace, NewCremationPlace))
+      {
         highlightCount++;
+      }
+
       if (Highlight(CremationDateCheck, OldCremationDate, NewCremationDate))
+      {
         highlightCount++;
+      }
+
       if (Highlight(BurialDateCheck, OldBurialDate, NewBurialDate))
+      {
         highlightCount++;
+      }
+
       if (Highlight(BurialPlaceCheck, OldBurialPlace, NewBurialPlace))
+      {
         highlightCount++;
+      }
 
       if (highlightCitation(existingBirthCitation, newBirthCitation, BirthImageB))
+      {
         highlightCount++;
+      }
+
       if (highlightCitation(existingDeathCitation, newDeathCitation, DeathImageB))
+      {
         highlightCount++;
+      }
+
       if (highlightCitation(existingCremationCitation, newCremationCitation, CremationImageB))
+      {
         highlightCount++;
+      }
+
       if (highlightCitation(existingBurialCitation, newBurialCitation, BurialImageB))
+      {
         highlightCount++;
+      }
+
       if (highlightCitation(existingEducationCitation, newEducationCitation, EducationImageB))
+      {
         highlightCount++;
+      }
+
       if (highlightCitation(existingReligionCitation, newReligionCitation, ReligionImageB))
+      {
         highlightCount++;
+      }
+
       if (highlightCitation(existingOccupationCitation, newOccupationCitation, OccupationImageB))
+      {
         highlightCount++;
+      }
 
       #endregion
 
       //Allow for skip over non highlighted people
       if (highlightCount > 0)
+      {
         return true;
+      }
       else
+      {
         return false;
+      }
     }
 
     private static string citationString(string source, string details, string actualText, string note, string link)
     {
 
       if (!string.IsNullOrEmpty(source))
+      {
         source = App.FamilyCollection.SourceCollection.Find(source).SourceNameAndId;
+      }
 
       return source + "\n" +
               details + "\n" +
@@ -609,18 +705,27 @@ namespace Microsoft.FamilyShow
       string newInfoText = string.Empty;
 
       if (existingInfo.Content != null)
+      {
         existingInfoText = existingInfo.Content.ToString();
+      }
+
       if (newInfo.Content != null)
+      {
         newInfoText = newInfo.Content.ToString();
+      }
 
       //Flag to highlight upon differences
       if (existingInfoText != newInfoText)
+      {
         highlight = true;
+      }
 
       // If information is present in the New Person but is not present in
       // the Existing Person help user by checking the Update? checkbox
       if (string.IsNullOrEmpty(existingInfoText) && !string.IsNullOrEmpty(newInfoText))
+      {
         check = true;
+      }
 
       c.IsChecked = check;
 

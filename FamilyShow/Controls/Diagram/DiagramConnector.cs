@@ -209,7 +209,9 @@ namespace Microsoft.FamilyShow
 
         // Create animation if the filtered state has changed.
         if (animation != null)
+        {
           connectorPen.Brush.BeginAnimation(Brush.OpacityProperty, animation);
+        }
 
         return connectorPen;
       }
@@ -234,7 +236,9 @@ namespace Microsoft.FamilyShow
       {
         // Connection is filtered if any of the nodes are filtered.
         if (start.Node.IsFiltered || end.Node.IsFiltered)
+        {
           return true;
+        }
 
         // Connection is not filtered.
         return false;
@@ -259,7 +263,9 @@ namespace Microsoft.FamilyShow
       // Don't draw if either of the nodes are filtered.
       if (start.Node.Visibility != Visibility.Visible ||
           end.Node.Visibility != Visibility.Visible)
+      {
         return false;
+      }
 
       // First check if the filtered state has changed, an animation
       // if created if the state has changed which is used for all 
@@ -284,7 +290,9 @@ namespace Microsoft.FamilyShow
 
       // Create animation if the filtered state has changed.
       if (animation != null)
+      {
         brush.BeginAnimation(Brush.OpacityProperty, animation);
+      }
 
       return brush;
     }
@@ -330,19 +338,27 @@ namespace Microsoft.FamilyShow
         if (rel.ParentChildModifier == ParentChildModifier.Adopted || rel.ParentChildModifier == ParentChildModifier.Foster)
         {
           if (rel.ParentChildModifier == ParentChildModifier.Adopted)
+          {
             ResourcePen = (Pen)Application.Current.TryFindResource("AdoptedChildConnectionPen");
+          }
+
           if (rel.ParentChildModifier == ParentChildModifier.Foster)
+          {
             ResourcePen = (Pen)Application.Current.TryFindResource("FosteredChildConnectionPen");
+          }
         }
         else
         {
           if ((StartNode.Node.Type == NodeType.Related && EndNode.Node.Type == NodeType.Related ||
               StartNode.Node.Type == NodeType.Related && EndNode.Node.Type == NodeType.Primary ||
               StartNode.Node.Type == NodeType.Primary && EndNode.Node.Type == NodeType.Related) && Diagram.showBloodlines)
+          {
             ResourcePen = (Pen)Application.Current.TryFindResource("ChildPrimaryConnectionPen");
+          }
           else
+          {
             ResourcePen = (Pen)Application.Current.TryFindResource("ChildConnectionPen");
-
+          }
         }
       }
 
@@ -355,7 +371,9 @@ namespace Microsoft.FamilyShow
     override public bool Draw(DrawingContext drawingContext)
     {
       if (!base.Draw(drawingContext))
+      {
         return false;
+      }
 
       drawingContext.DrawLine(Pen, StartNode.Center, EndNode.Center);
       return true;
@@ -403,7 +421,9 @@ namespace Microsoft.FamilyShow
         {
           SpouseRelationship rel = StartNode.Node.Person.GetSpouseRelationship(EndNode.Node.Person);
           if (rel != null)
+          {
             return rel.MarriageDate;
+          }
         }
         return null;
       }
@@ -420,7 +440,9 @@ namespace Microsoft.FamilyShow
         {
           SpouseRelationship rel = StartNode.Node.Person.GetSpouseRelationship(EndNode.Node.Person);
           if (rel != null)
+          {
             return rel.DivorceDate;
+          }
         }
         return null;
       }
@@ -437,7 +459,9 @@ namespace Microsoft.FamilyShow
       {
         // Check the two connected nodes.
         if (base.NewFilteredState)
+        {
           return true;
+        }
 
         // Check the married date for current and former spouses.
         SpouseRelationship rel = StartNode.Node.Person.GetSpouseRelationship(EndNode.Node.Person);
@@ -488,7 +512,9 @@ namespace Microsoft.FamilyShow
     override public bool Draw(DrawingContext drawingContext)
     {
       if (!base.Draw(drawingContext))
+      {
         return false;
+      }
 
       DrawMarried(drawingContext);
       return true;
@@ -510,7 +536,9 @@ namespace Microsoft.FamilyShow
 
       // Use a maximum arc height to prevent arcs from obscuring rows above
       if (arcHeight > 35)
+      {
         arcHeight = 35;
+      }
 
       Point middlePoint = new Point(startPoint.X + ((endPoint.X - startPoint.X) / 2), startPoint.Y - arcHeight);
 

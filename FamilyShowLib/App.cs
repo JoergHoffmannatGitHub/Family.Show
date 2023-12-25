@@ -35,7 +35,9 @@ namespace Microsoft.FamilyShowLib
           string.Compare(extension, ".gif", true, CultureInfo.InvariantCulture) == 0 ||
           string.Compare(extension, ".tiff", true, CultureInfo.InvariantCulture) == 0 ||
           string.Compare(extension, ".tif", true, CultureInfo.InvariantCulture) == 0)
+      {
         return true;
+      }
 
       return false;
     }
@@ -74,7 +76,9 @@ namespace Microsoft.FamilyShowLib
           string.Compare(extension, ".gif", true, CultureInfo.InvariantCulture) == 0 ||
           string.Compare(extension, ".tiff", true, CultureInfo.InvariantCulture) == 0 ||
           string.Compare(extension, ".tif", true, CultureInfo.InvariantCulture) == 0)
+      {
         return true;
+      }
 
       return false;
     }

@@ -43,7 +43,9 @@ namespace Microsoft.FamilyShowLib
       tw.WriteLine(NormalRepositoryColumns());
 
       foreach (Repository r in repository)
+      {
         tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
+      }
 
       tw.WriteLine(Footer());
       tw.Close();
@@ -108,9 +110,13 @@ namespace Microsoft.FamilyShowLib
       for (int j = 1; j <= i; j++)
       {
         if (i != j)
+        {
           printstyle += "*+";
+        }
         else
+        {
           printstyle += "*";
+        }
       }
 
       printstyle += "{display: none; }\n" +

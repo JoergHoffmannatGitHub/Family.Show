@@ -84,7 +84,9 @@ namespace Microsoft.FamilyShowLib
       WriteLine(2, "CORP", "Microsoft");
 
       if (!string.IsNullOrEmpty(familyxFilePath))
+      {
         WriteLine(2, "DATA", Path.GetFileName(familyxFilePath));
+      }
 
       string Date = ExportDate(DateTime.Now);  //GEDCOM dates must be of the form 01 JAN 2009
       string filename = Path.GetFileName(gedcomFilePath);
@@ -134,15 +136,29 @@ namespace Microsoft.FamilyShowLib
       {
         WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@{0}@", source.Id), "SOUR");
         if (!string.IsNullOrEmpty(source.SourceRepository))
+        {
           WriteLine(1, "REPO", "@" + source.SourceRepository + "@");
+        }
+
         if (!string.IsNullOrEmpty(source.SourceName))
+        {
           WriteLine(1, "TITL", source.SourceName);
+        }
+
         if (!string.IsNullOrEmpty(source.SourceAuthor))
+        {
           WriteLine(1, "AUTH", source.SourceAuthor);
+        }
+
         if (!string.IsNullOrEmpty(source.SourcePublisher))
+        {
           WriteLine(1, "PUBL", source.SourcePublisher);
+        }
+
         if (!string.IsNullOrEmpty(source.SourceNote))
+        {
           WriteLine(1, "NOTE", source.SourceNote);
+        }
       }
     }
 
@@ -155,9 +171,14 @@ namespace Microsoft.FamilyShowLib
       {
         WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@{0}@", r.Id), "REPO");
         if (!string.IsNullOrEmpty(r.RepositoryName))
+        {
           WriteLine(1, "NAME", r.RepositoryName);
+        }
+
         if (!string.IsNullOrEmpty(r.RepositoryAddress))
+        {
           WriteLine(1, "ADDR", r.RepositoryAddress);
+        }
       }
     }
 
@@ -184,7 +205,9 @@ namespace Microsoft.FamilyShowLib
         ExportRestriction(person);
 
         if (person.Restriction == Restriction.Private)
+        {
           WriteLine(1, "NAME", Properties.Resources.PrivateRecord);
+        }
         else
         {
 
@@ -193,11 +216,15 @@ namespace Microsoft.FamilyShowLib
 
           // Surname
           if (!string.IsNullOrEmpty(person.LastName))
+          {
             WriteLine(2, "SURN", person.LastName);
+          }
 
           // Prefix.
           if (!string.IsNullOrEmpty(person.Suffix))
+          {
             WriteLine(2, "NPFX", person.Suffix);
+          }
 
           // Gender.
           ExportGender(person);
@@ -217,7 +244,9 @@ namespace Microsoft.FamilyShowLib
 
           // Notes.	
           if (!string.IsNullOrEmpty(person.Note))
+          {
             WriteLine(1, "NOTE", person.Note);
+          }
 
           int i = 1;  //current family number
 
@@ -229,15 +258,21 @@ namespace Microsoft.FamilyShowLib
             foreach (Person child in family.Children)
             {
               if (person.Id == child.Id)
+              {
                 WriteLine(1, "FAMC", string.Format(CultureInfo.InvariantCulture, "@F{0}@", i));
+              }
             }
 
             //FAMS for parents/spouses
             if (person.Id == family.ParentLeft.Id)
+            {
               WriteLine(1, "FAMS", string.Format(CultureInfo.InvariantCulture, "@F{0}@", i));
+            }
 
             if (person.Id == family.ParentRight.Id)
+            {
               WriteLine(1, "FAMS", string.Format(CultureInfo.InvariantCulture, "@F{0}@", i));
+            }
 
             i++;
           }
@@ -257,11 +292,15 @@ namespace Microsoft.FamilyShowLib
       foreach (Source s in sources)
       {
         if (s.Id == sourceID)
+        {
           i++;
+        }
       }
 
       if (i > 0)
+      {
         exportableSource = true;
+      }
 
       return exportableSource;
     }
@@ -280,7 +319,9 @@ namespace Microsoft.FamilyShowLib
 
       // Created the family groups, now export each family.
       foreach (Family family in map.Values)
+      {
         ExportFamily(family);
+      }
     }
 
     /// <summary>
@@ -293,7 +334,9 @@ namespace Microsoft.FamilyShowLib
     {
       // Return right away if this is only a single person without any children.
       if (family.ParentRight == null && family.Children.Count == 0)
+      {
         return;
+      }
 
       // Start of new family record.
       WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@F{0}@", familyId++), "FAM");
@@ -320,21 +363,37 @@ namespace Microsoft.FamilyShowLib
             ParentRelationship pRel = (ParentRelationship)rel;
 
             if (rel.PersonId == family.ParentLeft.Id && family.ParentLeft.Gender == Gender.Male)
+            {
               mrel = pRel.ParentChildModifier.ToString();
+            }
+
             if (rel.PersonId == family.ParentLeft.Id && family.ParentLeft.Gender == Gender.Female)
+            {
               frel = pRel.ParentChildModifier.ToString();
+            }
+
             if (rel.PersonId == family.ParentRight.Id && family.ParentRight.Gender == Gender.Female)
+            {
               frel = pRel.ParentChildModifier.ToString();
+            }
+
             if (rel.PersonId == family.ParentRight.Id && family.ParentRight.Gender == Gender.Male)
+            {
               mrel = pRel.ParentChildModifier.ToString();
+            }
           }
         }
 
         //export nothing if natural relationship
         if (frel.Length > 0 && frel != "Natural")
+        {
           WriteLine(2, "_FREL", frel);
+        }
+
         if (mrel.Length > 0 && mrel != "Natural")
+        {
           WriteLine(2, "_MREL", mrel);
+        }
       }
     }
 
@@ -346,27 +405,39 @@ namespace Microsoft.FamilyShowLib
 
       // PartnerLeft.
       if (partnerLeft != null && partnerLeft.Gender == Gender.Male)
+      {
         WriteLine(1, "HUSB", string.Format(CultureInfo.InvariantCulture,
         "@{0}@", idMap.Get(partnerLeft.Id)));
+      }
 
       if (partnerLeft != null && partnerLeft.Gender == Gender.Female)
+      {
         WriteLine(1, "WIFE", string.Format(CultureInfo.InvariantCulture,
         "@{0}@", idMap.Get(partnerLeft.Id)));
+      }
 
       if (!partnerLeft.Spouses.Contains(partnerRight))
+      {
         return;
+      }
 
       // PartnerRight.
       if (partnerRight != null && partnerRight.Gender == Gender.Male)
+      {
         WriteLine(1, "HUSB", string.Format(CultureInfo.InvariantCulture,
         "@{0}@", idMap.Get(partnerRight.Id)));
+      }
 
       if (partnerRight != null && partnerRight.Gender == Gender.Female)
+      {
         WriteLine(1, "WIFE", string.Format(CultureInfo.InvariantCulture,
         "@{0}@", idMap.Get(partnerRight.Id)));
+      }
 
       if (relationship == null)
+      {
         return;
+      }
 
 
       // Marriage.
@@ -381,14 +452,19 @@ namespace Microsoft.FamilyShowLib
           // Date if it exist.
 
           if (relationship.MarriageDateDescriptor != null && relationship.MarriageDateDescriptor.Length > 1)
+          {
             WriteLine(2, "DATE", relationship.MarriageDateDescriptor + Date);
+          }
           else
+          {
             WriteLine(2, "DATE", Date);
-
+          }
         }
         //Place if it exist.
         if (relationship.MarriagePlace != null && relationship.MarriagePlace.Length > 0)
+        {
           WriteLine(2, "PLAC", relationship.MarriagePlace);
+        }
 
         //Source if it exist.
         if (!string.IsNullOrEmpty(relationship.MarriageSource) && !string.IsNullOrEmpty(relationship.MarriageCitation) && ExportableCitation(relationship.MarriageSource) == true)
@@ -397,14 +473,24 @@ namespace Microsoft.FamilyShowLib
           WriteLine(3, "PAGE", relationship.MarriageCitation);
           WriteLine(3, "DATA", "");
           if (!string.IsNullOrEmpty(relationship.MarriageCitationActualText))
+          {
             WriteLine(4, "TEXT", relationship.MarriageCitationActualText);
+          }
           //Many programs ignore web links so add web link to note.
           if (!string.IsNullOrEmpty(relationship.MarriageCitationNote) && string.IsNullOrEmpty(relationship.MarriageLink))
+          {
             WriteLine(3, "NOTE", relationship.MarriageCitationNote);
+          }
+
           if (!string.IsNullOrEmpty(relationship.MarriageCitationNote) && !string.IsNullOrEmpty(relationship.MarriageLink))
+          {
             WriteLine(3, "NOTE", relationship.MarriageCitationNote + " " + relationship.MarriageLink);
+          }
+
           if (string.IsNullOrEmpty(relationship.MarriageCitationNote) && !string.IsNullOrEmpty(relationship.MarriageLink))
+          {
             WriteLine(3, "NOTE", relationship.MarriageLink);
+          }
 
           if (!string.IsNullOrEmpty(relationship.MarriageLink))
           {
@@ -429,14 +515,19 @@ namespace Microsoft.FamilyShowLib
           // Date if it exist.
 
           if (relationship.MarriageDateDescriptor != null && relationship.MarriageDateDescriptor.Length > 1)
+          {
             WriteLine(2, "DATE", relationship.MarriageDateDescriptor + Date);
+          }
           else
+          {
             WriteLine(2, "DATE", Date);
-
+          }
         }
         //Place if it exist.
         if (relationship.MarriagePlace != null && relationship.MarriagePlace.Length > 0)
+        {
           WriteLine(2, "PLAC", relationship.MarriagePlace);
+        }
 
         //Source if it exist.
         if (!string.IsNullOrEmpty(relationship.MarriageSource) && !string.IsNullOrEmpty(relationship.MarriageCitation) && ExportableCitation(relationship.MarriageSource) == true)
@@ -445,14 +536,24 @@ namespace Microsoft.FamilyShowLib
           WriteLine(3, "PAGE", relationship.MarriageCitation);
           WriteLine(3, "DATA", "");
           if (!string.IsNullOrEmpty(relationship.MarriageCitationActualText))
+          {
             WriteLine(4, "TEXT", relationship.MarriageCitationActualText);
+          }
           //Many programs ignore web links so add web link to note.
           if (!string.IsNullOrEmpty(relationship.MarriageCitationNote) && string.IsNullOrEmpty(relationship.MarriageLink))
+          {
             WriteLine(3, "NOTE", relationship.MarriageCitationNote);
+          }
+
           if (!string.IsNullOrEmpty(relationship.MarriageCitationNote) && !string.IsNullOrEmpty(relationship.MarriageLink))
+          {
             WriteLine(3, "NOTE", relationship.MarriageCitationNote + " " + relationship.MarriageLink);
+          }
+
           if (string.IsNullOrEmpty(relationship.MarriageCitationNote) && !string.IsNullOrEmpty(relationship.MarriageLink))
+          {
             WriteLine(3, "NOTE", relationship.MarriageLink);
+          }
 
           if (!string.IsNullOrEmpty(relationship.MarriageLink))
           {
@@ -472,10 +573,13 @@ namespace Microsoft.FamilyShowLib
           // Date if it exist.
 
           if (relationship.DivorceDateDescriptor != null && relationship.DivorceDateDescriptor.Length > 1)
+          {
             WriteLine(2, "DATE", relationship.DivorceDateDescriptor + Date);
+          }
           else
+          {
             WriteLine(2, "DATE", Date);
-
+          }
         }
 
         //Source if it exist.
@@ -485,14 +589,24 @@ namespace Microsoft.FamilyShowLib
           WriteLine(3, "PAGE", relationship.DivorceCitation);
           WriteLine(3, "DATA", "");
           if (!string.IsNullOrEmpty(relationship.DivorceCitationActualText))
+          {
             WriteLine(4, "TEXT", relationship.DivorceCitationActualText);
+          }
           //Many programs ignore web links so add web link to note.
           if (!string.IsNullOrEmpty(relationship.DivorceCitationNote) && string.IsNullOrEmpty(relationship.DivorceLink))
+          {
             WriteLine(4, "NOTE", relationship.DivorceCitationNote);
+          }
+
           if (!string.IsNullOrEmpty(relationship.DivorceCitationNote) && !string.IsNullOrEmpty(relationship.DivorceLink))
+          {
             WriteLine(4, "NOTE", relationship.DivorceCitationNote + " " + relationship.DivorceLink);
+          }
+
           if (string.IsNullOrEmpty(relationship.DivorceCitationNote) && !string.IsNullOrEmpty(relationship.DivorceLink))
+          {
             WriteLine(4, "NOTE", relationship.DivorceLink);
+          }
 
           if (!string.IsNullOrEmpty(relationship.DivorceLink))
           {
@@ -540,7 +654,9 @@ namespace Microsoft.FamilyShowLib
     {
       // Return right away if don't have a date or place to export.
       if (date == null && string.IsNullOrEmpty(place))
+      {
         return;
+      }
 
       string Date = null;
 
@@ -548,14 +664,20 @@ namespace Microsoft.FamilyShowLib
       WriteLine(1, tag, tagDescription);
 
       if (date != null)
+      {
         Date = ExportDate(date);
+      }
 
       if (!string.IsNullOrEmpty(Date))
+      {
         WriteLine(2, "DATE", descriptor + Date);
+      }
 
       // Place.
       if (!string.IsNullOrEmpty(place))
+      {
         WriteLine(2, "PLAC", place);
+      }
 
       // Source.
       if (!string.IsNullOrEmpty(source) && !string.IsNullOrEmpty(citation) && ExportableCitation(source) == true)
@@ -564,14 +686,24 @@ namespace Microsoft.FamilyShowLib
         WriteLine(3, "PAGE", citation);
         WriteLine(3, "DATA", "");
         if (!string.IsNullOrEmpty(citationActualText))
+        {
           WriteLine(4, "TEXT", citationActualText);
+        }
         //Many programs ignore web links so add web link to note.
         if (!string.IsNullOrEmpty(citationNote) && string.IsNullOrEmpty(link))
+        {
           WriteLine(3, "NOTE", citationNote);
+        }
+
         if (!string.IsNullOrEmpty(citationNote) && !string.IsNullOrEmpty(link))
+        {
           WriteLine(3, "NOTE", citationNote + " " + link);
+        }
+
         if (string.IsNullOrEmpty(citationNote) && !string.IsNullOrEmpty(link))
+        {
           WriteLine(3, "NOTE", link);
+        }
 
         if (!string.IsNullOrEmpty(link))
         {
@@ -587,7 +719,9 @@ namespace Microsoft.FamilyShowLib
     private static string ExportDate(DateTime? date)
     {
       if (date == null)
+      {
         return string.Empty;
+      }
       else
       {
 
@@ -608,29 +742,65 @@ namespace Microsoft.FamilyShowLib
     {
       string monthString = string.Empty;
       if (month == 1)
+      {
         monthString = "Jan";
+      }
+
       if (month == 2)
+      {
         monthString = "Feb";
+      }
+
       if (month == 3)
+      {
         monthString = "Mar";
+      }
+
       if (month == 4)
+      {
         monthString = "Apr";
+      }
+
       if (month == 5)
+      {
         monthString = "May";
+      }
+
       if (month == 6)
+      {
         monthString = "Jun";
+      }
+
       if (month == 7)
+      {
         monthString = "Jul";
+      }
+
       if (month == 8)
+      {
         monthString = "Aug";
+      }
+
       if (month == 9)
+      {
         monthString = "Sep";
+      }
+
       if (month == 10)
+      {
         monthString = "Oct";
+      }
+
       if (month == 11)
+      {
         monthString = "Nov";
+      }
+
       if (month == 12)
+      {
         monthString = "Dec";
+      }
+
       return monthString;
     }
 
@@ -642,9 +812,13 @@ namespace Microsoft.FamilyShowLib
     private void ExportRestriction(Person person)
     {
       if (person.Restriction == Restriction.Private)
+      {
         WriteLine(1, "RESN", "privacy");
+      }
       else if (person.Restriction == Restriction.Locked)
+      {
         WriteLine(1, "RESN", "locked");
+      }
       else
       {
         //return and do nothing
@@ -757,7 +931,9 @@ namespace Microsoft.FamilyShowLib
     {
       // Return right away if already mapped.
       if (map.ContainsKey(guid))
+      {
         return map[guid];
+      }
 
       // Assign a new GEDCOM ID and add to map.
       string id = string.Format(CultureInfo.InvariantCulture, "I{0}", nextId++);
@@ -850,7 +1026,9 @@ namespace Microsoft.FamilyShowLib
             Person parentLeft = parents[j];
             Person parentRight = new Person();
             if (parents.Count > j + 1)
+            {
               parentRight = (parents.Count > j + 1) ? parents[j + 1] : null;
+            }
 
             // See if this parent group has been added to the list yet.
             string key = GetKey(parentLeft, parentRight);
@@ -912,9 +1090,13 @@ namespace Microsoft.FamilyShowLib
       if (partnerRight != null)
       {
         if (partnerLeft.Id.CompareTo(partnerRight.Id) < 0)
+        {
           key = partnerLeft.Id + partnerRight.Id;
+        }
         else
+        {
           key = partnerRight.Id + partnerLeft.Id;
+        }
       }
       return key;
     }

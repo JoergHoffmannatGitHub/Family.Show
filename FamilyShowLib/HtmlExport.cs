@@ -57,7 +57,9 @@ namespace Microsoft.FamilyShowLib
       tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
 
       if (!string.IsNullOrEmpty(familyxFileName))
+      {
         tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
+      }
 
       tw.WriteLine(Properties.Resources.NumberOfPeople + " <b>" + peopleCollection.Count + "</b><br/><br/>");
 
@@ -69,18 +71,28 @@ namespace Microsoft.FamilyShowLib
         string[,] sourceArray = new string[1, 7];
 
         if (sourcesbool == true)
+        {
           sourceArray = Sources(p);
+        }
 
         if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
+        {
           tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        }
         else if (p.Restriction == Restriction.Private) //a private record should not be exported
+        {
           tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        }
         else
         {
           if (p.Note != null)
+          {
             tw.WriteLine(dataWithNote(p, sourceArray));
+          }
           else
+          {
             tw.WriteLine(dataWithoutNote(p, sourceArray));
+          }
         }
       }
 
@@ -91,14 +103,18 @@ namespace Microsoft.FamilyShowLib
           tw.WriteLine("</table>");
           tw.WriteLine(NormalSourceColumns());
           foreach (Source s in sourceCollection)
+          {
             tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
+          }
         }
         if (repositoryCollection.Count > 0)
         {
           tw.WriteLine("</table>");
           tw.WriteLine(NormalRepositoryColumns());
           foreach (Repository r in repositoryCollection)
+          {
             tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
+          }
         }
       }
 
@@ -120,15 +136,29 @@ namespace Microsoft.FamilyShowLib
       Person primaryPerson = peopleCollection.Current;
       pc.Add(primaryPerson);
       foreach (Person parent in primaryPerson.Parents)
+      {
         pc.Add(parent);
+      }
+
       foreach (Person sibling in primaryPerson.Siblings)
+      {
         pc.Add(sibling);
+      }
+
       foreach (Person spouse in primaryPerson.Spouses)
+      {
         pc.Add(spouse);
+      }
+
       foreach (Person previousSpouse in primaryPerson.PreviousSpouses)
+      {
         pc.Add(previousSpouse);
+      }
+
       foreach (Person child in primaryPerson.Children)
+      {
         pc.Add(child);
+      }
 
       //write the necessary html code for a html document
 
@@ -143,12 +173,16 @@ namespace Microsoft.FamilyShowLib
       tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
 
       if (!string.IsNullOrEmpty(familyxFileName))
+      {
         tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
+      }
 
       int i = pc.Count;
 
       if (i < 0)
+      {
         i = 0;
+      }
 
       tw.WriteLine(CurrentPersonString(peopleCollection.Current, privacy));
       tw.WriteLine(Properties.Resources.SummaryOfPeople + " <b>" + i + "</b><br/><br/>");
@@ -181,7 +215,9 @@ namespace Microsoft.FamilyShowLib
         string[,] sourceArray = new string[1, 7];
 
         if (sourcesbool == true)
+        {
           sourceArray = Sources(p);
+        }
 
         foreach (Relationship rel in peopleCollection.Current.Relationships)
         {
@@ -199,26 +235,44 @@ namespace Microsoft.FamilyShowLib
               relstring = Properties.Resources.Parent;
 
               if (parentRel.ParentChildModifier == ParentChildModifier.Natural)
+              {
                 relstringmodifier = Properties.Resources.Natural;
+              }
+
               if (parentRel.ParentChildModifier == ParentChildModifier.Adopted)
+              {
                 relstringmodifier = Properties.Resources.Adopted;
+              }
+
               if (parentRel.ParentChildModifier == ParentChildModifier.Foster)
+              {
                 relstringmodifier = Properties.Resources.Foster;
+              }
 
               relationship = relstring + " (" + relstringmodifier + ")";
 
             }
             else if (rel.RelationshipType == RelationshipType.Child)
+            {
               relationship = Properties.Resources.Child;
+            }
             else if (rel.RelationshipType == RelationshipType.Spouse)
+            {
               relationship = Properties.Resources.Spouse;
+            }
             else if (rel.RelationshipType == RelationshipType.Sibling)
+            {
               relationship = Properties.Resources.Sibling;
+            }
 
             if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
+            {
               tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + relationship + "</td><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+            }
             else if (p.Restriction == Restriction.Private) //a private record should not be exported
+            {
               tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+            }
             else
             {
               if (p.Note != null)
@@ -268,14 +322,18 @@ namespace Microsoft.FamilyShowLib
           tw.WriteLine("</table>");
           tw.WriteLine(NormalSourceColumns());
           foreach (Source s in sourceCollection)
+          {
             tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
+          }
         }
         if (repositoryCollection.Count > 0)
         {
           tw.WriteLine("</table>");
           tw.WriteLine(NormalRepositoryColumns());
           foreach (Repository r in repositoryCollection)
+          {
             tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
+          }
         }
       }
 
@@ -309,7 +367,9 @@ namespace Microsoft.FamilyShowLib
       tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
 
       if (!string.IsNullOrEmpty(familyxFileName))
+      {
         tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
+      }
 
       tw.WriteLine(CurrentPersonString(peopleCollection.Current, privacy));
       tw.WriteLine(Properties.Resources.NumberOfPeople + " <b>" + pc.Count + "</b><br/><br/>");
@@ -323,18 +383,28 @@ namespace Microsoft.FamilyShowLib
         string[,] sourceArray = new string[1, 7];
 
         if (sourcesbool == true)
+        {
           sourceArray = Sources(p);
+        }
 
         if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
+        {
           tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        }
         else if (p.Restriction == Restriction.Private) //a private record should not be exported
+        {
           tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        }
         else
         {
           if (p.Note != null)
+          {
             tw.WriteLine(dataWithNote(p, sourceArray));
+          }
           else
+          {
             tw.WriteLine(dataWithoutNote(p, sourceArray));
+          }
         }
       }
 
@@ -345,14 +415,18 @@ namespace Microsoft.FamilyShowLib
           tw.WriteLine("</table>");
           tw.WriteLine(NormalSourceColumns());
           foreach (Source s in sourceCollection)
+          {
             tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
+          }
         }
         if (repositoryCollection.Count > 0)
         {
           tw.WriteLine("</table>");
           tw.WriteLine(NormalRepositoryColumns());
           foreach (Repository r in repositoryCollection)
+          {
             tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
+          }
         }
       }
       tw.WriteLine(Footer());
@@ -378,7 +452,9 @@ namespace Microsoft.FamilyShowLib
             foreach (Person p in peopleCollection)
             {
               if (p.FullName.Contains(searchtext))
+              {
                 pc.Add(p);
+              }
             }
             break;
           case 1:
@@ -429,37 +505,49 @@ namespace Microsoft.FamilyShowLib
               if (i != -1 && string.IsNullOrEmpty(searchOperator))
               {
                 if (p.Age == i)
+                {
                   pc.Add(p);
+                }
               }
 
               else if (i != -1 && searchOperator == "=")
               {
                 if (p.Age == i)
+                {
                   pc.Add(p);
+                }
               }
 
               else if (i != -1 && searchOperator == "<")
               {
                 if (p.Age < i)
+                {
                   pc.Add(p);
+                }
               }
 
               else if (i != -1 && searchOperator == ">")
               {
                 if (p.Age > i)
+                {
                   pc.Add(p);
+                }
               }
 
               else if (i != -1 && searchOperator == "<=")
               {
                 if (p.Age <= i)
+                {
                   pc.Add(p);
+                }
               }
 
               else if (i != -1 && searchOperator == ">=")
               {
                 if (p.Age >= i)
+                {
                   pc.Add(p);
+                }
               }
 
             }
@@ -468,49 +556,63 @@ namespace Microsoft.FamilyShowLib
             foreach (Person p in peopleCollection)
             {
               if (p.DeathDate.ToString().Contains(searchtext))
+              {
                 pc.Add(p);
+              }
             }
             break;
           case 3:
             foreach (Person p in peopleCollection)
             {
               if (p.BirthDate.ToString().Contains(searchtext))
+              {
                 pc.Add(p);
+              }
             }
             break;
           case 4:
             foreach (Person p in peopleCollection)
             {
               if (p.BirthPlace.Contains(searchtext))
+              {
                 pc.Add(p);
+              }
             }
             break;
           case 5:
             foreach (Person p in peopleCollection)
             {
               if (p.DeathPlace.Contains(searchtext))
+              {
                 pc.Add(p);
+              }
             }
             break;
           case 6:
             foreach (Person p in peopleCollection)
             {
               if (p.Occupation.Contains(searchtext))
+              {
                 pc.Add(p);
+              }
             }
             break;
           case 7:
             foreach (Person p in peopleCollection)
             {
               if (p.Education.Contains(searchtext))
+              {
                 pc.Add(p);
+              }
             }
             break;
           case 8:
             foreach (Person p in peopleCollection)
             {
               if (p.Religion.Contains(searchtext))
+              {
                 pc.Add(p);
+              }
             }
             break;
         }
@@ -531,7 +633,9 @@ namespace Microsoft.FamilyShowLib
       tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
 
       if (!string.IsNullOrEmpty(familyxFileName))
+      {
         tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
+      }
 
       tw.WriteLine(Properties.Resources.FilteredOn + " <b>" + searchfield + "</b><br/>");
       tw.WriteLine(searchfield + ": <b>" + searchtext + "</b><br/>");
@@ -544,18 +648,28 @@ namespace Microsoft.FamilyShowLib
         string[,] sourceArray = new string[1, 7];
 
         if (sourcesbool == true)
+        {
           sourceArray = Sources(p);
+        }
 
         if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
+        {
           tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        }
         else if (p.Restriction == Restriction.Private) //a private record should not be exported
+        {
           tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        }
         else
         {
           if (p.Note != null)
+          {
             tw.WriteLine(dataWithNote(p, sourceArray));
+          }
           else
+          {
             tw.WriteLine(dataWithoutNote(p, sourceArray));
+          }
         }
       }
 
@@ -566,14 +680,18 @@ namespace Microsoft.FamilyShowLib
           tw.WriteLine("</table>");
           tw.WriteLine(NormalSourceColumns());
           foreach (Source s in sourceCollection)
+          {
             tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
+          }
         }
         if (repositoryCollection.Count > 0)
         {
           tw.WriteLine("</table>");
           tw.WriteLine(NormalRepositoryColumns());
           foreach (Repository r in repositoryCollection)
+          {
             tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
+          }
         }
       }
       tw.WriteLine(Footer());
@@ -602,13 +720,19 @@ namespace Microsoft.FamilyShowLib
 
       //0 generations
       foreach (Person sibling in primaryPerson.Siblings)
+      {
         pc.Add(sibling);
+      }
 
       foreach (Person spouse in primaryPerson.Spouses)
+      {
         pc.Add(spouse);
+      }
 
       foreach (Person previousSpouse in primaryPerson.PreviousSpouses)
+      {
         pc.Add(previousSpouse);
+      }
 
       #region ancestors
 
@@ -620,7 +744,9 @@ namespace Microsoft.FamilyShowLib
           foreach (Person p in ancestorGenerations(parent))
           {
             if (!pc.Contains(p))
+            {
               pc.Add(p);
+            }
           }
 
           //2 ancestor generations
@@ -632,7 +758,9 @@ namespace Microsoft.FamilyShowLib
               foreach (Person p in ancestorGenerations(grandparent))
               {
                 if (!pc.Contains(p))
+                {
                   pc.Add(p);
+                }
               }
 
               //3 ancestor generations
@@ -644,7 +772,9 @@ namespace Microsoft.FamilyShowLib
                   foreach (Person p in ancestorGenerations(greatgrandparent))
                   {
                     if (!pc.Contains(p))
+                    {
                       pc.Add(p);
+                    }
                   }
 
                   //4 ancestor generations
@@ -656,7 +786,9 @@ namespace Microsoft.FamilyShowLib
                       foreach (Person p in ancestorGenerations(greatgreatgrandparent))
                       {
                         if (!pc.Contains(p))
+                        {
                           pc.Add(p);
+                        }
                       }
 
                       //5 ancestor generations
@@ -668,7 +800,9 @@ namespace Microsoft.FamilyShowLib
                           foreach (Person p in ancestorGenerations(greatgreatgreatgrandparent))
                           {
                             if (!pc.Contains(p))
+                            {
                               pc.Add(p);
+                            }
                           }
                         }
                       }
@@ -693,7 +827,9 @@ namespace Microsoft.FamilyShowLib
           foreach (Person p in descendentGenerations(child))
           {
             if (!pc.Contains(p))
+            {
               pc.Add(p);
+            }
           }
 
           //2 descendant generations
@@ -705,7 +841,9 @@ namespace Microsoft.FamilyShowLib
               foreach (Person p in descendentGenerations(grandchild))
               {
                 if (!pc.Contains(p))
+                {
                   pc.Add(p);
+                }
               }
 
               //3 descendent generations
@@ -716,7 +854,9 @@ namespace Microsoft.FamilyShowLib
                   foreach (Person p in descendentGenerations(greatgrandchild))
                   {
                     if (!pc.Contains(p))
+                    {
                       pc.Add(p);
+                    }
                   }
 
                   //4 descendent generations
@@ -727,7 +867,9 @@ namespace Microsoft.FamilyShowLib
                       foreach (Person p in descendentGenerations(greatgreatgrandchild))
                       {
                         if (!pc.Contains(p))
+                        {
                           pc.Add(p);
+                        }
                       }
 
                       //5 descendent generations
@@ -738,7 +880,9 @@ namespace Microsoft.FamilyShowLib
                           foreach (Person p in descendentGenerations(greatgreatgreatgrandchild))
                           {
                             if (!pc.Contains(p))
+                            {
                               pc.Add(p);
+                            }
                           }
 
                         }
@@ -767,7 +911,9 @@ namespace Microsoft.FamilyShowLib
       tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
 
       if (!string.IsNullOrEmpty(familyxFileName))
+      {
         tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
+      }
 
       tw.WriteLine(CurrentPersonString(peopleCollection.Current, privacy));
       tw.WriteLine(Properties.Resources.AncestralGenerations + " <b>" + ancestors + "</b><br/>");
@@ -782,18 +928,28 @@ namespace Microsoft.FamilyShowLib
         string[,] sourceArray = new string[1, 7];
 
         if (sourcesbool == true)
+        {
           sourceArray = Sources(p);
+        }
 
         if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
+        {
           tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        }
         else if (p.Restriction == Restriction.Private) //a private record should not be exported
+        {
           tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        }
         else
         {
           if (p.Note != null)
+          {
             tw.WriteLine(dataWithNote(p, sourceArray));
+          }
           else
+          {
             tw.WriteLine(dataWithoutNote(p, sourceArray));
+          }
         }
       }
 
@@ -804,14 +960,18 @@ namespace Microsoft.FamilyShowLib
           tw.WriteLine("</table>");
           tw.WriteLine(NormalSourceColumns());
           foreach (Source s in sourceCollection)
+          {
             tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
+          }
         }
         if (repositoryCollection.Count > 0)
         {
           tw.WriteLine("</table>");
           tw.WriteLine(NormalRepositoryColumns());
           foreach (Repository r in repositoryCollection)
+          {
             tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
+          }
         }
       }
       tw.WriteLine(Footer());
@@ -836,7 +996,10 @@ namespace Microsoft.FamilyShowLib
       tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
       tw.WriteLine("<i>" + Properties.Resources.Events + " " + startYear.ToString() + " - " + endYear.ToString() + "</i><br/><br/>");
       if (!string.IsNullOrEmpty(familyxFileName))
+      {
         tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
+      }
+
       tw.WriteLine("<div class=\"timeline\">");
 
       // Ensure we use actual decades and not just 10 year periods
@@ -869,7 +1032,9 @@ namespace Microsoft.FamilyShowLib
             if (!((p.IsLiving && privacy) || p.Restriction == Restriction.Private))
             {
               if (p.BirthDate != null)
+              {
                 year = p.BirthDate.Value.Year;
+              }
 
               string place = p.BirthPlace;
 
@@ -877,9 +1042,13 @@ namespace Microsoft.FamilyShowLib
               {
 
                 if (!string.IsNullOrEmpty(p.BirthPlace))
+                {
                   tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasBornOn + " " + dateformat(p.BirthDate) + " " + Properties.Resources.In + " " + p.BirthPlace + ".</p>");
+                }
                 else
+                {
                   tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasBornOn + " " + dateformat(p.BirthDate) + ".</p>");
+                }
               }
             }
 
@@ -892,14 +1061,20 @@ namespace Microsoft.FamilyShowLib
             if (!((p.IsLiving && privacy) || p.Restriction == Restriction.Private))
             {
               if (p.DeathDate != null)
+              {
                 year = p.DeathDate.Value.Year;
+              }
 
               if (year >= i && year <= ii)
               {
                 if (!string.IsNullOrEmpty(p.DeathPlace))
+                {
                   tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.DiedOn + " " + dateformat(p.DeathDate) + " " + Properties.Resources.In + " " + p.DeathPlace + ".</p>");
+                }
                 else
+                {
                   tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.DiedOn + " " + dateformat(p.DeathDate) + ".</p>");
+                }
               }
               year = 0;
             }
@@ -910,14 +1085,20 @@ namespace Microsoft.FamilyShowLib
             if (!((p.IsLiving && privacy) || p.Restriction == Restriction.Private))
             {
               if (p.BurialDate != null)
+              {
                 year = p.BurialDate.Value.Year;
+              }
 
               if (year >= i && year <= ii)
               {
                 if (!string.IsNullOrEmpty(p.BurialPlace))
+                {
                   tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasBuriedOn + " " + dateformat(p.BurialDate) + " " + Properties.Resources.At + " " + p.BurialPlace + ".</p>");
+                }
                 else
+                {
                   tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasBuriedOn + " " + dateformat(p.BurialDate) + ".</p>");
+                }
               }
               year = 0;
             }
@@ -928,14 +1109,20 @@ namespace Microsoft.FamilyShowLib
             if (!((p.IsLiving && privacy) || p.Restriction == Restriction.Private))
             {
               if (p.CremationDate != null)
+              {
                 year = p.CremationDate.Value.Year;
+              }
 
               if (year >= i && year <= ii)
               {
                 if (!string.IsNullOrEmpty(p.CremationPlace))
+                {
                   tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasCrematedOn + " " + dateformat(p.CremationDate) + " " + Properties.Resources.At + " " + p.CremationPlace + ".</p>");
+                }
                 else
+                {
                   tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasCrematedOn + " " + dateformat(p.CremationDate) + ".</p>");
+                }
               }
               year = 0;
             }
@@ -1073,58 +1260,92 @@ namespace Microsoft.FamilyShowLib
       {
         sourceArray[0, 0] = "<br/><br/><i>" + p.BirthCitation + "</i> [<a href=\"#" + p.BirthSource + "\">" + p.BirthSource + "</a>]";
         if (!string.IsNullOrEmpty(p.BirthLink) && (p.BirthLink.StartsWith("www.") || p.BirthLink.StartsWith("http://")))
+        {
           sourceArray[0, 0] += " [<a href=\"" + p.BirthLink + "\">Link</a>]";
+        }
       }
       else
+      {
         sourceArray[0, 0] = "";
+      }
+
       if (!string.IsNullOrEmpty(p.DeathCitation) && !string.IsNullOrEmpty(p.DeathSource))
       {
         sourceArray[0, 1] = "<br/><br/><i>" + p.DeathCitation + "</i> [<a href=\"#" + p.DeathSource + "\">" + p.DeathSource + "</a>]";
         if (!string.IsNullOrEmpty(p.DeathLink) && (p.DeathLink.StartsWith("www.") || p.DeathLink.StartsWith("http://")))
+        {
           sourceArray[0, 1] += " [<a href=\"" + p.DeathLink + "\">Link</a>]";
+        }
       }
       else
+      {
         sourceArray[0, 1] = "";
+      }
+
       if (!string.IsNullOrEmpty(p.OccupationCitation) && !string.IsNullOrEmpty(p.OccupationSource))
       {
         sourceArray[0, 2] = "<br/><br/><i>" + p.OccupationCitation + "</i> [<a href=\"#" + p.OccupationSource + "\">" + p.OccupationSource + "</a>]";
         if (!string.IsNullOrEmpty(p.OccupationLink) && (p.OccupationLink.StartsWith("www.") || p.OccupationLink.StartsWith("http://")))
+        {
           sourceArray[0, 2] += " [<a href=\"" + p.OccupationLink + "\">Link</a>]";
+        }
       }
       else
+      {
         sourceArray[0, 2] = "";
+      }
+
       if (!string.IsNullOrEmpty(p.EducationCitation) && !string.IsNullOrEmpty(p.EducationSource))
       {
         sourceArray[0, 3] = "<br/><br/><i>" + p.EducationCitation + "</i> [<a href=\"#" + p.EducationSource + "\">" + p.EducationSource + "</a>]";
         if (!string.IsNullOrEmpty(p.EducationLink) && (p.EducationLink.StartsWith("www.") || p.EducationLink.StartsWith("http://")))
+        {
           sourceArray[0, 3] += " [<a href=\"" + p.EducationLink + "\">Link</a>]";
+        }
       }
       else
+      {
         sourceArray[0, 3] = "";
+      }
+
       if (!string.IsNullOrEmpty(p.ReligionCitation) && !string.IsNullOrEmpty(p.ReligionSource))
       {
         sourceArray[0, 4] = "<br/><br/><i>" + p.ReligionCitation + "</i> [<a href=\"#" + p.ReligionSource + "\">" + p.ReligionSource + "</a>]";
         if (!string.IsNullOrEmpty(p.ReligionLink) && (p.ReligionLink.StartsWith("www.") || p.ReligionLink.StartsWith("http://")))
+        {
           sourceArray[0, 4] += " [<a href=\"" + p.ReligionLink + "\">Link</a>]";
+        }
       }
       else
+      {
         sourceArray[0, 4] = "";
+      }
+
       if (!string.IsNullOrEmpty(p.BurialCitation) && !string.IsNullOrEmpty(p.BurialSource))
       {
         sourceArray[0, 5] = "<br/><br/><i>" + p.BurialCitation + "</i> [<a href=\"#" + p.BurialSource + "\">" + p.BurialSource + "</a>]";
         if (!string.IsNullOrEmpty(p.BurialLink) && (p.BurialLink.StartsWith("www.") || p.BurialLink.StartsWith("http://")))
+        {
           sourceArray[0, 5] += " [<a href=\"" + p.BurialLink + "\">Link</a>]";
+        }
       }
       else
+      {
         sourceArray[0, 5] = "";
+      }
+
       if (!string.IsNullOrEmpty(p.CremationCitation) && !string.IsNullOrEmpty(p.CremationSource))
       {
         sourceArray[0, 6] = "<br/><br/><i>" + p.CremationCitation + "</i> [<a href=\"#" + p.CremationSource + "\">" + p.CremationSource + "</a>]";
         if (!string.IsNullOrEmpty(p.CremationLink) && (p.CremationLink.StartsWith("www.") || p.CremationLink.StartsWith("http://")))
+        {
           sourceArray[0, 6] += " [<a href=\"" + p.CremationLink + "\">Link</a>]";
+        }
       }
       else
+      {
         sourceArray[0, 6] = "";
+      }
 
       return sourceArray;
     }
@@ -1195,9 +1416,13 @@ namespace Microsoft.FamilyShowLib
       for (int j = 1; j <= i; j++)
       {
         if (i != j)
+        {
           printstyle += "*+";
+        }
         else
+        {
           printstyle += "*";
+        }
       }
 
       printstyle += "{display: none; }\n" +
@@ -1297,11 +1522,17 @@ namespace Microsoft.FamilyShowLib
       string CurrentPerson = string.Empty;
 
       if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
+      {
         CurrentPerson = Properties.Resources.CurrentPerson + " <b>" + Properties.Resources.Living + " " + p.LastName + "</b><br/>";
+      }
       else if (p.Restriction == Restriction.Private) //a private record should not be exported
+      {
         CurrentPerson = Properties.Resources.CurrentPerson + " <b>" + Properties.Resources.PrivateRecord + "</b><br/>";
+      }
       else
+      {
         CurrentPerson = Properties.Resources.CurrentPerson + " <b>" + p.FullName + "</b><br/>";
+      }
 
       return CurrentPerson;
     }
@@ -1314,12 +1545,16 @@ namespace Microsoft.FamilyShowLib
       PeopleCollection pc = new PeopleCollection();
 
       if (!pc.Contains(child))
+      {
         pc.Add(child);
+      }
 
       foreach (Person p in getSpouses(child))
       {
         if (!pc.Contains(p))
+        {
           pc.Add(p);
+        }
       }
 
       return pc;
@@ -1333,12 +1568,16 @@ namespace Microsoft.FamilyShowLib
       PeopleCollection pc = new PeopleCollection();
 
       if (!pc.Contains(parent))
+      {
         pc.Add(parent);
+      }
 
       foreach (Person p in getSiblingsSpousesChildren(parent))
       {
         if (!pc.Contains(p))
+        {
           pc.Add(p);
+        }
       }
 
       return pc;
@@ -1354,24 +1593,32 @@ namespace Microsoft.FamilyShowLib
       foreach (Person sibling in parent.Siblings)
       {
         if (!pc.Contains(sibling))
+        {
           pc.Add(sibling);
+        }
       }
       foreach (Person child in parent.Children)
       {
         if (!pc.Contains(child))
+        {
           pc.Add(child);
+        }
       }
 
       foreach (Person spouse in parent.Spouses)
       {
         if (!pc.Contains(spouse))
+        {
           pc.Add(spouse);
+        }
       }
 
       foreach (Person previousSpouse in parent.PreviousSpouses)
       {
         if (!pc.Contains(previousSpouse))
+        {
           pc.Add(previousSpouse);
+        }
       }
 
       return pc;
@@ -1388,12 +1635,16 @@ namespace Microsoft.FamilyShowLib
       foreach (Person spouse in child.Spouses)
       {
         if (!pc.Contains(spouse))
+        {
           pc.Add(spouse);
+        }
       }
       foreach (Person previousSpouse in child.PreviousSpouses)
       {
         if (!pc.Contains(previousSpouse))
+        {
           pc.Add(previousSpouse);
+        }
       }
 
       return pc;

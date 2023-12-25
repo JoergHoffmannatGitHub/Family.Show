@@ -25,7 +25,9 @@ namespace Microsoft.FamilyShow
       StorysListBox.ItemsSource = App.Family;
 
       foreach (FontFamily fontFamily in Fonts.SystemFontFamilies)
+      {
         FontsComboBox.Items.Add(fontFamily.Source);
+      }
 
       // Set the default sort order for the Family ListView to 
       // if a person has a note.
@@ -106,10 +108,14 @@ namespace Microsoft.FamilyShow
           Name2.Text = person.FullName;
 
           if (person.Restriction == Restriction.Locked)
+          {
             EditStoryButton.Visibility = Visibility.Collapsed;
-          if (person.Restriction == Restriction.Private)
-            PrintStoryButton.Visibility = Visibility.Collapsed;
+          }
 
+          if (person.Restriction == Restriction.Private)
+          {
+            PrintStoryButton.Visibility = Visibility.Collapsed;
+          }
         }
         else
         {
@@ -212,7 +218,9 @@ namespace Microsoft.FamilyShow
 
       // Ignore null cases
       if (flowDocument == null || flowDocument.Blocks == null || StorysListBox.SelectedItem == null)
+      {
         return;
+      }
 
       // Clear out any existing text in the viewer 
       flowDocument.Blocks.Clear();
@@ -277,7 +285,9 @@ namespace Microsoft.FamilyShow
       // Font list.
       result = StoryRichTextBox.Selection.GetPropertyValue(FlowDocument.FontFamilyProperty);
       if (result != null && result is FontFamily)
+      {
         FontsComboBox.SelectedItem = result.ToString();
+      }
 
       // Align buttons.
       result = StoryRichTextBox.Selection.GetPropertyValue(Block.TextAlignmentProperty);
@@ -299,7 +309,9 @@ namespace Microsoft.FamilyShow
             decorations[0].Location == TextDecorationLocation.Underline);
       }
       else
+      {
         UnderlineButton.IsChecked = false;
+      }
 
       // bullets
       UpdateBulletButtons();

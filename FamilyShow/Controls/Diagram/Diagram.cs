@@ -116,14 +116,18 @@ namespace Microsoft.FamilyShow
     private void OnDiagramUpdated()
     {
       if (DiagramUpdated != null)
+      {
         DiagramUpdated(this, EventArgs.Empty);
+      }
     }
 
     public event EventHandler DiagramPopulated;
     private void OnDiagramPopulated()
     {
       if (DiagramPopulated != null)
+      {
         DiagramPopulated(this, EventArgs.Empty);
+      }
     }
 
     #endregion
@@ -343,7 +347,9 @@ namespace Microsoft.FamilyShow
       // Let each row determine how large they want to be.
       Size size = new Size(double.PositiveInfinity, double.PositiveInfinity);
       foreach (DiagramRow row in rows)
+      {
         row.Measure(size);
+      }
 
       // Return the total size of the diagram.
       return ArrangeRows(false);
@@ -465,30 +471,44 @@ namespace Microsoft.FamilyShow
       if (displayDates == false)
       {
         foreach (DiagramConnectorNode connector in logic.PersonLookup.Values)
+        {
           connector.Node.HideBottomLabel();
+        }
+
         foreach (DiagramConnector connector in logic.Connections)
+        {
           connector.ShowDate = false;
+        }
       }
       else
       {
         foreach (DiagramConnectorNode connector in logic.PersonLookup.Values)
+        {
           connector.Node.UpdateBottomLabel();
+        }
+
         foreach (DiagramConnector connector in logic.Connections)
+        {
           connector.ShowDate = true;
+        }
       }
 
       // Draw child connectors first, so marriage information appears on top.
       foreach (DiagramConnector connector in logic.Connections)
       {
         if (connector.IsChildConnector)
+        {
           connector.Draw(drawingContext);
+        }
       }
 
       // Draw all other non-child connectors.
       foreach (DiagramConnector connector in logic.Connections)
       {
         if (!connector.IsChildConnector)
+        {
           connector.Draw(drawingContext);
+        }
       }
     }
 
@@ -758,7 +778,9 @@ namespace Microsoft.FamilyShow
       foreach (DiagramConnectorNode connector in logic.PersonLookup.Values)
       {
         if (connector.Node.Person != logic.Family.Current)
+        {
           connector.Node.Visibility = Visibility.Hidden;
+        }
       }
 
       // Required to update (hide) the connector lines.            
@@ -811,19 +833,25 @@ namespace Microsoft.FamilyShow
       int MaximumNodes = logic.Family.Count;
 
       if (!showGenerations)
+      {
         MaximumNodes = 50;
+      }
 
 
       // Necessary for Blend.
       if (logic.Family == null)
+      {
         return;
+      }
 
       // First reset everything.
       Clear();
 
       // Nothing to draw if there is not a primary person.
       if (logic.Family.Current == null)
+      {
         return;
+      }
 
       // Primary row.
       Person primaryPerson = logic.Family.Current;
@@ -854,7 +882,9 @@ namespace Microsoft.FamilyShow
         }
 
         if (showImmediateFamily == true)
+        {
           break;
+        }
 
         // See if reached node limit yet.                                       
         nodeCount = NodeCount;
@@ -864,10 +894,14 @@ namespace Microsoft.FamilyShow
       {
         // Child Row.
         if (childRow != null)
+        {
           childRow = AddChildRow(childRow);
+        }
 
         if (showImmediateFamily == true)
+        {
           break;
+        }
 
         // See if reached node limit yet.                                       
         nodeCount = NodeCount;
@@ -878,7 +912,9 @@ namespace Microsoft.FamilyShow
       {
         // Child Row.
         if (childRow != null)
+        {
           childRow = AddChildRow(childRow);
+        }
 
         // Parent row.
         if (parentRow != null)
@@ -888,7 +924,9 @@ namespace Microsoft.FamilyShow
         }
 
         if (showImmediateFamily == true)
+        {
           break;
+        }
 
         // See if reached node limit yet.                                       
         nodeCount = NodeCount;
@@ -911,7 +949,9 @@ namespace Microsoft.FamilyShow
       // Get list of children for the current row.
       List<Person> children = DiagramLogic.GetChildren(row);
       if (children.Count == 0)
+      {
         return null;
+      }
 
       // Add bottom space to existing row.
       row.Margin = new Thickness(0, 0, 0, Const.RowSpace);
@@ -931,7 +971,9 @@ namespace Microsoft.FamilyShow
       // Get list of parents for the current row.
       Collection<Person> parents = DiagramLogic.GetParents(row);
       if (parents.Count == 0)
+      {
         return null;
+      }
 
       // Add another row.
       DiagramRow parentRow = logic.CreateParentRow(parents, nodeScale, nodeScale * Const.RelatedMultiplier, hideAuntsUncles);
@@ -990,7 +1032,9 @@ namespace Microsoft.FamilyShow
     {
       // Ignore if currently repopulating the diagram.
       if (populating)
+      {
         return;
+      }
 
       // Save the person that is being added to the diagram.
       // This is optional and can be null.
@@ -1025,7 +1069,9 @@ namespace Microsoft.FamilyShow
     {
       // The new person is optional, can be null.
       if (newPerson == null)
+      {
         return;
+      }
 
       // Get the UI element to animate.                
       DiagramNode node = logic.GetDiagramNode(newPerson);

@@ -85,7 +85,9 @@ namespace Microsoft.FamilyShow
         {
           displayYear = value;
           foreach (DiagramConnectorNode connectorNode in personLookup.Values)
+          {
             connectorNode.Node.DisplayYear = displayYear;
+          }
         }
       }
     }
@@ -105,7 +107,9 @@ namespace Microsoft.FamilyShow
         {
           DateTime? date = connectorNode.Node.Person.BirthDate;
           if (date != null)
+          {
             minimumYear = Math.Min(minimumYear, date.Value.Year);
+          }
         }
 
         // Check death years.
@@ -113,7 +117,9 @@ namespace Microsoft.FamilyShow
         {
           DateTime? date = connectorNode.Node.Person.DeathDate;
           if (date != null)
+          {
             minimumYear = Math.Min(minimumYear, date.Value.Year);
+          }
         }
 
         // Check marriage years.
@@ -122,12 +128,16 @@ namespace Microsoft.FamilyShow
           // Marriage date.
           DateTime? date = connector.MarriedDate;
           if (date != null)
+          {
             minimumYear = Math.Min(minimumYear, date.Value.Year);
+          }
 
           // Previous marriage date.
           date = connector.PreviousMarriedDate;
           if (date != null)
+          {
             minimumYear = Math.Min(minimumYear, date.Value.Year);
+          }
         }
 
         return minimumYear;
@@ -167,7 +177,9 @@ namespace Microsoft.FamilyShow
         foreach (Person parent in person.Parents)
         {
           if (!list.Contains(parent))
+          {
             list.Add(parent);
+          }
         }
       }
 
@@ -191,7 +203,9 @@ namespace Microsoft.FamilyShow
         foreach (Person child in person.Children)
         {
           if (!list.Contains(child))
+          {
             list.Add(child);
+          }
         }
       }
 
@@ -209,7 +223,9 @@ namespace Microsoft.FamilyShow
         foreach (DiagramNode node in group.Nodes)
         {
           if (node.Type == NodeType.Related || node.Type == NodeType.Primary)
+          {
             list.Add(node.Person);
+          }
         }
       }
 
@@ -222,7 +238,9 @@ namespace Microsoft.FamilyShow
     private static void RemoveDuplicates(Collection<Person> people, Collection<Person> other)
     {
       foreach (Person person in other)
+      {
         people.Remove(person);
+      }
     }
 
     #endregion
@@ -248,7 +266,9 @@ namespace Microsoft.FamilyShow
       node.Person = person;
       node.Type = type;
       if (clickEvent)
+      {
         node.Click += nodeClickHandler;
+      }
 
       return node;
     }
@@ -466,7 +486,9 @@ namespace Microsoft.FamilyShow
         AddChildConnections(previousSpouses);
 
         if (left)
+        {
           group.Reverse();
+        }
       }
 
       // Add connections that span across groups.
@@ -485,7 +507,9 @@ namespace Microsoft.FamilyShow
     private void AddChildConnections(Collection<Person> parents)
     {
       foreach (Person person in parents)
+      {
         AddChildConnections(person);
+      }
     }
 
     /// <summary>
@@ -574,7 +598,9 @@ namespace Microsoft.FamilyShow
       // the delegate maintains a reference to the object 
       // which can hinder garbage collection. 
       foreach (DiagramConnectorNode node in personLookup.Values)
+      {
         node.Node.Click -= nodeClickHandler;
+      }
 
       // Clear the connection info.
       connections.Clear();
@@ -590,10 +616,14 @@ namespace Microsoft.FamilyShow
     public DiagramNode GetDiagramNode(Person person)
     {
       if (person == null)
+      {
         return null;
+      }
 
       if (!personLookup.ContainsKey(person))
+      {
         return null;
+      }
 
       return personLookup[person].Node;
     }

@@ -71,13 +71,25 @@ namespace Microsoft.FamilyShow
       {
         string choice = "0";
         if (Option1.IsChecked == true)
+        {
           choice = "1";
+        }
+
         if (Option2.IsChecked == true)
+        {
           choice = "2";
+        }
+
         if (Option3.IsChecked == true)
+        {
           choice = "3";
+        }
+
         if (Option4.IsChecked == true)
+        {
           choice = "4";
+        }
+
         return choice;
       }
     }
@@ -95,9 +107,13 @@ namespace Microsoft.FamilyShow
     public bool Privacy()
     {
       if (PrivacySave.IsChecked == true)
+      {
         return true;
+      }
       else
+      {
         return false;
+      }
     }
 
     public void Clear()

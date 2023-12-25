@@ -69,11 +69,15 @@ namespace Microsoft.FamilyShow
       // Make sure the column is really being sorted.
       GridViewColumnHeader header = e.OriginalSource as GridViewColumnHeader;
       if (header == null || header.Role == GridViewColumnHeaderRole.Padding)
+      {
         return;
+      }
 
       SortListViewColumn column = header.Column as SortListViewColumn;
       if (column == null)
+      {
         return;
+      }
 
       // See if a new column was clicked, or the same column was clicked.
       if (sortColumn != column)
@@ -126,7 +130,9 @@ namespace Microsoft.FamilyShow
       {
         headerStyle = TryFindResource(previousSortColumn.SortStyle) as Style;
         if (headerStyle != null)
+        {
           previousSortColumn.HeaderContainerStyle = headerStyle;
+        }
       }
 
       // Update the current header.
@@ -137,7 +143,9 @@ namespace Microsoft.FamilyShow
 
         headerStyle = TryFindResource(resourceName) as Style;
         if (headerStyle != null)
+        {
           sortColumn.HeaderContainerStyle = headerStyle;
+        }
       }
     }
   }

@@ -173,9 +173,13 @@ namespace Microsoft.FamilyShow
           else
           {
             if (isFiltered)
+            {
               Visibility = Visibility.Collapsed;
+            }
             else
+            {
               Visibility = Visibility.Visible;
+            }
           }
         }
       }
@@ -189,16 +193,22 @@ namespace Microsoft.FamilyShow
       get
       {
         if (person.Restriction == Restriction.Private)  //hide information on private records
+        {
           return string.Empty;
+        }
 
         // Living, example: 1900 | 107
         if (person.IsLiving)
         {
           if (person.BirthDate == null)
+          {
             return string.Empty;
+          }
 
           if (!person.Age.HasValue)
+          {
             return string.Empty;
+          }
 
           int age = person.Age.Value - (DateTime.Now.Year - (int)displayYear);
           return string.Format(CultureInfo.CurrentUICulture,
@@ -209,7 +219,9 @@ namespace Microsoft.FamilyShow
         if (person.BirthDate != null && person.DeathDate != null)
         {
           if (!person.Age.HasValue)
+          {
             return string.Empty;
+          }
 
           int age = (displayYear >= person.DeathDate.Value.Year) ?
               person.Age.Value : person.Age.Value - (person.DeathDate.Value.Year - (int)displayYear);  //change the displayed age when the time slider is altered
@@ -458,14 +470,18 @@ namespace Microsoft.FamilyShow
     {
       // Primary templates don't have the group xaml section.
       if (type == NodeType.Primary)
+      {
         return;
+      }
 
       // Determine if the group indicator should be displayed.
       bool isGrouping = ShouldDisplayGroupIndicator();
 
       FrameworkElement element = Template.FindName("Group", this) as FrameworkElement;
       if (element != null)
+      {
         element.Visibility = isGrouping ? Visibility.Visible : Visibility.Collapsed;
+      }
     }
 
     /// <summary>
@@ -475,7 +491,9 @@ namespace Microsoft.FamilyShow
     {
       // Primary and related nodes never display the group indicator.
       if ((type == NodeType.Primary || type == NodeType.Related))
+      {
         return false;
+      }
 
       bool show = false;
       switch (type)
@@ -485,14 +503,20 @@ namespace Microsoft.FamilyShow
           if (person.Parents.Count > 0 ||
               person.Siblings.Count > 0 ||
               person.PreviousSpouses.Count > 1)   //1 because if this is a spouse node and they only have 1 previous spouse, then that spouse must be visible so there is no need to show the indicator
+          {
             show = true;
+          }
+
           break;
 
         // Sibling - if have spouse, or children.
         case NodeType.Sibling:
           if (person.Spouses.Count > 0 ||
               person.Children.Count > 0)
+          {
             show = true;
+          }
+
           break;
 
         // Half sibling - like sibling, but also inherits the 
@@ -501,7 +525,10 @@ namespace Microsoft.FamilyShow
         case NodeType.SiblingRight:
           if (person.Spouses.Count > 0 ||
               person.Children.Count > 0)
+          {
             show = true;
+          }
+
           break;
       }
 
@@ -521,7 +548,9 @@ namespace Microsoft.FamilyShow
         BottomLabel = label;
       }
       else
+      {
         BottomLabel = Properties.Resources.PrivateRecord;  //restrict the bottom label for private records
+      }
     }
 
     public void HideBottomLabel()
@@ -533,7 +562,9 @@ namespace Microsoft.FamilyShow
         BottomLabel = label;
       }
       else
+      {
         BottomLabel = Properties.Resources.PrivateRecord; //restrict the bottom label for private records
+      }
     }
   }
 }

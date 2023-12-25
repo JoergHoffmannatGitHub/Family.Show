@@ -107,7 +107,9 @@ namespace Microsoft.FamilyShow
           {
 
             if (string.IsNullOrEmpty(Attachment.RelativePath))
+            {
               add = false;
+            }
 
             if (existingAttachment.RelativePath == Attachment.RelativePath)
             {
@@ -117,19 +119,22 @@ namespace Microsoft.FamilyShow
 
           }
           if (add == true)
+          {
             allAttachments.Add(Attachment);
-
-
-
+          }
         }
       }
 
 
       foreach (Attachment Attachment in allAttachments)
+      {
         AttachmentsListBox.Items.Add(Attachment);
+      }
 
       if (AttachmentsListBox.Items.Count > 0)
+      {
         AttachmentsListBox.SelectedIndex = 0;
+      }
     }
 
     #endregion

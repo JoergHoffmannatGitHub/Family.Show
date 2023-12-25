@@ -86,12 +86,17 @@ namespace Microsoft.FamilyShow
 
       // Apply sorting
       if (!string.IsNullOrEmpty(sort))
+      {
         view.SortDescriptions.Add(new SortDescription(sort, ListSortDirection.Ascending));
+      }
 
       // Group the collection into tags. The tag cloud will be based on the group Name and ItemCount
       PropertyGroupDescription groupDescription = new PropertyGroupDescription();
       if (!string.IsNullOrEmpty(group))
+      {
         groupDescription.PropertyName = group;
+      }
+
       view.GroupDescriptions.Add(groupDescription);
 
       return view;
@@ -150,7 +155,9 @@ namespace Microsoft.FamilyShow
     void FamilyEditor_LostFocus(object sender, RoutedEventArgs e)
     {
       if (e.OriginalSource is TextBox || e.OriginalSource is CheckBox)
+      {
         Refresh();
+      }
     }
 
     /// <summary>
@@ -337,7 +344,9 @@ namespace Microsoft.FamilyShow
       string filter = e.OriginalSource as string;
       surnameFilter = filter;
       if (filter != null)
+      {
         UpdateFilter(filter);
+      }
     }
 
     /// <summary>
@@ -349,7 +358,9 @@ namespace Microsoft.FamilyShow
       string filter = e.OriginalSource as string;
       ageFilter = filter;
       if (filter != null)
+      {
         UpdateFilter(filter);
+      }
     }
 
     /// <summary>
@@ -375,7 +386,9 @@ namespace Microsoft.FamilyShow
       string filter = e.OriginalSource as string;
       genderFilter = filter;
       if (filter != null)
+      {
         UpdateFilter(filter);
+      }
     }
 
     /// <summary>
@@ -387,7 +400,9 @@ namespace Microsoft.FamilyShow
       string filter = e.OriginalSource as string;
       livingFilter = filter;
       if (filter != null)
+      {
         UpdateFilter(filter);
+      }
     }
 
     /// <summary>
@@ -405,15 +420,29 @@ namespace Microsoft.FamilyShow
     private void UpdateControls(string filter)
     {
       if (ageFilter != filter)
+      {
         AgeDistributionControl.ClearSelection();
+      }
+
       if (surnameFilter != filter)
+      {
         TagCloudControl.ClearSelection();
+      }
+
       if (birthdateFilter != filter)
+      {
         BirthdaysControl.ClearSelection();
+      }
+
       if (livingFilter != filter)
+      {
         LivingDistributionControl1.ClearSelection();
+      }
+
       if (genderFilter != filter)
+      {
         GenderDistributionControl1.ClearSelection();
+      }
     }
 
     /// <summary>

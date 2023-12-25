@@ -43,7 +43,9 @@ namespace Microsoft.FamilyShowLib
       tw.WriteLine(NormalSourceColumns());
 
       foreach (Source s in source)
+      {
         tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
+      }
 
       tw.WriteLine(Footer());
       tw.Close();
@@ -116,9 +118,13 @@ namespace Microsoft.FamilyShowLib
       for (int j = 1; j <= i; j++)
       {
         if (i != j)
+        {
           printstyle += "*+";
+        }
         else
+        {
           printstyle += "*";
+        }
       }
 
       printstyle += "{display: none; }\n" +

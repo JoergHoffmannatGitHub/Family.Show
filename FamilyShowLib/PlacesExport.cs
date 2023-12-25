@@ -149,9 +149,13 @@ namespace Microsoft.FamilyShowLib
                             "	<description>" + p.BirthPlace + "</description>");
 
                 if (p.Gender == Gender.Male)
+                {
                   tw.WriteLine("<styleUrl>#msn_man</styleUrl>\n</Placemark>");
+                }
                 else
+                {
                   tw.WriteLine("<styleUrl>#msn_woman</styleUrl>\n</Placemark>");
+                }
 
                 i++;
               }
@@ -181,9 +185,13 @@ namespace Microsoft.FamilyShowLib
                              "<description>" + p.DeathPlace + "</description>");
 
                 if (p.Gender == Gender.Male)
+                {
                   tw.WriteLine("<styleUrl>#msn_man</styleUrl>\n</Placemark>");
+                }
                 else
+                {
                   tw.WriteLine("<styleUrl>#msn_woman</styleUrl>\n</Placemark>");
+                }
 
                 i++;
               }
@@ -212,9 +220,13 @@ namespace Microsoft.FamilyShowLib
                              "<description>" + p.BurialPlace + "</description>");
 
                 if (p.Gender == Gender.Male)
+                {
                   tw.WriteLine("<styleUrl>#msn_man</styleUrl>\n</Placemark>");
+                }
                 else
+                {
                   tw.WriteLine("<styleUrl>#msn_woman</styleUrl>\n</Placemark>");
+                }
 
                 i++;
               }
@@ -244,9 +256,13 @@ namespace Microsoft.FamilyShowLib
                              "<description>" + p.CremationPlace + "</description>");
 
                 if (p.Gender == Gender.Male)
+                {
                   tw.WriteLine("<styleUrl>#msn_man</styleUrl>\n</Placemark>");
+                }
                 else
+                {
                   tw.WriteLine("<styleUrl>#msn_woman</styleUrl>\n</Placemark>");
+                }
 
                 i++;
               }
@@ -287,9 +303,13 @@ namespace Microsoft.FamilyShowLib
 
 
                       if (p.Gender == Gender.Male)
+                      {
                         tw.WriteLine("<styleUrl>#msn_man</styleUrl>\n</Placemark>");
+                      }
                       else
+                      {
                         tw.WriteLine("<styleUrl>#msn_woman</styleUrl>\n</Placemark>");
+                      }
 
                       i++;
                     }
@@ -334,9 +354,13 @@ namespace Microsoft.FamilyShowLib
                             "   <TimeStamp>\n<when>" + p.YearOfBirth + "</when>\n</TimeStamp>");
 
                 if (p.Gender == Gender.Male)
+                {
                   tw.WriteLine("<styleUrl>#msn_man</styleUrl>\n</Placemark>");
+                }
                 else
+                {
                   tw.WriteLine("<styleUrl>#msn_woman</styleUrl>\n</Placemark>");
+                }
 
                 i++;
               }
@@ -368,9 +392,13 @@ namespace Microsoft.FamilyShowLib
                              "<TimeStamp>\n<when>" + p.YearOfDeath + "</when>\n</TimeStamp>");
 
                 if (p.Gender == Gender.Male)
+                {
                   tw.WriteLine("<styleUrl>#msn_man</styleUrl>\n</Placemark>");
+                }
                 else
+                {
                   tw.WriteLine("<styleUrl>#msn_woman</styleUrl>\n</Placemark>");
+                }
 
                 i++;
               }
@@ -395,7 +423,9 @@ namespace Microsoft.FamilyShowLib
               string year = string.Empty;
 
               if (p.BurialDate != null)
+              {
                 year = p.BurialDate.Value.Year.ToString();
+              }
 
               if (!string.IsNullOrEmpty(p.BurialPlace) && p.Restriction != Restriction.Private && !string.IsNullOrEmpty(year))
               {
@@ -407,9 +437,13 @@ namespace Microsoft.FamilyShowLib
                              "<TimeStamp>\n<when>" + year + "</when>\n</TimeStamp>");
 
                 if (p.Gender == Gender.Male)
+                {
                   tw.WriteLine("<styleUrl>#msn_man</styleUrl>\n</Placemark>");
+                }
                 else
+                {
                   tw.WriteLine("<styleUrl>#msn_woman</styleUrl>\n</Placemark>");
+                }
 
                 i++;
               }
@@ -434,7 +468,9 @@ namespace Microsoft.FamilyShowLib
               string year = string.Empty;
 
               if (p.CremationDate != null)
+              {
                 year = p.CremationDate.Value.Year.ToString();
+              }
 
               if (!string.IsNullOrEmpty(p.CremationPlace) && p.Restriction != Restriction.Private && !string.IsNullOrEmpty(year))
               {
@@ -446,9 +482,13 @@ namespace Microsoft.FamilyShowLib
                              "<TimeStamp>\n<when>" + year + "</when>\n</TimeStamp>");
 
                 if (p.Gender == Gender.Male)
+                {
                   tw.WriteLine("<styleUrl>#msn_man</styleUrl>\n</Placemark>");
+                }
                 else
+                {
                   tw.WriteLine("<styleUrl>#msn_woman</styleUrl>\n</Placemark>");
+                }
 
                 i++;
               }
@@ -485,7 +525,9 @@ namespace Microsoft.FamilyShowLib
                       string date = string.Empty;
 
                       if (spouseRel.MarriageDate != null)
+                      {
                         date = spouseRel.MarriageDate.Value.Year.ToString();
+                      }
 
                       tw.WriteLine("<Placemark>\n" +
                                    "<name>" + p.FullName + "</name>\n" +
@@ -495,9 +537,13 @@ namespace Microsoft.FamilyShowLib
 
 
                       if (p.Gender == Gender.Male)
+                      {
                         tw.WriteLine("<styleUrl>#msn_man</styleUrl>\n</Placemark>");
+                      }
                       else
+                      {
                         tw.WriteLine("<styleUrl>#msn_woman</styleUrl>\n</Placemark>");
+                      }
 
                       i++;
                     }
@@ -528,10 +574,14 @@ namespace Microsoft.FamilyShowLib
               string place = string.Empty;
 
               if (!string.IsNullOrEmpty(p.BirthPlace) && string.IsNullOrEmpty(place))
+              {
                 place = p.BirthPlace;
+              }
 
               if (!string.IsNullOrEmpty(p.DeathPlace) && string.IsNullOrEmpty(place))
+              {
                 place = p.DeathPlace;
+              }
 
               tw.WriteLine("<Placemark>\n" +
                            "<name>" + p.FullName + "</name>\n" +
@@ -539,16 +589,25 @@ namespace Microsoft.FamilyShowLib
                            "<description>" + place + "</description>\n" +
                            "<TimeSpan>");
               if (!string.IsNullOrEmpty(p.YearOfBirth))
+              {
                 tw.WriteLine("<begin>" + p.YearOfBirth + "</begin>");
+              }
+
               if (!string.IsNullOrEmpty(p.YearOfBirth))
+              {
                 tw.WriteLine("<end>" + p.YearOfDeath + "</end>");
+              }
 
               tw.WriteLine("</TimeSpan>");
 
               if (p.Gender == Gender.Male)
+              {
                 tw.WriteLine("<styleUrl>#msn_man</styleUrl>\n</Placemark>");
+              }
               else
+              {
                 tw.WriteLine("<styleUrl>#msn_woman</styleUrl>\n</Placemark>");
+              }
 
               i++;
             }

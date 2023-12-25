@@ -88,7 +88,9 @@ namespace Microsoft.FamilyShow
       }
 
       if (currentPersonOnly && family.Current != null)
+      {
         folderName = folderName + " - " + family.Current.Name;
+      }
 
       string contentpath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\" + App.ApplicationFolderName + @"\" + App.AppDataFolderName;
 
@@ -109,7 +111,9 @@ namespace Microsoft.FamilyShow
         extractedFileLocation = Directory.CreateDirectory(newPath);
       }
       else
+      {
         extractedFileLocation = Directory.CreateDirectory(Path.Combine(folderPath, folderName));
+      }
 
       string[] photosToExtract = null;
       string[] storiesToExtract = null;
@@ -119,11 +123,19 @@ namespace Microsoft.FamilyShow
       {
 
         if (Directory.Exists(Path.Combine(contentpath, Photo.PhotosFolderName)))
+        {
           photosToExtract = Directory.GetFiles(Path.Combine(contentpath, Photo.PhotosFolderName), "*", SearchOption.AllDirectories);
+        }
+
         if (Directory.Exists(Path.Combine(contentpath, Story.StoriesFolderName)))
+        {
           storiesToExtract = Directory.GetFiles(Path.Combine(contentpath, Story.StoriesFolderName), "*", SearchOption.AllDirectories);
+        }
+
         if (Directory.Exists(Path.Combine(contentpath, Attachment.AttachmentsFolderName)))
+        {
           attachmentsToExtract = Directory.GetFiles(Path.Combine(contentpath, Attachment.AttachmentsFolderName), "*", SearchOption.AllDirectories);
+        }
 
         if (extractAttachments && attachmentsToExtract != null)
         {

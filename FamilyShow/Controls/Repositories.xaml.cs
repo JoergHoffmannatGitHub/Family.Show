@@ -107,7 +107,9 @@ namespace Microsoft.FamilyShow
         try
         {
           if (result == MessageBoxResult.Yes)
+          {
             System.Diagnostics.Process.Start(dialog.FileName);
+          }
         }
         catch { }
       }
@@ -168,7 +170,9 @@ namespace Microsoft.FamilyShow
           if (deletable == true)
           {
             if (s.SourceRepository == repositoryToRemove.Id)
+            {
               deletable = false;
+            }
           }
           else { }
         }
@@ -186,7 +190,9 @@ namespace Microsoft.FamilyShow
 
         }
         else
+        {
           MessageBox.Show(Properties.Resources.UnableDeleteRepository1 + " " + repositoryToRemove.Id + " " + Properties.Resources.UnableDeleteRepository2, Properties.Resources.Repository, MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
       }
     }
 
