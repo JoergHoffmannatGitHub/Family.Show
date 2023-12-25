@@ -208,8 +208,10 @@ namespace Microsoft.FamilyShow
 
       if (attachmentCount > 0)
       {
-        CommonDialog dialog = new CommonDialog();
-        dialog.InitialDirectory = attachmentLocation;
+        CommonDialog dialog = new CommonDialog
+        {
+          InitialDirectory = attachmentLocation
+        };
         dialog.Filter.Add(new FilterEntry(Properties.Resources.AttachmentFiles, Properties.Resources.AttachmentExtension));
         dialog.Title = Properties.Resources.Link;
         dialog.ShowOpen();
@@ -232,9 +234,10 @@ namespace Microsoft.FamilyShow
             //only link files which are in the temp directory and which are of allowed file types
             if (File.Exists(Path.Combine(attachmentLocation, Path.GetFileName(dialog.FileName))))
             {
-              Attachment attachment = new Attachment();
-
-              attachment.RelativePath = Path.Combine(Attachment.AttachmentsFolderName, Path.GetFileName(dialog.FileName));
+              Attachment attachment = new Attachment
+              {
+                RelativePath = Path.Combine(Attachment.AttachmentsFolderName, Path.GetFileName(dialog.FileName))
+              };
               // Associate the attachment with the person.
               person.Attachments.Add(attachment);
               person.OnPropertyChanged("HasAttachments");
@@ -262,8 +265,10 @@ namespace Microsoft.FamilyShow
     {
       Person person = (Person)DataContext;
 
-      CommonDialog dialog = new CommonDialog();
-      dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+      CommonDialog dialog = new CommonDialog
+      {
+        InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+      };
       dialog.Filter.Add(new FilterEntry(Properties.Resources.AttachmentFiles, Properties.Resources.AttachmentExtension));
       dialog.Title = Properties.Resources.Open;
       dialog.ShowOpen();
@@ -418,8 +423,10 @@ namespace Microsoft.FamilyShow
         // To make it a little more user friendly, set the next action for the family member button to be the same as the current relationship being added.
         SetNextFamilyMemberAction((FamilyMemberComboBoxValue)FamilyMemberComboBox.SelectedValue);
         // The new person to be added
-        Person newPerson = new Person(NamesInputTextBox.Text, SurnameInputTextBox.Text);
-        newPerson.IsLiving = (IsLivingInputCheckbox.IsChecked == null) ? true : (bool)IsLivingInputCheckbox.IsChecked;
+        Person newPerson = new Person(NamesInputTextBox.Text, SurnameInputTextBox.Text)
+        {
+          IsLiving = (IsLivingInputCheckbox.IsChecked == null) ? true : (bool)IsLivingInputCheckbox.IsChecked
+        };
 
         DateTime birthdate = App.StringToDate(BirthDateInputTextBox.Text);
         if (birthdate != DateTime.MinValue)
@@ -566,8 +573,10 @@ namespace Microsoft.FamilyShow
 
       if (FamilyMemberComboBox.SelectedItem != null)  //prevents program crashing when user presses enter more than one before add is completed.
       {
-        Person newPerson = new Person(NamesInputTextBox.Text, SurnameInputTextBox.Text);
-        newPerson.IsLiving = (IsLivingInputCheckbox.IsChecked == null) ? true : (bool)IsLivingInputCheckbox.IsChecked;
+        Person newPerson = new Person(NamesInputTextBox.Text, SurnameInputTextBox.Text)
+        {
+          IsLiving = (IsLivingInputCheckbox.IsChecked == null) ? true : (bool)IsLivingInputCheckbox.IsChecked
+        };
 
         DateTime birthdate = App.StringToDate(BirthDateInputTextBox.Text);
         if (birthdate != DateTime.MinValue)
@@ -776,8 +785,10 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ExportCitations_Click(object sender, RoutedEventArgs e)
     {
-      CommonDialog dialog = new CommonDialog();
-      dialog.InitialDirectory = People.ApplicationFolderPath;
+      CommonDialog dialog = new CommonDialog
+      {
+        InitialDirectory = People.ApplicationFolderPath
+      };
       dialog.Filter.Add(new FilterEntry(Properties.Resources.htmlFiles, Properties.Resources.htmlExtension));
       dialog.Title = Properties.Resources.Export;
       dialog.DefaultExtension = Properties.Resources.DefaulthtmlExtension;

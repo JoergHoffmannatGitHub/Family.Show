@@ -34,8 +34,10 @@ namespace Microsoft.FamilyShowLib
       // Used to create the .xml file, XmlWriterSettings. Indent is 
       // specified if you want to examine the xml file, otherwise
       // it should be removed.
-      XmlWriterSettings settings = new XmlWriterSettings();
-      settings.Indent = true;
+      XmlWriterSettings settings = new XmlWriterSettings
+      {
+        Indent = true
+      };
       using (XmlWriter writer = XmlWriter.Create(xmlFilePath, settings))
       {
         // Root element that contains all of the other elements.

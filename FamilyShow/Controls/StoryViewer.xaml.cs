@@ -238,8 +238,10 @@ namespace Microsoft.FamilyShow
       {
         // This person doesn't have a story.
         // Load the default story text
-        TextRange textRange = new TextRange(flowDocument.ContentStart, flowDocument.ContentEnd);
-        textRange.Text = Properties.Resources.DefaultStory;
+        TextRange textRange = new TextRange(flowDocument.ContentStart, flowDocument.ContentEnd)
+        {
+          Text = Properties.Resources.DefaultStory
+        };
 
         textRange.ApplyPropertyValue(TextElement.FontFamilyProperty, Properties.Resources.StoryFontFamily);
         textRange.ApplyPropertyValue(TextElement.FontSizeProperty, Properties.Resources.StoryFontSize);

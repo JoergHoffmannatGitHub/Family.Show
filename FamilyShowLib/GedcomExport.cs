@@ -1035,8 +1035,10 @@ namespace Microsoft.FamilyShowLib
             if (!ContainsKey(key))
             {
               // This parent group does not exist, add it to the list.
-              Family details = new Family(parentLeft, parentRight);
-              details.Relationship = parentLeft.GetSpouseRelationship(parentRight);
+              Family details = new Family(parentLeft, parentRight)
+              {
+                Relationship = parentLeft.GetSpouseRelationship(parentRight)
+              };
               this[key] = details;
             }
 
@@ -1059,8 +1061,10 @@ namespace Microsoft.FamilyShowLib
           if (!ContainsKey(key))
           {
             // This marriage group is not in the list, add it to the list.
-            Family details = new Family(person, spouse);
-            details.Relationship = person.GetSpouseRelationship(spouse);
+            Family details = new Family(person, spouse)
+            {
+              Relationship = person.GetSpouseRelationship(spouse)
+            };
             this[key] = details;
           }
         }

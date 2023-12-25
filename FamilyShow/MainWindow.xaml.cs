@@ -173,8 +173,10 @@ namespace Microsoft.FamilyShow
     {
       MergeControl.Visibility = Visibility.Hidden;
 
-      CommonDialog dialog = new CommonDialog();
-      dialog.InitialDirectory = People.ApplicationFolderPath;
+      CommonDialog dialog = new CommonDialog
+      {
+        InitialDirectory = People.ApplicationFolderPath
+      };
       dialog.Filter.Add(new FilterEntry(Properties.Resources.FamilyxFiles, Properties.Resources.FamilyxExtension));
       dialog.Title = Properties.Resources.SaveAs;
       dialog.DefaultExtension = Properties.Resources.DefaultFamilyxExtension;
@@ -344,8 +346,10 @@ namespace Microsoft.FamilyShow
           else
           {
 
-            CommonDialog dialog = new CommonDialog();
-            dialog.InitialDirectory = People.ApplicationFolderPath;
+            CommonDialog dialog = new CommonDialog
+            {
+              InitialDirectory = People.ApplicationFolderPath
+            };
             dialog.Filter.Add(new FilterEntry(Properties.Resources.FamilyxFiles, Properties.Resources.FamilyxExtension));
             dialog.Title = Properties.Resources.SaveAs;
             dialog.DefaultExtension = Properties.Resources.DefaultFamilyxExtension;
@@ -372,8 +376,10 @@ namespace Microsoft.FamilyShow
 
       Title = Properties.Resources.FamilyShow + " " + Properties.Resources.MergingStatus;  //Update status bar
 
-      CommonDialog mergedialog = new CommonDialog();
-      mergedialog.InitialDirectory = People.ApplicationFolderPath;
+      CommonDialog mergedialog = new CommonDialog
+      {
+        InitialDirectory = People.ApplicationFolderPath
+      };
       mergedialog.Filter.Add(new FilterEntry(Properties.Resources.FamilyxFiles, Properties.Resources.FamilyxExtension));
       mergedialog.Title = Properties.Resources.Merge;
       mergedialog.DefaultExtension = Properties.Resources.DefaultFamilyxExtension;
@@ -488,8 +494,10 @@ namespace Microsoft.FamilyShow
                                                                                                   // Prompt to save if the file has not been saved before, otherwise just save to the existing file.
       if (string.IsNullOrEmpty(familyCollection.FullyQualifiedFilename))
       {
-        CommonDialog dialog = new CommonDialog();
-        dialog.InitialDirectory = People.ApplicationFolderPath;
+        CommonDialog dialog = new CommonDialog
+        {
+          InitialDirectory = People.ApplicationFolderPath
+        };
         dialog.Filter.Add(new FilterEntry(Properties.Resources.FamilyxFiles, Properties.Resources.FamilyxExtension));
         dialog.Title = Properties.Resources.SaveAs;
         dialog.DefaultExtension = Properties.Resources.DefaultFamilyxExtension;
@@ -528,8 +536,10 @@ namespace Microsoft.FamilyShow
     private void ExportGedcom(object sender, EventArgs e)
     {
       Title = Properties.Resources.FamilyShow + " " + Properties.Resources.ExportingStatus;
-      CommonDialog dialog = new CommonDialog();
-      dialog.InitialDirectory = People.ApplicationFolderPath;
+      CommonDialog dialog = new CommonDialog
+      {
+        InitialDirectory = People.ApplicationFolderPath
+      };
       dialog.Filter.Add(new FilterEntry(Properties.Resources.GedcomFiles, Properties.Resources.GedcomExtension));
       dialog.Title = Properties.Resources.Export;
       dialog.DefaultExtension = Properties.Resources.DefaultGedcomExtension;
@@ -683,9 +693,11 @@ namespace Microsoft.FamilyShow
         }
 
         //Titles
-        TextBlock titles = new TextBlock();
-        titles.Height = titleheight;
-        titles.Text = Properties.Resources.ReportHeader1 + " " + App.Family.Current.FullName + " " + Properties.Resources.ReportHeader2 + " " + DiagramControl.YearFilter.Content.ToString();
+        TextBlock titles = new TextBlock
+        {
+          Height = titleheight,
+          Text = Properties.Resources.ReportHeader1 + " " + App.Family.Current.FullName + " " + Properties.Resources.ReportHeader2 + " " + DiagramControl.YearFilter.Content.ToString()
+        };
 
         //Scale
         double scale = Math.Min((pd.PrintableAreaWidth - padding - padding) / widthActual, (pd.PrintableAreaHeight - padding - padding - titleheight) / heightActual);
@@ -714,8 +726,10 @@ namespace Microsoft.FamilyShow
 
     private void ExportXps(object sender, EventArgs e)
     {
-      CommonDialog dialog = new CommonDialog();
-      dialog.InitialDirectory = People.ApplicationFolderPath;
+      CommonDialog dialog = new CommonDialog
+      {
+        InitialDirectory = People.ApplicationFolderPath
+      };
       dialog.Filter.Add(new FilterEntry(Properties.Resources.XpsFiles, Properties.Resources.XpsExtension));
       dialog.Title = Properties.Resources.Export;
       dialog.DefaultExtension = Properties.Resources.DefaultXpsExtension;
@@ -846,8 +860,10 @@ namespace Microsoft.FamilyShow
           // Prompt to save if the file has not been saved before.
           if (string.IsNullOrEmpty(familyCollection.FullyQualifiedFilename))
           {
-            CommonDialog dialog = new CommonDialog();
-            dialog.InitialDirectory = People.ApplicationFolderPath;
+            CommonDialog dialog = new CommonDialog
+            {
+              InitialDirectory = People.ApplicationFolderPath
+            };
             dialog.Filter.Add(new FilterEntry(Properties.Resources.FamilyxFiles, Properties.Resources.FamilyxExtension));
             dialog.Title = Properties.Resources.SaveAs;
             dialog.DefaultExtension = Properties.Resources.DefaultFamilyxExtension;
@@ -934,8 +950,10 @@ namespace Microsoft.FamilyShow
       Title = Properties.Resources.FamilyShow + " " + Properties.Resources.LoadingStatus;
       PromptToSave();
 
-      CommonDialog dialog = new CommonDialog();
-      dialog.InitialDirectory = People.ApplicationFolderPath;
+      CommonDialog dialog = new CommonDialog
+      {
+        InitialDirectory = People.ApplicationFolderPath
+      };
       dialog.Filter.Add(new FilterEntry(Properties.Resources.FamilyxFilesAll, Properties.Resources.FamilyxExtension));
       dialog.Filter.Add(new FilterEntry(Properties.Resources.FamilyFiles, Properties.Resources.FamilyExtension));
       dialog.Filter.Add(new FilterEntry(Properties.Resources.FamilyShowFiles, Properties.Resources.FamilyShowExtensions));
@@ -1000,8 +1018,10 @@ namespace Microsoft.FamilyShow
       if (SaveControl.Options() != "0")
       {
         Title = Title = Properties.Resources.FamilyShow + " " + Properties.Resources.SavingStatus;  //Update status bar
-        CommonDialog dialog = new CommonDialog();
-        dialog.InitialDirectory = People.ApplicationFolderPath;
+        CommonDialog dialog = new CommonDialog
+        {
+          InitialDirectory = People.ApplicationFolderPath
+        };
         dialog.Filter.Add(new FilterEntry(Properties.Resources.FamilyxFiles, Properties.Resources.FamilyxExtension)); ;
         dialog.Title = Properties.Resources.SaveAs;
         dialog.DefaultExtension = Properties.Resources.DefaultFamilyxExtension;
@@ -1076,8 +1096,10 @@ namespace Microsoft.FamilyShow
       App.canExecuteJumpList = false;
       bool loaded = true;
 
-      CommonDialog dialog = new CommonDialog();
-      dialog.InitialDirectory = People.ApplicationFolderPath;
+      CommonDialog dialog = new CommonDialog
+      {
+        InitialDirectory = People.ApplicationFolderPath
+      };
       dialog.Filter.Add(new FilterEntry(Properties.Resources.GedcomFiles, Properties.Resources.GedcomExtension));
       dialog.Title = Properties.Resources.HeaderImport;
       dialog.DefaultExtension = Properties.Resources.DefaultGedcomExtension;
@@ -1741,9 +1763,11 @@ namespace Microsoft.FamilyShow
 
         foreach (string file in App.RecentFiles)
         {
-          MenuItem item = new MenuItem();
-          item.Header = i + ". " + Path.GetFileName(file);
-          item.CommandParameter = file;
+          MenuItem item = new MenuItem
+          {
+            Header = i + ". " + Path.GetFileName(file),
+            CommandParameter = file
+          };
           item.Click += new RoutedEventHandler(OpenRecentFile);
           OpenMenu.Items.Add(item);
           i++;
@@ -1751,8 +1775,10 @@ namespace Microsoft.FamilyShow
 
         OpenMenu.Items.Add(new Separator());
 
-        MenuItem openMenuItem4 = new MenuItem();
-        openMenuItem4.Header = Properties.Resources.ClearRecentFilesMenu;
+        MenuItem openMenuItem4 = new MenuItem
+        {
+          Header = Properties.Resources.ClearRecentFilesMenu
+        };
         openMenuItem4.Click += new RoutedEventHandler(ClearRecentFiles);
         OpenMenu.Items.Add(openMenuItem4);
 
@@ -1811,8 +1837,10 @@ namespace Microsoft.FamilyShow
         // Prompt to save if the file has not been saved before, otherwise just save to the existing file.
         if (string.IsNullOrEmpty(familyCollection.FullyQualifiedFilename))
         {
-          CommonDialog dialog = new CommonDialog();
-          dialog.InitialDirectory = People.ApplicationFolderPath;
+          CommonDialog dialog = new CommonDialog
+          {
+            InitialDirectory = People.ApplicationFolderPath
+          };
           dialog.Filter.Add(new FilterEntry(Properties.Resources.FamilyxFiles, Properties.Resources.FamilyxExtension));
           dialog.Title = Properties.Resources.SaveAs;
           dialog.DefaultExtension = Properties.Resources.DefaultFamilyxExtension;
@@ -1869,8 +1897,10 @@ namespace Microsoft.FamilyShow
         // Prompt to save if the file has not been saved before, otherwise just save to the existing file.
         if (string.IsNullOrEmpty(familyCollection.FullyQualifiedFilename))
         {
-          CommonDialog dialog = new CommonDialog();
-          dialog.InitialDirectory = People.ApplicationFolderPath;
+          CommonDialog dialog = new CommonDialog
+          {
+            InitialDirectory = People.ApplicationFolderPath
+          };
           dialog.Filter.Add(new FilterEntry(Properties.Resources.FamilyxFiles, Properties.Resources.FamilyxExtension));
           dialog.Title = Properties.Resources.SaveAs;
           dialog.DefaultExtension = Properties.Resources.DefaultFamilyxExtension;

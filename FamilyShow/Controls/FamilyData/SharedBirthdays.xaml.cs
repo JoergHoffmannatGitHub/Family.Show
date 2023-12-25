@@ -68,13 +68,14 @@ namespace Microsoft.FamilyShow
       SharedBirthdays sharedBirthdays = ((SharedBirthdays)sender);
 
       // ListCollectionView is used for sorting and grouping
-      lcv = new ListCollectionView((IList)args.NewValue);
+      lcv = new ListCollectionView((IList)args.NewValue)
+      {
+        // Include only those people with a birthdate
+        Filter = new Predicate<object>(FilterPerson),
 
-      // Include only those people with a birthdate
-      lcv.Filter = new Predicate<object>(FilterPerson);
-
-      // Sort by Month and Day only
-      lcv.CustomSort = new MonthDayComparer();
+        // Sort by Month and Day only
+        CustomSort = new MonthDayComparer()
+      };
 
       // Group the collection by the month and day of the person's birthdate
       lcv.GroupDescriptions.Add(new PropertyGroupDescription("BirthMonthAndDay"));

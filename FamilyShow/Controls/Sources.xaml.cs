@@ -102,8 +102,10 @@ namespace Microsoft.FamilyShow
 
     private void Export()
     {
-      CommonDialog dialog = new CommonDialog();
-      dialog.InitialDirectory = People.ApplicationFolderPath;
+      CommonDialog dialog = new CommonDialog
+      {
+        InitialDirectory = People.ApplicationFolderPath
+      };
       dialog.Filter.Add(new FilterEntry(Properties.Resources.htmlFiles, Properties.Resources.htmlExtension));
       dialog.Title = Properties.Resources.Export;
       dialog.DefaultExtension = Properties.Resources.DefaulthtmlExtension;

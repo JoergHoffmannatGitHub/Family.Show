@@ -202,8 +202,10 @@ namespace Microsoft.FamilyShow
     public Diagram()
     {
       // Init the diagram logic, which handles all of the layout logic.
-      logic = new DiagramLogic(VisualTreeHelper.GetDpi(this));
-      logic.NodeClickHandler = new RoutedEventHandler(OnNodeClick);
+      logic = new DiagramLogic(VisualTreeHelper.GetDpi(this))
+      {
+        NodeClickHandler = new RoutedEventHandler(OnNodeClick)
+      };
 
       // Can have an empty People collection when in design tools such as Blend.
       if (logic.Family != null)
@@ -220,73 +222,101 @@ namespace Microsoft.FamilyShow
       // Context menu so can display row and group borders.
       ContextMenu = new ContextMenu();
 
-      MenuItem outline = new MenuItem();
-      outline.Header = Properties.Resources.ShowGenerationOutline;
+      MenuItem outline = new MenuItem
+      {
+        Header = Properties.Resources.ShowGenerationOutline
+      };
       outline.Click += new RoutedEventHandler(OnToggleBorderClick);
       outline.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem generations = new MenuItem();
-      generations.Header = Properties.Resources.ShowAllGenerations;
+      MenuItem generations = new MenuItem
+      {
+        Header = Properties.Resources.ShowAllGenerations
+      };
       generations.Click += new RoutedEventHandler(OnToggleNodeCount);
       generations.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem dates = new MenuItem();
-      dates.Header = Properties.Resources.HideDates;
+      MenuItem dates = new MenuItem
+      {
+        Header = Properties.Resources.HideDates
+      };
       dates.Click += new RoutedEventHandler(OnToggleDate);
       dates.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem ancestors = new MenuItem();
-      ancestors.Header = Properties.Resources.HideAncestors;
+      MenuItem ancestors = new MenuItem
+      {
+        Header = Properties.Resources.HideAncestors
+      };
       ancestors.Click += new RoutedEventHandler(OnToggleAncestors);
       ancestors.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem descendants = new MenuItem();
-      descendants.Header = Properties.Resources.HideDescendants;
+      MenuItem descendants = new MenuItem
+      {
+        Header = Properties.Resources.HideDescendants
+      };
       descendants.Click += new RoutedEventHandler(OnToggleDescendants);
       descendants.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem siblings = new MenuItem();
-      siblings.Header = Properties.Resources.HideSiblings;
+      MenuItem siblings = new MenuItem
+      {
+        Header = Properties.Resources.HideSiblings
+      };
       siblings.Click += new RoutedEventHandler(OnToggleSiblings);
       siblings.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem auntsUncles = new MenuItem();
-      auntsUncles.Header = Properties.Resources.HideAuntsAndUncles;
+      MenuItem auntsUncles = new MenuItem
+      {
+        Header = Properties.Resources.HideAuntsAndUncles
+      };
       auntsUncles.Click += new RoutedEventHandler(OnToggleAuntsUncles);
       auntsUncles.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem inLaws = new MenuItem();
-      inLaws.Header = Properties.Resources.HideInLaws;
+      MenuItem inLaws = new MenuItem
+      {
+        Header = Properties.Resources.HideInLaws
+      };
       inLaws.Click += new RoutedEventHandler(OnToggleInLaws);
       inLaws.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem currentSpouse = new MenuItem();
-      currentSpouse.Header = Properties.Resources.HideCurrentSpouse;
+      MenuItem currentSpouse = new MenuItem
+      {
+        Header = Properties.Resources.HideCurrentSpouse
+      };
       currentSpouse.Click += new RoutedEventHandler(OnToggleSpouses);
       currentSpouse.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem previousSpouse = new MenuItem();
-      previousSpouse.Header = Properties.Resources.HidePreviousSpouses;
+      MenuItem previousSpouse = new MenuItem
+      {
+        Header = Properties.Resources.HidePreviousSpouses
+      };
       previousSpouse.Click += new RoutedEventHandler(OnTogglePreviousSpouses);
       previousSpouse.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem immediate = new MenuItem();
-      immediate.Header = Properties.Resources.ShowImmediateFamilyOnly;
+      MenuItem immediate = new MenuItem
+      {
+        Header = Properties.Resources.ShowImmediateFamilyOnly
+      };
       immediate.Click += new RoutedEventHandler(OnToggleImmediateFamily);
       immediate.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem photos = new MenuItem();
-      photos.Header = Properties.Resources.ShowPhotos;
+      MenuItem photos = new MenuItem
+      {
+        Header = Properties.Resources.ShowPhotos
+      };
       photos.Click += new RoutedEventHandler(OnTogglePhotos);
       photos.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem bloodlines = new MenuItem();
-      bloodlines.Header = Properties.Resources.ShowBloodlines;
+      MenuItem bloodlines = new MenuItem
+      {
+        Header = Properties.Resources.ShowBloodlines
+      };
       bloodlines.Click += new RoutedEventHandler(OnToggleBloodlines);
       bloodlines.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem filtered = new MenuItem();
-      filtered.Header = Properties.Resources.HideFiltered;
+      MenuItem filtered = new MenuItem
+      {
+        Header = Properties.Resources.HideFiltered
+      };
       filtered.Click += new RoutedEventHandler(OnToggleFiltered);
       filtered.Foreground = SystemColors.MenuTextBrush;
 

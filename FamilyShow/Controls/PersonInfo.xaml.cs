@@ -172,8 +172,10 @@ namespace Microsoft.FamilyShow
       {
         // This person doesn't have a story.
         // Load the default story text
-        TextRange textRange = new TextRange(flowDocument.ContentStart, flowDocument.ContentEnd);
-        textRange.Text = Properties.Resources.DefaultStory;
+        TextRange textRange = new TextRange(flowDocument.ContentStart, flowDocument.ContentEnd)
+        {
+          Text = Properties.Resources.DefaultStory
+        };
 
         textRange.ApplyPropertyValue(TextElement.FontFamilyProperty, Properties.Resources.StoryFontFamily);
         textRange.ApplyPropertyValue(TextElement.FontSizeProperty, Properties.Resources.StoryFontSize);
@@ -308,8 +310,10 @@ namespace Microsoft.FamilyShow
 
       if (photoCount > 0)
       {
-        CommonDialog dialog = new CommonDialog();
-        dialog.InitialDirectory = photoLocation;
+        CommonDialog dialog = new CommonDialog
+        {
+          InitialDirectory = photoLocation
+        };
         dialog.Filter.Add(new FilterEntry(Properties.Resources.ImageFiles, Properties.Resources.ImageExtension));
         dialog.Title = Properties.Resources.Link;
         dialog.ShowOpen();
@@ -332,8 +336,10 @@ namespace Microsoft.FamilyShow
 
               if (i == 0)
               {
-                Photo photo = new Photo();
-                photo.RelativePath = Path.Combine(Photo.PhotosFolderName, Path.GetFileName(dialog.FileName));
+                Photo photo = new Photo
+                {
+                  RelativePath = Path.Combine(Photo.PhotosFolderName, Path.GetFileName(dialog.FileName))
+                };
                 // Associate the photo with the person.
                 person.Photos.Add(photo);
 
@@ -393,8 +399,10 @@ namespace Microsoft.FamilyShow
       {
         if (App.IsPhotoFileSupported(Path.GetFileName(dialog.FileName)))
         {
-          Photo photo = new Photo(dialog.FileName);
-          photo.RelativePath = Path.Combine(Photo.PhotosFolderName, Path.GetFileName(dialog.FileName));
+          Photo photo = new Photo(dialog.FileName)
+          {
+            RelativePath = Path.Combine(Photo.PhotosFolderName, Path.GetFileName(dialog.FileName))
+          };
 
           // Associate the photo with the person.
           person.Photos.Add(photo);

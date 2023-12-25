@@ -262,9 +262,11 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private DiagramNode CreateNode(Person person, NodeType type, bool clickEvent)
     {
-      DiagramNode node = new DiagramNode();
-      node.Person = person;
-      node.Type = type;
+      DiagramNode node = new DiagramNode
+      {
+        Person = person,
+        Type = type
+      };
       if (clickEvent)
       {
         node.Click += nodeClickHandler;

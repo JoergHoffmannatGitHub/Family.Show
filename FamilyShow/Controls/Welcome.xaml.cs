@@ -95,10 +95,12 @@ namespace Microsoft.FamilyShow
     {
       foreach (string file in App.RecentFiles)
       {
-        Button fileButton = new Button();
-        fileButton.Content = System.IO.Path.GetFileName(file);
-        fileButton.CommandParameter = file;
-        fileButton.Style = (Style)FindResource("RecentFileButtonStyle");
+        Button fileButton = new Button
+        {
+          Content = System.IO.Path.GetFileName(file),
+          CommandParameter = file,
+          Style = (Style)FindResource("RecentFileButtonStyle")
+        };
         fileButton.Click += new RoutedEventHandler(OpenRecentFile_Click);
 
         RecentFilesStackPanel.Children.Add(fileButton);

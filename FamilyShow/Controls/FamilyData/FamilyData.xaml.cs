@@ -37,8 +37,10 @@ namespace Microsoft.FamilyShow
       InitializeComponent();
 
       // Get the data that is bound to the list.
-      CollectionViewSource source = new CollectionViewSource();
-      source.Source = App.Family;
+      CollectionViewSource source = new CollectionViewSource
+      {
+        Source = App.Family
+      };
 
       FamilyEditorGrid.ItemsSource = source.View;
       FamilyEditor.ItemsSource = source.View;

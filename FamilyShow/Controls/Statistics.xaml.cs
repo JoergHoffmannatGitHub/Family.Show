@@ -707,11 +707,13 @@ namespace Microsoft.FamilyShow
       }
 
       // Data
-      System.Windows.Shapes.Rectangle diagram = new System.Windows.Shapes.Rectangle();
-      diagram.Margin = new Thickness(0, titlepadding, 0, 0);
-      diagram.Fill = diagramFill;
-      diagram.Stroke = Brushes.Black;
-      diagram.StrokeThickness = 0.5;
+      System.Windows.Shapes.Rectangle diagram = new System.Windows.Shapes.Rectangle
+      {
+        Margin = new Thickness(0, titlepadding, 0, 0),
+        Fill = diagramFill,
+        Stroke = Brushes.Black,
+        StrokeThickness = 0.5
+      };
 
       // Page Area
       pageArea.Margin = new Thickness(padding);

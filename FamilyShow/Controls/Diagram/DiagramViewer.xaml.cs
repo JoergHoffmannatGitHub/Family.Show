@@ -286,11 +286,13 @@ namespace Microsoft.FamilyShow
 
         // Determine the distance between the two nodes.
         Rect primaryBounds = Diagram.PrimaryNodeBounds;
-        Point nodeDelta = new Point();
-        nodeDelta.X = (primaryBounds.Left + (primaryBounds.Width / 2)) -
-            (selectedBounds.Left + (selectedBounds.Width / 2));
-        nodeDelta.Y = (primaryBounds.Top + (primaryBounds.Height / 2)) -
-            (selectedBounds.Top + (selectedBounds.Height / 2));
+        Point nodeDelta = new Point
+        {
+          X = (primaryBounds.Left + (primaryBounds.Width / 2)) -
+            (selectedBounds.Left + (selectedBounds.Width / 2)),
+          Y = (primaryBounds.Top + (primaryBounds.Height / 2)) -
+            (selectedBounds.Top + (selectedBounds.Height / 2))
+        };
 
         // Offset the distance between the two nodes.
         offset.X -= (nodeDelta.X * Zoom);
@@ -354,14 +356,18 @@ namespace Microsoft.FamilyShow
     {
       // Create the animations, nonlinear by using accelration and deceleration.
       DoubleAnimation horzAnim = new DoubleAnimation(endLocation.X, 0,
-          App.GetAnimationDuration(Const.AutoCenterAnimationDuration));
-      horzAnim.AccelerationRatio = .5;
-      horzAnim.DecelerationRatio = .5;
+          App.GetAnimationDuration(Const.AutoCenterAnimationDuration))
+      {
+        AccelerationRatio = .5,
+        DecelerationRatio = .5
+      };
 
       DoubleAnimation vertAnim = new DoubleAnimation(endLocation.Y, 0,
-          App.GetAnimationDuration(Const.AutoCenterAnimationDuration));
-      vertAnim.AccelerationRatio = .5;
-      vertAnim.DecelerationRatio = .5;
+          App.GetAnimationDuration(Const.AutoCenterAnimationDuration))
+      {
+        AccelerationRatio = .5,
+        DecelerationRatio = .5
+      };
 
       // Animate the transform to make it appear like the diagram is moving.
       TranslateTransform transform = new TranslateTransform();

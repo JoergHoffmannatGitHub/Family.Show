@@ -108,11 +108,12 @@ namespace Microsoft.FamilyShowLib
       {
 
         // Create a new person that will be added to the collection.
-        Person person = new Person();
-
-        // Import details about the person.
-        person.FirstName = GetNames(node);
-        person.LastName = GetSurname(node);
+        Person person = new Person
+        {
+          // Import details about the person.
+          FirstName = GetNames(node),
+          LastName = GetSurname(node)
+        };
 
         // If no name or surname, call them unknown rather than an empty string
         if (string.IsNullOrEmpty(person.FirstName) && string.IsNullOrEmpty(person.LastName))
@@ -179,15 +180,16 @@ namespace Microsoft.FamilyShowLib
 
       foreach (XmlNode node in list)
       {
-        Source source = new Source();
-
-        // Import details about the person.
-        source.Id = GetId(node);
-        source.SourceName = GetValue(node, "TITL");
-        source.SourceAuthor = GetValue(node, "AUTH");
-        source.SourcePublisher = GetValue(node, "PUBL");
-        source.SourceNote = ImportEventNote(node, "NOTE", doc);
-        source.SourceRepository = GetValueId(node, "REPO").Replace("@", string.Empty);
+        Source source = new Source
+        {
+          // Import details about the person.
+          Id = GetId(node),
+          SourceName = GetValue(node, "TITL"),
+          SourceAuthor = GetValue(node, "AUTH"),
+          SourcePublisher = GetValue(node, "PUBL"),
+          SourceNote = ImportEventNote(node, "NOTE", doc),
+          SourceRepository = GetValueId(node, "REPO").Replace("@", string.Empty)
+        };
 
         sources.Add(source);
       }
@@ -324,12 +326,13 @@ namespace Microsoft.FamilyShowLib
 
       foreach (XmlNode node in list)
       {
-        Repository repository = new Repository();
-
-        // Import details about the person.
-        repository.Id = GetId(node);
-        repository.RepositoryName = GetValue(node, "NAME");
-        repository.RepositoryAddress = GetValue(node, "ADDR");
+        Repository repository = new Repository
+        {
+          // Import details about the person.
+          Id = GetId(node),
+          RepositoryName = GetValue(node, "NAME"),
+          RepositoryAddress = GetValue(node, "ADDR")
+        };
         repositories.Add(repository);
       }
     }
@@ -549,26 +552,27 @@ namespace Microsoft.FamilyShowLib
         // Add info to husband.
         if (husband.GetSpouseRelationship(wife) == null)
         {
-          SpouseRelationship husbandMarriage = new SpouseRelationship(wife, modifier);
+          SpouseRelationship husbandMarriage = new SpouseRelationship(wife, modifier)
+          {
+            MarriageDate = marriageDate,
+            MarriageDateDescriptor = marriageDateDescriptor,
+            MarriagePlace = marriagePlace,
 
-          husbandMarriage.MarriageDate = marriageDate;
-          husbandMarriage.MarriageDateDescriptor = marriageDateDescriptor;
-          husbandMarriage.MarriagePlace = marriagePlace;
+            MarriageCitation = marriageCitation,
+            MarriageSource = marriageSource,
+            MarriageLink = marriageLink,
+            MarriageCitationNote = marriageCitationNote,
+            MarriageCitationActualText = marriageCitationActualText,
 
-          husbandMarriage.MarriageCitation = marriageCitation;
-          husbandMarriage.MarriageSource = marriageSource;
-          husbandMarriage.MarriageLink = marriageLink;
-          husbandMarriage.MarriageCitationNote = marriageCitationNote;
-          husbandMarriage.MarriageCitationActualText = marriageCitationActualText;
+            DivorceDate = divorceDate,
+            DivorceDateDescriptor = divorceDateDescriptor,
 
-          husbandMarriage.DivorceDate = divorceDate;
-          husbandMarriage.DivorceDateDescriptor = divorceDateDescriptor;
-
-          husbandMarriage.DivorceCitation = divorceCitation;
-          husbandMarriage.DivorceSource = divorceSource;
-          husbandMarriage.DivorceLink = divorceLink;
-          husbandMarriage.DivorceCitationNote = divorceCitationNote;
-          husbandMarriage.DivorceCitationActualText = divorceCitationActualText;
+            DivorceCitation = divorceCitation,
+            DivorceSource = divorceSource,
+            DivorceLink = divorceLink,
+            DivorceCitationNote = divorceCitationNote,
+            DivorceCitationActualText = divorceCitationActualText
+          };
 
           husband.Relationships.Add(husbandMarriage);
 
@@ -577,25 +581,27 @@ namespace Microsoft.FamilyShowLib
         // Add info to wife.
         if (wife.GetSpouseRelationship(husband) == null)
         {
-          SpouseRelationship wifeMarriage = new SpouseRelationship(husband, modifier);
-          wifeMarriage.MarriageDate = marriageDate;
-          wifeMarriage.MarriageDateDescriptor = marriageDateDescriptor;
-          wifeMarriage.MarriagePlace = marriagePlace;
+          SpouseRelationship wifeMarriage = new SpouseRelationship(husband, modifier)
+          {
+            MarriageDate = marriageDate,
+            MarriageDateDescriptor = marriageDateDescriptor,
+            MarriagePlace = marriagePlace,
 
-          wifeMarriage.MarriageCitation = marriageCitation;
-          wifeMarriage.MarriageSource = marriageSource;
-          wifeMarriage.MarriageLink = marriageLink;
-          wifeMarriage.MarriageCitationNote = marriageCitationNote;
-          wifeMarriage.MarriageCitationActualText = marriageCitationActualText;
+            MarriageCitation = marriageCitation,
+            MarriageSource = marriageSource,
+            MarriageLink = marriageLink,
+            MarriageCitationNote = marriageCitationNote,
+            MarriageCitationActualText = marriageCitationActualText,
 
-          wifeMarriage.DivorceDate = divorceDate;
-          wifeMarriage.DivorceDateDescriptor = divorceDateDescriptor;
+            DivorceDate = divorceDate,
+            DivorceDateDescriptor = divorceDateDescriptor,
 
-          wifeMarriage.DivorceCitation = divorceCitation;
-          wifeMarriage.DivorceSource = divorceSource;
-          wifeMarriage.DivorceLink = divorceLink;
-          wifeMarriage.DivorceCitationNote = divorceCitationNote;
-          wifeMarriage.DivorceCitationActualText = divorceCitationActualText;
+            DivorceCitation = divorceCitation,
+            DivorceSource = divorceSource,
+            DivorceLink = divorceLink,
+            DivorceCitationNote = divorceCitationNote,
+            DivorceCitationActualText = divorceCitationActualText
+          };
 
           wife.Relationships.Add(wifeMarriage);
         }
@@ -633,8 +639,10 @@ namespace Microsoft.FamilyShowLib
           // Only import a photo if it actually exists and it is a supported format.
           if (File.Exists(files[i]) && App.IsPhotoFileSupported(files[i]))
           {
-            Photo photo = new Photo(files[i]);
-            photo.IsAvatar = (i == 0) ? true : false;
+            Photo photo = new Photo(files[i])
+            {
+              IsAvatar = (i == 0) ? true : false
+            };
             person.Photos.Add(photo);
           }
           else if (File.Exists(files[i]) && App.IsAttachmentFileSupported(files[i]))
