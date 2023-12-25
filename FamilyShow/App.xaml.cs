@@ -84,7 +84,7 @@ namespace Microsoft.FamilyShow
       }
     }
 
-    protected override void OnStartup(System.Windows.StartupEventArgs e)
+    protected override void OnStartup(StartupEventArgs e)
     {
       LoadLanguageResources();
       InstallSampleFiles();
