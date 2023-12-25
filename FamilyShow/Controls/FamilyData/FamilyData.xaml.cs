@@ -371,9 +371,8 @@ namespace Microsoft.FamilyShow
     void BirthdaysControl_SelectionChanged(object sender, RoutedEventArgs e)
     {
 
-      if (e.OriginalSource is DateTime)
+      if (e.OriginalSource is DateTime date)
       {
-        DateTime date = (DateTime)e.OriginalSource;
         birthdateFilter = date.ToShortDateString();
         UpdateFilter(date.ToShortDateString());
       }
