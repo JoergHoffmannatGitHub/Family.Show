@@ -1725,8 +1725,7 @@ namespace Microsoft.FamilyShow
 
       foreach (object element in OpenMenu.Items)
       {
-        var item = element as MenuItem;
-        if (item != null)
+        if (element is MenuItem item)
         {
           if (item.Header.ToString() == Properties.Resources.OpenMenu)
           {

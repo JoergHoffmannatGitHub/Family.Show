@@ -1506,8 +1506,7 @@ namespace Microsoft.FamilyShowLib
         {
           if (rel.RelationshipType == RelationshipType.Spouse)
           {
-            SpouseRelationship spouseRel = rel as SpouseRelationship;
-            if (spouseRel != null && spouseRel.SpouseModifier == SpouseModifier.Current)
+            if (rel is SpouseRelationship spouseRel && spouseRel.SpouseModifier == SpouseModifier.Current)
             {
               spouses.Add(rel.RelationTo);
             }
@@ -1527,8 +1526,7 @@ namespace Microsoft.FamilyShowLib
         {
           if (rel.RelationshipType == RelationshipType.Spouse)
           {
-            SpouseRelationship spouseRel = rel as SpouseRelationship;
-            if (spouseRel != null && spouseRel.SpouseModifier == SpouseModifier.Former)
+            if (rel is SpouseRelationship spouseRel && spouseRel.SpouseModifier == SpouseModifier.Former)
             {
               spouses.Add(rel.RelationTo);
             }
@@ -1568,8 +1566,7 @@ namespace Microsoft.FamilyShowLib
         {
           if (rel.RelationshipType == RelationshipType.Child)
           {
-            ChildRelationship childRel = rel as ChildRelationship;
-            if (childRel != null && childRel.ParentChildModifier == ParentChildModifier.Natural)
+            if (rel is ChildRelationship childRel && childRel.ParentChildModifier == ParentChildModifier.Natural)
             {
               children.Add(rel.RelationTo);
             }
@@ -1589,8 +1586,7 @@ namespace Microsoft.FamilyShowLib
         {
           if (rel.RelationshipType == RelationshipType.Child)
           {
-            ChildRelationship childRel = rel as ChildRelationship;
-            if (childRel != null && childRel.ParentChildModifier == ParentChildModifier.Adopted)
+            if (rel is ChildRelationship childRel && childRel.ParentChildModifier == ParentChildModifier.Adopted)
             {
               children.Add(rel.RelationTo);
             }
@@ -1610,8 +1606,7 @@ namespace Microsoft.FamilyShowLib
         {
           if (rel.RelationshipType == RelationshipType.Child)
           {
-            ChildRelationship childRel = rel as ChildRelationship;
-            if (childRel != null && childRel.ParentChildModifier == ParentChildModifier.Foster)
+            if (rel is ChildRelationship childRel && childRel.ParentChildModifier == ParentChildModifier.Foster)
             {
               children.Add(rel.RelationTo);
             }
@@ -1635,8 +1630,7 @@ namespace Microsoft.FamilyShowLib
 
           if (rel.RelationshipType == RelationshipType.Parent)
           {
-            ParentRelationship parentRel = rel as ParentRelationship;
-            if (parentRel != null && parentRel.ParentChildModifier == ParentChildModifier.Natural)
+            if (rel is ParentRelationship parentRel && parentRel.ParentChildModifier == ParentChildModifier.Natural)
             {
               parents.Add(rel.RelationTo);
             }
@@ -2114,9 +2108,7 @@ namespace Microsoft.FamilyShowLib
 
           if (rel.RelationshipType == RelationshipType.Parent)
           {
-
-            ParentRelationship parents = rel as ParentRelationship;
-            if (parents != null && parents.ParentChildModifier == ParentChildModifier.Natural)
+            if (rel is ParentRelationship parents && parents.ParentChildModifier == ParentChildModifier.Natural)
             {
               if (i == 1)
               {
@@ -2308,9 +2300,7 @@ namespace Microsoft.FamilyShowLib
 
           if (rel.RelationshipType == RelationshipType.Child)
           {
-
-            ChildRelationship children = rel as ChildRelationship;
-            if (children != null && children.ParentChildModifier == ParentChildModifier.Natural)
+            if (rel is ChildRelationship children && children.ParentChildModifier == ParentChildModifier.Natural)
             {
               if (i == 1)
               {
@@ -2468,8 +2458,7 @@ namespace Microsoft.FamilyShowLib
     {
       foreach (Relationship relationship in relationships)
       {
-        SpouseRelationship spouseRelationship = relationship as SpouseRelationship;
-        if (spouseRelationship != null)
+        if (relationship is SpouseRelationship spouseRelationship)
         {
           if (spouseRelationship.RelationTo.Equals(spouse))
           {
@@ -2485,8 +2474,7 @@ namespace Microsoft.FamilyShowLib
     {
       foreach (Relationship relationship in relationships)
       {
-        ChildRelationship childRelationship = relationship as ChildRelationship;
-        if (childRelationship != null)
+        if (relationship is ChildRelationship childRelationship)
         {
           if (childRelationship.RelationTo.Equals(child))
           {

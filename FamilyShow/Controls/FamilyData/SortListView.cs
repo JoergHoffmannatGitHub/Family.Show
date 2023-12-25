@@ -67,14 +67,12 @@ namespace Microsoft.FamilyShow
     private void OnHeaderClicked(object sender, RoutedEventArgs e)
     {
       // Make sure the column is really being sorted.
-      GridViewColumnHeader header = e.OriginalSource as GridViewColumnHeader;
-      if (header == null || header.Role == GridViewColumnHeaderRole.Padding)
+      if (e.OriginalSource is not GridViewColumnHeader header || header.Role == GridViewColumnHeaderRole.Padding)
       {
         return;
       }
 
-      SortListViewColumn column = header.Column as SortListViewColumn;
-      if (column == null)
+      if (header.Column is not SortListViewColumn column)
       {
         return;
       }

@@ -405,8 +405,7 @@ namespace Microsoft.FamilyShow
       if (scale != 1)
       {
         // Scale the person drawing part of the node, not the entire node.
-        FrameworkElement personElement = Template.FindName("Person", this) as FrameworkElement;
-        if (personElement != null)
+        if (Template.FindName("Person", this) is FrameworkElement personElement)
         {
           ScaleTransform transform = new ScaleTransform(scale, scale);
           personElement.LayoutTransform = transform;
@@ -477,8 +476,7 @@ namespace Microsoft.FamilyShow
       // Determine if the group indicator should be displayed.
       bool isGrouping = ShouldDisplayGroupIndicator();
 
-      FrameworkElement element = Template.FindName("Group", this) as FrameworkElement;
-      if (element != null)
+      if (Template.FindName("Group", this) is FrameworkElement element)
       {
         element.Visibility = isGrouping ? Visibility.Visible : Visibility.Collapsed;
       }

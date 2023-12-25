@@ -1083,8 +1083,7 @@ namespace Microsoft.FamilyShow
     private void OnNodeClick(object sender, RoutedEventArgs e)
     {
       // Get the node that was clicked.
-      DiagramNode node = sender as DiagramNode;
-      if (node != null)
+      if (sender is DiagramNode node)
       {
         // Make it the primary node. This raises the CurrentChanged
         // event, which repopulates the diagram.

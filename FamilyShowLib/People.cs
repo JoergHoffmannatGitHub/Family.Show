@@ -381,8 +381,7 @@ namespace Microsoft.FamilyShowLib
               {
                 if (rel.RelationshipType == RelationshipType.Spouse)
                 {
-                  SpouseRelationship spouseRel = rel as SpouseRelationship;
-                  if (spouseRel != null)
+                  if (rel is SpouseRelationship spouseRel)
                   {
                     spouseRel.MarriageDate = null;
                     spouseRel.MarriageDateDescriptor = null;
