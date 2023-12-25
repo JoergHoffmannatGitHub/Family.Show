@@ -41,7 +41,7 @@ namespace Microsoft.FamilyShowLib
         if (id != value)
         {
           id = value;
-          OnPropertyChanged("Id");
+          OnPropertyChanged(nameof(Id));
         }
       }
     }
@@ -54,7 +54,7 @@ namespace Microsoft.FamilyShowLib
         if (sourceName != value)
         {
           sourceName = value;
-          OnPropertyChanged("SourceName");
+          OnPropertyChanged(nameof(SourceName));
         }
       }
     }
@@ -67,7 +67,7 @@ namespace Microsoft.FamilyShowLib
         if (sourceAuthor != value)
         {
           sourceAuthor = value;
-          OnPropertyChanged("SourceAuthor");
+          OnPropertyChanged(nameof(SourceAuthor));
         }
       }
     }
@@ -80,7 +80,7 @@ namespace Microsoft.FamilyShowLib
         if (sourcePublisher != value)
         {
           sourcePublisher = value;
-          OnPropertyChanged("SourcePublisher");
+          OnPropertyChanged(nameof(SourcePublisher));
         }
       }
     }
@@ -93,7 +93,7 @@ namespace Microsoft.FamilyShowLib
         if (sourceNote != value)
         {
           sourceNote = value;
-          OnPropertyChanged("SourceNote");
+          OnPropertyChanged(nameof(SourceNote));
         }
       }
     }
@@ -106,7 +106,7 @@ namespace Microsoft.FamilyShowLib
         if (sourceRepository != value)
         {
           sourceRepository = value;
-          OnPropertyChanged("SourceRepository");
+          OnPropertyChanged(nameof(SourceRepository));
         }
       }
     }

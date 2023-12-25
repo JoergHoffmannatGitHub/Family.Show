@@ -106,7 +106,7 @@ namespace Microsoft.FamilyShowLib
         if (id != value)
         {
           id = value;
-          OnPropertyChanged("Id");
+          OnPropertyChanged(nameof(Id));
         }
       }
     }
@@ -122,7 +122,7 @@ namespace Microsoft.FamilyShowLib
         if (gender != value)
         {
           gender = value;
-          OnPropertyChanged("Gender");
+          OnPropertyChanged(nameof(Gender));
         }
       }
     }
@@ -138,12 +138,12 @@ namespace Microsoft.FamilyShowLib
         if (restriction != value)
         {
           restriction = value;
-          OnPropertyChanged("Restriction");
-          OnPropertyChanged("HasRestriction");
-          OnPropertyChanged("IsLocked");
-          OnPropertyChanged("IsPrivate");
-          OnPropertyChanged("IsLockedIsLiving");
-          OnPropertyChanged("IsDeletable");
+          OnPropertyChanged(nameof(Restriction));
+          OnPropertyChanged(nameof(HasRestriction));
+          OnPropertyChanged(nameof(IsLocked));
+          OnPropertyChanged(nameof(IsPrivate));
+          OnPropertyChanged(nameof(IsLockedIsLiving));
+          OnPropertyChanged(nameof(IsDeletable));
 
         }
       }
@@ -162,9 +162,9 @@ namespace Microsoft.FamilyShowLib
         if (firstName != value)
         {
           firstName = value;
-          OnPropertyChanged("FirstName");
-          OnPropertyChanged("Name");
-          OnPropertyChanged("FullName");
+          OnPropertyChanged(nameof(FirstName));
+          OnPropertyChanged(nameof(Name));
+          OnPropertyChanged(nameof(FullName));
         }
       }
 
@@ -181,9 +181,9 @@ namespace Microsoft.FamilyShowLib
         if (!string.IsNullOrEmpty(value))
         {
           firstName += " " + value;
-          OnPropertyChanged("FirstName");
-          OnPropertyChanged("Name");
-          OnPropertyChanged("FullName");
+          OnPropertyChanged(nameof(FirstName));
+          OnPropertyChanged(nameof(Name));
+          OnPropertyChanged(nameof(FullName));
         }
       }
 
@@ -200,9 +200,9 @@ namespace Microsoft.FamilyShowLib
         if (lastName != value)
         {
           lastName = value;
-          OnPropertyChanged("LastName");
-          OnPropertyChanged("Name");
-          OnPropertyChanged("FullName");
+          OnPropertyChanged(nameof(LastName));
+          OnPropertyChanged(nameof(Name));
+          OnPropertyChanged(nameof(FullName));
         }
       }
     }
@@ -253,8 +253,8 @@ namespace Microsoft.FamilyShowLib
         if (suffix != value)
         {
           suffix = value;
-          OnPropertyChanged("Suffix");
-          OnPropertyChanged("FullName");
+          OnPropertyChanged(nameof(Suffix));
+          OnPropertyChanged(nameof(FullName));
         }
       }
     }
@@ -361,9 +361,9 @@ namespace Microsoft.FamilyShowLib
         if (isLiving != value)
         {
           isLiving = value;
-          OnPropertyChanged("IsLiving");
-          OnPropertyChanged("Age");
-          OnPropertyChanged("IsLockedIsLiving");
+          OnPropertyChanged(nameof(IsLiving));
+          OnPropertyChanged(nameof(Age));
+          OnPropertyChanged(nameof(IsLockedIsLiving));
 
         }
       }
@@ -385,12 +385,12 @@ namespace Microsoft.FamilyShowLib
         if (birthDate == null || birthDate != value)
         {
           birthDate = value;
-          OnPropertyChanged("BirthDate");
-          OnPropertyChanged("Age");
-          OnPropertyChanged("AgeGroup");
-          OnPropertyChanged("YearOfBirth");
-          OnPropertyChanged("BirthMonthAndDay");
-          OnPropertyChanged("BirthDateAndPlace");
+          OnPropertyChanged(nameof(BirthDate));
+          OnPropertyChanged(nameof(Age));
+          OnPropertyChanged(nameof(AgeGroup));
+          OnPropertyChanged(nameof(YearOfBirth));
+          OnPropertyChanged(nameof(BirthMonthAndDay));
+          OnPropertyChanged(nameof(BirthDateAndPlace));
         }
       }
     }
@@ -406,7 +406,7 @@ namespace Microsoft.FamilyShowLib
         if (birthDateDescriptor == null || birthDateDescriptor != value)
         {
           birthDateDescriptor = value;
-          OnPropertyChanged("BirthDateDescriptor");
+          OnPropertyChanged(nameof(BirthDateDescriptor));
         }
       }
     }
@@ -422,9 +422,9 @@ namespace Microsoft.FamilyShowLib
         if (birthPlace != value)
         {
           birthPlace = value;
-          OnPropertyChanged("BirthPlace");
-          OnPropertyChanged("BirthDateAndPlace");
-          OnPropertyChanged("HasBirthPlace");
+          OnPropertyChanged(nameof(BirthPlace));
+          OnPropertyChanged(nameof(BirthDateAndPlace));
+          OnPropertyChanged(nameof(HasBirthPlace));
         }
       }
     }
@@ -440,8 +440,8 @@ namespace Microsoft.FamilyShowLib
         if (birthCitation != value)
         {
           birthCitation = value;
-          OnPropertyChanged("BirthCitation");
-          OnPropertyChanged("HasCitations");
+          OnPropertyChanged(nameof(BirthCitation));
+          OnPropertyChanged(nameof(HasCitations));
         }
       }
     }
@@ -457,8 +457,8 @@ namespace Microsoft.FamilyShowLib
         if (birthSource != value)
         {
           birthSource = value;
-          OnPropertyChanged("BirthSource");
-          OnPropertyChanged("HasCitations");
+          OnPropertyChanged(nameof(BirthSource));
+          OnPropertyChanged(nameof(HasCitations));
         }
       }
     }
@@ -474,7 +474,7 @@ namespace Microsoft.FamilyShowLib
         if (birthLink != value)
         {
           birthLink = value;
-          OnPropertyChanged("BirthLink");
+          OnPropertyChanged(nameof(BirthLink));
         }
       }
     }
@@ -490,7 +490,7 @@ namespace Microsoft.FamilyShowLib
         if (birthCitationNote != value)
         {
           birthCitationNote = value;
-          OnPropertyChanged("BirthCitationNote");
+          OnPropertyChanged(nameof(BirthCitationNote));
         }
       }
     }
@@ -506,7 +506,7 @@ namespace Microsoft.FamilyShowLib
         if (birthCitationActualText != value)
         {
           birthCitationActualText = value;
-          OnPropertyChanged("BirthCitationActualText");
+          OnPropertyChanged(nameof(BirthCitationActualText));
         }
       }
     }
@@ -575,9 +575,9 @@ namespace Microsoft.FamilyShowLib
         if (deathDate != value)
         {
           deathDate = value;
-          OnPropertyChanged("DeathDate");
-          OnPropertyChanged("Age");
-          OnPropertyChanged("YearOfDeath");
+          OnPropertyChanged(nameof(DeathDate));
+          OnPropertyChanged(nameof(Age));
+          OnPropertyChanged(nameof(YearOfDeath));
         }
       }
     }
@@ -593,7 +593,7 @@ namespace Microsoft.FamilyShowLib
         if (deathDateDescriptor == null || deathDateDescriptor != value)
         {
           deathDateDescriptor = value;
-          OnPropertyChanged("DeathDateDescriptor");
+          OnPropertyChanged(nameof(DeathDateDescriptor));
         }
       }
     }
@@ -609,8 +609,8 @@ namespace Microsoft.FamilyShowLib
         if (deathPlace != value)
         {
           deathPlace = value;
-          OnPropertyChanged("DeathPlace");
-          OnPropertyChanged("HasDeathPlace");
+          OnPropertyChanged(nameof(DeathPlace));
+          OnPropertyChanged(nameof(HasDeathPlace));
         }
       }
     }
@@ -626,8 +626,8 @@ namespace Microsoft.FamilyShowLib
         if (deathCitation != value)
         {
           deathCitation = value;
-          OnPropertyChanged("DeathCitation");
-          OnPropertyChanged("HasCitations");
+          OnPropertyChanged(nameof(DeathCitation));
+          OnPropertyChanged(nameof(HasCitations));
         }
       }
     }
@@ -643,7 +643,7 @@ namespace Microsoft.FamilyShowLib
         if (deathSource != value)
         {
           deathSource = value;
-          OnPropertyChanged("DeathSource");
+          OnPropertyChanged(nameof(DeathSource));
         }
       }
     }
@@ -659,7 +659,7 @@ namespace Microsoft.FamilyShowLib
         if (deathLink != value)
         {
           deathLink = value;
-          OnPropertyChanged("DeathLink");
+          OnPropertyChanged(nameof(DeathLink));
         }
       }
     }
@@ -675,7 +675,7 @@ namespace Microsoft.FamilyShowLib
         if (deathCitationNote != value)
         {
           deathCitationNote = value;
-          OnPropertyChanged("DeathCitationNote");
+          OnPropertyChanged(nameof(DeathCitationNote));
         }
       }
     }
@@ -691,7 +691,7 @@ namespace Microsoft.FamilyShowLib
         if (deathCitationActualText != value)
         {
           deathCitationActualText = value;
-          OnPropertyChanged("DeathCitationActualText");
+          OnPropertyChanged(nameof(DeathCitationActualText));
         }
       }
     }
@@ -711,8 +711,8 @@ namespace Microsoft.FamilyShowLib
         if (cremationPlace != value)
         {
           cremationPlace = value;
-          OnPropertyChanged("CremationPlace");
-          OnPropertyChanged("HasCremationPlace");
+          OnPropertyChanged(nameof(CremationPlace));
+          OnPropertyChanged(nameof(HasCremationPlace));
         }
       }
     }
@@ -728,7 +728,7 @@ namespace Microsoft.FamilyShowLib
         if (cremationDate == null || cremationDate != value)
         {
           cremationDate = value;
-          OnPropertyChanged("CremationDate");
+          OnPropertyChanged(nameof(CremationDate));
         }
       }
     }
@@ -744,7 +744,7 @@ namespace Microsoft.FamilyShowLib
         if (cremationDateDescriptor == null || cremationDateDescriptor != value)
         {
           cremationDateDescriptor = value;
-          OnPropertyChanged("CremationDateDescriptor");
+          OnPropertyChanged(nameof(CremationDateDescriptor));
         }
       }
     }
@@ -760,8 +760,8 @@ namespace Microsoft.FamilyShowLib
         if (cremationCitation != value)
         {
           cremationCitation = value;
-          OnPropertyChanged("CremationCitation");
-          OnPropertyChanged("HasCitations");
+          OnPropertyChanged(nameof(CremationCitation));
+          OnPropertyChanged(nameof(HasCitations));
         }
       }
     }
@@ -777,8 +777,8 @@ namespace Microsoft.FamilyShowLib
         if (cremationSource != value)
         {
           cremationSource = value;
-          OnPropertyChanged("CremationSource");
-          OnPropertyChanged("HasCitations");
+          OnPropertyChanged(nameof(CremationSource));
+          OnPropertyChanged(nameof(HasCitations));
         }
       }
     }
@@ -794,7 +794,7 @@ namespace Microsoft.FamilyShowLib
         if (cremationLink != value)
         {
           cremationLink = value;
-          OnPropertyChanged("CremationLink");
+          OnPropertyChanged(nameof(CremationLink));
         }
       }
     }
@@ -810,7 +810,7 @@ namespace Microsoft.FamilyShowLib
         if (cremationCitationNote != value)
         {
           cremationCitationNote = value;
-          OnPropertyChanged("CremationCitationNote");
+          OnPropertyChanged(nameof(CremationCitationNote));
         }
       }
     }
@@ -826,7 +826,7 @@ namespace Microsoft.FamilyShowLib
         if (cremationCitationActualText != value)
         {
           cremationCitationActualText = value;
-          OnPropertyChanged("CremationCitationActualText");
+          OnPropertyChanged(nameof(CremationCitationActualText));
         }
       }
     }
@@ -846,8 +846,8 @@ namespace Microsoft.FamilyShowLib
         if (burialPlace != value)
         {
           burialPlace = value;
-          OnPropertyChanged("BurialPlace");
-          OnPropertyChanged("HasBurialPlace");
+          OnPropertyChanged(nameof(BurialPlace));
+          OnPropertyChanged(nameof(HasBurialPlace));
         }
       }
     }
@@ -863,8 +863,8 @@ namespace Microsoft.FamilyShowLib
         if (burialCitation != value)
         {
           burialCitation = value;
-          OnPropertyChanged("BurialCitation");
-          OnPropertyChanged("HasCitations");
+          OnPropertyChanged(nameof(BurialCitation));
+          OnPropertyChanged(nameof(HasCitations));
         }
       }
     }
@@ -880,8 +880,8 @@ namespace Microsoft.FamilyShowLib
         if (burialSource != value)
         {
           burialSource = value;
-          OnPropertyChanged("BurialSource");
-          OnPropertyChanged("HasCitations");
+          OnPropertyChanged(nameof(BurialSource));
+          OnPropertyChanged(nameof(HasCitations));
         }
       }
     }
@@ -897,7 +897,7 @@ namespace Microsoft.FamilyShowLib
         if (burialLink != value)
         {
           burialLink = value;
-          OnPropertyChanged("BurialLink");
+          OnPropertyChanged(nameof(BurialLink));
         }
       }
     }
@@ -913,7 +913,7 @@ namespace Microsoft.FamilyShowLib
         if (burialDate == null || burialDate != value)
         {
           burialDate = value;
-          OnPropertyChanged("BurialDate");
+          OnPropertyChanged(nameof(BurialDate));
         }
       }
     }
@@ -929,7 +929,7 @@ namespace Microsoft.FamilyShowLib
         if (burialDateDescriptor == null || burialDateDescriptor != value)
         {
           burialDateDescriptor = value;
-          OnPropertyChanged("BurialDateDescriptor");
+          OnPropertyChanged(nameof(BurialDateDescriptor));
         }
       }
     }
@@ -945,7 +945,7 @@ namespace Microsoft.FamilyShowLib
         if (burialCitationNote != value)
         {
           burialCitationNote = value;
-          OnPropertyChanged("BurialCitationNote");
+          OnPropertyChanged(nameof(BurialCitationNote));
         }
       }
     }
@@ -961,7 +961,7 @@ namespace Microsoft.FamilyShowLib
         if (burialCitationActualText != value)
         {
           burialCitationActualText = value;
-          OnPropertyChanged("BurialCitationActualText");
+          OnPropertyChanged(nameof(BurialCitationActualText));
         }
       }
     }
@@ -981,7 +981,7 @@ namespace Microsoft.FamilyShowLib
         if (occupation != value)
         {
           occupation = value;
-          OnPropertyChanged("Occupation");
+          OnPropertyChanged(nameof(Occupation));
         }
       }
     }
@@ -997,7 +997,7 @@ namespace Microsoft.FamilyShowLib
         if (occupationLink != value)
         {
           occupationLink = value;
-          OnPropertyChanged("OccupationLink");
+          OnPropertyChanged(nameof(OccupationLink));
         }
       }
     }
@@ -1013,8 +1013,8 @@ namespace Microsoft.FamilyShowLib
         if (occupationCitation != value)
         {
           occupationCitation = value;
-          OnPropertyChanged("OccupationCitation");
-          OnPropertyChanged("HasCitations");
+          OnPropertyChanged(nameof(OccupationCitation));
+          OnPropertyChanged(nameof(HasCitations));
         }
       }
     }
@@ -1030,8 +1030,8 @@ namespace Microsoft.FamilyShowLib
         if (occupationSource != value)
         {
           occupationSource = value;
-          OnPropertyChanged("OccupationSource");
-          OnPropertyChanged("HasCitations");
+          OnPropertyChanged(nameof(OccupationSource));
+          OnPropertyChanged(nameof(HasCitations));
         }
       }
     }
@@ -1047,7 +1047,7 @@ namespace Microsoft.FamilyShowLib
         if (occupationCitationNote != value)
         {
           occupationCitationNote = value;
-          OnPropertyChanged("OccupationCitationNote");
+          OnPropertyChanged(nameof(OccupationCitationNote));
         }
       }
     }
@@ -1063,7 +1063,7 @@ namespace Microsoft.FamilyShowLib
         if (occupationCitationActualText != value)
         {
           occupationCitationActualText = value;
-          OnPropertyChanged("OccupationCitationActualText");
+          OnPropertyChanged(nameof(OccupationCitationActualText));
         }
       }
     }
@@ -1084,7 +1084,7 @@ namespace Microsoft.FamilyShowLib
         if (education != value)
         {
           education = value;
-          OnPropertyChanged("Education");
+          OnPropertyChanged(nameof(Education));
         }
       }
     }
@@ -1100,8 +1100,8 @@ namespace Microsoft.FamilyShowLib
         if (educationCitation != value)
         {
           educationCitation = value;
-          OnPropertyChanged("EducationCitation");
-          OnPropertyChanged("HasCitations");
+          OnPropertyChanged(nameof(EducationCitation));
+          OnPropertyChanged(nameof(HasCitations));
         }
       }
     }
@@ -1117,8 +1117,8 @@ namespace Microsoft.FamilyShowLib
         if (educationSource != value)
         {
           educationSource = value;
-          OnPropertyChanged("EducationSource");
-          OnPropertyChanged("HasCitations");
+          OnPropertyChanged(nameof(EducationSource));
+          OnPropertyChanged(nameof(HasCitations));
         }
       }
     }
@@ -1134,7 +1134,7 @@ namespace Microsoft.FamilyShowLib
         if (educationLink != value)
         {
           educationLink = value;
-          OnPropertyChanged("EducationLink");
+          OnPropertyChanged(nameof(EducationLink));
         }
       }
     }
@@ -1150,7 +1150,7 @@ namespace Microsoft.FamilyShowLib
         if (educationCitationNote != value)
         {
           educationCitationNote = value;
-          OnPropertyChanged("EducationCitationNote");
+          OnPropertyChanged(nameof(EducationCitationNote));
         }
       }
     }
@@ -1166,7 +1166,7 @@ namespace Microsoft.FamilyShowLib
         if (educationCitationActualText != value)
         {
           educationCitationActualText = value;
-          OnPropertyChanged("EducationCitationActualText");
+          OnPropertyChanged(nameof(EducationCitationActualText));
         }
       }
     }
@@ -1186,7 +1186,7 @@ namespace Microsoft.FamilyShowLib
         if (religion != value)
         {
           religion = value;
-          OnPropertyChanged("Religion");
+          OnPropertyChanged(nameof(Religion));
         }
       }
     }
@@ -1202,8 +1202,8 @@ namespace Microsoft.FamilyShowLib
         if (religionCitation != value)
         {
           religionCitation = value;
-          OnPropertyChanged("ReligionCitation");
-          OnPropertyChanged("HasCitations");
+          OnPropertyChanged(nameof(ReligionCitation));
+          OnPropertyChanged(nameof(HasCitations));
         }
       }
     }
@@ -1219,7 +1219,7 @@ namespace Microsoft.FamilyShowLib
         if (religionLink != value)
         {
           religionLink = value;
-          OnPropertyChanged("ReligionLink");
+          OnPropertyChanged(nameof(ReligionLink));
         }
       }
     }
@@ -1235,8 +1235,8 @@ namespace Microsoft.FamilyShowLib
         if (religionSource != value)
         {
           religionSource = value;
-          OnPropertyChanged("ReligionSource");
-          OnPropertyChanged("HasCitations");
+          OnPropertyChanged(nameof(ReligionSource));
+          OnPropertyChanged(nameof(HasCitations));
         }
       }
     }
@@ -1252,7 +1252,7 @@ namespace Microsoft.FamilyShowLib
         if (religionCitationNote != value)
         {
           religionCitationNote = value;
-          OnPropertyChanged("ReligionCitationNote");
+          OnPropertyChanged(nameof(ReligionCitationNote));
         }
       }
     }
@@ -1268,7 +1268,7 @@ namespace Microsoft.FamilyShowLib
         if (religionCitationActualText != value)
         {
           religionCitationActualText = value;
-          OnPropertyChanged("ReligionCitationActualText");
+          OnPropertyChanged(nameof(ReligionCitationActualText));
         }
       }
     }
@@ -1288,8 +1288,8 @@ namespace Microsoft.FamilyShowLib
         if (note != value)
         {
           note = value;
-          OnPropertyChanged("Note");
-          OnPropertyChanged("HasNote");
+          OnPropertyChanged(nameof(Note));
+          OnPropertyChanged(nameof(HasNote));
         }
       }
     }
@@ -1305,8 +1305,8 @@ namespace Microsoft.FamilyShowLib
         if (story != value)
         {
           story = value;
-          OnPropertyChanged("Story");
-          OnPropertyChanged("HasNote");
+          OnPropertyChanged(nameof(Story));
+          OnPropertyChanged(nameof(HasNote));
         }
       }
     }
@@ -1330,7 +1330,7 @@ namespace Microsoft.FamilyShowLib
     {
       get
       {
-        OnPropertyChanged("HasAttachments");
+        OnPropertyChanged(nameof(HasAttachments));
         OnPropertyChanged("AttachmentList");
         return attachments;
       }
@@ -1360,8 +1360,8 @@ namespace Microsoft.FamilyShowLib
       set
       {
         // This setter is used for change notification.
-        OnPropertyChanged("Avatar");
-        OnPropertyChanged("HasAvatar");
+        OnPropertyChanged(nameof(Avatar));
+        OnPropertyChanged(nameof(HasAvatar));
       }
     }
 
@@ -1708,12 +1708,12 @@ namespace Microsoft.FamilyShowLib
       set
       {
         // This setter is used for change notification.
-        OnPropertyChanged("HasParents");
+        OnPropertyChanged(nameof(HasParents));
         if (Parents.Count >= 2)  //There must be at least 2 parents for a parent set
         {
-          OnPropertyChanged("PossibleParentSets");
+          OnPropertyChanged(nameof(PossibleParentSets));
         }
-        OnPropertyChanged("Parents");
+        OnPropertyChanged(nameof(Parents));
       }
     }
 
@@ -1731,7 +1731,7 @@ namespace Microsoft.FamilyShowLib
       set
       {
         // This setter is used for change notification.
-        OnPropertyChanged("HasRestriction");
+        OnPropertyChanged(nameof(HasRestriction));
       }
     }
 
@@ -1745,7 +1745,7 @@ namespace Microsoft.FamilyShowLib
       get { return (restriction == Restriction.Locked || isLiving == true); }
       set
       {
-        OnPropertyChanged("IsLockedIsLiving");
+        OnPropertyChanged(nameof(IsLockedIsLiving));
       }
     }
 
@@ -1759,7 +1759,7 @@ namespace Microsoft.FamilyShowLib
       get { return (restriction == Restriction.Locked); }
       set
       {
-        OnPropertyChanged("IsLocked");
+        OnPropertyChanged(nameof(IsLocked));
       }
     }
 
@@ -1772,7 +1772,7 @@ namespace Microsoft.FamilyShowLib
       get { return (restriction == Restriction.Private); }
       set
       {
-        OnPropertyChanged("IsPrivate");
+        OnPropertyChanged(nameof(IsPrivate));
       }
     }
 
@@ -1790,8 +1790,8 @@ namespace Microsoft.FamilyShowLib
       set
       {
         // This setter is used for change notification.
-        OnPropertyChanged("HasSiblings");
-        OnPropertyChanged("Siblings");
+        OnPropertyChanged(nameof(HasSiblings));
+        OnPropertyChanged(nameof(Siblings));
       }
     }
 
@@ -1809,8 +1809,8 @@ namespace Microsoft.FamilyShowLib
       set
       {
         // This setter is used for change notification.
-        OnPropertyChanged("HasSpouse");
-        OnPropertyChanged("Spouses");
+        OnPropertyChanged(nameof(HasSpouse));
+        OnPropertyChanged(nameof(Spouses));
       }
     }
 

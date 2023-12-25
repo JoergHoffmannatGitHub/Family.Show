@@ -38,7 +38,7 @@ namespace Microsoft.FamilyShowLib
         if (id != value)
         {
           id = value;
-          OnPropertyChanged("Id");
+          OnPropertyChanged(nameof(Id));
         }
       }
     }
@@ -64,7 +64,7 @@ namespace Microsoft.FamilyShowLib
         if (repositoryAddress != value)
         {
           repositoryAddress = value;
-          OnPropertyChanged("RepositoryAddress");
+          OnPropertyChanged(nameof(RepositoryAddress));
         }
       }
     }

@@ -71,7 +71,7 @@ namespace Microsoft.FamilyShowLib
         if (isAvatar != value)
         {
           isAvatar = value;
-          OnPropertyChanged("IsAvatar");
+          OnPropertyChanged(nameof(IsAvatar));
         }
       }
     }
