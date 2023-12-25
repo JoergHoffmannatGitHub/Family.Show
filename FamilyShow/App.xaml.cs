@@ -2,14 +2,15 @@ using System;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Serialization;
-using Microsoft.FamilyShowLib;
-using Microsoft.WindowsAPICodePack.Taskbar;
-using Microsoft.WindowsAPICodePack.Shell;
-using System.Reflection;
+
 using Microsoft.FamilyShow.Properties;
+using Microsoft.FamilyShowLib;
+using Microsoft.WindowsAPICodePack.Shell;
+using Microsoft.WindowsAPICodePack.Taskbar;
 
 namespace Microsoft.FamilyShow
 {
@@ -97,7 +98,7 @@ namespace Microsoft.FamilyShow
       InitializeDefaultTheme();
 
       // Create and show the application's main window            
-      var window = new MainWindow();
+      MainWindow window = new();
       window.Show();
 
       // In Windows 7 make use of new TaskBar and JumpList features.
@@ -126,7 +127,7 @@ namespace Microsoft.FamilyShow
     {
       string systemFolder = Environment.GetFolderPath(Environment.SpecialFolder.System);
       string applicationFilePath = Assembly.GetExecutingAssembly().Location;
-      var taskBar = TaskBar.Create(window, Settings.Default.AppId, new JumpListLink[]
+      TaskBar taskBar = TaskBar.Create(window, Settings.Default.AppId, new JumpListLink[]
       {
                 new JumpListLink(applicationFilePath, FamilyShow.Properties.Resources.StartANewFamilyTree)
                 {
