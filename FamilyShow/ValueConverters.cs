@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
-using System.IO;
 
 namespace Microsoft.FamilyShow
 {
@@ -15,7 +16,7 @@ namespace Microsoft.FamilyShow
   {
     #region IValueConverter Members
 
-    public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
 
       if (value != null)
@@ -26,7 +27,7 @@ namespace Microsoft.FamilyShow
       return string.Empty;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
 
       if (string.IsNullOrEmpty((string)value))
@@ -42,7 +43,8 @@ namespace Microsoft.FamilyShow
         dateString = "1/1/" + dateString;
       }
 
-      DateTime.TryParse(dateString, out DateTime date);
+      _ = DateTime.TryParse(dateString, out DateTime date);
+
       return date;
     }
 
