@@ -716,6 +716,11 @@ namespace Microsoft.FamilyShowLib
 
     }
 
+    internal static string ExportDateWrapper(DateTime? date)
+    {
+      return ExportDate(date);
+    }
+
     private static string ExportDate(DateTime? date)
     {
       if (date == null)
@@ -738,71 +743,22 @@ namespace Microsoft.FamilyShowLib
     }
 
     //converts month number to 3 letter month abbreviation as used in GEDCOM
-    private static string GetMMM(int month)
+    private static string GetMMM(int month) => month switch
     {
-      string monthString = string.Empty;
-      if (month == 1)
-      {
-        monthString = "Jan";
-      }
-
-      if (month == 2)
-      {
-        monthString = "Feb";
-      }
-
-      if (month == 3)
-      {
-        monthString = "Mar";
-      }
-
-      if (month == 4)
-      {
-        monthString = "Apr";
-      }
-
-      if (month == 5)
-      {
-        monthString = "May";
-      }
-
-      if (month == 6)
-      {
-        monthString = "Jun";
-      }
-
-      if (month == 7)
-      {
-        monthString = "Jul";
-      }
-
-      if (month == 8)
-      {
-        monthString = "Aug";
-      }
-
-      if (month == 9)
-      {
-        monthString = "Sep";
-      }
-
-      if (month == 10)
-      {
-        monthString = "Oct";
-      }
-
-      if (month == 11)
-      {
-        monthString = "Nov";
-      }
-
-      if (month == 12)
-      {
-        monthString = "Dec";
-      }
-
-      return monthString;
-    }
+      1 => "JAN",
+      2 => "FEB",
+      3 => "MAR",
+      4 => "APR",
+      5 => "MAY",
+      6 => "JUN",
+      7 => "JUL",
+      8 => "AUG",
+      9 => "SEP",
+      10 => "OCT",
+      11 => "NOV",
+      12 => "DEC",
+      _ => throw new NotImplementedException()
+    };
 
     private void ExportGender(Person person)
     {
