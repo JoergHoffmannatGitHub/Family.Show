@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -398,7 +399,7 @@ namespace Microsoft.FamilyShow
         dateString = "1/1/" + dateString;
       }
 
-      DateTime.TryParse(dateString, out DateTime date);
+      _ = DateTime.TryParse(dateString, out DateTime date);
 
       return date;
     }

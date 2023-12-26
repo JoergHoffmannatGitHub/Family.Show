@@ -43,6 +43,7 @@
     <HelpFile>..\Documentation\Help\FamilyShow.chm</HelpFile>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="FamilyShow.Tests" />
     <Resource Include="Images\Search.png" />
     <Resource Include="Images\Photo.png" />
     <Resource Include="Images\Paperclip.png" />
