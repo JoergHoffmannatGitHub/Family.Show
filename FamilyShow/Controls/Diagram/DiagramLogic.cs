@@ -521,12 +521,7 @@ namespace Microsoft.FamilyShow
     {
       foreach (Person parent in child.Parents)
       {
-        if (personLookup.ContainsKey(parent) &&
-            personLookup.ContainsKey(child))
-        {
-          connections.Add(new ChildDiagramConnector(
-              personLookup[parent], personLookup[child]));
-        }
+        AddChildConnection(parent, child);
       }
     }
 
@@ -537,12 +532,19 @@ namespace Microsoft.FamilyShow
     {
       foreach (Person child in parent.Children)
       {
-        if (personLookup.ContainsKey(parent) &&
-            personLookup.ContainsKey(child))
-        {
-          connections.Add(new ChildDiagramConnector(
-              personLookup[parent], personLookup[child]));
-        }
+        AddChildConnection(parent, child);
+      }
+    }
+
+    /// <summary>
+    /// Add connections between parent and child.
+    /// </summary>
+    private void AddChildConnection(Person parent, Person child)
+    {
+      if (personLookup.TryGetValue(parent, out DiagramConnectorNode parentConnector) &&
+          personLookup.TryGetValue(child, out DiagramConnectorNode childConnector))
+      {
+        connections.Add(new ChildDiagramConnector(parentConnector, childConnector));
       }
     }
 
@@ -567,25 +569,27 @@ namespace Microsoft.FamilyShow
           // Current marriage.
           if (rel != null && rel.SpouseModifier == SpouseModifier.Current)
           {
-            if (personLookup.ContainsKey(person) &&
-                personLookup.ContainsKey(spouse))
-            {
-              connections.Add(new MarriedDiagramConnector(true,
-                  personLookup[person], personLookup[spouse], dpiScale));
-            }
+            AddMarriedConnection(true, person, spouse);
           }
 
           // Former marriage
           if (rel != null && rel.SpouseModifier == SpouseModifier.Former)
           {
-            if (personLookup.ContainsKey(person) &&
-                personLookup.ContainsKey(spouse))
-            {
-              connections.Add(new MarriedDiagramConnector(false,
-                  personLookup[person], personLookup[spouse], dpiScale));
-            }
+            AddMarriedConnection(false, person, spouse);
           }
         }
+      }
+    }
+
+    /// <summary>
+    /// Add connections between parent and child.
+    /// </summary>
+    private void AddMarriedConnection(bool isMarried, Person person, Person spouse)
+    {
+      if (personLookup.TryGetValue(person, out DiagramConnectorNode personConnector) &&
+          personLookup.TryGetValue(spouse, out DiagramConnectorNode spouseConnector))
+      {
+        connections.Add(new MarriedDiagramConnector(isMarried, personConnector, spouseConnector, dpiScale));
       }
     }
 
@@ -617,17 +621,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public DiagramNode GetDiagramNode(Person person)
     {
-      if (person == null)
-      {
-        return null;
-      }
-
-      if (!personLookup.ContainsKey(person))
-      {
-        return null;
-      }
-
-      return personLookup[person].Node;
+      return person != null && personLookup.TryGetValue(person, out DiagramConnectorNode personConnector) ? personConnector.Node : null;
     }
 
     /// <summary>
@@ -636,11 +630,10 @@ namespace Microsoft.FamilyShow
     public Rect GetNodeBounds(Person person)
     {
       Rect bounds = Rect.Empty;
-      if (person != null && personLookup.ContainsKey(person))
+      if (person != null && personLookup.TryGetValue(person, out DiagramConnectorNode personConnector))
       {
-        DiagramConnectorNode connector = personLookup[person];
-        bounds = new Rect(connector.TopLeft.X, connector.TopLeft.Y,
-            connector.Node.ActualWidth, connector.Node.ActualHeight);
+        bounds = new Rect(personConnector.TopLeft.X, personConnector.TopLeft.Y,
+            personConnector.Node.ActualWidth, personConnector.Node.ActualHeight);
       }
 
       return bounds;

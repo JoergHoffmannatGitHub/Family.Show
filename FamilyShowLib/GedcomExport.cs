@@ -886,13 +886,13 @@ namespace Microsoft.FamilyShowLib
     public string Get(string guid)
     {
       // Return right away if already mapped.
-      if (map.ContainsKey(guid))
+      if (map.TryGetValue(guid, out string id))
       {
-        return map[guid];
+        return id;
       }
 
       // Assign a new GEDCOM ID and add to map.
-      string id = string.Format(CultureInfo.InvariantCulture, "I{0}", nextId++);
+      id = string.Format(CultureInfo.InvariantCulture, "I{0}", nextId++);
       map[guid] = id;
       return id;
     }
