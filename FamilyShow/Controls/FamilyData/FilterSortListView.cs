@@ -434,7 +434,7 @@ namespace Microsoft.FamilyShow
       }
 
       // Age range.
-      if (filterText.Contains("-"))
+      if (filterText.Contains('-'))
       {
         string[] list = filterText.Split('-');
 

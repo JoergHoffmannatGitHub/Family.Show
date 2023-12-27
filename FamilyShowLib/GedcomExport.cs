@@ -807,7 +807,7 @@ namespace Microsoft.FamilyShowLib
 
       // Most lines do not need special processing, export the line if it
       // does not contain carriage returns or exceed the line length.
-      if (value.Length < ValueLimit && !value.Contains("\r") && !value.Contains("\n"))
+      if (value.Length < ValueLimit && !value.Contains('\r') && !value.Contains('\n'))
       {
         writer.WriteLine(string.Format(
             CultureInfo.InvariantCulture,
