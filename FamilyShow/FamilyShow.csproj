@@ -41,6 +41,7 @@
     <Title>Family.Show</Title>
     <Description>Family.Show, a WPF Best-Practice Application"</Description>
     <HelpFile>..\Documentation\Help\FamilyShow.chm</HelpFile>
+    <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="FamilyShow.Tests" />
