@@ -108,7 +108,7 @@ namespace Microsoft.FamilyShow
       base.OnStartup(e);
     }
 
-    private void InitializeDefaultTheme()
+    private static void InitializeDefaultTheme()
     {
       Settings appSettings = Settings.Default;
 
@@ -124,7 +124,7 @@ namespace Microsoft.FamilyShow
       }
     }
 
-    private void InitializeTaskBar(Window window)
+    private static void InitializeTaskBar(Window window)
     {
       string systemFolder = Environment.GetFolderPath(Environment.SpecialFolder.System);
       string applicationFilePath = Assembly.GetExecutingAssembly().Location;
@@ -162,7 +162,7 @@ namespace Microsoft.FamilyShow
       MainWindow.Focus();
     }
 
-    private void LoadLanguageResources()
+    private static void LoadLanguageResources()
     {
       // Load language resources and use en-US incase of errors.
       FamilyShow.Properties.Resources.Culture = new CultureInfo("en-US");

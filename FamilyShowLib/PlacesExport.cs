@@ -30,7 +30,7 @@ namespace Microsoft.FamilyShowLib
 
     #region export methods
 
-    public string[] ExportPlaces(PeopleCollection peopleCollection, string fileName, bool hideliving, bool times, bool lifespans, bool places, bool burials, bool deaths, bool cremations, bool births, bool marriages)
+    public static string[] ExportPlaces(PeopleCollection peopleCollection, string fileName, bool hideliving, bool times, bool lifespans, bool places, bool burials, bool deaths, bool cremations, bool births, bool marriages)
     {
       string PlacesFileName = Path.GetFileNameWithoutExtension(fileName);
 

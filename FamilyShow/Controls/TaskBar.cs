@@ -15,7 +15,7 @@ namespace Microsoft.FamilyShow
 
     public static TaskBar Current { get; private set; }
 
-    public bool IsPlatformSupported
+    public static bool IsPlatformSupported
     {
       get { return TaskbarManager.IsPlatformSupported; }
     }

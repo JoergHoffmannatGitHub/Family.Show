@@ -222,17 +222,17 @@ namespace Microsoft.FamilyShow
 
             if (Options() == "1")
             {
-              summary = places.ExportPlaces(family, filename, Privacy(), false, false, true, Burials(), Deaths(), Cremations(), Births(), Marriages());
+              summary = PlacesExport.ExportPlaces(family, filename, Privacy(), false, false, true, Burials(), Deaths(), Cremations(), Births(), Marriages());
             }
 
             if (Options() == "2")
             {
-              summary = places.ExportPlaces(family, filename, Privacy(), true, false, false, Burials(), Deaths(), Cremations(), Births(), Marriages());
+              summary = PlacesExport.ExportPlaces(family, filename, Privacy(), true, false, false, Burials(), Deaths(), Cremations(), Births(), Marriages());
             }
 
             if (Options() == "3")
             {
-              summary = places.ExportPlaces(family, filename, Privacy(), false, true, false, Burials(), Deaths(), Cremations(), Births(), Marriages());
+              summary = PlacesExport.ExportPlaces(family, filename, Privacy(), false, true, false, Burials(), Deaths(), Cremations(), Births(), Marriages());
             }
 
             if (summary[1] == "No file")
