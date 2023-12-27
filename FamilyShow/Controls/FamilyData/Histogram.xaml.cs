@@ -121,12 +121,7 @@ namespace Microsoft.FamilyShow
 
     public string GetCategoryLabel(object columnValue)
     {
-      if (CategoryLabels.ContainsKey(columnValue))
-      {
-        return CategoryLabels[columnValue];
-      }
-
-      return columnValue.ToString();
+      return CategoryLabels.TryGetValue(columnValue, out string categoryLabel) ? categoryLabel : columnValue.ToString();
     }
 
     private static void ViewProperty_Changed(DependencyObject sender, DependencyPropertyChangedEventArgs args)
