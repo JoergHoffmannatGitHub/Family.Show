@@ -34,7 +34,7 @@ namespace Microsoft.FamilyShowLib
     #region fields
 
     // Writes the text (GEDCOM) file.
-    private TextWriter writer;
+    private StreamWriter writer;
 
     // Maps GUID IDs (which are too long for GEDCOM) to smaller IDs.
     private GedcomIdMap idMap = new GedcomIdMap();

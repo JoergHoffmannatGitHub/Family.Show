@@ -897,7 +897,7 @@ namespace Microsoft.FamilyShowLib
 
         XmlSerializer xml = new XmlSerializer(typeof(People));
 
-        using (Stream stream = new FileStream(tempFolder + OPCContentFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+        using (FileStream stream = new FileStream(tempFolder + OPCContentFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
         {
           People pc = (People)xml.Deserialize(stream);
           stream.Close();
@@ -995,7 +995,7 @@ namespace Microsoft.FamilyShowLib
         }
 
         XmlSerializer xml = new XmlSerializer(typeof(People));
-        using (Stream stream = new FileStream(FullyQualifiedFilename, FileMode.Open, FileAccess.Read, FileShare.Read))
+        using (FileStream stream = new FileStream(FullyQualifiedFilename, FileMode.Open, FileAccess.Read, FileShare.Read))
         {
           People pc = (People)xml.Deserialize(stream);
           stream.Close();
@@ -1215,7 +1215,7 @@ namespace Microsoft.FamilyShowLib
         Person reselectAfterMerge = PeopleCollection.Current;  //get the current person so they can be given focus after the merge
 
         XmlSerializer xml = new XmlSerializer(typeof(People));
-        using (Stream stream = new FileStream(tempFolder + OPCContentFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+        using (FileStream stream = new FileStream(tempFolder + OPCContentFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
         {
           People merge = (People)xml.Deserialize(stream);  //add all the people, sources, and repositories from the new file to a people collection for comparison to take place
           stream.Close();

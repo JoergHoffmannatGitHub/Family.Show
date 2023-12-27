@@ -28,7 +28,7 @@ namespace Microsoft.FamilyShow
     Boolean ExistingFilter = false;  //When true, enables automatic filtering on gender and relatives
     Boolean ignoreGender = false;    //When true, enables filtering on gender
 
-    private TextWriter tw;
+    private StreamWriter tw;
 
     // Setting the ItemsSource selects the first item which raises the SelectionChanged event.
     // This flag prevents the initialization code from making the selection.

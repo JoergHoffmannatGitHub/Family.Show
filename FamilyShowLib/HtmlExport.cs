@@ -31,7 +31,7 @@ namespace Microsoft.FamilyShowLib
 
     #region fields
 
-    private TextWriter tw;
+    private StreamWriter tw;
 
     #endregion
 

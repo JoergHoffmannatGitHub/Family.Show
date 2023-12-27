@@ -34,7 +34,7 @@ namespace Microsoft.FamilyShowLib
     {
       string PlacesFileName = Path.GetFileNameWithoutExtension(fileName);
 
-      TextWriter tw = new StreamWriter(fileName);
+      StreamWriter tw = new StreamWriter(fileName);
 
       #region styles
 
