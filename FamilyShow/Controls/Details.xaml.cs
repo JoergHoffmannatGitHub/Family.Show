@@ -2996,7 +2996,7 @@ namespace Microsoft.FamilyShow
         {
           if (!string.IsNullOrEmpty(ExistingFilterTextBox.Text))
           {
-            if (person.Gender == genderFilter && person.FullName.ToLower().Contains(ExistingFilterTextBox.Text.ToLower()))
+            if (person.Gender == genderFilter && person.FullName.Contains(ExistingFilterTextBox.Text, StringComparison.CurrentCultureIgnoreCase))
             {
               return true;
             }
@@ -3019,7 +3019,7 @@ namespace Microsoft.FamilyShow
         }
         else
         {
-          return (person.FullName.ToLower().Contains(ExistingFilterTextBox.Text.ToLower()));
+          return (person.FullName.Contains(ExistingFilterTextBox.Text, StringComparison.CurrentCultureIgnoreCase));
         }
       }
       else if (ResetFilter == true)  //quick reset
@@ -3028,7 +3028,7 @@ namespace Microsoft.FamilyShow
       }
       else
       {
-        return (person.FullName.ToLower().Contains(ExistingFilterTextBox.Text.ToLower()));
+        return (person.FullName.Contains(ExistingFilterTextBox.Text, StringComparison.CurrentCultureIgnoreCase));
       }
     }
 

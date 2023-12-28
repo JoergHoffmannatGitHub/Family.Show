@@ -51,7 +51,7 @@ namespace Microsoft.FamilyShow
     public bool Matches(string text)
     {
       return (filterText != null && text != null &&
-          text.ToLower(CultureInfo.CurrentCulture).Contains(filterText));
+          text.Contains(filterText, StringComparison.CurrentCultureIgnoreCase));
     }
 
     /// <summary>
@@ -297,12 +297,12 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParsePhotos()
     {
-      if (filterText == (Properties.Resources.Photos.ToLower()))
+      if (filterText.Equals(Properties.Resources.Photos, StringComparison.CurrentCultureIgnoreCase))
       {
         photos = true;
       }
 
-      if (filterText == ("!" + Properties.Resources.Photos.ToLower()))
+      if (filterText.Equals("!" + Properties.Resources.Photos, StringComparison.CurrentCultureIgnoreCase))
       {
         nophotos = true;
       }
@@ -313,12 +313,12 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParseGender()
     {
-      if (filterText == Properties.Resources.Female.ToLower())
+      if (filterText.Equals(Properties.Resources.Female, StringComparison.CurrentCultureIgnoreCase))
       {
         gender = Properties.Resources.Female.ToLower();
       }
 
-      if (filterText == Properties.Resources.Male.ToLower())
+      if (filterText.Equals(Properties.Resources.Male, StringComparison.CurrentCultureIgnoreCase))
       {
         gender = Properties.Resources.Male.ToLower();
       }
@@ -329,12 +329,12 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParseRestrictions()
     {
-      if (filterText == (Properties.Resources.Restriction.ToLower()))
+      if (filterText.Equals(Properties.Resources.Restriction, StringComparison.CurrentCultureIgnoreCase))
       {
         restrictions = true;
       }
 
-      if (filterText == ("!" + Properties.Resources.Restriction.ToLower()))
+      if (filterText.Equals("!" + Properties.Resources.Restriction, StringComparison.CurrentCultureIgnoreCase))
       {
         norestrictions = true;
       }
@@ -345,12 +345,12 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParseImages()
     {
-      if (filterText == (Properties.Resources.Image.ToLower()))
+      if (filterText.Equals(Properties.Resources.Image, StringComparison.CurrentCultureIgnoreCase))
       {
         images = true;
       }
 
-      if (filterText == ("!" + Properties.Resources.Image.ToLower()))
+      if (filterText.Equals("!" + Properties.Resources.Image, StringComparison.CurrentCultureIgnoreCase))
       {
         noimages = true;
       }
@@ -361,12 +361,12 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParseNotes()
     {
-      if (filterText == (Properties.Resources.Note.ToLower()))
+      if (filterText.Equals(Properties.Resources.Note, StringComparison.CurrentCultureIgnoreCase))
       {
         notes = true;
       }
 
-      if (filterText == ("!" + Properties.Resources.Note.ToLower()))
+      if (filterText.Equals("!" + Properties.Resources.Note, StringComparison.CurrentCultureIgnoreCase))
       {
         nonotes = true;
       }
@@ -377,12 +377,12 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParseAttachments()
     {
-      if (filterText == (Properties.Resources.Attachment.ToLower()))
+      if (filterText.Equals(Properties.Resources.Attachment, StringComparison.CurrentCultureIgnoreCase))
       {
         attachments = true;
       }
 
-      if (filterText == ("!" + Properties.Resources.Attachment.ToLower()))
+      if (filterText.Equals("!" + Properties.Resources.Attachment, StringComparison.CurrentCultureIgnoreCase))
       {
         noattachments = true;
       }
@@ -393,12 +393,12 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParseLiving()
     {
-      if (filterText == (Properties.Resources.Living.ToLower()))
+      if (filterText.Equals(Properties.Resources.Living, StringComparison.CurrentCultureIgnoreCase))
       {
         living = true;
       }
 
-      if (filterText == (Properties.Resources.Deceased.ToLower()))
+      if (filterText.Equals(Properties.Resources.Deceased, StringComparison.CurrentCultureIgnoreCase))
       {
         noliving = true;
       }
@@ -409,12 +409,12 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ParseCitations()
     {
-      if (filterText == (Properties.Resources.Citations.ToLower()))
+      if (filterText.Equals(Properties.Resources.Citations, StringComparison.CurrentCultureIgnoreCase))
       {
         citations = true;
       }
 
-      if (filterText == ("!" + Properties.Resources.Citations.ToLower()))
+      if (filterText.Equals("!" + Properties.Resources.Citations, StringComparison.CurrentCultureIgnoreCase))
       {
         nocitations = true;
       }
