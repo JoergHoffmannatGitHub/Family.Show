@@ -952,8 +952,8 @@ namespace Microsoft.FamilyShowLib
           Version = pc.Version;
           PeopleCollection.IsDirty = false;
 
-          var majorVersion = double.Parse(Version);
-          var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+          double majorVersion = double.Parse(Version);
+          Version assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
           // Prompt if old file major version has been opened.
           if (string.IsNullOrEmpty(Version) || majorVersion < assemblyVersion.Major)
           {
