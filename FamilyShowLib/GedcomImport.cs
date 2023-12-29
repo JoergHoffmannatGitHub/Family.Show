@@ -641,7 +641,7 @@ namespace Microsoft.FamilyShowLib
           {
             Photo photo = new Photo(files[i])
             {
-              IsAvatar = (i == 0) ? true : false
+              IsAvatar = (i == 0)
             };
             person.Photos.Add(photo);
           }
@@ -723,16 +723,16 @@ namespace Microsoft.FamilyShowLib
     private static void ImportDeath(Person person, XmlNode node, XmlDocument doc)
     {
 
-      person.IsLiving = (node.SelectSingleNode("DEAT") == null) ? true : false;
+      person.IsLiving = (node.SelectSingleNode("DEAT") == null);
 
       if (node.SelectSingleNode("DEAT") == null)  //if no DEAT tag check burial tag
       {
-        person.IsLiving = (node.SelectSingleNode("BURI") == null) ? true : false;
+        person.IsLiving = (node.SelectSingleNode("BURI") == null);
       }
 
       if (node.SelectSingleNode("DEAT") == null && node.SelectSingleNode("BURI") == null)  //if no deat tag and no buial tagcheck cremation tag
       {
-        person.IsLiving = (node.SelectSingleNode("CREM") == null) ? true : false;
+        person.IsLiving = (node.SelectSingleNode("CREM") == null);
       }
 
       if (person.Age > 90 && person.IsLiving == true)
@@ -1040,7 +1040,7 @@ namespace Microsoft.FamilyShowLib
       }
 
       // Divorced if the tag exists.
-      return node.SelectSingleNode("DIV") != null ? true : false;
+      return node.SelectSingleNode("DIV") != null;
     }
 
     private static string[] GetChildrenIDs(XmlNode node)

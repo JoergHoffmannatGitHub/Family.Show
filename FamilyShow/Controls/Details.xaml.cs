@@ -425,7 +425,7 @@ namespace Microsoft.FamilyShow
         // The new person to be added
         Person newPerson = new Person(NamesInputTextBox.Text, SurnameInputTextBox.Text)
         {
-          IsLiving = (IsLivingInputCheckbox.IsChecked == null) ? true : (bool)IsLivingInputCheckbox.IsChecked
+          IsLiving = (IsLivingInputCheckbox.IsChecked == null) || (bool)IsLivingInputCheckbox.IsChecked
         };
 
         DateTime birthdate = App.StringToDate(BirthDateInputTextBox.Text);
@@ -575,7 +575,7 @@ namespace Microsoft.FamilyShow
       {
         Person newPerson = new Person(NamesInputTextBox.Text, SurnameInputTextBox.Text)
         {
-          IsLiving = (IsLivingInputCheckbox.IsChecked == null) ? true : (bool)IsLivingInputCheckbox.IsChecked
+          IsLiving = (IsLivingInputCheckbox.IsChecked == null) || (bool)IsLivingInputCheckbox.IsChecked
         };
 
         DateTime birthdate = App.StringToDate(BirthDateInputTextBox.Text);

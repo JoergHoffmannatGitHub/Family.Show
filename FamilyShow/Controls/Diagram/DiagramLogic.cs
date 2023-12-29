@@ -429,7 +429,7 @@ namespace Microsoft.FamilyShow
         row.Add(group);
 
         // Determine if this is a left or right oriented group.
-        bool left = (groupCount++ % 2 == 0) ? true : false;
+        bool left = (groupCount++ % 2 == 0);
 
         // Parent.
         if (!PersonLookup.ContainsKey(person))
