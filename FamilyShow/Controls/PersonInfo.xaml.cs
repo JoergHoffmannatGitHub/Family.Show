@@ -383,11 +383,7 @@ namespace Microsoft.FamilyShow
     {
       Person person = (Person)DataContext;
 
-      string appLocation = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-      appLocation = Path.Combine(appLocation, App.AppDataFolderName);
-
       // Absolute path to the photos folder
-      string photoLocation = Path.Combine(appLocation, Photo.PhotosFolderName);
       CommonDialog dialog = new CommonDialog();
       dialog.Filter.Add(new FilterEntry(Properties.Resources.ImageFiles, Properties.Resources.ImageExtension));
       dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
@@ -584,8 +580,6 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void OpenPhotoButton_Click(object sender, RoutedEventArgs e)
     {
-
-      Person person = (Person)DataContext;
       Photo photo = (Photo)PhotosListBox.SelectedItem;
       string path = photo.FullyQualifiedPath;
 
@@ -650,7 +644,6 @@ namespace Microsoft.FamilyShow
     private void NoPrimaryButton_Click(object sender, RoutedEventArgs e)
     {
       Person person = (Person)DataContext;
-      Photo photo = (Photo)PhotosListBox.SelectedItem;
 
       if (person.Photos != null && PhotosListBox.SelectedItem != null)
       {

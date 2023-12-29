@@ -48,7 +48,6 @@ namespace Microsoft.FamilyShowLib
 
       XmlDocument xmlDoc = new XmlDocument();
       string contentpath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\" + App.ApplicationFolderName + @"\" + App.AppDataFolderName + @"\content.xml";
-      string contes = contentpath;
       try
       {
         xmlDoc.Load(contentpath);
@@ -421,8 +420,7 @@ namespace Microsoft.FamilyShowLib
     {
       const int bufSize = 0x1000;
       byte[] buf = new byte[bufSize];
-      int bytesRead = 0;
-
+      int bytesRead;
       while ((bytesRead = source.Read(buf, 0, bufSize)) > 0)
       {
         target.Write(buf, 0, bytesRead);

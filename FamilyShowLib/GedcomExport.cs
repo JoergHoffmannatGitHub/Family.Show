@@ -733,11 +733,7 @@ namespace Microsoft.FamilyShowLib
         string day = date.Value.Day.ToString();
         string year = date.Value.Year.ToString();
         int month = date.Value.Month;
-
-        string monthString = string.Empty;
-
-        monthString = GetMMM(month);
-
+        string monthString = GetMMM(month);
         return day + " " + monthString + " " + year;
       }
     }

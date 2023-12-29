@@ -665,11 +665,12 @@ namespace Microsoft.FamilyShow
 
         double padding = 20;
         double titleheight = 25;
-        double heightActual = 0;
-        double widthActual = 0;
+
+        double heightActual;
+        double widthActual;
+        VisualBrush diagramFill;
 
         //Diagram
-        VisualBrush diagramFill = new VisualBrush();
         System.Windows.Shapes.Rectangle diagram = new System.Windows.Shapes.Rectangle();
 
         //Print background when black theme is used because diagram has white text

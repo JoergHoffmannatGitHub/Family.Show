@@ -15,7 +15,7 @@ namespace Microsoft.FamilyShowLib
     internal static string ReplaceEncodedCharacters(string fileName)
     {
       fileName = fileName.Replace(" ", "");
-      fileName = fileName = fileName.Replace("{", "");
+      fileName = fileName.Replace("{", "");
       fileName = fileName.Replace("}", "");
       return fileName;
     }

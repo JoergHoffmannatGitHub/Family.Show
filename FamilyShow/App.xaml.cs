@@ -120,7 +120,7 @@ namespace Microsoft.FamilyShow
     {
       string systemFolder = Environment.GetFolderPath(Environment.SpecialFolder.System);
       string applicationFilePath = Assembly.GetExecutingAssembly().Location;
-      TaskBar taskBar = TaskBar.Create(window, Settings.Default.AppId, new JumpListLink[]
+      _ = TaskBar.Create(window, Settings.Default.AppId, new JumpListLink[]
       {
                 new JumpListLink(applicationFilePath, FamilyShow.Properties.Resources.StartANewFamilyTree)
                 {
@@ -419,7 +419,7 @@ namespace Microsoft.FamilyShow
     internal static string ReplaceEncodedCharacters(string fileName)
     {
       fileName = fileName.Replace(" ", string.Empty);
-      fileName = fileName = fileName.Replace("{", string.Empty);
+      fileName = fileName.Replace("{", string.Empty);
       fileName = fileName.Replace("}", string.Empty);
       return fileName;
     }

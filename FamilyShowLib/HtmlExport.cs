@@ -1519,8 +1519,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     private static string CurrentPersonString(Person p, bool privacy)
     {
-      string CurrentPerson = string.Empty;
-
+      string CurrentPerson;
       if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
       {
         CurrentPerson = Properties.Resources.CurrentPerson + " <b>" + Properties.Resources.Living + " " + p.LastName + "</b><br/>";

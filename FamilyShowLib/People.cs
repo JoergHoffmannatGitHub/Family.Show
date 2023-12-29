@@ -2004,8 +2004,6 @@ namespace Microsoft.FamilyShowLib
     {
 
       string surname = string.Empty;
-      string firstName = string.Empty;
-
       if (!string.IsNullOrEmpty(p.LastName))
       {
         surname = p.LastName;
@@ -2015,8 +2013,7 @@ namespace Microsoft.FamilyShowLib
 
       if (splitName != null)
       {
-        firstName = splitName[0];
-
+        string firstName = splitName[0];
         if (firstName != surname)
         {
           return firstName + " " + surname;

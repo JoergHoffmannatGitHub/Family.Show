@@ -212,8 +212,6 @@ namespace Microsoft.FamilyShow
         {
           if (!string.IsNullOrEmpty(dialog.FileName))
           {
-            PlacesExport places = new PlacesExport();
-
             string filename = dialog.FileName;
 
             string[] summary = null;
@@ -235,7 +233,7 @@ namespace Microsoft.FamilyShow
 
             if (summary[1] == "No file")
             {
-              MessageBoxResult result = MessageBox.Show(summary[0],
+              _ = MessageBox.Show(summary[0],
                Properties.Resources.ExportResult, MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else

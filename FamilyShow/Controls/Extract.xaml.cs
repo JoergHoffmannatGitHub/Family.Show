@@ -99,14 +99,12 @@ namespace Microsoft.FamilyShow
       if (Directory.Exists(Path.Combine(folderPath, folderName)))
       {
         int i = 1;
-        string newPath = Path.Combine(folderPath, folderName);
-
+        string newPath;
         do
         {
           newPath = Path.Combine(folderPath, folderName + " (" + i + ")");
           i++;
-        }
-        while (Directory.Exists(newPath));
+        } while (Directory.Exists(newPath));
 
         extractedFileLocation = Directory.CreateDirectory(newPath);
       }

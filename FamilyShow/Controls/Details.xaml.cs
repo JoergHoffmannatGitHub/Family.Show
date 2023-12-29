@@ -124,7 +124,7 @@ namespace Microsoft.FamilyShow
 
         if (result == MessageBoxResult.Yes)
         {
-          Attachment attachment = new Attachment();
+          _ = new Attachment();
 
           foreach (Attachment a in person.Attachments)
           {
@@ -438,7 +438,7 @@ namespace Microsoft.FamilyShow
 
         bool SelectParent = false;
         ParentSetCollection possibleParents = family.Current.PossibleParentSets;
-        int parentsnumber = family.Current.Parents.Count;
+        _ = family.Current.Parents.Count;
 
         // Perform the action based on the selected relationship
         switch ((FamilyMemberComboBoxValue)FamilyMemberComboBox.SelectedValue)
@@ -920,7 +920,6 @@ namespace Microsoft.FamilyShow
             {
               string d1 = string.Empty;  //date descriptor
               string d2 = string.Empty;  //divorce date
-              string d3 = string.Empty;  //divorce citation 
               string d4 = string.Empty;  //divorce source
               string d6 = string.Empty;  //divorce link
               string d7 = string.Empty;  //divorce citation note
@@ -938,7 +937,7 @@ namespace Microsoft.FamilyShow
 
               if (!string.IsNullOrEmpty(((SpouseRelationship)rel).DivorceCitation))
               {
-                d3 = ((SpouseRelationship)rel).DivorceCitation;
+                _ = ((SpouseRelationship)rel).DivorceCitation;
               }
 
               if (!string.IsNullOrEmpty(((SpouseRelationship)rel).DivorceSource))
@@ -1207,8 +1206,8 @@ namespace Microsoft.FamilyShow
             SourceEditTextBox.IsEnabled = false;
           }
 
-          Source s = new Source();
-
+          _ = new Source();
+          Source s;
           switch ((CitationsComboBoxValue)CitationsComboBox.SelectedValue)
           {
             case CitationsComboBoxValue.Birth:
@@ -2526,8 +2525,8 @@ namespace Microsoft.FamilyShow
 
         //Helper method to select a sensible next person other than family[0]
 
-        Person nextPerson = new Person();
-
+        _ = new Person();
+        Person nextPerson;
         if (family.Count > 0)
         {
 

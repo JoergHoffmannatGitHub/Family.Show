@@ -91,8 +91,6 @@ namespace Microsoft.FamilyShow
 
     private void OpenPhotoButton_Click(object sender, RoutedEventArgs e)
     {
-
-      Person person = (Person)DataContext;
       Photo photo = (Photo)PhotosListBox.SelectedItem;
       string path = photo.FullyQualifiedPath;
 

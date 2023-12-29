@@ -157,12 +157,9 @@ namespace Microsoft.FamilyShow
           // The filtered state changed, create a new animation.
           isFiltered = value;
 
-
-          double newOpacity = isFiltered ? Const.OpacityFiltered : Const.OpacityNormal;
-
           if (Properties.Settings.Default.ShowFiltered)
           {
-            newOpacity = isFiltered ? Const.OpacityFiltered : Const.OpacityNormal;
+            double newOpacity = isFiltered ? Const.OpacityFiltered : Const.OpacityNormal;
             BeginAnimation(OpacityProperty,
             new DoubleAnimation(Opacity, newOpacity,
             App.GetAnimationDuration(Const.AnimationDuration)));

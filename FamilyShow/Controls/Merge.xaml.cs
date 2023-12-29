@@ -95,14 +95,12 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private int CountHighlights()
     {
-      bool anyHighlighted = false;
-
       total = 0;
       i = 0;
 
       do
       {
-        anyHighlighted = CurrentPerson(i);
+        bool anyHighlighted = CurrentPerson(i);
         i++;
         if (anyHighlighted)
         {
