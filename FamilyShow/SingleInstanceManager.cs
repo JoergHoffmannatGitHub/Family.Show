@@ -29,7 +29,7 @@ namespace Microsoft.FamilyShow
       // First time app is launched.
       _app = new App();
       _app.InitializeComponent();
-      _app.ProcessArgs(eventArgs.CommandLine.ToArray(), true);
+      _app.ProcessArgs(eventArgs.CommandLine.ToArray());
       _app.Run();
 
       return false;
@@ -41,7 +41,7 @@ namespace Microsoft.FamilyShow
       base.OnStartupNextInstance(eventArgs);
 
       _app.Activate();
-      _app.ProcessArgs(eventArgs.CommandLine.ToArray(), false);
+      _app.ProcessArgs(eventArgs.CommandLine.ToArray());
     }
 
     [STAThread]

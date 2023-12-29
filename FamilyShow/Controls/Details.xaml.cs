@@ -2122,7 +2122,7 @@ namespace Microsoft.FamilyShow
       {
         if (ParentChildListbox.SelectedItem != null)
         {
-          RelationshipHelper.UpdateParentChildStatus(family, (Person)ParentsCombobox.SelectedValue, family.Current, (ParentChildModifier)ParentChildListbox.SelectedItem);
+          RelationshipHelper.UpdateParentChildStatus((Person)ParentsCombobox.SelectedValue, family.Current, (ParentChildModifier)ParentChildListbox.SelectedItem);
 
           if ((ParentChildModifier)ParentChildListbox.SelectedItem == ParentChildModifier.Adopted || (ParentChildModifier)ParentChildListbox.SelectedItem == ParentChildModifier.Foster)
           {

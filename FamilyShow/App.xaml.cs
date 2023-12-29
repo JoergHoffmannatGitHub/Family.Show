@@ -64,7 +64,7 @@ namespace Microsoft.FamilyShow
     #endregion
 
     // A method to handle command line arguments.
-    public void ProcessArgs(string[] args, bool firstInstance)
+    public void ProcessArgs(string[] args)
     {
       if (args.Length > 0)
       {

@@ -145,7 +145,7 @@ namespace Microsoft.FamilyShowLib
     /// <summary>
     /// Performs the business logic for updating the Parent relationship between the child and the parent.
     /// </summary>
-    public static void UpdateParentChildStatus(PeopleCollection family, Person parent, Person child, ParentChildModifier modifier)
+    public static void UpdateParentChildStatus(Person parent, Person child, ParentChildModifier modifier)
     {
       foreach (Relationship relationship in parent.Relationships)
       {
