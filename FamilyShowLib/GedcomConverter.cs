@@ -25,7 +25,7 @@ namespace Microsoft.FamilyShowLib
     /// the GEDCOM file. GEDCOM lines are limited to 255 characters, 
     /// combineSplitValues indicates if the split lines should be combined 
     /// into a single XML element.
-    static public void ConvertToXml(string gedcomFilePath, string xmlFilePath, bool combineSplitValues, bool disableCharacterCheck)
+    public static void ConvertToXml(string gedcomFilePath, string xmlFilePath, bool combineSplitValues, bool disableCharacterCheck)
     {
       // Store the previous level so can determine when need
       // to close xml element tags.
@@ -99,7 +99,7 @@ namespace Microsoft.FamilyShowLib
     /// the XML files and combines all of the split lines which makes the
     /// XML file easier to process.
     /// </summary>
-    static private void CombineSplitValues(string xmlFilePath)
+    private static void CombineSplitValues(string xmlFilePath)
     {
       XmlDocument doc = new XmlDocument();
       doc.Load(xmlFilePath);
@@ -121,7 +121,7 @@ namespace Microsoft.FamilyShowLib
     /// <summary>
     /// Append child continue nodes to the parent.
     /// </summary>
-    static private void AppendValues(XmlNode node)
+    private static void AppendValues(XmlNode node)
     {
       // Get the value for the parent node.
       StringBuilder sb = new StringBuilder(node.Attributes["Value"].Value).AppendLine();

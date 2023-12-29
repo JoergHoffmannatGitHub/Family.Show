@@ -128,7 +128,7 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Return true if this is a child connector.
     /// </summary>
-    virtual public bool IsChildConnector
+    public virtual bool IsChildConnector
     {
       get { return true; }
     }
@@ -138,7 +138,7 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Gets the married date for the connector. Can be null.
     /// </summary>
-    virtual public DateTime? MarriedDate
+    public virtual DateTime? MarriedDate
     {
       get { return null; }
     }
@@ -146,7 +146,7 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Get the previous married date for the connector. Can be null.
     /// </summary>
-    virtual public DateTime? PreviousMarriedDate
+    public virtual DateTime? PreviousMarriedDate
     {
       get { return null; }
     }
@@ -201,7 +201,7 @@ namespace Microsoft.FamilyShow
     /// Get the new filtered state of the connection. This depends
     /// on the connection nodes, marriage date and previous marriage date.
     /// </summary>
-    virtual protected bool NewFilteredState
+    protected virtual bool NewFilteredState
     {
       get
       {
@@ -229,7 +229,7 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Return true if should continue drawing, otherwise false.
     /// </summary>
-    virtual public bool Draw(DrawingContext drawingContext)
+    public virtual bool Draw(DrawingContext drawingContext)
     {
       // Don't draw if either of the nodes are filtered.
       if (StartNode.Node.Visibility != Visibility.Visible ||
@@ -342,7 +342,7 @@ namespace Microsoft.FamilyShow
     /// Draw the connection between the two nodes.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
-    override public bool Draw(DrawingContext drawingContext)
+    public override bool Draw(DrawingContext drawingContext)
     {
       if (!base.Draw(drawingContext))
       {
@@ -379,7 +379,7 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Return true if this is a child connector.
     /// </summary>
-    override public bool IsChildConnector
+    public override bool IsChildConnector
     {
       get { return false; }
     }
@@ -387,7 +387,7 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Gets the married date for the connector. Can be null.
     /// </summary>
-    override public DateTime? MarriedDate
+    public override DateTime? MarriedDate
     {
       get
       {
@@ -406,7 +406,7 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Get the previous married date for the connector. Can be null.
     /// </summary>
-    override public DateTime? PreviousMarriedDate
+    public override DateTime? PreviousMarriedDate
     {
       get
       {
@@ -427,7 +427,7 @@ namespace Microsoft.FamilyShow
     /// on the connection nodes, marriage date and previous marriage date.
     /// Return true if the connection should be filtered.
     /// </summary>
-    override protected bool NewFilteredState
+    protected override bool NewFilteredState
     {
       get
       {
@@ -483,7 +483,7 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Draw the connection between the two nodes.
     /// </summary>
-    override public bool Draw(DrawingContext drawingContext)
+    public override bool Draw(DrawingContext drawingContext)
     {
       if (!base.Draw(drawingContext))
       {

@@ -504,7 +504,7 @@ namespace Microsoft.FamilyShow
     /// This is called for each item in the list. The derived classes 
     /// override this method.
     /// </summary>
-    virtual protected bool FilterCallback(object item)
+    protected virtual bool FilterCallback(object item)
     {
       return false;
     }

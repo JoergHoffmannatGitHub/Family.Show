@@ -12,7 +12,7 @@ namespace Microsoft.FamilyShow
     /// Called for each item in the list. Return true if the item should be in
     /// the current result set, otherwise return false to exclude the item.
     /// </summary>    
-    override protected bool FilterCallback(object item)
+    protected override bool FilterCallback(object item)
     {
       Person person = item as Person;
       if (person == null)

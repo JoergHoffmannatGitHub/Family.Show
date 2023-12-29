@@ -45,7 +45,7 @@ namespace Microsoft.FamilyShow
     private const int NumberOfRecentFiles = 5;
 
     // The path to the recent files file.
-    private readonly static string RecentFilesFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Path.Combine(ApplicationFolderName, "RecentFiles.xml"));
+    private static readonly string RecentFilesFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Path.Combine(ApplicationFolderName, "RecentFiles.xml"));
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
     public static string args;
 
