@@ -80,10 +80,7 @@ namespace Microsoft.FamilyShow
         App.args = "/x";
       }
 
-      if (Window != null)
-      {
-        Window.ProcessCommandLines();
-      }
+      Window?.ProcessCommandLines();
     }
 
     protected override void OnStartup(StartupEventArgs e)
