@@ -63,9 +63,6 @@ namespace Microsoft.FamilyShow
     // The type of node.
     private NodeType type = NodeType.Related;
 
-    // The amount to scale the node. 
-    private double scale = 1;
-
     // The current display year, this is used for the time filter.
     private double displayYear = DateTime.Now.Year;
 
@@ -269,15 +266,7 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Set the scale value of the node.
     /// </summary>
-    public double Scale
-    {
-      get { return scale; }
-      set
-      {
-        // Save the scale value, used later after apply the node template.
-        scale = value;
-      }
-    }
+    public double Scale { get; set; } = 1;
 
     /// <summary>
     /// Location of the node relative to the parent group.
@@ -402,12 +391,12 @@ namespace Microsoft.FamilyShow
     public override void OnApplyTemplate()
     {
       // The template has been applied to the node. See if the person drawing needs to be scaled.
-      if (scale != 1)
+      if (Scale != 1)
       {
         // Scale the person drawing part of the node, not the entire node.
         if (Template.FindName("Person", this) is FrameworkElement personElement)
         {
-          ScaleTransform transform = new ScaleTransform(scale, scale);
+          ScaleTransform transform = new ScaleTransform(Scale, Scale);
           personElement.LayoutTransform = transform;
         }
       }

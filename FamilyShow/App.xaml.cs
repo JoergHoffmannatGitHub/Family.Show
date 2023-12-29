@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -47,10 +46,6 @@ namespace Microsoft.FamilyShow
 
     // The path to the recent files file.
     private readonly static string RecentFilesFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Path.Combine(ApplicationFolderName, "RecentFiles.xml"));
-
-    // The global list of recent files.
-    private static StringCollection recentFiles = [];
-
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
     public static string args;
 
@@ -191,10 +186,7 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Gets the list of recent files.
     /// </summary>
-    public static StringCollection RecentFiles
-    {
-      get { return recentFiles; }
-    }
+    public static StringCollection RecentFiles { get; private set; } = [];
 
     /// <summary>
     /// Gets the collection of themes
@@ -247,22 +239,22 @@ namespace Microsoft.FamilyShow
         XmlSerializer ser = new XmlSerializer(typeof(StringCollection));
         using (TextReader reader = new StreamReader(RecentFilesFilePath))
         {
-          recentFiles = (StringCollection)ser.Deserialize(reader);
+          RecentFiles = (StringCollection)ser.Deserialize(reader);
         }
 
         // Remove files from the Recent Files list that no longer exists.
-        for (int i = 0; i < recentFiles.Count; i++)
+        for (int i = 0; i < RecentFiles.Count; i++)
         {
-          if (!File.Exists(recentFiles[i]))
+          if (!File.Exists(RecentFiles[i]))
           {
-            recentFiles.RemoveAt(i);
+            RecentFiles.RemoveAt(i);
           }
         }
 
         // Only keep the 5 most recent files, trim the rest.
-        while (recentFiles.Count > NumberOfRecentFiles)
+        while (RecentFiles.Count > NumberOfRecentFiles)
         {
-          recentFiles.RemoveAt(NumberOfRecentFiles);
+          RecentFiles.RemoveAt(NumberOfRecentFiles);
         }
       }
     }
@@ -275,7 +267,7 @@ namespace Microsoft.FamilyShow
       XmlSerializer ser = new XmlSerializer(typeof(StringCollection));
       using (TextWriter writer = new StreamWriter(RecentFilesFilePath))
       {
-        ser.Serialize(writer, recentFiles);
+        ser.Serialize(writer, RecentFiles);
       }
     }
 

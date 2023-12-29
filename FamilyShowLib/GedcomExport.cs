@@ -903,52 +903,30 @@ namespace Microsoft.FamilyShowLib
   /// </summary>
   class Family
   {
-    #region fields
-
-    private Person parentLeft;
-    private Person parentRight;
-    private SpouseRelationship relationship;
-    private List<Person> children = [];
-
-    #endregion
-
     /// <summary>
     /// Get the left-side parent.
     /// </summary>
-    public Person ParentLeft
-    {
-      get { return parentLeft; }
-    }
+    public Person ParentLeft { get; }
 
     /// <summary>
     /// Get the right-side parent.
     /// </summary>
-    public Person ParentRight
-    {
-      get { return parentRight; }
-    }
+    public Person ParentRight { get; }
 
     /// <summary>
     /// Get or set the relationship for the two parents.
     /// </summary>
-    public SpouseRelationship Relationship
-    {
-      get { return relationship; }
-      set { relationship = value; }
-    }
+    public SpouseRelationship Relationship { get; set; }
 
     /// <summary>
     /// Get the list of children.
     /// </summary>
-    public List<Person> Children
-    {
-      get { return children; }
-    }
+    public List<Person> Children { get; } = [];
 
     public Family(Person parentLeft, Person parentRight)
     {
-      this.parentLeft = parentLeft;
-      this.parentRight = parentRight;
+      ParentLeft = parentLeft;
+      ParentRight = parentRight;
     }
   }
 

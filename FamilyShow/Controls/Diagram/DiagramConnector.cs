@@ -24,7 +24,6 @@ namespace Microsoft.FamilyShow
     // Node location in the diagram.
     private DiagramRow row;
     private DiagramGroup group;
-    private DiagramNode node;
     public bool displayDates = true;
 
     #endregion
@@ -34,17 +33,14 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Node for this connection point.
     /// </summary>
-    public DiagramNode Node
-    {
-      get { return node; }
-    }
+    public DiagramNode Node { get; }
 
     /// <summary>
     /// Center of the node relative to the diagram.
     /// </summary>
     public Point Center
     {
-      get { return GetPoint(node.Center); }
+      get { return GetPoint(Node.Center); }
     }
 
     /// <summary>
@@ -52,7 +48,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public Point LeftCenter
     {
-      get { return GetPoint(node.LeftCenter); }
+      get { return GetPoint(Node.LeftCenter); }
     }
 
     /// <summary>
@@ -60,7 +56,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public Point RightCenter
     {
-      get { return GetPoint(node.RightCenter); }
+      get { return GetPoint(Node.RightCenter); }
     }
 
     /// <summary>
@@ -68,7 +64,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public Point TopCenter
     {
-      get { return GetPoint(node.TopCenter); }
+      get { return GetPoint(Node.TopCenter); }
     }
 
     /// <summary>
@@ -76,7 +72,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public Point TopRight
     {
-      get { return GetPoint(node.TopRight); }
+      get { return GetPoint(Node.TopRight); }
     }
 
     /// <summary>
@@ -84,14 +80,14 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public Point TopLeft
     {
-      get { return GetPoint(node.TopLeft); }
+      get { return GetPoint(Node.TopLeft); }
     }
 
     #endregion
 
     public DiagramConnectorNode(DiagramNode node, DiagramGroup group, DiagramRow row)
     {
-      this.node = node;
+      Node = node;
       this.group = group;
       this.row = row;
     }
@@ -124,19 +120,8 @@ namespace Microsoft.FamilyShow
 
     #region fields
 
-    // The two nodes that are connected.
-    private DiagramConnectorNode start;
-    private DiagramConnectorNode end;
-
-    // Flag, if the connection is currently filtered. The
-    // connection is drawn in a dim-state when filtered.
-    private bool isFiltered;
-
     // Animation if the filtered state has changed.
     private DoubleAnimation animation;
-
-    // Pen to draw connector line.
-    private Pen resourcePen;
 
     #endregion
 
@@ -169,27 +154,17 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Get the starting node.
     /// </summary>
-    protected DiagramConnectorNode StartNode
-    {
-      get { return start; }
-    }
+    protected DiagramConnectorNode StartNode { get; }
 
     /// <summary>
     /// Get the ending node.
     /// </summary>
-    protected DiagramConnectorNode EndNode
-    {
-      get { return end; }
-    }
+    protected DiagramConnectorNode EndNode { get; }
 
     /// <summary>
     /// Get or set the pen that specifies the connector line.
     /// </summary>
-    protected Pen ResourcePen
-    {
-      get { return resourcePen; }
-      set { resourcePen = value; }
-    }
+    protected Pen ResourcePen { get; set; }
 
     /// <summary>
     /// Create the connector line pen. The opacity is set based on
@@ -205,7 +180,7 @@ namespace Microsoft.FamilyShow
         Pen connectorPen = ResourcePen.Clone();
 
         // Set opacity based on the filtered state.
-        connectorPen.Brush.Opacity = (isFiltered) ? Const.OpacityFiltered : Const.OpacityNormal;
+        connectorPen.Brush.Opacity = (IsFiltered) ? Const.OpacityFiltered : Const.OpacityNormal;
 
         // Create animation if the filtered state has changed.
         if (animation != null)
@@ -220,11 +195,7 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Return true if the connection is currently filtered.
     /// </summary>
-    private bool IsFiltered
-    {
-      set { isFiltered = value; }
-      get { return isFiltered; }
-    }
+    private bool IsFiltered { set; get; }
 
     /// <summary>
     /// Get the new filtered state of the connection. This depends
@@ -235,7 +206,7 @@ namespace Microsoft.FamilyShow
       get
       {
         // Connection is filtered if any of the nodes are filtered.
-        if (start.Node.IsFiltered || end.Node.IsFiltered)
+        if (StartNode.Node.IsFiltered || EndNode.Node.IsFiltered)
         {
           return true;
         }
@@ -251,8 +222,8 @@ namespace Microsoft.FamilyShow
     protected DiagramConnector(DiagramConnectorNode startConnector,
         DiagramConnectorNode endConnector)
     {
-      start = startConnector;
-      end = endConnector;
+      StartNode = startConnector;
+      EndNode = endConnector;
     }
 
     /// <summary>
@@ -261,8 +232,8 @@ namespace Microsoft.FamilyShow
     virtual public bool Draw(DrawingContext drawingContext)
     {
       // Don't draw if either of the nodes are filtered.
-      if (start.Node.Visibility != Visibility.Visible ||
-          end.Node.Visibility != Visibility.Visible)
+      if (StartNode.Node.Visibility != Visibility.Visible ||
+          EndNode.Node.Visibility != Visibility.Visible)
       {
         return false;
       }
@@ -286,7 +257,7 @@ namespace Microsoft.FamilyShow
       SolidColorBrush brush = new SolidColorBrush(color)
       {
         // Set the opacity based on the filtered state.
-        Opacity = (isFiltered) ? Const.OpacityFiltered : Const.OpacityNormal
+        Opacity = (IsFiltered) ? Const.OpacityFiltered : Const.OpacityNormal
       };
 
       // Create animation if the filtered state has changed.
@@ -312,8 +283,8 @@ namespace Microsoft.FamilyShow
         IsFiltered = newFiltered;
         animation = new DoubleAnimation
         {
-          From = isFiltered ? Const.OpacityNormal : Const.OpacityFiltered,
-          To = isFiltered ? Const.OpacityFiltered : Const.OpacityNormal,
+          From = IsFiltered ? Const.OpacityNormal : Const.OpacityFiltered,
+          To = IsFiltered ? Const.OpacityFiltered : Const.OpacityNormal,
           Duration = App.GetAnimationDuration(Const.AnimationDuration)
         };
       }

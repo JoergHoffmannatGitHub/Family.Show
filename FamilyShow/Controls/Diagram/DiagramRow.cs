@@ -22,9 +22,6 @@ namespace Microsoft.FamilyShow
   {
     #region fields
 
-    // Space between each group.
-    private double groupSpace = 80;
-
     // Location of the row, relative to the diagram.
     private Point location = new Point();
 
@@ -38,11 +35,7 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Space between each group.
     /// </summary>
-    public double GroupSpace
-    {
-      get { return groupSpace; }
-      set { groupSpace = value; }
-    }
+    public double GroupSpace { get; set; } = 80;
 
     /// <summary>
     /// Location of the row, relative to the diagram.
@@ -170,7 +163,7 @@ namespace Microsoft.FamilyShow
         totalSize.Width = pos + group.DesiredSize.Width;
         totalSize.Height = Math.Max(totalSize.Height, group.DesiredSize.Height);
 
-        pos += (bounds.Width + groupSpace);
+        pos += (bounds.Width + GroupSpace);
       }
 
       return totalSize;

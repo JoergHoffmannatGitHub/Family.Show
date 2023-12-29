@@ -14,7 +14,6 @@ namespace Microsoft.FamilyShow
   public partial class Histogram : UserControl
   {
     private ListCollectionView view;
-    private Dictionary<object, string> categoryLabels;
 
     /// <summary>
     /// Get the number of items in the current view.
@@ -24,10 +23,7 @@ namespace Microsoft.FamilyShow
       get { return View.Count; }
     }
 
-    public Dictionary<object, string> CategoryLabels
-    {
-      get { return categoryLabels; }
-    }
+    public Dictionary<object, string> CategoryLabels { get; }
 
     #region dependency properties
 
@@ -115,7 +111,7 @@ namespace Microsoft.FamilyShow
 
     public Histogram()
     {
-      categoryLabels = [];
+      CategoryLabels = [];
       InitializeComponent();
     }
 

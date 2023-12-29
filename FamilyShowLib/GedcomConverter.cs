@@ -177,43 +177,22 @@ namespace Microsoft.FamilyShowLib
 
     #endregion
 
-    #region fields
-
-    // Parts of the GEDCOM line.
-    private int level;
-    private string tag;
-    private string data;
-
-    #endregion
-
     #region properties
 
     /// <summary>
     /// Level of the tag.
     /// </summary>
-    public int Level
-    {
-      get { return level; }
-      set { level = value; }
-    }
+    public int Level { get; set; }
 
     /// <summary>
     /// Line tag.
     /// </summary>
-    public string Tag
-    {
-      get { return tag; }
-      set { tag = value; }
-    }
+    public string Tag { get; set; }
 
     /// <summary>
     /// Data of the tag.
     /// </summary>
-    public string Data
-    {
-      get { return data; }
-      set { data = value; }
-    }
+    public string Data { get; set; }
 
     #endregion
 
@@ -250,30 +229,30 @@ namespace Microsoft.FamilyShowLib
 
         // Get the parts of the line.
         Match match = RegexToSplit().Match(text);
-        level = Convert.ToInt32(match.Groups["level"].Value, CultureInfo.InvariantCulture);
-        tag = match.Groups["tag"].Value.Trim();
-        data = match.Groups["data"].Value.Trim();
+        Level = Convert.ToInt32(match.Groups["level"].Value, CultureInfo.InvariantCulture);
+        Tag = match.Groups["tag"].Value.Trim();
+        Data = match.Groups["data"].Value.Trim();
 
         // The pointer reference is specified in the tag, and the tag in the data,
         // swap these two values to make it more consistent, the tag contains the 
         // tag and data contains the pointer reference.
-        if (tag[0] == '@')
+        if (Tag[0] == '@')
         {
-          string temp = tag;
-          tag = data;
-          data = temp;
-          int pos = tag.IndexOf(' ');
+          string temp = Tag;
+          Tag = Data;
+          Data = temp;
+          int pos = Tag.IndexOf(' ');
 
           // Some GEDCOM files have additional info, 
           // we only handle the tag info.
           if (pos != -1)
           {
-            tag = tag.Substring(0, pos);
+            Tag = Tag.Substring(0, pos);
           }
         }
 
         // Make sure there are not any invalid characters in the tag.
-        tag = RegexForTag().Replace(tag, "");
+        Tag = RegexForTag().Replace(Tag, "");
 
         return true;
       }

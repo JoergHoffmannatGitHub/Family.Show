@@ -11,11 +11,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Reflection;
+using System.Text;
+using System.Windows;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Text;
-using System.Reflection;
-using System.Windows;
 
 namespace Microsoft.FamilyShowLib
 {
@@ -25,16 +25,11 @@ namespace Microsoft.FamilyShowLib
   /// </summary>
   public class ContentChangedEventArgs : EventArgs
   {
-    private Person newPerson;
-
-    public Person NewPerson
-    {
-      get { return newPerson; }
-    }
+    public Person NewPerson { get; }
 
     public ContentChangedEventArgs(Person newPerson)
     {
-      this.newPerson = newPerson;
+      NewPerson = newPerson;
     }
 
   }
@@ -45,16 +40,11 @@ namespace Microsoft.FamilyShowLib
   /// </summary>
   public class SourceContentChangedEventArgs : EventArgs
   {
-    private Source newSource;
-
-    public Source NewSource
-    {
-      get { return newSource; }
-    }
+    public Source NewSource { get; }
 
     public SourceContentChangedEventArgs(Source newSource)
     {
-      this.newSource = newSource;
+      NewSource = newSource;
     }
   }
 
@@ -64,16 +54,11 @@ namespace Microsoft.FamilyShowLib
   /// </summary>
   public class RepositoryContentChangedEventArgs : EventArgs
   {
-    private Repository newRepository;
-
-    public Repository NewRepository
-    {
-      get { return newRepository; }
-    }
+    public Repository NewRepository { get; }
 
     public RepositoryContentChangedEventArgs(Repository newRepository)
     {
-      this.newRepository = newRepository;
+      NewRepository = newRepository;
     }
   }
 
@@ -100,36 +85,7 @@ namespace Microsoft.FamilyShowLib
       public const string DataFileName = "default.familyx";
     }
 
-    // Fields
-    private PeopleCollection peopleCollection;
-    private SourceCollection sourceCollection;
-    private RepositoryCollection repositoryCollection;
-
-    //Merge
-    private PeopleCollection existingPeopleCollection;
-    private PeopleCollection duplicatePeopleCollection;
-    private PeopleCollection newPeopleCollection;
-
-    // The current person's Id will be serialized instead of the current person object to avoid
-    // circular references during Xml Serialization. When family data is loaded, the corresponding
-    // person object will be assigned to the current property (please see app.xaml.cs).
-    // The currentPersonId is set in the Save method of this class.
-    private string currentPersonId;
-
-    // Store the person's name with the Id to make the xml file more readable.
-    // The currentPersonName is set in the Save method of this class.
-    private string currentPersonName;
-
-    // The fully qualified path and filename for the family file.
-    private string fullyQualifiedFilename;
-
-    // Version of the file. Used to handle previous file formats.
-    private string fileVersion = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString();
-
     private string OPCContentFileName = "content.xml";
-
-    private string dateSaved = string.Empty;
-    private string dateCreated = DateTime.Now.ToString();
 
     #endregion
 
@@ -138,96 +94,58 @@ namespace Microsoft.FamilyShowLib
     /// <summary>
     /// Collection of people.
     /// </summary>
-    public PeopleCollection PeopleCollection
-    {
-      get { return peopleCollection; }
-    }
+    public PeopleCollection PeopleCollection { get; }
 
     /// <summary>
     /// Collection of sources.
     /// </summary>
-    public SourceCollection SourceCollection
-    {
-      get { return sourceCollection; }
-    }
+    public SourceCollection SourceCollection { get; }
 
     /// <summary>
     /// Collection of repositories.
     /// </summary>
-    public RepositoryCollection RepositoryCollection
-    {
-      get { return repositoryCollection; }
-    }
+    public RepositoryCollection RepositoryCollection { get; }
 
     /// <summary>
     /// Collection of existing people used for merging.
     /// </summary>
     [XmlIgnore]
-    public PeopleCollection ExistingPeopleCollection
-    {
-      get { return existingPeopleCollection; }
-    }
+    public PeopleCollection ExistingPeopleCollection { get; }
 
     /// <summary>
     /// Collection of duplicate people used for merging.
     /// </summary>
     [XmlIgnore]
-    public PeopleCollection DuplicatePeopleCollection
-    {
-      get { return duplicatePeopleCollection; }
-    }
+    public PeopleCollection DuplicatePeopleCollection { get; }
 
     /// <summary>
     /// Collection of new people used for merging.
     /// </summary>
     [XmlIgnore]
-    public PeopleCollection NewPeopleCollection
-    {
-      get { return newPeopleCollection; }
-    }
+    public PeopleCollection NewPeopleCollection { get; }
 
 
     /// <summary>
     /// Id of currently selected person.
     /// </summary>
     [XmlAttribute(AttributeName = "Current")]
-    public string CurrentPersonId
-    {
-      get { return currentPersonId; }
-      set { currentPersonId = value; }
-    }
+    public string CurrentPersonId { get; set; }
 
     // Name of current selected person (included for readability in xml file).
     [XmlAttribute(AttributeName = "CurrentName")]
-    public string CurrentPersonName
-    {
-      get { return currentPersonName; }
-      set { currentPersonName = value; }
-    }
+    public string CurrentPersonName { get; set; }
 
     // Version of the file.
     [XmlAttribute(AttributeName = "FileVersion")]
-    public string Version
-    {
-      get { return fileVersion; }
-      set { fileVersion = value; }
-    }
+    public string Version { get; set; } = Assembly.GetExecutingAssembly().GetName().Version.Major.ToString();
 
     // LastSavedDate date of the file.
     [XmlAttribute(AttributeName = "FileLastSavedDate")]
-    public string DateSaved
-    {
-      get { return dateSaved; }
-      set { dateSaved = value; }
-    }
+    public string DateSaved { get; set; } = string.Empty;
 
     // LastSavedDate date of the file.
     [XmlAttribute(AttributeName = "FileCreated")]
-    public string DateCreated
-    {
-      get { return dateCreated; }
-      set { dateCreated = value; }
-    }
+    public string DateCreated { get; set; } = DateTime.Now.ToString();
 
     [XmlIgnore]
     public static string ApplicationFolderPath
@@ -264,24 +182,19 @@ namespace Microsoft.FamilyShowLib
     /// Fully qualified filename (absolute pathname and filename) for the data file
     /// </summary>
     [XmlIgnore]
-    public string FullyQualifiedFilename
-    {
-      get { return fullyQualifiedFilename; }
-
-      set { fullyQualifiedFilename = value; }
-    }
+    public string FullyQualifiedFilename { get; set; }
 
     #endregion
 
     public People()
     {
-      peopleCollection = [];
-      sourceCollection = [];
-      repositoryCollection = [];
+      PeopleCollection = [];
+      SourceCollection = [];
+      RepositoryCollection = [];
 
-      existingPeopleCollection = [];
-      duplicatePeopleCollection = [];
-      newPeopleCollection = [];
+      ExistingPeopleCollection = [];
+      DuplicatePeopleCollection = [];
+      NewPeopleCollection = [];
     }
 
     #region Loading, saving and merging
@@ -489,7 +402,7 @@ namespace Microsoft.FamilyShowLib
     /// <param name="FQFileName">Fully qualified path and filename of family tree file to save</param>
     public void Save(string FQFileName)
     {
-      fullyQualifiedFilename = FQFileName;
+      FullyQualifiedFilename = FQFileName;
       Save(false);
     }
 
@@ -499,7 +412,7 @@ namespace Microsoft.FamilyShowLib
     /// <param name="FQFileName">Fully qualified path and filename of family tree file to save</param>
     public void SavePrivacy(string FQFileName, bool privacy)
     {
-      fullyQualifiedFilename = FQFileName;
+      FullyQualifiedFilename = FQFileName;
       Save(privacy);
     }
 
@@ -510,7 +423,7 @@ namespace Microsoft.FamilyShowLib
     public void SaveDirect(string FQFileName, bool privacy)
     {
 
-      fullyQualifiedFilename = FQFileName;
+      FullyQualifiedFilename = FQFileName;
 
       Person primaryPerson = PeopleCollection.Current;
       PeopleCollection keep = [];
@@ -579,7 +492,7 @@ namespace Microsoft.FamilyShowLib
     public void SaveCurrent(string FQFileName, bool privacy)
     {
 
-      fullyQualifiedFilename = FQFileName;
+      FullyQualifiedFilename = FQFileName;
 
       Person primaryPerson = PeopleCollection.Current;
       PeopleCollection keep = [];
@@ -634,7 +547,7 @@ namespace Microsoft.FamilyShowLib
     public void SaveGenerations(string FQFileName, decimal ancestors, decimal descendants, bool privacy)
     {
 
-      fullyQualifiedFilename = FQFileName;
+      FullyQualifiedFilename = FQFileName;
 
       Person primaryPerson = PeopleCollection.Current;
       PeopleCollection keep = [];
@@ -967,7 +880,7 @@ namespace Microsoft.FamilyShowLib
       {
         // Could not load the file. Handle all exceptions
         // the same, ignore and continue.
-        fullyQualifiedFilename = string.Empty;
+        FullyQualifiedFilename = string.Empty;
         // Warn user of problem with file.
         return false;
       }
@@ -1163,7 +1076,7 @@ namespace Microsoft.FamilyShowLib
       {
         // Could not load the file. Handle all exceptions
         // the same, ignore and continue.
-        fullyQualifiedFilename = string.Empty;
+        FullyQualifiedFilename = string.Empty;
         // Warn user of problem with file.
         return false;
       }
@@ -1984,7 +1897,7 @@ namespace Microsoft.FamilyShowLib
             if (duplicated == false)
             {
               imports.PeopleCollection.Add(person);
-              newPeopleCollection.Add(person);
+              NewPeopleCollection.Add(person);
 
             }
             else

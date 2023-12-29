@@ -467,15 +467,11 @@ namespace Microsoft.FamilyShow
   public class FilterSortListView : SortListView
   {
     private delegate void FilterDelegate();
-    private Filter filter = new Filter();
 
     /// <summary>
     /// Get the filter for this control.
     /// </summary>
-    protected Filter Filter
-    {
-      get { return filter; }
-    }
+    protected Filter Filter { get; } = new Filter();
 
     /// <summary>
     /// Filter the data using the specified filter text.
@@ -483,7 +479,7 @@ namespace Microsoft.FamilyShow
     public void FilterList(string text)
     {
       // Setup the filter object.
-      filter.Parse(text);
+      Filter.Parse(text);
 
       // Start an async operation that filters the list.
       Dispatcher.BeginInvoke(
@@ -500,7 +496,7 @@ namespace Microsoft.FamilyShow
       ICollectionView view = CollectionViewSource.GetDefaultView(ItemsSource);
 
       // Clear the list if the filter is empty, otherwise filter the list.
-      view.Filter = filter.IsEmpty ? null :
+      view.Filter = Filter.IsEmpty ? null :
           new Predicate<object>(FilterCallback);
     }
 
