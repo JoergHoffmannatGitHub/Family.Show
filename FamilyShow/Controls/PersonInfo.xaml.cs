@@ -6,10 +6,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+
 using Microsoft.FamilyShowLib;
-using System.Windows.Markup;
 
 namespace Microsoft.FamilyShow
 {
@@ -210,13 +211,11 @@ namespace Microsoft.FamilyShow
 
       // Bold button.
       result = StoryRichTextBox.Selection.GetPropertyValue(FlowDocument.FontWeightProperty);
-      BoldButton.IsChecked = (result != null && result is FontWeight &&
-          (FontWeight)result == FontWeights.Bold);
+      BoldButton.IsChecked = (result != null && result is FontWeight weight && weight == FontWeights.Bold);
 
       // Italic button.
       result = StoryRichTextBox.Selection.GetPropertyValue(FlowDocument.FontStyleProperty);
-      ItalicButton.IsChecked = (result != null && result is FontStyle &&
-          (FontStyle)result == FontStyles.Italic);
+      ItalicButton.IsChecked = (result != null && result is FontStyle style && style == FontStyles.Italic);
 
       // Font list.
       result = StoryRichTextBox.Selection.GetPropertyValue(FlowDocument.FontFamilyProperty);
@@ -227,20 +226,15 @@ namespace Microsoft.FamilyShow
 
       // Align buttons.
       result = StoryRichTextBox.Selection.GetPropertyValue(Block.TextAlignmentProperty);
-      AlignLeftButton.IsChecked = (result != null && result is TextAlignment
-          && (TextAlignment)result == TextAlignment.Left);
-      AlignCenterButton.IsChecked = (result != null && result is TextAlignment
-          && (TextAlignment)result == TextAlignment.Center);
-      AlignRightButton.IsChecked = (result != null && result is TextAlignment
-          && (TextAlignment)result == TextAlignment.Right);
-      AlignFullButton.IsChecked = (result != null && result is TextAlignment
-          && (TextAlignment)result == TextAlignment.Justify);
+      AlignLeftButton.IsChecked = CheckAlignment(result, TextAlignment.Left);
+      AlignCenterButton.IsChecked = CheckAlignment(result, TextAlignment.Center);
+      AlignRightButton.IsChecked = CheckAlignment(result, TextAlignment.Right);
+      AlignFullButton.IsChecked = CheckAlignment(result, TextAlignment.Justify);
 
       // Underline button.
       result = StoryRichTextBox.Selection.GetPropertyValue(Paragraph.TextDecorationsProperty);
-      if (result != null && result is TextDecorationCollection)
+      if (result != null && result is TextDecorationCollection decorations)
       {
-        TextDecorationCollection decorations = (TextDecorationCollection)result;
         UnderlineButton.IsChecked = (decorations.Count > 0 &&
             decorations[0].Location == TextDecorationLocation.Underline);
       }
@@ -251,6 +245,11 @@ namespace Microsoft.FamilyShow
 
       // bullets
       UpdateBulletButtons();
+    }
+
+    private static bool CheckAlignment(object result, TextAlignment expectedAlignment)
+    {
+      return result != null && result is TextAlignment alignment && alignment == expectedAlignment;
     }
 
     /// <summary>

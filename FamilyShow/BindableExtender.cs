@@ -33,9 +33,9 @@ namespace Microsoft.FamilyShow
         DependencyObject dependencyObject,
         DependencyPropertyChangedEventArgs e)
     {
-      if (dependencyObject is Run)
+      if (dependencyObject is Run run)
       {
-        ((Run)dependencyObject).Text = (string)e.NewValue;
+        run.Text = (string)e.NewValue;
       }
     }
   }
