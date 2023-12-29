@@ -1484,7 +1484,7 @@ namespace Microsoft.FamilyShowLib
     {
       get
       {
-        Collection<Person> spouses = new Collection<Person>();
+        Collection<Person> spouses = [];
         foreach (Relationship rel in relationships)
         {
           if (rel.RelationshipType == RelationshipType.Spouse)
@@ -1501,7 +1501,7 @@ namespace Microsoft.FamilyShowLib
     {
       get
       {
-        Collection<Person> spouses = new Collection<Person>();
+        Collection<Person> spouses = [];
         foreach (Relationship rel in relationships)
         {
           if (rel.RelationshipType == RelationshipType.Spouse)
@@ -1521,7 +1521,7 @@ namespace Microsoft.FamilyShowLib
     {
       get
       {
-        Collection<Person> spouses = new Collection<Person>();
+        Collection<Person> spouses = [];
         foreach (Relationship rel in relationships)
         {
           if (rel.RelationshipType == RelationshipType.Spouse)
@@ -1544,7 +1544,7 @@ namespace Microsoft.FamilyShowLib
     {
       get
       {
-        Collection<Person> children = new Collection<Person>();
+        Collection<Person> children = [];
         foreach (Relationship rel in relationships)
         {
           if (rel.RelationshipType == RelationshipType.Child)
@@ -1561,7 +1561,7 @@ namespace Microsoft.FamilyShowLib
     {
       get
       {
-        Collection<Person> children = new Collection<Person>();
+        Collection<Person> children = [];
         foreach (Relationship rel in relationships)
         {
           if (rel.RelationshipType == RelationshipType.Child)
@@ -1581,7 +1581,7 @@ namespace Microsoft.FamilyShowLib
     {
       get
       {
-        Collection<Person> children = new Collection<Person>();
+        Collection<Person> children = [];
         foreach (Relationship rel in relationships)
         {
           if (rel.RelationshipType == RelationshipType.Child)
@@ -1601,7 +1601,7 @@ namespace Microsoft.FamilyShowLib
     {
       get
       {
-        Collection<Person> children = new Collection<Person>();
+        Collection<Person> children = [];
         foreach (Relationship rel in relationships)
         {
           if (rel.RelationshipType == RelationshipType.Child)
@@ -1624,7 +1624,7 @@ namespace Microsoft.FamilyShowLib
     {
       get
       {
-        Collection<Person> parents = new Collection<Person>();
+        Collection<Person> parents = [];
         foreach (Relationship rel in relationships)
         {
 
@@ -1649,7 +1649,7 @@ namespace Microsoft.FamilyShowLib
     {
       get
       {
-        Collection<Person> parents = new Collection<Person>();
+        Collection<Person> parents = [];
         foreach (Relationship rel in relationships)
         {
           if (rel.RelationshipType == RelationshipType.Parent)
@@ -1669,7 +1669,7 @@ namespace Microsoft.FamilyShowLib
     {
       get
       {
-        Collection<Person> siblings = new Collection<Person>();
+        Collection<Person> siblings = [];
         foreach (Relationship rel in relationships)
         {
           if (rel.RelationshipType == RelationshipType.Sibling)
@@ -1692,7 +1692,7 @@ namespace Microsoft.FamilyShowLib
       get
       {
         // List that is returned.
-        Collection<Person> halfSiblings = new Collection<Person>();
+        Collection<Person> halfSiblings = [];
 
         // Get list of full siblings (a full sibling cannot be a half sibling).
         Collection<Person> siblings = Siblings;
@@ -1744,7 +1744,7 @@ namespace Microsoft.FamilyShowLib
     {
       get
       {
-        ParentSetCollection parentSets = new ParentSetCollection();
+        ParentSetCollection parentSets = [];
 
         foreach (Person parent in Parents)
         {
@@ -2344,9 +2344,9 @@ namespace Microsoft.FamilyShowLib
     public Person()
     {
       id = Guid.NewGuid().ToString();
-      relationships = new RelationshipCollection();
-      photos = new PhotoCollection();
-      attachments = new AttachmentCollection();
+      relationships = [];
+      photos = [];
+      attachments = [];
       firstName = Properties.Resources.Unknown;
       isLiving = true;
       restriction = Restriction.None;
@@ -2492,7 +2492,7 @@ namespace Microsoft.FamilyShowLib
     /// <returns></returns>
     public ParentSetCollection MakeParentSets()
     {
-      ParentSetCollection parentSets = new ParentSetCollection();
+      ParentSetCollection parentSets = [];
 
       foreach (Person spouse in Spouses)
       {

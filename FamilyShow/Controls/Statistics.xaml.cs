@@ -62,8 +62,8 @@ namespace Microsoft.FamilyShow
       double citations = 0;
       double relationshipCitations = 0;
 
-      PhotoCollection allPhotos = new PhotoCollection();
-      AttachmentCollection allAttachments = new AttachmentCollection();
+      PhotoCollection allPhotos = [];
+      AttachmentCollection allAttachments = [];
 
       // Events
       double relationships = 0;
@@ -765,7 +765,7 @@ namespace Microsoft.FamilyShow
     /// <returns></returns>
     private static DateTime? year(DateTime? marriageDate, DateTime? divorceDate, DateTime? birthDate, DateTime? deathDate, DateTime? cremationDate, DateTime? burialDate, string sort)
     {
-      List<DateTime?> dates = new List<DateTime?>();
+      List<DateTime?> dates = [];
 
       if (marriageDate != null)
       {

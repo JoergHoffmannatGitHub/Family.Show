@@ -275,13 +275,13 @@ namespace Microsoft.FamilyShowLib
 
     public People()
     {
-      peopleCollection = new PeopleCollection();
-      sourceCollection = new SourceCollection();
-      repositoryCollection = new RepositoryCollection();
+      peopleCollection = [];
+      sourceCollection = [];
+      repositoryCollection = [];
 
-      existingPeopleCollection = new PeopleCollection();
-      duplicatePeopleCollection = new PeopleCollection();
-      newPeopleCollection = new PeopleCollection();
+      existingPeopleCollection = [];
+      duplicatePeopleCollection = [];
+      newPeopleCollection = [];
     }
 
     #region Loading, saving and merging
@@ -513,8 +513,8 @@ namespace Microsoft.FamilyShowLib
       fullyQualifiedFilename = FQFileName;
 
       Person primaryPerson = PeopleCollection.Current;
-      PeopleCollection keep = new PeopleCollection();
-      PeopleCollection delete = new PeopleCollection();
+      PeopleCollection keep = [];
+      PeopleCollection delete = [];
 
       //add current person and all directly related to the keep people collection
       keep.Add(primaryPerson);
@@ -582,8 +582,8 @@ namespace Microsoft.FamilyShowLib
       fullyQualifiedFilename = FQFileName;
 
       Person primaryPerson = PeopleCollection.Current;
-      PeopleCollection keep = new PeopleCollection();
-      PeopleCollection delete = new PeopleCollection();
+      PeopleCollection keep = [];
+      PeopleCollection delete = [];
 
       //add current person to the keep people collection
       keep.Add(primaryPerson);
@@ -637,8 +637,8 @@ namespace Microsoft.FamilyShowLib
       fullyQualifiedFilename = FQFileName;
 
       Person primaryPerson = PeopleCollection.Current;
-      PeopleCollection keep = new PeopleCollection();
-      PeopleCollection delete = new PeopleCollection();
+      PeopleCollection keep = [];
+      PeopleCollection delete = [];
 
       //add the current person, their spouses and siblings to the export people collection and then repeat for each specified generation
 
@@ -913,7 +913,7 @@ namespace Microsoft.FamilyShowLib
           foreach (Person p in PeopleCollection)
           {
 
-            RelationshipCollection corruptRelationships = new RelationshipCollection();
+            RelationshipCollection corruptRelationships = [];
 
             foreach (Relationship r in p.Relationships)
             {
@@ -1023,7 +1023,7 @@ namespace Microsoft.FamilyShowLib
           foreach (Person p in PeopleCollection)
           {
 
-            RelationshipCollection corruptRelationships = new RelationshipCollection();
+            RelationshipCollection corruptRelationships = [];
 
             // If relationships are null remove them.
             foreach (Relationship r in p.Relationships)
@@ -1062,7 +1062,7 @@ namespace Microsoft.FamilyShowLib
             }
 
             // Store the photos which are present on the users computer
-            PhotoCollection newPhotos = new PhotoCollection();
+            PhotoCollection newPhotos = [];
 
             // Store the photos into temp directory to be packaged into OPC later
             foreach (Photo photo in p.Photos)
@@ -1261,8 +1261,8 @@ namespace Microsoft.FamilyShowLib
           int sameId = 0;
 
           //collections for determining safeIDs
-          SourceCollection safeIds = new SourceCollection();
-          SourceCollection sameIds = new SourceCollection();
+          SourceCollection safeIds = [];
+          SourceCollection sameIds = [];
 
           //add sources in the old file to the safe id collection
           foreach (Source s in SourceCollection)
@@ -1619,8 +1619,8 @@ namespace Microsoft.FamilyShowLib
 
           //collection for determining safeIDs
 
-          RepositoryCollection safeRIds = new RepositoryCollection();
-          RepositoryCollection sameRIds = new RepositoryCollection();
+          RepositoryCollection safeRIds = [];
+          RepositoryCollection sameRIds = [];
 
           foreach (Repository r in RepositoryCollection)
           {
@@ -2129,8 +2129,8 @@ namespace Microsoft.FamilyShowLib
       newString = newString.Replace(" and ", " ");
       string[] string2 = newString.Split();
 
-      List<string> list1 = new List<string>();
-      List<string> list2 = new List<string>();
+      List<string> list1 = [];
+      List<string> list2 = [];
 
       foreach (string s in string1)
       {
@@ -2206,7 +2206,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     private static PeopleCollection descendentGenerations(Person child)
     {
-      PeopleCollection pc = new PeopleCollection();
+      PeopleCollection pc = [];
 
       if (!pc.Contains(child))
       {
@@ -2229,7 +2229,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     private static PeopleCollection ancestorGenerations(Person parent)
     {
-      PeopleCollection pc = new PeopleCollection();
+      PeopleCollection pc = [];
 
       if (!pc.Contains(parent))
       {
@@ -2252,7 +2252,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     private static PeopleCollection getSiblingsSpousesChildren(Person parent)
     {
-      PeopleCollection pc = new PeopleCollection();
+      PeopleCollection pc = [];
 
       foreach (Person sibling in parent.Siblings)
       {
@@ -2294,7 +2294,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     private static PeopleCollection getSpouses(Person child)
     {
-      PeopleCollection pc = new PeopleCollection();
+      PeopleCollection pc = [];
 
       foreach (Person spouse in child.Spouses)
       {

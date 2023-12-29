@@ -127,7 +127,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public void ExportDirect(PeopleCollection peopleCollection, SourceCollection sourceCollection, RepositoryCollection repositoryCollection, string htmlFilePath, string familyxFileName, bool privacy, bool sourcesbool)
     {
-      PeopleCollection pc = new PeopleCollection();
+      PeopleCollection pc = [];
       string filename = Path.GetFileName(htmlFilePath);
       tw = new StreamWriter(filename);
 
@@ -346,7 +346,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public void ExportCurrent(PeopleCollection peopleCollection, SourceCollection sourceCollection, RepositoryCollection repositoryCollection, string htmlFilePath, string familyxFileName, bool privacy, bool sourcesbool)
     {
-      PeopleCollection pc = new PeopleCollection();
+      PeopleCollection pc = [];
       string filename = Path.GetFileName(htmlFilePath);
       tw = new StreamWriter(filename);
 
@@ -438,7 +438,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public void ExportFilter(PeopleCollection peopleCollection, SourceCollection sourceCollection, RepositoryCollection repositoryCollection, string searchtext, string searchfield, int searchfieldindex, string htmlFilePath, string familyxFileName, bool privacy, bool sourcesbool)
     {
-      PeopleCollection pc = new PeopleCollection();
+      PeopleCollection pc = [];
       string filename = Path.GetFileName(htmlFilePath);
       tw = new StreamWriter(filename);
 
@@ -709,7 +709,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public void ExportGenerations(PeopleCollection peopleCollection, SourceCollection sourceCollection, RepositoryCollection repositoryCollection, decimal ancestors, decimal descendants, string htmlFilePath, string familyxFileName, bool privacy, bool sourcesbool)
     {
-      PeopleCollection pc = new PeopleCollection();
+      PeopleCollection pc = [];
       string filename = Path.GetFileName(htmlFilePath);
       tw = new StreamWriter(filename);
 
@@ -983,7 +983,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     public void ExportEventsByDecade(PeopleCollection peopleCollection, SourceCollection sourceCollection, RepositoryCollection repositoryCollection, string htmlFilePath, string familyxFileName, bool privacy, int startYear, int endYear)
     {
-      PeopleCollection pc = new PeopleCollection();
+      PeopleCollection pc = [];
       string filename = Path.GetFileName(htmlFilePath);
       tw = new StreamWriter(filename);
 
@@ -1542,7 +1542,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     private static PeopleCollection descendentGenerations(Person child)
     {
-      PeopleCollection pc = new PeopleCollection();
+      PeopleCollection pc = [];
 
       if (!pc.Contains(child))
       {
@@ -1565,7 +1565,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     private static PeopleCollection ancestorGenerations(Person parent)
     {
-      PeopleCollection pc = new PeopleCollection();
+      PeopleCollection pc = [];
 
       if (!pc.Contains(parent))
       {
@@ -1588,7 +1588,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     private static PeopleCollection getSiblingsSpousesChildren(Person parent)
     {
-      PeopleCollection pc = new PeopleCollection();
+      PeopleCollection pc = [];
 
       foreach (Person sibling in parent.Siblings)
       {
@@ -1630,7 +1630,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     private static PeopleCollection getSpouses(Person child)
     {
-      PeopleCollection pc = new PeopleCollection();
+      PeopleCollection pc = [];
 
       foreach (Person spouse in child.Spouses)
       {

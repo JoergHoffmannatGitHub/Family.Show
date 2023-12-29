@@ -782,7 +782,7 @@ namespace Microsoft.FamilyShow
       MenuItem item = (MenuItem)sender;
       string theme = item.CommandParameter as string;
 
-      ResourceDictionary rd = new ResourceDictionary();
+      ResourceDictionary rd = [];
       rd.MergedDictionaries.Add(Application.LoadComponent(new Uri(theme, UriKind.Relative)) as ResourceDictionary);
       Application.Current.Resources = rd;
 

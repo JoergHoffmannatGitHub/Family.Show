@@ -182,7 +182,7 @@ namespace Microsoft.FamilyShow
   {
     #region IValueCOnverter Members
 
-    private List<IValueConverter> converters = new List<IValueConverter>();
+    private List<IValueConverter> converters = [];
 
     public Collection<IValueConverter> Converters
     {

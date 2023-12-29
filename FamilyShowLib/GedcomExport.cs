@@ -188,7 +188,7 @@ namespace Microsoft.FamilyShowLib
     private void ExportPeople()
     {
 
-      FamilyMap map = new FamilyMap();
+      FamilyMap map = [];
       map.Create(people);
 
       foreach (Person person in people)
@@ -314,7 +314,7 @@ namespace Microsoft.FamilyShowLib
       // family group. A family group consists of one or more parents,
       // marriage / divorce information and children. The FamilyMap class
       // creates a list of family groups from the People collection.
-      FamilyMap map = new FamilyMap();
+      FamilyMap map = [];
       map.Create(people);
 
       // Created the family groups, now export each family.
@@ -873,7 +873,7 @@ namespace Microsoft.FamilyShowLib
     #region fields
 
     // Quick lookup that maps a GUID to a GEDCOM ID.
-    private Dictionary<string, string> map = new Dictionary<string, string>();
+    private Dictionary<string, string> map = [];
 
     // The next ID to assign.
     private int nextId;
@@ -908,7 +908,7 @@ namespace Microsoft.FamilyShowLib
     private Person parentLeft;
     private Person parentRight;
     private SpouseRelationship relationship;
-    private List<Person> children = new List<Person>();
+    private List<Person> children = [];
 
     #endregion
 

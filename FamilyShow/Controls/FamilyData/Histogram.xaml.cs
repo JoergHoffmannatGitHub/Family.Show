@@ -115,7 +115,7 @@ namespace Microsoft.FamilyShow
 
     public Histogram()
     {
-      categoryLabels = new Dictionary<object, string>();
+      categoryLabels = [];
       InitializeComponent();
     }
 

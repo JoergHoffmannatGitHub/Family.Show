@@ -60,7 +60,7 @@ namespace Microsoft.FamilyShow
     }
 
     // List of rows in the diagram. Each row contains groups, and each group contains nodes.
-    private List<DiagramRow> rows = new List<DiagramRow>();
+    private List<DiagramRow> rows = [];
 
     // Populates the rows with nodes.
     private DiagramLogic logic;

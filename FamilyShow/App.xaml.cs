@@ -49,7 +49,7 @@ namespace Microsoft.FamilyShow
     private readonly static string RecentFilesFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Path.Combine(ApplicationFolderName, "RecentFiles.xml"));
 
     // The global list of recent files.
-    private static StringCollection recentFiles = new StringCollection();
+    private static StringCollection recentFiles = [];
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
     public static string args;
@@ -116,7 +116,7 @@ namespace Microsoft.FamilyShow
       {
         try
         {
-          ResourceDictionary rd = new ResourceDictionary();
+          ResourceDictionary rd = [];
           rd.MergedDictionaries.Add(LoadComponent(new Uri(appSettings.Theme, UriKind.Relative)) as ResourceDictionary);
           Current.Resources = rd;
         }
@@ -206,7 +206,7 @@ namespace Microsoft.FamilyShow
     {
       get
       {
-        NameValueCollection themes = new NameValueCollection();
+        NameValueCollection themes = [];
 
         foreach (string folder in Directory.GetDirectories("Themes"))
         {

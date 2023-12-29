@@ -439,7 +439,7 @@ namespace Microsoft.FamilyShowLib
             List<Person> secondParentChildren = new List<Person>(wifePerson.NaturalChildren);
 
             // Combined children list that is returned.
-            List<Person> naturalChildren = new List<Person>();
+            List<Person> naturalChildren = [];
 
             // Go through and add the children that have both parents.            
             foreach (Person child1 in firstParentChildren)

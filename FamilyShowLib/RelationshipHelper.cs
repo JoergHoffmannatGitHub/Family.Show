@@ -197,7 +197,7 @@ namespace Microsoft.FamilyShowLib
       List<Person> secondParentChildren = new List<Person>(parentSet.SecondParent.Children);
 
       // Combined children list that is returned.
-      List<Person> children = new List<Person>();
+      List<Person> children = [];
 
       // Go through and add the children that have both parents.            
       foreach (Person child in firstParentChildren)

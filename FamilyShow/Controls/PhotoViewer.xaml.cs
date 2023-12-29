@@ -203,7 +203,7 @@ namespace Microsoft.FamilyShow
 
       PhotosListBox.Items.Clear();
 
-      PhotoCollection allPhotos = new PhotoCollection();
+      PhotoCollection allPhotos = [];
 
       foreach (Person p in people)
       {

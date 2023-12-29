@@ -17,12 +17,12 @@ namespace Microsoft.FamilyShow
     #region fields
 
     // List of the connections, specify connections between two nodes.
-    private List<DiagramConnector> connections = new List<DiagramConnector>();
+    private List<DiagramConnector> connections = [];
 
     // Map that allows quick lookup of a Person object to connection information.
     // Used when setting up the connections between nodes.
     private Dictionary<Person, DiagramConnectorNode> personLookup =
-        new Dictionary<Person, DiagramConnectorNode>();
+        [];
 
     // List of people, global list that is shared by all objects in the application.
     private PeopleCollection family;
@@ -166,7 +166,7 @@ namespace Microsoft.FamilyShow
     public static Collection<Person> GetParents(DiagramRow row)
     {
       // List that is returned.
-      Collection<Person> list = new Collection<Person>();
+      Collection<Person> list = [];
 
       // Get possible children in the row.
       List<Person> rowList = GetPrimaryAndRelatedPeople(row);
@@ -192,7 +192,7 @@ namespace Microsoft.FamilyShow
     public static List<Person> GetChildren(DiagramRow row)
     {
       // List that is returned.
-      List<Person> list = new List<Person>();
+      List<Person> list = [];
 
       // Get possible parents in the row.
       List<Person> rowList = GetPrimaryAndRelatedPeople(row);
@@ -217,7 +217,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private static List<Person> GetPrimaryAndRelatedPeople(DiagramRow row)
     {
-      List<Person> list = new List<Person>();
+      List<Person> list = [];
       foreach (DiagramGroup group in row.Groups)
       {
         foreach (DiagramNode node in group.Nodes)

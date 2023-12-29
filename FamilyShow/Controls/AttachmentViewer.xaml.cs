@@ -94,7 +94,7 @@ namespace Microsoft.FamilyShow
 
       AttachmentsListBox.Items.Clear();
 
-      AttachmentCollection allAttachments = new AttachmentCollection();
+      AttachmentCollection allAttachments = [];
 
       foreach (Person p in people)
       {
