@@ -444,10 +444,10 @@ namespace Microsoft.FamilyShow
       }
 
       // Will have double counted as marriage/divorce/relationships is always between 2 people
-      marriages = marriages / 2;
-      divorces = divorces / 2;
-      relationships = relationships / 2;
-      relationshipCitations = relationshipCitations / 2;
+      marriages /= 2;
+      divorces /= 2;
+      relationships /= 2;
+      relationshipCitations /= 2;
       citations += relationshipCitations;
 
       // Media data
@@ -975,7 +975,7 @@ namespace Microsoft.FamilyShow
         b += info.Length;
       }
 
-      b = b / 1024; //Kb
+      b /= 1024; //Kb
 
       return b;
     }

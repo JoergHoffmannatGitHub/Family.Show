@@ -952,7 +952,7 @@ namespace Microsoft.FamilyShowLib
 
         int i = parents.Count;
 
-        for (int j = 0; j < i; j = j + 2)
+        for (int j = 0; j < i; j += 2)
         {
           if (parents.Count > j)
           {

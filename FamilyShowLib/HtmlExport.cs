@@ -1005,17 +1005,17 @@ namespace Microsoft.FamilyShowLib
       // Ensure we use actual decades and not just 10 year periods
       do
       {
-        startYear = startYear - 1;
+        startYear--;
       }
       while (!startYear.ToString().EndsWith('0'));
 
       do
       {
-        endYear = endYear + 1;
+        endYear++;
       }
       while (!endYear.ToString().EndsWith('0'));
 
-      for (int i = startYear; i <= endYear; i = i + 10)
+      for (int i = startYear; i <= endYear; i += 10)
       {
         int ii = i + 9;
 
