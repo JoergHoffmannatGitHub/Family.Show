@@ -1,5 +1,6 @@
 using System;
 using System.Windows;
+using System.Windows.Controls;
 
 using Microsoft.FamilyShowLib;
 
@@ -8,15 +9,12 @@ namespace Microsoft.FamilyShow
   /// <summary>
   /// Interaction logic for Places.xaml
   /// </summary>
-  public partial class Places : System.Windows.Controls.UserControl
+  public partial class Places : UserControl
   {
 
     #region fields
 
-    readonly People familyCollection = App.FamilyCollection;
     readonly PeopleCollection family = App.Family;
-    readonly SourceCollection source = App.Sources;
-    readonly RepositoryCollection repository = App.Repositories;
     public int minYear = DateTime.Now.Year;
 
     #endregion
