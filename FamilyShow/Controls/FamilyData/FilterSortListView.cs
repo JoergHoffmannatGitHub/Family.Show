@@ -428,7 +428,7 @@ namespace Microsoft.FamilyShow
     {
 
       // Single age.
-      if (Int32.TryParse(filterText, out int age))
+      if (int.TryParse(filterText, out int age))
       {
         minimumAge = age;
       }
@@ -438,12 +438,12 @@ namespace Microsoft.FamilyShow
       {
         string[] list = filterText.Split('-');
 
-        if (Int32.TryParse(list[0], out age))
+        if (int.TryParse(list[0], out age))
         {
           minimumAge = age;
         }
 
-        if (Int32.TryParse(list[1], out age))
+        if (int.TryParse(list[1], out age))
         {
           maximumAge = age;
         }
@@ -452,7 +452,7 @@ namespace Microsoft.FamilyShow
       // Ending age.
       if (filterText.EndsWith('+'))
       {
-        if (Int32.TryParse(filterText.AsSpan(0, filterText.Length - 1), out age))
+        if (int.TryParse(filterText.AsSpan(0, filterText.Length - 1), out age))
         {
           maximumAge = age;
         }

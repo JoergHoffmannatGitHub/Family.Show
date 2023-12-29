@@ -24,9 +24,9 @@ namespace Microsoft.FamilyShow
 
     Gender genderFilter = Gender.Male;
 
-    Boolean ResetFilter = false;     //When true, enables quick filter reset
-    Boolean ExistingFilter = false;  //When true, enables automatic filtering on gender and relatives
-    Boolean ignoreGender = false;    //When true, enables filtering on gender
+    bool ResetFilter = false;     //When true, enables quick filter reset
+    bool ExistingFilter = false;  //When true, enables automatic filtering on gender and relatives
+    bool ignoreGender = false;    //When true, enables filtering on gender
 
     private StreamWriter tw;
 
@@ -2087,7 +2087,7 @@ namespace Microsoft.FamilyShow
       Person p = (Person)ParentsCombobox.SelectedItem;
       Person c = family.Current;
 
-      bool needsUpdate = new Boolean();
+      bool needsUpdate = new bool();
 
       foreach (Relationship rel in c.Relationships)
       {
@@ -2743,8 +2743,8 @@ namespace Microsoft.FamilyShow
       ResetFilter = true;      //allow quick filter reset
 
       ExistingFamilyMemberComboBox.SelectedIndex = -1;  //set Existing Family Member Combo Box to -1 so it updates when the Existing people panel loads
-      FilterTextBox.Text = String.Empty;              //reset all filter textboxes 
-      ExistingFilterTextBox.Text = String.Empty;
+      FilterTextBox.Text = string.Empty;              //reset all filter textboxes 
+      ExistingFilterTextBox.Text = string.Empty;
       UpdateExistingFilter();                         //quick filter update
       ResetFilter = false;
 

@@ -25,7 +25,7 @@ namespace Microsoft.FamilyShow
     public Sources()
     {
       InitializeComponent();
-      SourceRepository.Content = String.Empty;  //remove the place holder text on load
+      SourceRepository.Content = string.Empty;  //remove the place holder text on load
     }
 
     #region routed events

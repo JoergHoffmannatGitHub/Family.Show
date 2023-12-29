@@ -380,7 +380,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public string BottomLabel
     {
-      get { return (String)GetValue(BottomLabelProperty); }
+      get { return (string)GetValue(BottomLabelProperty); }
       set { SetValue(BottomLabelProperty, value); }
     }
 

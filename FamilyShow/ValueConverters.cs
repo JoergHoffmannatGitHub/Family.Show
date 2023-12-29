@@ -306,7 +306,7 @@ namespace Microsoft.FamilyShow
   /// <summary>
   /// Converts an enum value to a localized string.
   /// </summary>  
-  [ValueConversion(typeof(Enum), typeof(String))]
+  [ValueConversion(typeof(Enum), typeof(string))]
   public class EnumValueDescriptionConverter : IValueConverter
   {
     #region IValueConverter Members

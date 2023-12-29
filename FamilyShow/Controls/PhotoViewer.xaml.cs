@@ -63,7 +63,7 @@ namespace Microsoft.FamilyShow
       if (photosListBox.SelectedIndex != -1)
       {
         // Get the path to the selected photo
-        String path = photosListBox.SelectedItem.ToString();
+        string path = photosListBox.SelectedItem.ToString();
 
         // Make sure that the file exists
         FileInfo fi = new FileInfo(path);
@@ -121,7 +121,7 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Set the display photo
     /// </summary>
-    private void SetDisplayPhoto(String path)
+    private void SetDisplayPhoto(string path)
     {
       //This code must be used to create the bitmap
       //otherwise the program locks the image.

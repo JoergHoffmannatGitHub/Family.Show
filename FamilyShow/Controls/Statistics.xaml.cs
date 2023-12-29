@@ -667,7 +667,7 @@ namespace Microsoft.FamilyShow
 
     }
 
-    private void PrintButton_Click(Object sender, EventArgs e)
+    private void PrintButton_Click(object sender, EventArgs e)
     {
       PrintDialog dlg = new PrintDialog();
 

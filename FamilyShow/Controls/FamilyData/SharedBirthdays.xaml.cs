@@ -20,13 +20,13 @@ namespace Microsoft.FamilyShow
     #region dependency properties
 
     public static readonly DependencyProperty PeopleCollectionProperty =
-        DependencyProperty.Register("PeopleCollection", typeof(Object), typeof(SharedBirthdays),
+        DependencyProperty.Register("PeopleCollection", typeof(object), typeof(SharedBirthdays),
             new FrameworkPropertyMetadata(new PropertyChangedCallback(PeopleCollectionProperty_Changed)));
 
     /// <summary>
     /// The Collection that will be used to build the Tag Cloud
     /// </summary>
-    public Object PeopleCollection
+    public object PeopleCollection
     {
       get { return GetValue(PeopleCollectionProperty); }
       set { SetValue(PeopleCollectionProperty, value); }
@@ -144,7 +144,7 @@ namespace Microsoft.FamilyShow
         else
         {
           // The days are the same so check the first name
-          return (String.Compare(p1.FirstName, p2.FirstName, true, CultureInfo.CurrentCulture));
+          return (string.Compare(p1.FirstName, p2.FirstName, true, CultureInfo.CurrentCulture));
         }
       }
     }
