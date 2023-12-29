@@ -461,19 +461,19 @@ namespace Microsoft.FamilyShowLib
             string searchOperator = string.Empty;
             string searchtext1 = searchtext;
             //allow for operators = > < and combinations
-            if (searchtext.StartsWith(">"))
+            if (searchtext.StartsWith('>'))
             {
               searchOperator = ">";
               searchtext1 = searchtext.Replace(">", "");
             }
 
-            else if (searchtext.StartsWith("<"))
+            else if (searchtext.StartsWith('<'))
             {
               searchOperator = "<";
               searchtext1 = searchtext.Replace("<", "");
             }
 
-            else if (searchtext.StartsWith("="))
+            else if (searchtext.StartsWith('='))
             {
               searchOperator = "=";
               searchtext1 = searchtext.Replace("=", "");
@@ -1007,13 +1007,13 @@ namespace Microsoft.FamilyShowLib
       {
         startYear = startYear - 1;
       }
-      while (!startYear.ToString().EndsWith("0"));
+      while (!startYear.ToString().EndsWith('0'));
 
       do
       {
         endYear = endYear + 1;
       }
-      while (!endYear.ToString().EndsWith("0"));
+      while (!endYear.ToString().EndsWith('0'));
 
       for (int i = startYear; i <= endYear; i = i + 10)
       {

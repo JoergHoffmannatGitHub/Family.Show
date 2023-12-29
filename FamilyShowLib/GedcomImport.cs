@@ -943,7 +943,7 @@ namespace Microsoft.FamilyShowLib
       string value = GetValue(node, path);  //note or often id of note
 
       //if the note node is an id then find the note and import it.
-      if (value.StartsWith("@") && value.EndsWith("@"))
+      if (value.StartsWith('@') && value.EndsWith('@'))
       {
 
         //get a list of all notes stating 0 NOTE
@@ -970,12 +970,12 @@ namespace Microsoft.FamilyShowLib
 
       do
       {
-        if (value.StartsWith("@"))
+        if (value.StartsWith('@'))
         {
           value = value.Remove(0, 1);
         }
       }
-      while (value.StartsWith("@"));
+      while (value.StartsWith('@'));
 
       if (value.Contains("  "))
       {

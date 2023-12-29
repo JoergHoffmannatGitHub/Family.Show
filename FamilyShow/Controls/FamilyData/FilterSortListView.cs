@@ -450,7 +450,7 @@ namespace Microsoft.FamilyShow
       }
 
       // Ending age.
-      if (filterText.EndsWith("+"))
+      if (filterText.EndsWith('+'))
       {
         if (Int32.TryParse(filterText.AsSpan(0, filterText.Length - 1), out age))
         {

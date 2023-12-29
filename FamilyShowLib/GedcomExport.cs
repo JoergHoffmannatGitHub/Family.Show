@@ -792,13 +792,13 @@ namespace Microsoft.FamilyShowLib
       value = value.Trim();
 
       // Remove leading carriage returns (these break the level structure)
-      if (value.StartsWith("\n") || value.StartsWith("\r"))
+      if (value.StartsWith('\n') || value.StartsWith('\r'))
       {
         do
         {
           value = value.Remove(0, 2);
         }
-        while (value.StartsWith("\n") || value.StartsWith("\r"));
+        while (value.StartsWith('\n') || value.StartsWith('\r'));
       }
 
       // The entire line length cannot exceed 255 characters using
