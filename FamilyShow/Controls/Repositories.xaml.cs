@@ -13,9 +13,9 @@ namespace Microsoft.FamilyShow
 
     #region fields
 
-    People familyCollection = App.FamilyCollection;
-    SourceCollection source = App.Sources;
-    RepositoryCollection repository = App.Repositories;
+    readonly People familyCollection = App.FamilyCollection;
+    readonly SourceCollection source = App.Sources;
+    readonly RepositoryCollection repository = App.Repositories;
 
     #endregion
 

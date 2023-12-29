@@ -22,8 +22,8 @@ namespace Microsoft.FamilyShow
     #region fields
 
     // Node location in the diagram.
-    private DiagramRow row;
-    private DiagramGroup group;
+    private readonly DiagramRow row;
+    private readonly DiagramGroup group;
     public bool displayDates = true;
 
     #endregion
@@ -362,12 +362,12 @@ namespace Microsoft.FamilyShow
     #region fields
 
     // Connector line text.
-    private double connectionTextSize;
+    private readonly double connectionTextSize;
     private Color connectionTextColor;
-    private FontFamily connectionTextFont;
+    private readonly FontFamily connectionTextFont;
 
     // Flag if currently married or former.
-    private bool married;
+    private readonly bool married;
 
     // The Pixels Per Density Independent Pixel value.
     private readonly double pixelsPerDip;

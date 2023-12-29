@@ -37,7 +37,7 @@ namespace Microsoft.FamilyShowLib
     private StreamWriter writer;
 
     // Maps GUID IDs (which are too long for GEDCOM) to smaller IDs.
-    private GedcomIdMap idMap = new GedcomIdMap();
+    private readonly GedcomIdMap idMap = new GedcomIdMap();
 
     // The people collection that is being exported.
     private PeopleCollection people;
@@ -873,7 +873,7 @@ namespace Microsoft.FamilyShowLib
     #region fields
 
     // Quick lookup that maps a GUID to a GEDCOM ID.
-    private Dictionary<string, string> map = [];
+    private readonly Dictionary<string, string> map = [];
 
     // The next ID to assign.
     private int nextId;

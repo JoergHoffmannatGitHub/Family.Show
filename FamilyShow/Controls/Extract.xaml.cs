@@ -14,8 +14,8 @@ namespace Microsoft.FamilyShow
 
     #region fields
 
-    PeopleCollection family = App.Family;
-    People familyCollection = App.FamilyCollection;
+    readonly PeopleCollection family = App.Family;
+    readonly People familyCollection = App.FamilyCollection;
 
     #endregion
 

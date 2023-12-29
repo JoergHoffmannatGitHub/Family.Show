@@ -14,7 +14,7 @@ namespace Microsoft.FamilyShow
     #region fields
 
     // The list of people, this is a global list shared by the application.
-    PeopleCollection family = App.Family;
+    readonly PeopleCollection family = App.Family;
 
     #endregion
 

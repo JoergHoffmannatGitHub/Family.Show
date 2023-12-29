@@ -19,8 +19,8 @@ namespace Microsoft.FamilyShow
   {
     #region fields
 
-    PeopleCollection family = App.Family;
-    SourceCollection sources = App.Sources;
+    readonly PeopleCollection family = App.Family;
+    readonly SourceCollection sources = App.Sources;
 
     Gender genderFilter = Gender.Male;
 

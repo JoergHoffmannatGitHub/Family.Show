@@ -85,10 +85,10 @@ namespace Microsoft.FamilyShowLib
     private string burialCitationActualText;
 
     private string note;
-    private PhotoCollection photos;
-    private AttachmentCollection attachments;
+    private readonly PhotoCollection photos;
+    private readonly AttachmentCollection attachments;
     private Story story;
-    private RelationshipCollection relationships;
+    private readonly RelationshipCollection relationships;
 
     #endregion
 

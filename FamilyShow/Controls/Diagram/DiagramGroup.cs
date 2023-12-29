@@ -25,7 +25,7 @@ namespace Microsoft.FamilyShow
     private Point location = new Point();
 
     // List of nodes in the group.
-    private List<DiagramNode> nodes = [];
+    private readonly List<DiagramNode> nodes = [];
 
     #endregion
 

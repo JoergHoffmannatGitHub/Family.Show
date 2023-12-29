@@ -60,10 +60,10 @@ namespace Microsoft.FamilyShow
     }
 
     // List of rows in the diagram. Each row contains groups, and each group contains nodes.
-    private List<DiagramRow> rows = [];
+    private readonly List<DiagramRow> rows = [];
 
     // Populates the rows with nodes.
-    private DiagramLogic logic;
+    private readonly DiagramLogic logic;
 
     // Size of the diagram. Used to layout all of the nodes before the
     // control gets an actual size.
@@ -85,7 +85,7 @@ namespace Microsoft.FamilyShow
     private Person newPerson;
 
     // Timer used with the repopulating animation.
-    private DispatcherTimer animationTimer = new DispatcherTimer();
+    private readonly DispatcherTimer animationTimer = new DispatcherTimer();
 
     // Flag if the row and group borders should be drawn.
     public static bool displayBorder = Properties.Settings.Default.ShowOutline;

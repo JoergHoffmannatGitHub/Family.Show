@@ -20,13 +20,13 @@ namespace Microsoft.FamilyShow
     #region fields
 
     // The list of people, sources and repositories. This is a global list shared by the application.
-    People familyCollection = App.FamilyCollection;
-    PeopleCollection family = App.Family;
-    SourceCollection source = App.Sources;
-    RepositoryCollection repository = App.Repositories;
+    readonly People familyCollection = App.FamilyCollection;
+    readonly PeopleCollection family = App.Family;
+    readonly SourceCollection source = App.Sources;
+    readonly RepositoryCollection repository = App.Repositories;
 
     bool hideDiagramControls = false;
-    private Properties.Settings appSettings = Properties.Settings.Default;
+    private readonly Properties.Settings appSettings = Properties.Settings.Default;
 
     #endregion
 

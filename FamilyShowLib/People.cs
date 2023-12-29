@@ -85,7 +85,7 @@ namespace Microsoft.FamilyShowLib
       public const string DataFileName = "default.familyx";
     }
 
-    private string OPCContentFileName = "content.xml";
+    private readonly string OPCContentFileName = "content.xml";
 
     #endregion
 
