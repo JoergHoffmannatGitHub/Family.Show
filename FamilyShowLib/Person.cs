@@ -17,78 +17,78 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
 {
   #region Fields and Constants
 
-  private string id;
-  private Gender gender;
-  private bool isLiving;
+  private string _id;
+  private Gender _gender;
+  private bool _isLiving;
 
-  private Restriction restriction;
+  private Restriction _restriction;
 
-  private string firstName;
-  private string lastName;
-  private string suffix;
+  private string _firstName;
+  private string _lastName;
+  private string _suffix;
 
-  private string occupation;
-  private string occupationCitation;
-  private string occupationSource;
-  private string occupationLink;
-  private string occupationCitationNote;
-  private string occupationCitationActualText;
+  private string _occupation;
+  private string _occupationCitation;
+  private string _occupationSource;
+  private string _occupationLink;
+  private string _occupationCitationNote;
+  private string _occupationCitationActualText;
 
-  private string education;
-  private string educationCitation;
-  private string educationSource;
-  private string educationLink;
-  private string educationCitationNote;
-  private string educationCitationActualText;
+  private string _education;
+  private string _educationCitation;
+  private string _educationSource;
+  private string _educationLink;
+  private string _educationCitationNote;
+  private string _educationCitationActualText;
 
-  private string religion;
-  private string religionCitation;
-  private string religionSource;
-  private string religionLink;
-  private string religionCitationNote;
-  private string religionCitationActualText;
+  private string _religion;
+  private string _religionCitation;
+  private string _religionSource;
+  private string _religionLink;
+  private string _religionCitationNote;
+  private string _religionCitationActualText;
 
-  private DateTime? birthDate;
-  private string birthDateDescriptor;
-  private string birthPlace;
-  private string birthCitation;
-  private string birthSource;
-  private string birthLink;
-  private string birthCitationNote;
-  private string birthCitationActualText;
+  private DateTime? _birthDate;
+  private string _birthDateDescriptor;
+  private string _birthPlace;
+  private string _birthCitation;
+  private string _birthSource;
+  private string _birthLink;
+  private string _birthCitationNote;
+  private string _birthCitationActualText;
 
-  private DateTime? deathDate;
-  private string deathDateDescriptor;
-  private string deathPlace;
-  private string deathCitation;
-  private string deathSource;
-  private string deathLink;
-  private string deathCitationNote;
-  private string deathCitationActualText;
+  private DateTime? _deathDate;
+  private string _deathDateDescriptor;
+  private string _deathPlace;
+  private string _deathCitation;
+  private string _deathSource;
+  private string _deathLink;
+  private string _deathCitationNote;
+  private string _deathCitationActualText;
 
-  private string cremationPlace;
-  private DateTime? cremationDate;
-  private string cremationDateDescriptor;
-  private string cremationCitation;
-  private string cremationSource;
-  private string cremationLink;
-  private string cremationCitationNote;
-  private string cremationCitationActualText;
+  private string _cremationPlace;
+  private DateTime? _cremationDate;
+  private string _cremationDateDescriptor;
+  private string _cremationCitation;
+  private string _cremationSource;
+  private string _cremationLink;
+  private string _cremationCitationNote;
+  private string _cremationCitationActualText;
 
-  private string burialPlace;
-  private DateTime? burialDate;
-  private string burialDateDescriptor;
-  private string burialCitation;
-  private string burialSource;
-  private string burialLink;
-  private string burialCitationNote;
-  private string burialCitationActualText;
+  private string _burialPlace;
+  private DateTime? _burialDate;
+  private string _burialDateDescriptor;
+  private string _burialCitation;
+  private string _burialSource;
+  private string _burialLink;
+  private string _burialCitationNote;
+  private string _burialCitationActualText;
 
-  private string note;
-  private readonly PhotoCollection photos;
-  private readonly AttachmentCollection attachments;
-  private Story story;
-  private readonly RelationshipCollection relationships;
+  private string _note;
+  private readonly PhotoCollection _photos;
+  private readonly AttachmentCollection _attachments;
+  private Story _story;
+  private readonly RelationshipCollection _relationships;
 
   #endregion
 
@@ -100,12 +100,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   [XmlAttribute]
   public string Id
   {
-    get { return id; }
+    get { return _id; }
     set
     {
-      if (id != value)
+      if (_id != value)
       {
-        id = value;
+        _id = value;
         OnPropertyChanged(nameof(Id));
       }
     }
@@ -116,12 +116,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public Gender Gender
   {
-    get { return gender; }
+    get { return _gender; }
     set
     {
-      if (gender != value)
+      if (_gender != value)
       {
-        gender = value;
+        _gender = value;
         OnPropertyChanged(nameof(Gender));
       }
     }
@@ -132,12 +132,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public Restriction Restriction
   {
-    get { return restriction; }
+    get { return _restriction; }
     set
     {
-      if (restriction != value)
+      if (_restriction != value)
       {
-        restriction = value;
+        _restriction = value;
         OnPropertyChanged(nameof(Restriction));
         OnPropertyChanged(nameof(HasRestriction));
         OnPropertyChanged(nameof(IsLocked));
@@ -156,12 +156,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string FirstName
   {
-    get { return firstName; }
+    get { return _firstName; }
     set
     {
-      if (firstName != value)
+      if (_firstName != value)
       {
-        firstName = value;
+        _firstName = value;
         OnPropertyChanged(nameof(FirstName));
         OnPropertyChanged(nameof(Name));
         OnPropertyChanged(nameof(FullName));
@@ -180,7 +180,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     {
       if (!string.IsNullOrEmpty(value))
       {
-        firstName += " " + value;
+        _firstName += " " + value;
         OnPropertyChanged(nameof(FirstName));
         OnPropertyChanged(nameof(Name));
         OnPropertyChanged(nameof(FullName));
@@ -194,12 +194,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string LastName
   {
-    get { return lastName; }
+    get { return _lastName; }
     set
     {
-      if (lastName != value)
+      if (_lastName != value)
       {
-        lastName = value;
+        _lastName = value;
         OnPropertyChanged(nameof(LastName));
         OnPropertyChanged(nameof(Name));
         OnPropertyChanged(nameof(FullName));
@@ -217,12 +217,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
       string name = "";
       if (!string.IsNullOrEmpty(FirstName))
       {
-        name += firstName;
+        name += _firstName;
       }
 
       if (!string.IsNullOrEmpty(LastName))
       {
-        name += " " + lastName;
+        name += " " + _lastName;
       }
 
       return name;
@@ -239,17 +239,17 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
       string fullName = "";
       if (!string.IsNullOrEmpty(FirstName))
       {
-        fullName += firstName;
+        fullName += _firstName;
       }
 
       if (!string.IsNullOrEmpty(LastName))
       {
-        fullName += " " + lastName;
+        fullName += " " + _lastName;
       }
 
-      if (!string.IsNullOrEmpty(suffix))
+      if (!string.IsNullOrEmpty(_suffix))
       {
-        fullName += " " + suffix;
+        fullName += " " + _suffix;
       }
 
       return fullName;
@@ -262,12 +262,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
 
   public string Suffix
   {
-    get { return suffix; }
+    get { return _suffix; }
     set
     {
-      if (suffix != value)
+      if (_suffix != value)
       {
-        suffix = value;
+        _suffix = value;
         OnPropertyChanged(nameof(Suffix));
         OnPropertyChanged(nameof(FullName));
       }
@@ -292,7 +292,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
       }
 
       //Do not show  age  of dead person if no death date is entered.
-      if (!isLiving && DeathDate == null)
+      if (!_isLiving && DeathDate == null)
       {
         return null;
       }
@@ -357,9 +357,9 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   {
     get
     {
-      if (birthDate.HasValue)
+      if (_birthDate.HasValue)
       {
-        return birthDate.Value.Year.ToString(CultureInfo.CurrentCulture);
+        return _birthDate.Value.Year.ToString(CultureInfo.CurrentCulture);
       }
       else
       {
@@ -376,9 +376,9 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   {
     get
     {
-      if (deathDate.HasValue && !isLiving)
+      if (_deathDate.HasValue && !_isLiving)
       {
-        return deathDate.Value.Year.ToString(CultureInfo.CurrentCulture);
+        return _deathDate.Value.Year.ToString(CultureInfo.CurrentCulture);
       }
       else
       {
@@ -392,12 +392,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public bool IsLiving
   {
-    get { return isLiving; }
+    get { return _isLiving; }
     set
     {
-      if (isLiving != value)
+      if (_isLiving != value)
       {
-        isLiving = value;
+        _isLiving = value;
         OnPropertyChanged(nameof(IsLiving));
         OnPropertyChanged(nameof(Age));
         OnPropertyChanged(nameof(IsLockedIsLiving));
@@ -416,12 +416,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
 
   public DateTime? BirthDate
   {
-    get { return birthDate; }
+    get { return _birthDate; }
     set
     {
-      if (birthDate == null || birthDate != value)
+      if (_birthDate == null || _birthDate != value)
       {
-        birthDate = value;
+        _birthDate = value;
         OnPropertyChanged(nameof(BirthDate));
         OnPropertyChanged(nameof(Age));
         OnPropertyChanged(nameof(AgeGroup));
@@ -437,12 +437,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string BirthDateDescriptor
   {
-    get { return birthDateDescriptor; }
+    get { return _birthDateDescriptor; }
     set
     {
-      if (birthDateDescriptor == null || birthDateDescriptor != value)
+      if (_birthDateDescriptor == null || _birthDateDescriptor != value)
       {
-        birthDateDescriptor = value;
+        _birthDateDescriptor = value;
         OnPropertyChanged(nameof(BirthDateDescriptor));
       }
     }
@@ -453,12 +453,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string BirthPlace
   {
-    get { return birthPlace; }
+    get { return _birthPlace; }
     set
     {
-      if (birthPlace != value)
+      if (_birthPlace != value)
       {
-        birthPlace = value;
+        _birthPlace = value;
         OnPropertyChanged(nameof(BirthPlace));
         OnPropertyChanged(nameof(BirthDateAndPlace));
         OnPropertyChanged(nameof(HasBirthPlace));
@@ -471,12 +471,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string BirthCitation
   {
-    get { return birthCitation; }
+    get { return _birthCitation; }
     set
     {
-      if (birthCitation != value)
+      if (_birthCitation != value)
       {
-        birthCitation = value;
+        _birthCitation = value;
         OnPropertyChanged(nameof(BirthCitation));
         OnPropertyChanged(nameof(HasCitations));
       }
@@ -488,12 +488,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string BirthSource
   {
-    get { return birthSource; }
+    get { return _birthSource; }
     set
     {
-      if (birthSource != value)
+      if (_birthSource != value)
       {
-        birthSource = value;
+        _birthSource = value;
         OnPropertyChanged(nameof(BirthSource));
         OnPropertyChanged(nameof(HasCitations));
       }
@@ -505,12 +505,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string BirthLink
   {
-    get { return birthLink; }
+    get { return _birthLink; }
     set
     {
-      if (birthLink != value)
+      if (_birthLink != value)
       {
-        birthLink = value;
+        _birthLink = value;
         OnPropertyChanged(nameof(BirthLink));
       }
     }
@@ -521,12 +521,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string BirthCitationNote
   {
-    get { return birthCitationNote; }
+    get { return _birthCitationNote; }
     set
     {
-      if (birthCitationNote != value)
+      if (_birthCitationNote != value)
       {
-        birthCitationNote = value;
+        _birthCitationNote = value;
         OnPropertyChanged(nameof(BirthCitationNote));
       }
     }
@@ -537,12 +537,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string BirthCitationActualText
   {
-    get { return birthCitationActualText; }
+    get { return _birthCitationActualText; }
     set
     {
-      if (birthCitationActualText != value)
+      if (_birthCitationActualText != value)
       {
-        birthCitationActualText = value;
+        _birthCitationActualText = value;
         OnPropertyChanged(nameof(BirthCitationActualText));
       }
     }
@@ -556,13 +556,13 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   {
     get
     {
-      if (birthDate == null)
+      if (_birthDate == null)
       {
         return null;
       }
       else
       {
-        return birthDate.Value.ToString(
+        return _birthDate.Value.ToString(
             DateTimeFormatInfo.CurrentInfo.MonthDayPattern,
             CultureInfo.CurrentCulture);
       }
@@ -577,7 +577,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   {
     get
     {
-      if (birthDate == null)
+      if (_birthDate == null)
       {
         return null;
       }
@@ -586,14 +586,14 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
         StringBuilder returnValue = new();
         returnValue.Append("Born ");
         returnValue.Append(
-            birthDate.Value.ToString(
+            _birthDate.Value.ToString(
                 DateTimeFormatInfo.CurrentInfo.ShortDatePattern,
                 CultureInfo.CurrentCulture));
 
-        if (!string.IsNullOrEmpty(birthPlace))
+        if (!string.IsNullOrEmpty(_birthPlace))
         {
           returnValue.Append(", ");
-          returnValue.Append(birthPlace);
+          returnValue.Append(_birthPlace);
         }
 
         return returnValue.ToString();
@@ -610,12 +610,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public DateTime? DeathDate
   {
-    get { return deathDate; }
+    get { return _deathDate; }
     set
     {
-      if (deathDate != value)
+      if (_deathDate != value)
       {
-        deathDate = value;
+        _deathDate = value;
         OnPropertyChanged(nameof(DeathDate));
         OnPropertyChanged(nameof(Age));
         OnPropertyChanged(nameof(YearOfDeath));
@@ -628,12 +628,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string DeathDateDescriptor
   {
-    get { return deathDateDescriptor; }
+    get { return _deathDateDescriptor; }
     set
     {
-      if (deathDateDescriptor == null || deathDateDescriptor != value)
+      if (_deathDateDescriptor == null || _deathDateDescriptor != value)
       {
-        deathDateDescriptor = value;
+        _deathDateDescriptor = value;
         OnPropertyChanged(nameof(DeathDateDescriptor));
       }
     }
@@ -644,12 +644,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string DeathPlace
   {
-    get { return deathPlace; }
+    get { return _deathPlace; }
     set
     {
-      if (deathPlace != value)
+      if (_deathPlace != value)
       {
-        deathPlace = value;
+        _deathPlace = value;
         OnPropertyChanged(nameof(DeathPlace));
         OnPropertyChanged(nameof(HasDeathPlace));
       }
@@ -661,12 +661,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string DeathCitation
   {
-    get { return deathCitation; }
+    get { return _deathCitation; }
     set
     {
-      if (deathCitation != value)
+      if (_deathCitation != value)
       {
-        deathCitation = value;
+        _deathCitation = value;
         OnPropertyChanged(nameof(DeathCitation));
         OnPropertyChanged(nameof(HasCitations));
       }
@@ -678,12 +678,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string DeathSource
   {
-    get { return deathSource; }
+    get { return _deathSource; }
     set
     {
-      if (deathSource != value)
+      if (_deathSource != value)
       {
-        deathSource = value;
+        _deathSource = value;
         OnPropertyChanged(nameof(DeathSource));
       }
     }
@@ -694,12 +694,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string DeathLink
   {
-    get { return deathLink; }
+    get { return _deathLink; }
     set
     {
-      if (deathLink != value)
+      if (_deathLink != value)
       {
-        deathLink = value;
+        _deathLink = value;
         OnPropertyChanged(nameof(DeathLink));
       }
     }
@@ -710,12 +710,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string DeathCitationNote
   {
-    get { return deathCitationNote; }
+    get { return _deathCitationNote; }
     set
     {
-      if (deathCitationNote != value)
+      if (_deathCitationNote != value)
       {
-        deathCitationNote = value;
+        _deathCitationNote = value;
         OnPropertyChanged(nameof(DeathCitationNote));
       }
     }
@@ -726,12 +726,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string DeathCitationActualText
   {
-    get { return deathCitationActualText; }
+    get { return _deathCitationActualText; }
     set
     {
-      if (deathCitationActualText != value)
+      if (_deathCitationActualText != value)
       {
-        deathCitationActualText = value;
+        _deathCitationActualText = value;
         OnPropertyChanged(nameof(DeathCitationActualText));
       }
     }
@@ -746,12 +746,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string CremationPlace
   {
-    get { return cremationPlace; }
+    get { return _cremationPlace; }
     set
     {
-      if (cremationPlace != value)
+      if (_cremationPlace != value)
       {
-        cremationPlace = value;
+        _cremationPlace = value;
         OnPropertyChanged(nameof(CremationPlace));
         OnPropertyChanged(nameof(HasCremationPlace));
       }
@@ -763,12 +763,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public DateTime? CremationDate
   {
-    get { return cremationDate; }
+    get { return _cremationDate; }
     set
     {
-      if (cremationDate == null || cremationDate != value)
+      if (_cremationDate == null || _cremationDate != value)
       {
-        cremationDate = value;
+        _cremationDate = value;
         OnPropertyChanged(nameof(CremationDate));
       }
     }
@@ -779,12 +779,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string CremationDateDescriptor
   {
-    get { return cremationDateDescriptor; }
+    get { return _cremationDateDescriptor; }
     set
     {
-      if (cremationDateDescriptor == null || cremationDateDescriptor != value)
+      if (_cremationDateDescriptor == null || _cremationDateDescriptor != value)
       {
-        cremationDateDescriptor = value;
+        _cremationDateDescriptor = value;
         OnPropertyChanged(nameof(CremationDateDescriptor));
       }
     }
@@ -795,12 +795,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string CremationCitation
   {
-    get { return cremationCitation; }
+    get { return _cremationCitation; }
     set
     {
-      if (cremationCitation != value)
+      if (_cremationCitation != value)
       {
-        cremationCitation = value;
+        _cremationCitation = value;
         OnPropertyChanged(nameof(CremationCitation));
         OnPropertyChanged(nameof(HasCitations));
       }
@@ -812,12 +812,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string CremationSource
   {
-    get { return cremationSource; }
+    get { return _cremationSource; }
     set
     {
-      if (cremationSource != value)
+      if (_cremationSource != value)
       {
-        cremationSource = value;
+        _cremationSource = value;
         OnPropertyChanged(nameof(CremationSource));
         OnPropertyChanged(nameof(HasCitations));
       }
@@ -829,12 +829,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string CremationLink
   {
-    get { return cremationLink; }
+    get { return _cremationLink; }
     set
     {
-      if (cremationLink != value)
+      if (_cremationLink != value)
       {
-        cremationLink = value;
+        _cremationLink = value;
         OnPropertyChanged(nameof(CremationLink));
       }
     }
@@ -845,12 +845,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string CremationCitationNote
   {
-    get { return cremationCitationNote; }
+    get { return _cremationCitationNote; }
     set
     {
-      if (cremationCitationNote != value)
+      if (_cremationCitationNote != value)
       {
-        cremationCitationNote = value;
+        _cremationCitationNote = value;
         OnPropertyChanged(nameof(CremationCitationNote));
       }
     }
@@ -861,12 +861,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string CremationCitationActualText
   {
-    get { return cremationCitationActualText; }
+    get { return _cremationCitationActualText; }
     set
     {
-      if (cremationCitationActualText != value)
+      if (_cremationCitationActualText != value)
       {
-        cremationCitationActualText = value;
+        _cremationCitationActualText = value;
         OnPropertyChanged(nameof(CremationCitationActualText));
       }
     }
@@ -881,12 +881,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string BurialPlace
   {
-    get { return burialPlace; }
+    get { return _burialPlace; }
     set
     {
-      if (burialPlace != value)
+      if (_burialPlace != value)
       {
-        burialPlace = value;
+        _burialPlace = value;
         OnPropertyChanged(nameof(BurialPlace));
         OnPropertyChanged(nameof(HasBurialPlace));
       }
@@ -898,12 +898,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string BurialCitation
   {
-    get { return burialCitation; }
+    get { return _burialCitation; }
     set
     {
-      if (burialCitation != value)
+      if (_burialCitation != value)
       {
-        burialCitation = value;
+        _burialCitation = value;
         OnPropertyChanged(nameof(BurialCitation));
         OnPropertyChanged(nameof(HasCitations));
       }
@@ -915,12 +915,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string BurialSource
   {
-    get { return burialSource; }
+    get { return _burialSource; }
     set
     {
-      if (burialSource != value)
+      if (_burialSource != value)
       {
-        burialSource = value;
+        _burialSource = value;
         OnPropertyChanged(nameof(BurialSource));
         OnPropertyChanged(nameof(HasCitations));
       }
@@ -932,12 +932,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string BurialLink
   {
-    get { return burialLink; }
+    get { return _burialLink; }
     set
     {
-      if (burialLink != value)
+      if (_burialLink != value)
       {
-        burialLink = value;
+        _burialLink = value;
         OnPropertyChanged(nameof(BurialLink));
       }
     }
@@ -948,12 +948,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public DateTime? BurialDate
   {
-    get { return burialDate; }
+    get { return _burialDate; }
     set
     {
-      if (burialDate == null || burialDate != value)
+      if (_burialDate == null || _burialDate != value)
       {
-        burialDate = value;
+        _burialDate = value;
         OnPropertyChanged(nameof(BurialDate));
       }
     }
@@ -964,12 +964,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string BurialDateDescriptor
   {
-    get { return burialDateDescriptor; }
+    get { return _burialDateDescriptor; }
     set
     {
-      if (burialDateDescriptor == null || burialDateDescriptor != value)
+      if (_burialDateDescriptor == null || _burialDateDescriptor != value)
       {
-        burialDateDescriptor = value;
+        _burialDateDescriptor = value;
         OnPropertyChanged(nameof(BurialDateDescriptor));
       }
     }
@@ -980,12 +980,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string BurialCitationNote
   {
-    get { return burialCitationNote; }
+    get { return _burialCitationNote; }
     set
     {
-      if (burialCitationNote != value)
+      if (_burialCitationNote != value)
       {
-        burialCitationNote = value;
+        _burialCitationNote = value;
         OnPropertyChanged(nameof(BurialCitationNote));
       }
     }
@@ -996,12 +996,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string BurialCitationActualText
   {
-    get { return burialCitationActualText; }
+    get { return _burialCitationActualText; }
     set
     {
-      if (burialCitationActualText != value)
+      if (_burialCitationActualText != value)
       {
-        burialCitationActualText = value;
+        _burialCitationActualText = value;
         OnPropertyChanged(nameof(BurialCitationActualText));
       }
     }
@@ -1016,12 +1016,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string Occupation
   {
-    get { return occupation; }
+    get { return _occupation; }
     set
     {
-      if (occupation != value)
+      if (_occupation != value)
       {
-        occupation = value;
+        _occupation = value;
         OnPropertyChanged(nameof(Occupation));
       }
     }
@@ -1032,12 +1032,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string OccupationLink
   {
-    get { return occupationLink; }
+    get { return _occupationLink; }
     set
     {
-      if (occupationLink != value)
+      if (_occupationLink != value)
       {
-        occupationLink = value;
+        _occupationLink = value;
         OnPropertyChanged(nameof(OccupationLink));
       }
     }
@@ -1048,12 +1048,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string OccupationCitation
   {
-    get { return occupationCitation; }
+    get { return _occupationCitation; }
     set
     {
-      if (occupationCitation != value)
+      if (_occupationCitation != value)
       {
-        occupationCitation = value;
+        _occupationCitation = value;
         OnPropertyChanged(nameof(OccupationCitation));
         OnPropertyChanged(nameof(HasCitations));
       }
@@ -1065,12 +1065,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string OccupationSource
   {
-    get { return occupationSource; }
+    get { return _occupationSource; }
     set
     {
-      if (occupationSource != value)
+      if (_occupationSource != value)
       {
-        occupationSource = value;
+        _occupationSource = value;
         OnPropertyChanged(nameof(OccupationSource));
         OnPropertyChanged(nameof(HasCitations));
       }
@@ -1082,12 +1082,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string OccupationCitationNote
   {
-    get { return occupationCitationNote; }
+    get { return _occupationCitationNote; }
     set
     {
-      if (occupationCitationNote != value)
+      if (_occupationCitationNote != value)
       {
-        occupationCitationNote = value;
+        _occupationCitationNote = value;
         OnPropertyChanged(nameof(OccupationCitationNote));
       }
     }
@@ -1098,12 +1098,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string OccupationCitationActualText
   {
-    get { return occupationCitationActualText; }
+    get { return _occupationCitationActualText; }
     set
     {
-      if (occupationCitationActualText != value)
+      if (_occupationCitationActualText != value)
       {
-        occupationCitationActualText = value;
+        _occupationCitationActualText = value;
         OnPropertyChanged(nameof(OccupationCitationActualText));
       }
     }
@@ -1119,12 +1119,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string Education
   {
-    get { return education; }
+    get { return _education; }
     set
     {
-      if (education != value)
+      if (_education != value)
       {
-        education = value;
+        _education = value;
         OnPropertyChanged(nameof(Education));
       }
     }
@@ -1135,12 +1135,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string EducationCitation
   {
-    get { return educationCitation; }
+    get { return _educationCitation; }
     set
     {
-      if (educationCitation != value)
+      if (_educationCitation != value)
       {
-        educationCitation = value;
+        _educationCitation = value;
         OnPropertyChanged(nameof(EducationCitation));
         OnPropertyChanged(nameof(HasCitations));
       }
@@ -1152,12 +1152,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string EducationSource
   {
-    get { return educationSource; }
+    get { return _educationSource; }
     set
     {
-      if (educationSource != value)
+      if (_educationSource != value)
       {
-        educationSource = value;
+        _educationSource = value;
         OnPropertyChanged(nameof(EducationSource));
         OnPropertyChanged(nameof(HasCitations));
       }
@@ -1169,12 +1169,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string EducationLink
   {
-    get { return educationLink; }
+    get { return _educationLink; }
     set
     {
-      if (educationLink != value)
+      if (_educationLink != value)
       {
-        educationLink = value;
+        _educationLink = value;
         OnPropertyChanged(nameof(EducationLink));
       }
     }
@@ -1185,12 +1185,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string EducationCitationNote
   {
-    get { return educationCitationNote; }
+    get { return _educationCitationNote; }
     set
     {
-      if (educationCitationNote != value)
+      if (_educationCitationNote != value)
       {
-        educationCitationNote = value;
+        _educationCitationNote = value;
         OnPropertyChanged(nameof(EducationCitationNote));
       }
     }
@@ -1201,12 +1201,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string EducationCitationActualText
   {
-    get { return educationCitationActualText; }
+    get { return _educationCitationActualText; }
     set
     {
-      if (educationCitationActualText != value)
+      if (_educationCitationActualText != value)
       {
-        educationCitationActualText = value;
+        _educationCitationActualText = value;
         OnPropertyChanged(nameof(EducationCitationActualText));
       }
     }
@@ -1221,12 +1221,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string Religion
   {
-    get { return religion; }
+    get { return _religion; }
     set
     {
-      if (religion != value)
+      if (_religion != value)
       {
-        religion = value;
+        _religion = value;
         OnPropertyChanged(nameof(Religion));
       }
     }
@@ -1237,12 +1237,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string ReligionCitation
   {
-    get { return religionCitation; }
+    get { return _religionCitation; }
     set
     {
-      if (religionCitation != value)
+      if (_religionCitation != value)
       {
-        religionCitation = value;
+        _religionCitation = value;
         OnPropertyChanged(nameof(ReligionCitation));
         OnPropertyChanged(nameof(HasCitations));
       }
@@ -1254,12 +1254,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string ReligionLink
   {
-    get { return religionLink; }
+    get { return _religionLink; }
     set
     {
-      if (religionLink != value)
+      if (_religionLink != value)
       {
-        religionLink = value;
+        _religionLink = value;
         OnPropertyChanged(nameof(ReligionLink));
       }
     }
@@ -1270,12 +1270,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string ReligionSource
   {
-    get { return religionSource; }
+    get { return _religionSource; }
     set
     {
-      if (religionSource != value)
+      if (_religionSource != value)
       {
-        religionSource = value;
+        _religionSource = value;
         OnPropertyChanged(nameof(ReligionSource));
         OnPropertyChanged(nameof(HasCitations));
       }
@@ -1287,12 +1287,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string ReligionCitationNote
   {
-    get { return religionCitationNote; }
+    get { return _religionCitationNote; }
     set
     {
-      if (religionCitationNote != value)
+      if (_religionCitationNote != value)
       {
-        religionCitationNote = value;
+        _religionCitationNote = value;
         OnPropertyChanged(nameof(ReligionCitationNote));
       }
     }
@@ -1303,12 +1303,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string ReligionCitationActualText
   {
-    get { return religionCitationActualText; }
+    get { return _religionCitationActualText; }
     set
     {
-      if (religionCitationActualText != value)
+      if (_religionCitationActualText != value)
       {
-        religionCitationActualText = value;
+        _religionCitationActualText = value;
         OnPropertyChanged(nameof(ReligionCitationActualText));
       }
     }
@@ -1323,12 +1323,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public string Note
   {
-    get { return note; }
+    get { return _note; }
     set
     {
-      if (note != value)
+      if (_note != value)
       {
-        note = value;
+        _note = value;
         OnPropertyChanged(nameof(Note));
         OnPropertyChanged(nameof(HasNote));
       }
@@ -1340,12 +1340,12 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public Story Story
   {
-    get { return story; }
+    get { return _story; }
     set
     {
-      if (story != value)
+      if (_story != value)
       {
-        story = value;
+        _story = value;
         OnPropertyChanged(nameof(Story));
         OnPropertyChanged(nameof(HasNote));
       }
@@ -1360,7 +1360,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     get
     {
       OnPropertyChanged("HasPhotos");
-      return photos;
+      return _photos;
     }
   }
 
@@ -1373,7 +1373,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     {
       OnPropertyChanged(nameof(HasAttachments));
       OnPropertyChanged("AttachmentList");
-      return attachments;
+      return _attachments;
     }
   }
 
@@ -1387,9 +1387,9 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     {
       string avatar = "";
 
-      if (photos != null && photos.Count > 0)
+      if (_photos != null && _photos.Count > 0)
       {
-        foreach (Photo photo in photos)
+        foreach (Photo photo in _photos)
         {
           if (photo.IsAvatar)
           {
@@ -1417,13 +1417,13 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     get
     {
       // This person is locked so you cannot delete them
-      if (restriction == Restriction.Locked)
+      if (_restriction == Restriction.Locked)
       {
         return false;
       }
 
       // With a few exceptions, anyone with less than 3 relationships is deletable
-      if (relationships.Count < 3)
+      if (_relationships.Count < 3)
       {
         // The person has 2 spouses. Since they connect their spouses, they are not deletable.
         if (Spouses.Count == 2)
@@ -1473,7 +1473,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public RelationshipCollection Relationships
   {
-    get { return relationships; }
+    get { return _relationships; }
   }
 
   /// <summary>
@@ -1485,7 +1485,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     get
     {
       Collection<Person> spouses = [];
-      foreach (Relationship rel in relationships)
+      foreach (Relationship rel in _relationships)
       {
         if (rel.RelationshipType == RelationshipType.Spouse)
         {
@@ -1502,7 +1502,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     get
     {
       Collection<Person> spouses = [];
-      foreach (Relationship rel in relationships)
+      foreach (Relationship rel in _relationships)
       {
         if (rel.RelationshipType == RelationshipType.Spouse)
         {
@@ -1522,7 +1522,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     get
     {
       Collection<Person> spouses = [];
-      foreach (Relationship rel in relationships)
+      foreach (Relationship rel in _relationships)
       {
         if (rel.RelationshipType == RelationshipType.Spouse)
         {
@@ -1545,7 +1545,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     get
     {
       Collection<Person> children = [];
-      foreach (Relationship rel in relationships)
+      foreach (Relationship rel in _relationships)
       {
         if (rel.RelationshipType == RelationshipType.Child)
         {
@@ -1562,7 +1562,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     get
     {
       Collection<Person> children = [];
-      foreach (Relationship rel in relationships)
+      foreach (Relationship rel in _relationships)
       {
         if (rel.RelationshipType == RelationshipType.Child)
         {
@@ -1582,7 +1582,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     get
     {
       Collection<Person> children = [];
-      foreach (Relationship rel in relationships)
+      foreach (Relationship rel in _relationships)
       {
         if (rel.RelationshipType == RelationshipType.Child)
         {
@@ -1602,7 +1602,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     get
     {
       Collection<Person> children = [];
-      foreach (Relationship rel in relationships)
+      foreach (Relationship rel in _relationships)
       {
         if (rel.RelationshipType == RelationshipType.Child)
         {
@@ -1625,7 +1625,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     get
     {
       Collection<Person> parents = [];
-      foreach (Relationship rel in relationships)
+      foreach (Relationship rel in _relationships)
       {
 
         if (rel.RelationshipType == RelationshipType.Parent)
@@ -1650,7 +1650,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     get
     {
       Collection<Person> parents = [];
-      foreach (Relationship rel in relationships)
+      foreach (Relationship rel in _relationships)
       {
         if (rel.RelationshipType == RelationshipType.Parent)
         {
@@ -1670,7 +1670,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     get
     {
       Collection<Person> siblings = [];
-      foreach (Relationship rel in relationships)
+      foreach (Relationship rel in _relationships)
       {
         if (rel.RelationshipType == RelationshipType.Sibling)
         {
@@ -1799,7 +1799,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   {
     get
     {
-      return (restriction == Restriction.Locked || restriction == Restriction.Private);
+      return (_restriction == Restriction.Locked || _restriction == Restriction.Private);
     }
     set
     {
@@ -1815,7 +1815,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   [XmlIgnore]
   public bool IsLockedIsLiving
   {
-    get { return (restriction == Restriction.Locked || isLiving == true); }
+    get { return (_restriction == Restriction.Locked || _isLiving == true); }
     set
     {
       OnPropertyChanged(nameof(IsLockedIsLiving));
@@ -1829,7 +1829,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   [XmlIgnore]
   public bool IsLocked
   {
-    get { return (restriction == Restriction.Locked); }
+    get { return (_restriction == Restriction.Locked); }
     set
     {
       OnPropertyChanged(nameof(IsLocked));
@@ -1842,7 +1842,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   [XmlIgnore]
   public bool IsPrivate
   {
-    get { return (restriction == Restriction.Private); }
+    get { return (_restriction == Restriction.Private); }
     set
     {
       OnPropertyChanged(nameof(IsPrivate));
@@ -1893,9 +1893,9 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   {
     get
     {
-      if (photos != null && photos.Count > 0)
+      if (_photos != null && _photos.Count > 0)
       {
-        foreach (Photo photo in photos)
+        foreach (Photo photo in _photos)
         {
           if (photo.IsAvatar)
           {
@@ -1916,7 +1916,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   {
     get
     {
-      if (photos.Count > 0)
+      if (_photos.Count > 0)
       {
         return true;
       }
@@ -1935,7 +1935,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   {
     get
     {
-      if (birthPlace == null || birthPlace.Length == 0)
+      if (_birthPlace == null || _birthPlace.Length == 0)
       {
         return false;
       }
@@ -1954,7 +1954,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   {
     get
     {
-      if (deathPlace == null || deathPlace.Length == 0)
+      if (_deathPlace == null || _deathPlace.Length == 0)
       {
         return false;
       }
@@ -1973,7 +1973,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   {
     get
     {
-      if (cremationPlace == null || cremationPlace.Length == 0)
+      if (_cremationPlace == null || _cremationPlace.Length == 0)
       {
         return false;
       }
@@ -1992,7 +1992,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   {
     get
     {
-      if (burialPlace == null || burialPlace.Length == 0)
+      if (_burialPlace == null || _burialPlace.Length == 0)
       {
         return false;
       }
@@ -2011,13 +2011,13 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   {
     get
     {
-      if (((religionSource == null || religionSource.Length == 0) || (religionCitation == null || religionCitation.Length == 0)) &&
-           ((burialSource == null || burialSource.Length == 0) || (burialCitation == null || burialCitation.Length == 0)) &&
-           ((deathSource == null || deathSource.Length == 0) || (deathCitation == null || deathCitation.Length == 0)) &&
-           ((educationSource == null || educationSource.Length == 0) || (educationCitation == null || educationCitation.Length == 0)) &&
-           ((birthSource == null || birthSource.Length == 0) || (birthCitation == null || birthCitation.Length == 0)) &&
-           ((occupationSource == null || occupationSource.Length == 0) || (occupationCitation == null || occupationCitation.Length == 0)) &&
-           ((cremationSource == null || cremationSource.Length == 0) || (cremationCitation == null || cremationCitation.Length == 0)))
+      if (((_religionSource == null || _religionSource.Length == 0) || (_religionCitation == null || _religionCitation.Length == 0)) &&
+           ((_burialSource == null || _burialSource.Length == 0) || (_burialCitation == null || _burialCitation.Length == 0)) &&
+           ((_deathSource == null || _deathSource.Length == 0) || (_deathCitation == null || _deathCitation.Length == 0)) &&
+           ((_educationSource == null || _educationSource.Length == 0) || (_educationCitation == null || _educationCitation.Length == 0)) &&
+           ((_birthSource == null || _birthSource.Length == 0) || (_birthCitation == null || _birthCitation.Length == 0)) &&
+           ((_occupationSource == null || _occupationSource.Length == 0) || (_occupationCitation == null || _occupationCitation.Length == 0)) &&
+           ((_cremationSource == null || _cremationSource.Length == 0) || (_cremationCitation == null || _cremationCitation.Length == 0)))
       {
         return false;
       }
@@ -2036,7 +2036,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   {
     get
     {
-      if (note == null || note.ToString().Length == 0)
+      if (_note == null || _note.ToString().Length == 0)
       {
         return false;
       }
@@ -2056,7 +2056,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     get
     {
 
-      if (attachments.Count > 0)
+      if (_attachments.Count > 0)
       {
         return true;
       }
@@ -2079,7 +2079,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   {
     get
     {
-      if (gender == Gender.Male)
+      if (_gender == Gender.Male)
       {
         return Properties.Resources.Son;
       }
@@ -2100,7 +2100,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     {
       int i = 1;
       string parentsText = string.Empty;
-      foreach (Relationship rel in relationships)
+      foreach (Relationship rel in _relationships)
       {
 
         if (rel.RelationshipType == RelationshipType.Parent)
@@ -2141,7 +2141,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   {
     get
     {
-      if (gender == Gender.Male)
+      if (_gender == Gender.Male)
       {
         return Properties.Resources.Brother;
       }
@@ -2206,7 +2206,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   {
     get
     {
-      if (gender == Gender.Male)
+      if (_gender == Gender.Male)
       {
         return Properties.Resources.Husband;
       }
@@ -2271,7 +2271,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     get
     {
 
-      if (gender == Gender.Male)
+      if (_gender == Gender.Male)
       {
         return Properties.Resources.Father;
       }
@@ -2292,7 +2292,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     {
       int i = 1;
       string childrensText = string.Empty;
-      foreach (Relationship rel in relationships)
+      foreach (Relationship rel in _relationships)
       {
 
         if (rel.RelationshipType == RelationshipType.Child)
@@ -2340,13 +2340,13 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public Person()
   {
-    id = Guid.NewGuid().ToString();
-    relationships = [];
-    photos = [];
-    attachments = [];
-    firstName = Properties.Resources.Unknown;
-    isLiving = true;
-    restriction = Restriction.None;
+    _id = Guid.NewGuid().ToString();
+    _relationships = [];
+    _photos = [];
+    _attachments = [];
+    _firstName = Properties.Resources.Unknown;
+    _isLiving = true;
+    _restriction = Restriction.None;
   }
 
   /// <summary>
@@ -2358,10 +2358,10 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
     //Use the first name if specified, if not, the default first name is used.
     if (!string.IsNullOrEmpty(firstNames))
     {
-      firstName = firstNames;
+      _firstName = firstNames;
     }
 
-    this.lastName = lastName;
+    _lastName = lastName;
   }
 
   /// <summary>
@@ -2370,7 +2370,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   public Person(string firstName, string lastName, Gender gender)
       : this(firstName, lastName)
   {
-    this.gender = gender;
+    _gender = gender;
   }
 
   #endregion
@@ -2450,7 +2450,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public SpouseRelationship GetSpouseRelationship(Person spouse)
   {
-    foreach (Relationship relationship in relationships)
+    foreach (Relationship relationship in _relationships)
     {
       if (relationship is SpouseRelationship spouseRelationship)
       {
@@ -2466,7 +2466,7 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
 
   public ChildRelationship GetParentChildRelationship(Person child)
   {
-    foreach (Relationship relationship in relationships)
+    foreach (Relationship relationship in _relationships)
     {
       if (relationship is ChildRelationship childRelationship)
       {
@@ -2507,10 +2507,10 @@ public class Person : INotifyPropertyChanged, IEquatable<Person>, IDataErrorInfo
   /// </summary>
   public void DeleteStory()
   {
-    if (story != null)
+    if (_story != null)
     {
-      story.Delete();
-      story = null;
+      _story.Delete();
+      _story = null;
     }
   }
 

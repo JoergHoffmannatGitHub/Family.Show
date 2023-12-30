@@ -55,20 +55,20 @@ public partial class DiagramNode : Button
   #region fields
 
   // Person object associated with the node.
-  private Person person;
+  private Person _person;
 
   // Location of the node, relative to its parent group.
-  private Point location = new();
+  private Point _location;
 
   // The type of node.
-  private NodeType type = NodeType.Related;
+  private NodeType _type = NodeType.Related;
 
   // The current display year, this is used for the time filter.
-  private double displayYear = DateTime.Now.Year;
+  private double _displayYear = DateTime.Now.Year;
 
   // Flag, true if this node is currently filtered. This means
   // its still displayed but in a dim state.
-  private bool isFiltered;
+  private bool _isFiltered;
 
   #endregion
 
@@ -128,14 +128,14 @@ public partial class DiagramNode : Button
   /// </summary>
   public double DisplayYear
   {
-    get { return displayYear; }
+    get { return _displayYear; }
     set
     {
-      displayYear = value;
+      _displayYear = value;
 
       // Update the filtered state based on the birth date.
-      IsFiltered = (person != null && person.BirthDate != null &&
-          person.BirthDate.Value.Year > displayYear);
+      IsFiltered = (_person != null && _person.BirthDate != null &&
+          _person.BirthDate.Value.Year > _displayYear);
 
       // Recompuate the bottom label which contains the age,
       // the new age is relative to the new display year
@@ -149,24 +149,24 @@ public partial class DiagramNode : Button
   /// </summary>
   public bool IsFiltered
   {
-    get { return isFiltered; }
+    get { return _isFiltered; }
     set
     {
-      if (isFiltered != value)
+      if (_isFiltered != value)
       {
         // The filtered state changed, create a new animation.
-        isFiltered = value;
+        _isFiltered = value;
 
         if (Properties.Settings.Default.ShowFiltered)
         {
-          double newOpacity = isFiltered ? Const.OpacityFiltered : Const.OpacityNormal;
+          double newOpacity = _isFiltered ? Const.OpacityFiltered : Const.OpacityNormal;
           BeginAnimation(OpacityProperty,
           new DoubleAnimation(Opacity, newOpacity,
           App.GetAnimationDuration(Const.AnimationDuration)));
         }
         else
         {
-          if (isFiltered)
+          if (_isFiltered)
           {
             Visibility = Visibility.Collapsed;
           }
@@ -186,56 +186,56 @@ public partial class DiagramNode : Button
   {
     get
     {
-      if (person.Restriction == Restriction.Private)  //hide information on private records
+      if (_person.Restriction == Restriction.Private)  //hide information on private records
       {
         return string.Empty;
       }
 
       // Living, example: 1900 | 107
-      if (person.IsLiving)
+      if (_person.IsLiving)
       {
-        if (person.BirthDate == null)
+        if (_person.BirthDate == null)
         {
           return string.Empty;
         }
 
-        if (!person.Age.HasValue)
+        if (!_person.Age.HasValue)
         {
           return string.Empty;
         }
 
-        int age = person.Age.Value - (DateTime.Now.Year - (int)displayYear);
+        int age = _person.Age.Value - (DateTime.Now.Year - (int)_displayYear);
         return string.Format(CultureInfo.CurrentUICulture,
-            "{0}{1} | {2}", person.BirthDateDescriptor, person.BirthDate.Value.Year, Math.Max(0, age));
+            "{0}{1} | {2}", _person.BirthDateDescriptor, _person.BirthDate.Value.Year, Math.Max(0, age));
       }
 
       // Deceased, example: 1900 - 1950 | 50                    
-      if (person.BirthDate != null && person.DeathDate != null)
+      if (_person.BirthDate != null && _person.DeathDate != null)
       {
-        if (!person.Age.HasValue)
+        if (!_person.Age.HasValue)
         {
           return string.Empty;
         }
 
-        int age = (displayYear >= person.DeathDate.Value.Year) ?
-            person.Age.Value : person.Age.Value - (person.DeathDate.Value.Year - (int)displayYear);  //change the displayed age when the time slider is altered
+        int age = (_displayYear >= _person.DeathDate.Value.Year) ?
+            _person.Age.Value : _person.Age.Value - (_person.DeathDate.Value.Year - (int)_displayYear);  //change the displayed age when the time slider is altered
 
         return string.Format(CultureInfo.CurrentUICulture,
-            "{0}{1} - {2}{3} | {4}", person.BirthDateDescriptor, person.BirthDate.Value.Year, person.DeathDateDescriptor, person.DeathDate.Value.Year, Math.Max(0, age));
+            "{0}{1} - {2}{3} | {4}", _person.BirthDateDescriptor, _person.BirthDate.Value.Year, _person.DeathDateDescriptor, _person.DeathDate.Value.Year, Math.Max(0, age));
       }
 
       // Deceased, example: ? - 1950 | ?
-      if (person.BirthDate == null && person.DeathDate != null)
+      if (_person.BirthDate == null && _person.DeathDate != null)
       {
         return string.Format(CultureInfo.CurrentUICulture,
-            "? - {0}{1} | ?", person.DeathDateDescriptor, person.DeathDate.Value.Year);
+            "? - {0}{1} | ?", _person.DeathDateDescriptor, _person.DeathDate.Value.Year);
       }
 
       // Deceased, example: 1900 - ? | ?
-      if (person.BirthDate != null && person.DeathDate == null)
+      if (_person.BirthDate != null && _person.DeathDate == null)
       {
         return string.Format(CultureInfo.CurrentUICulture,
-            "{0}{1} - ? | ?", person.BirthDateDescriptor, person.BirthDate.Value.Year);
+            "{0}{1} - ? | ?", _person.BirthDateDescriptor, _person.BirthDate.Value.Year);
       }
 
       return string.Empty;
@@ -247,10 +247,10 @@ public partial class DiagramNode : Button
   /// </summary>
   public Person Person
   {
-    get { return person; }
+    get { return _person; }
     set
     {
-      person = value;
+      _person = value;
       DataContext = this;
 
       // Update the template to reflect the gender.
@@ -270,8 +270,8 @@ public partial class DiagramNode : Button
   /// </summary>
   public Point Location
   {
-    get { return location; }
-    set { location = value; }
+    get { return _location; }
+    set { _location = value; }
   }
 
   /// <summary>
@@ -282,8 +282,8 @@ public partial class DiagramNode : Button
     get
     {
       return new Point(
-          location.X + (DesiredSize.Width / 2),
-          location.Y + (DesiredSize.Height / 2));
+          _location.X + (DesiredSize.Width / 2),
+          _location.Y + (DesiredSize.Height / 2));
     }
   }
 
@@ -297,12 +297,12 @@ public partial class DiagramNode : Button
     get
     {
       // The real center of the node.
-      Point point = new(location.X + (DesiredSize.Width / 2), location.Y);
+      Point point = new(_location.X + (DesiredSize.Width / 2), _location.Y);
 
       // Shift the center to the left. This is an estimate since we don't 
       // know the exact position of the person drawing within the node.
       FrameworkElement personElement = Template.FindName("Person", this) as FrameworkElement;
-      double offset = (type == NodeType.Primary) ? 12 : 5;
+      double offset = (_type == NodeType.Primary) ? 12 : 5;
       point.X -= (personElement.ActualWidth / offset);
       return point;
     }
@@ -313,7 +313,7 @@ public partial class DiagramNode : Button
   /// </summary>
   public Point TopRight
   {
-    get { return new Point(location.X + DesiredSize.Width, location.Y); }
+    get { return new Point(_location.X + DesiredSize.Width, _location.Y); }
   }
 
   /// <summary>
@@ -321,7 +321,7 @@ public partial class DiagramNode : Button
   /// </summary>
   public Point TopLeft
   {
-    get { return new Point(location.X, location.Y); }
+    get { return new Point(_location.X, _location.Y); }
   }
 
   /// <summary>
@@ -331,8 +331,8 @@ public partial class DiagramNode : Button
   {
     get
     {
-      return new Point(location.X + (DesiredSize.Width / 2),
-        location.Y + DesiredSize.Height);
+      return new Point(_location.X + (DesiredSize.Width / 2),
+        _location.Y + DesiredSize.Height);
     }
   }
 
@@ -341,7 +341,7 @@ public partial class DiagramNode : Button
   /// </summary>
   public Point LeftCenter
   {
-    get { return new Point(location.X, location.Y + (DesiredSize.Height / 2)); }
+    get { return new Point(_location.X, _location.Y + (DesiredSize.Height / 2)); }
   }
 
   /// <summary>
@@ -349,7 +349,7 @@ public partial class DiagramNode : Button
   /// </summary>
   public Point RightCenter
   {
-    get { return new Point(location.X + DesiredSize.Width, location.Y + (DesiredSize.Height / 2)); }
+    get { return new Point(_location.X + DesiredSize.Width, _location.Y + (DesiredSize.Height / 2)); }
   }
 
   /// <summary>
@@ -357,10 +357,10 @@ public partial class DiagramNode : Button
   /// </summary>
   public NodeType Type
   {
-    get { return type; }
+    get { return _type; }
     set
     {
-      type = value;
+      _type = value;
       UpdateTemplate();
     }
   }
@@ -415,9 +415,9 @@ public partial class DiagramNode : Button
     // Format string, the resource is in the XAML file.
     string resourceName = string.Format(
         CultureInfo.InvariantCulture, "{0}{1}{2}{3}",
-        (person.Gender == Gender.Female) ? "Female" : "Male",
-        type.ToString(),
-        (person.IsLiving) ? "Living" : "Deceased",
+        (_person.Gender == Gender.Female) ? "Female" : "Male",
+        _type.ToString(),
+        (_person.IsLiving) ? "Living" : "Deceased",
         part);
 
     return (Brush)TryFindResource(resourceName);
@@ -427,7 +427,7 @@ public partial class DiagramNode : Button
   {
     // Format string, the resource is in the XAML file.
     string resourceName = string.Format(CultureInfo.InvariantCulture,
-        "{0}{1}", type.ToString(), part);
+        "{0}{1}", _type.ToString(), part);
 
     return (Brush)TryFindResource(resourceName);
   }
@@ -440,9 +440,9 @@ public partial class DiagramNode : Button
     // Determine the node template based on node properties.
     string template = string.Format(
         CultureInfo.InvariantCulture, "{0}{1}{2}NodeTemplate",
-        (person.Gender == Gender.Female) ? "Female" : "Male",
-        (type == NodeType.Primary) ? "Primary" : "",
-        (person.Restriction != Restriction.Private && person.HasAvatar && Diagram.showPhotos) ? "Photo" : "");
+        (_person.Gender == Gender.Female) ? "Female" : "Male",
+        (_type == NodeType.Primary) ? "Primary" : "",
+        (_person.Restriction != Restriction.Private && _person.HasAvatar && Diagram.showPhotos) ? "Photo" : "");
 
     // Assign the node template.                
     Template = (ControlTemplate)FindResource(template);
@@ -454,7 +454,7 @@ public partial class DiagramNode : Button
   private void UpdateGroupIndicator()
   {
     // Primary templates don't have the group xaml section.
-    if (type == NodeType.Primary)
+    if (_type == NodeType.Primary)
     {
       return;
     }
@@ -474,19 +474,19 @@ public partial class DiagramNode : Button
   private bool ShouldDisplayGroupIndicator()
   {
     // Primary and related nodes never display the group indicator.
-    if ((type == NodeType.Primary || type == NodeType.Related))
+    if ((_type == NodeType.Primary || _type == NodeType.Related))
     {
       return false;
     }
 
     bool show = false;
-    switch (type)
+    switch (_type)
     {
       // Spouse - if have parents, siblings, or ex spouses.
       case NodeType.Spouse:
-        if (person.Parents.Count > 0 ||
-            person.Siblings.Count > 0 ||
-            person.PreviousSpouses.Count > 1)   //1 because if this is a spouse node and they only have 1 previous spouse, then that spouse must be visible so there is no need to show the indicator
+        if (_person.Parents.Count > 0 ||
+            _person.Siblings.Count > 0 ||
+            _person.PreviousSpouses.Count > 1)   //1 because if this is a spouse node and they only have 1 previous spouse, then that spouse must be visible so there is no need to show the indicator
         {
           show = true;
         }
@@ -495,8 +495,8 @@ public partial class DiagramNode : Button
 
       // Sibling - if have spouse, or children.
       case NodeType.Sibling:
-        if (person.Spouses.Count > 0 ||
-            person.Children.Count > 0)
+        if (_person.Spouses.Count > 0 ||
+            _person.Children.Count > 0)
         {
           show = true;
         }
@@ -507,8 +507,8 @@ public partial class DiagramNode : Button
       // group status from all parents.
       case NodeType.SiblingLeft:
       case NodeType.SiblingRight:
-        if (person.Spouses.Count > 0 ||
-            person.Children.Count > 0)
+        if (_person.Spouses.Count > 0 ||
+            _person.Children.Count > 0)
         {
           show = true;
         }
@@ -525,10 +525,10 @@ public partial class DiagramNode : Button
   public void UpdateBottomLabel()
   {
 
-    if (person.Restriction != Restriction.Private)
+    if (_person.Restriction != Restriction.Private)
     {
       string label = string.Format(CultureInfo.CurrentCulture, "{0}\r{1}",
-          person.Name, DateInformation);
+          _person.Name, DateInformation);
       BottomLabel = label;
     }
     else
@@ -539,10 +539,10 @@ public partial class DiagramNode : Button
 
   public void HideBottomLabel()
   {
-    if (person.Restriction != Restriction.Private)
+    if (_person.Restriction != Restriction.Private)
     {
       string label = string.Format(CultureInfo.CurrentCulture, "{0}",
-          person.Name);
+          _person.Name);
       BottomLabel = label;
     }
     else

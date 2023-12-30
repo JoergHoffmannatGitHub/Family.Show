@@ -21,9 +21,9 @@ public class Repository : INotifyPropertyChanged, IEquatable<Repository>
 
   #region Fields and Constants
 
-  private string id;
-  private string repositoryName;
-  private string repositoryAddress;
+  private string _id;
+  private string _repositoryName;
+  private string _repositoryAddress;
 
   #endregion
 
@@ -32,12 +32,12 @@ public class Repository : INotifyPropertyChanged, IEquatable<Repository>
   [XmlAttribute]
   public string Id
   {
-    get { return id; }
+    get { return _id; }
     set
     {
-      if (id != value)
+      if (_id != value)
       {
-        id = value;
+        _id = value;
         OnPropertyChanged(nameof(Id));
       }
     }
@@ -45,12 +45,12 @@ public class Repository : INotifyPropertyChanged, IEquatable<Repository>
 
   public string RepositoryName
   {
-    get { return repositoryName; }
+    get { return _repositoryName; }
     set
     {
-      if (repositoryName != value)
+      if (_repositoryName != value)
       {
-        repositoryName = value;
+        _repositoryName = value;
         OnPropertyChanged("RepositoryeName");
       }
     }
@@ -58,12 +58,12 @@ public class Repository : INotifyPropertyChanged, IEquatable<Repository>
 
   public string RepositoryAddress
   {
-    get { return repositoryAddress; }
+    get { return _repositoryAddress; }
     set
     {
-      if (repositoryAddress != value)
+      if (_repositoryAddress != value)
       {
-        repositoryAddress = value;
+        _repositoryAddress = value;
         OnPropertyChanged(nameof(RepositoryAddress));
       }
     }
@@ -72,7 +72,7 @@ public class Repository : INotifyPropertyChanged, IEquatable<Repository>
   [XmlIgnore]
   public string RepositoryNameAndId
   {
-    get { return id + " " + repositoryName; }
+    get { return _id + " " + _repositoryName; }
     set { }
   }
 
@@ -86,7 +86,7 @@ public class Repository : INotifyPropertyChanged, IEquatable<Repository>
   /// </summary>
   public Repository()
   {
-    repositoryName = Properties.Resources.Unknown;
+    _repositoryName = Properties.Resources.Unknown;
   }
 
   /// <summary>
@@ -97,17 +97,17 @@ public class Repository : INotifyPropertyChanged, IEquatable<Repository>
   {
     if (!string.IsNullOrEmpty(repositoryId))
     {
-      id = repositoryId;
+      _id = repositoryId;
     }
 
     if (!string.IsNullOrEmpty(repositoryName))
     {
-      this.repositoryName = repositoryName;
+      _repositoryName = repositoryName;
     }
 
     if (!string.IsNullOrEmpty(repositoryAddress))
     {
-      this.repositoryAddress = repositoryAddress;
+      _repositoryAddress = repositoryAddress;
     }
   }
 

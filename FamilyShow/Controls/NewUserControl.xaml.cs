@@ -14,7 +14,7 @@ public partial class NewUserControl : System.Windows.Controls.UserControl
   #region fields
 
   // The list of people, this is a global list shared by the application.
-  readonly PeopleCollection family = App.Family;
+  private readonly PeopleCollection _family = App.Family;
 
   #endregion
 
@@ -58,9 +58,9 @@ public partial class NewUserControl : System.Windows.Controls.UserControl
       newPerson.BirthDate = birthdate;
     }
 
-    family.Current = newPerson;
-    family.Add(newPerson);
-    family.OnContentChanged();
+    _family.Current = newPerson;
+    _family.Add(newPerson);
+    _family.OnContentChanged();
 
     RaiseEvent(new RoutedEventArgs(AddButtonClickEvent));
   }

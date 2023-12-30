@@ -12,7 +12,7 @@ namespace Microsoft.FamilyShow;
 /// </summary>
 public partial class TagCloud : UserControl
 {
-  private ListCollectionView view;
+  private ListCollectionView _view;
 
   #region dependency properties
 
@@ -123,7 +123,7 @@ public partial class TagCloud : UserControl
     ListCollectionView view = (ListCollectionView)args.NewValue;
     TagCloud tagCloud = ((TagCloud)sender);
     tagCloud.TagCloudListBox.ItemsSource = view.Groups;
-    tagCloud.view = view;
+    tagCloud._view = view;
   }
 
   private void TagCloudListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -138,7 +138,7 @@ public partial class TagCloud : UserControl
 
   internal void Refresh()
   {
-    view.Refresh();
+    _view.Refresh();
   }
 
   internal void ClearSelection()
@@ -147,7 +147,7 @@ public partial class TagCloud : UserControl
   }
 }
 
-class CountToFontSizeConverter : IMultiValueConverter
+internal class CountToFontSizeConverter : IMultiValueConverter
 {
   #region IMultiValueConverter Members
 

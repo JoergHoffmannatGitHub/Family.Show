@@ -14,10 +14,10 @@ public partial class Html : System.Windows.Controls.UserControl
 
   #region fields
 
-  readonly People familyCollection = App.FamilyCollection;
-  readonly PeopleCollection family = App.Family;
-  readonly SourceCollection source = App.Sources;
-  readonly RepositoryCollection repository = App.Repositories;
+  private readonly People _familyCollection = App.FamilyCollection;
+  private readonly PeopleCollection _family = App.Family;
+  private readonly SourceCollection _source = App.Sources;
+  private readonly RepositoryCollection _repository = App.Repositories;
   public int minYear = DateTime.Now.Year;
 
   #endregion
@@ -225,32 +225,32 @@ public partial class Html : System.Windows.Controls.UserControl
           string filename = dialog.FileName;
           if (Options() == "1")
           {
-            html.ExportAll(family, source, repository, dialog.FileName, Path.GetFileName(familyCollection.FullyQualifiedFilename), Privacy(), Sources());  //Export the all individuals
+            html.ExportAll(_family, _source, _repository, dialog.FileName, Path.GetFileName(_familyCollection.FullyQualifiedFilename), Privacy(), Sources());  //Export the all individuals
           }
 
           if (Options() == "2")
           {
-            html.ExportCurrent(family, source, repository, dialog.FileName, Path.GetFileName(familyCollection.FullyQualifiedFilename), Privacy(), Sources());
+            html.ExportCurrent(_family, _source, _repository, dialog.FileName, Path.GetFileName(_familyCollection.FullyQualifiedFilename), Privacy(), Sources());
           }
 
           if (Options() == "3")
           {
-            html.ExportDirect(family, source, repository, dialog.FileName, Path.GetFileName(familyCollection.FullyQualifiedFilename), Privacy(), Sources());     //Export current person and immediate family relatives 
+            html.ExportDirect(_family, _source, _repository, dialog.FileName, Path.GetFileName(_familyCollection.FullyQualifiedFilename), Privacy(), Sources());     //Export current person and immediate family relatives 
           }
 
           if (Options() == "4")
           {
-            html.ExportGenerations(family, source, repository, Ancestors(), Descendants(), dialog.FileName, Path.GetFileName(familyCollection.FullyQualifiedFilename), Privacy(), Sources());
+            html.ExportGenerations(_family, _source, _repository, Ancestors(), Descendants(), dialog.FileName, Path.GetFileName(_familyCollection.FullyQualifiedFilename), Privacy(), Sources());
           }
 
           if (Options() == "5")
           {
-            html.ExportFilter(family, source, repository, searchtextvalue(), searchfieldvalue(), searchfieldindex(), dialog.FileName, Path.GetFileName(familyCollection.FullyQualifiedFilename), Privacy(), Sources());
+            html.ExportFilter(_family, _source, _repository, searchtextvalue(), searchfieldvalue(), searchfieldindex(), dialog.FileName, Path.GetFileName(_familyCollection.FullyQualifiedFilename), Privacy(), Sources());
           }
 
           if (Options() == "6")
           {
-            html.ExportEventsByDecade(family, source, repository, dialog.FileName, Path.GetFileName(familyCollection.FullyQualifiedFilename), Privacy(), start, end);
+            html.ExportEventsByDecade(_family, _source, _repository, dialog.FileName, Path.GetFileName(_familyCollection.FullyQualifiedFilename), Privacy(), start, end);
           }
 
           MessageBoxResult result = MessageBox.Show(Properties.Resources.SourcesExportMessage, Properties.Resources.ExportResult, MessageBoxButton.YesNo, MessageBoxImage.Question);

@@ -12,25 +12,25 @@ namespace Microsoft.FamilyShowLib;
 [Serializable]
 public abstract class Relationship
 {
-  private RelationshipType relationshipType;
+  private RelationshipType _relationshipType;
 
-  private Person relationTo;
+  private Person _relationTo;
 
   // The person's Id will be serialized instead of the relationTo person object to avoid
   // circular references during Xml Serialization. When family data is loaded, the corresponding
   // person object will be assigned to the relationTo property (please see app.xaml.cs).
-  private string personId;
+  private string _personId;
 
   // Store the person's name with the Id to make the xml file more readable
-  private string personFullName;
+  private string _personFullName;
 
   /// <summary>
   /// The Type of relationship.  Parent, child, sibling, or spouse
   /// </summary>
   public RelationshipType RelationshipType
   {
-    get { return relationshipType; }
-    set { relationshipType = value; }
+    get { return _relationshipType; }
+    set { _relationshipType = value; }
   }
 
   /// <summary>
@@ -39,25 +39,25 @@ public abstract class Relationship
   [XmlIgnore]
   public Person RelationTo
   {
-    get { return relationTo; }
+    get { return _relationTo; }
     set
     {
-      relationTo = value;
-      personId = value.Id;
-      personFullName = value.Name;
+      _relationTo = value;
+      _personId = value.Id;
+      _personFullName = value.Name;
     }
   }
 
   public string PersonId
   {
-    get { return personId; }
-    set { personId = value; }
+    get { return _personId; }
+    set { _personId = value; }
   }
 
   public string PersonFullName
   {
-    get { return personFullName; }
-    set { personFullName = value; }
+    get { return _personFullName; }
+    set { _personFullName = value; }
   }
 
 }
@@ -68,12 +68,12 @@ public abstract class Relationship
 [Serializable]
 public class ParentRelationship : Relationship
 {
-  private ParentChildModifier parentChildModifier;
+  private ParentChildModifier _parentChildModifier;
 
   public ParentChildModifier ParentChildModifier
   {
-    get { return parentChildModifier; }
-    set { parentChildModifier = value; }
+    get { return _parentChildModifier; }
+    set { _parentChildModifier = value; }
   }
 
   // Paramaterless constructor required for XML serialization
@@ -83,7 +83,7 @@ public class ParentRelationship : Relationship
   {
     RelationshipType = RelationshipType.Parent;
     RelationTo = personId;
-    parentChildModifier = parentChildType;
+    _parentChildModifier = parentChildType;
   }
 }
 
@@ -93,12 +93,12 @@ public class ParentRelationship : Relationship
 [Serializable]
 public class ChildRelationship : Relationship
 {
-  private ParentChildModifier parentChildModifier;
+  private ParentChildModifier _parentChildModifier;
 
   public ParentChildModifier ParentChildModifier
   {
-    get { return parentChildModifier; }
-    set { parentChildModifier = value; }
+    get { return _parentChildModifier; }
+    set { _parentChildModifier = value; }
   }
 
   // Paramaterless constructor required for XML serialization
@@ -108,7 +108,7 @@ public class ChildRelationship : Relationship
   {
     RelationshipType = RelationshipType.Child;
     RelationTo = person;
-    parentChildModifier = parentChildType;
+    _parentChildModifier = parentChildType;
   }
 }
 
@@ -118,81 +118,81 @@ public class ChildRelationship : Relationship
 [Serializable]
 public class SpouseRelationship : Relationship
 {
-  private SpouseModifier spouseModifier;
+  private SpouseModifier _spouseModifier;
 
-  private DateTime? marriageDate;
-  private string marriageDateDescriptor;
-  private string marriagePlace;
+  private DateTime? _marriageDate;
+  private string _marriageDateDescriptor;
+  private string _marriagePlace;
 
-  private string marriageCitation;
-  private string marriageSource;
-  private string marriageLink;
-  private string marriageCitationActualText;
-  private string marriageCitationNote;
+  private string _marriageCitation;
+  private string _marriageSource;
+  private string _marriageLink;
+  private string _marriageCitationActualText;
+  private string _marriageCitationNote;
 
-  private DateTime? divorceDate;
-  private string divorceDateDescriptor;
+  private DateTime? _divorceDate;
+  private string _divorceDateDescriptor;
 
-  private string divorceCitation;
-  private string divorceSource;
-  private string divorceLink;
-  private string divorceCitationActualText;
-  private string divorceCitationNote;
+  private string _divorceCitation;
+  private string _divorceSource;
+  private string _divorceLink;
+  private string _divorceCitationActualText;
+  private string _divorceCitationNote;
 
   public SpouseModifier SpouseModifier
   {
-    get { return spouseModifier; }
-    set { spouseModifier = value; }
+    get { return _spouseModifier; }
+    set { _spouseModifier = value; }
   }
 
   #region marriage get set methods
 
   public DateTime? MarriageDate
   {
-    get { return marriageDate; }
-    set { marriageDate = value; }
+    get { return _marriageDate; }
+    set { _marriageDate = value; }
   }
 
   public string MarriageDateDescriptor
   {
-    get { return marriageDateDescriptor; }
-    set { marriageDateDescriptor = value; }
+    get { return _marriageDateDescriptor; }
+    set { _marriageDateDescriptor = value; }
   }
 
   public string MarriagePlace
   {
-    get { return marriagePlace; }
-    set { marriagePlace = value; }
+    get { return _marriagePlace; }
+    set { _marriagePlace = value; }
   }
 
   public string MarriageCitation
   {
-    get { return marriageCitation; }
-    set { marriageCitation = value; }
+    get { return _marriageCitation; }
+    set { _marriageCitation = value; }
   }
 
   public string MarriageSource
   {
-    get { return marriageSource; }
-    set { marriageSource = value; }
+    get { return _marriageSource; }
+    set { _marriageSource = value; }
   }
 
   public string MarriageLink
   {
-    get { return marriageLink; }
-    set { marriageLink = value; }
+    get { return _marriageLink; }
+    set { _marriageLink = value; }
   }
 
   public string MarriageCitationNote
   {
-    get { return marriageCitationNote; }
-    set { marriageCitationNote = value; }
+    get { return _marriageCitationNote; }
+    set { _marriageCitationNote = value; }
   }
 
   public string MarriageCitationActualText
   {
-    get { return marriageCitationActualText; }
-    set { marriageCitationActualText = value; }
+    get { return _marriageCitationActualText; }
+    set { _marriageCitationActualText = value; }
   }
 
   #endregion
@@ -201,44 +201,44 @@ public class SpouseRelationship : Relationship
 
   public DateTime? DivorceDate
   {
-    get { return divorceDate; }
-    set { divorceDate = value; }
+    get { return _divorceDate; }
+    set { _divorceDate = value; }
   }
 
   public string DivorceDateDescriptor
   {
-    get { return divorceDateDescriptor; }
-    set { divorceDateDescriptor = value; }
+    get { return _divorceDateDescriptor; }
+    set { _divorceDateDescriptor = value; }
   }
 
   public string DivorceCitation
   {
-    get { return divorceCitation; }
-    set { divorceCitation = value; }
+    get { return _divorceCitation; }
+    set { _divorceCitation = value; }
   }
 
   public string DivorceSource
   {
-    get { return divorceSource; }
-    set { divorceSource = value; }
+    get { return _divorceSource; }
+    set { _divorceSource = value; }
   }
 
   public string DivorceLink
   {
-    get { return divorceLink; }
-    set { divorceLink = value; }
+    get { return _divorceLink; }
+    set { _divorceLink = value; }
   }
 
   public string DivorceCitationNote
   {
-    get { return divorceCitationNote; }
-    set { divorceCitationNote = value; }
+    get { return _divorceCitationNote; }
+    set { _divorceCitationNote = value; }
   }
 
   public string DivorceCitationActualText
   {
-    get { return divorceCitationActualText; }
-    set { divorceCitationActualText = value; }
+    get { return _divorceCitationActualText; }
+    set { _divorceCitationActualText = value; }
   }
 
   #endregion
@@ -249,7 +249,7 @@ public class SpouseRelationship : Relationship
   public SpouseRelationship(Person person, SpouseModifier spouseType)
   {
     RelationshipType = RelationshipType.Spouse;
-    spouseModifier = spouseType;
+    _spouseModifier = spouseType;
     RelationTo = person;
   }
 }

@@ -4,31 +4,31 @@ namespace FamilyShowLib.Tests;
 
 public class RepositoryTest
 {
-  readonly Repository sut = new("R1", "Archive", "here");
+  private static readonly Repository s_sut = new("R1", "Archive", "here");
 
   [Fact]
   public void Equality_Null()
   {
     Repository nullRepository = null!;
 
-    Assert.False(sut.Equals(null));
+    Assert.False(s_sut.Equals(null));
     Assert.True(nullRepository == null);
   }
 
   [Fact]
   public void Equality_Assigned()
   {
-    Repository assignedRepository = sut;
+    Repository assignedRepository = s_sut;
 
-    Assert.True(sut.Equals(assignedRepository));
-    Assert.True(sut.Equals((object)assignedRepository));
+    Assert.True(s_sut.Equals(assignedRepository));
+    Assert.True(s_sut.Equals((object)assignedRepository));
 
-    Assert.True(sut == assignedRepository);
-    Assert.True(assignedRepository == sut);
-    Assert.False(sut != assignedRepository);
-    Assert.False(assignedRepository != sut);
+    Assert.True(s_sut == assignedRepository);
+    Assert.True(assignedRepository == s_sut);
+    Assert.False(s_sut != assignedRepository);
+    Assert.False(assignedRepository != s_sut);
 
-    Assert.Equal(sut.GetHashCode(), assignedRepository.GetHashCode());
+    Assert.Equal(s_sut.GetHashCode(), assignedRepository.GetHashCode());
   }
 
   [Fact]
@@ -36,15 +36,15 @@ public class RepositoryTest
   {
     Repository sameRepository = new("R1", "Archive", "here");
 
-    Assert.True(sut.Equals(sameRepository));
-    Assert.True(sut.Equals((object)sameRepository));
+    Assert.True(s_sut.Equals(sameRepository));
+    Assert.True(s_sut.Equals((object)sameRepository));
 
-    Assert.True(sut == sameRepository);
-    Assert.True(sameRepository == sut);
-    Assert.False(sut != sameRepository);
-    Assert.False(sameRepository != sut);
+    Assert.True(s_sut == sameRepository);
+    Assert.True(sameRepository == s_sut);
+    Assert.False(s_sut != sameRepository);
+    Assert.False(sameRepository != s_sut);
 
-    Assert.Equal(sut.GetHashCode(), sameRepository.GetHashCode());
+    Assert.Equal(s_sut.GetHashCode(), sameRepository.GetHashCode());
   }
 
   [Fact]
@@ -52,12 +52,12 @@ public class RepositoryTest
   {
     Repository differentRepository = new("R2", "Archive", "here");
 
-    Assert.False(sut.Equals(differentRepository));
-    Assert.False(sut.Equals((object)differentRepository));
+    Assert.False(s_sut.Equals(differentRepository));
+    Assert.False(s_sut.Equals((object)differentRepository));
 
-    Assert.False(sut == differentRepository);
-    Assert.True(sut != differentRepository);
+    Assert.False(s_sut == differentRepository);
+    Assert.True(s_sut != differentRepository);
 
-    Assert.NotEqual(sut.GetHashCode(), differentRepository.GetHashCode());
+    Assert.NotEqual(s_sut.GetHashCode(), differentRepository.GetHashCode());
   }
 }

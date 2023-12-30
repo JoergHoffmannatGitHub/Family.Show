@@ -37,7 +37,8 @@ internal partial class App : Application
   private const int NumberOfRecentFiles = 5;
 
   // The path to the recent files file.
-  private static readonly string RecentFilesFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Path.Combine(ApplicationFolderName, "RecentFiles.xml"));
+  private static readonly string s_recentFilesFilePath = Path.Combine(
+    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Path.Combine(ApplicationFolderName, "RecentFiles.xml"));
   public static string args;
   public static bool canExecuteJumpList = true;
 
@@ -222,11 +223,11 @@ internal partial class App : Application
   /// </summary>
   public static void LoadRecentFiles()
   {
-    if (File.Exists(RecentFilesFilePath))
+    if (File.Exists(s_recentFilesFilePath))
     {
       // Load the Recent Files from disk
       XmlSerializer ser = new(typeof(StringCollection));
-      using (TextReader reader = new StreamReader(RecentFilesFilePath))
+      using (TextReader reader = new StreamReader(s_recentFilesFilePath))
       {
         RecentFiles = (StringCollection)ser.Deserialize(reader);
       }
@@ -254,7 +255,7 @@ internal partial class App : Application
   public static void SaveRecentFiles()
   {
     XmlSerializer ser = new(typeof(StringCollection));
-    using (TextWriter writer = new StreamWriter(RecentFilesFilePath))
+    using (TextWriter writer = new StreamWriter(s_recentFilesFilePath))
     {
       ser.Serialize(writer, RecentFiles);
     }

@@ -13,7 +13,7 @@ namespace Microsoft.FamilyShow;
 /// </summary>
 public partial class Histogram : UserControl
 {
-  private ListCollectionView view;
+  private ListCollectionView _view;
 
   /// <summary>
   /// Get the number of items in the current view.
@@ -126,7 +126,7 @@ public partial class Histogram : UserControl
     ListCollectionView view = (ListCollectionView)args.NewValue;
     histogram.HistogramListBox.ItemsSource = view.Groups;
     histogram.TotalCountLabel.Content = view.Count;
-    histogram.view = view;
+    histogram._view = view;
   }
 
   private void HistogramListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -141,18 +141,18 @@ public partial class Histogram : UserControl
 
   internal void Refresh()
   {
-    view.Refresh();
+    _view.Refresh();
 
     // Update the total count if items exist in the list view collection. Otherwise, if there
     // are no items, hide the histogram.
-    if (view.Count == 0)
+    if (_view.Count == 0)
     {
       LayoutRoot.Visibility = Visibility.Hidden;
     }
     else
     {
       LayoutRoot.Visibility = Visibility.Visible;
-      TotalCountLabel.Content = view.Count;
+      TotalCountLabel.Content = _view.Count;
     }
   }
 
@@ -165,7 +165,7 @@ public partial class Histogram : UserControl
 /// <summary>
 /// Converts a category count to a value between 1 and 100.
 /// </summary>
-class HistogramValueToPercentageConverter : IMultiValueConverter
+internal class HistogramValueToPercentageConverter : IMultiValueConverter
 {
   #region IMultiValueConverter Members
 
@@ -206,7 +206,7 @@ class HistogramValueToPercentageConverter : IMultiValueConverter
 /// Converts a person's age group to a text label that can be used on the histogram. Text is 
 /// retrieved from the resource file for the project.
 /// </summary>
-class HistogramColumnLabelConverter : IMultiValueConverter
+internal class HistogramColumnLabelConverter : IMultiValueConverter
 {
   #region IMultiValueConverter Members
 

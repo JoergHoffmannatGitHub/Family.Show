@@ -20,13 +20,12 @@ public partial class MainWindow : Window
   #region fields
 
   // The list of people, sources and repositories. This is a global list shared by the application.
-  readonly People familyCollection = App.FamilyCollection;
-  readonly PeopleCollection family = App.Family;
-  readonly SourceCollection source = App.Sources;
-  readonly RepositoryCollection repository = App.Repositories;
-
-  bool hideDiagramControls = false;
-  private readonly Properties.Settings appSettings = Properties.Settings.Default;
+  private readonly People _familyCollection = App.FamilyCollection;
+  private readonly PeopleCollection _family = App.Family;
+  private readonly SourceCollection _source = App.Sources;
+  private readonly RepositoryCollection _repository = App.Repositories;
+  private bool _hideDiagramControls;
+  private readonly Properties.Settings _appSettings = Properties.Settings.Default;
 
   #endregion
 
@@ -35,7 +34,7 @@ public partial class MainWindow : Window
     InitializeComponent();
     BuildOpenMenu();
     BuildThemesMenu();
-    family.CurrentChanged += new EventHandler(People_CurrentChanged);
+    _family.CurrentChanged += new EventHandler(People_CurrentChanged);
     ProcessCommandLines();
   }
 
@@ -46,9 +45,9 @@ public partial class MainWindow : Window
   /// </summary>
   private void People_CurrentChanged(object sender, EventArgs e)
   {
-    if (family.Current != null)
+    if (_family.Current != null)
     {
-      DetailsControl.DataContext = family.Current;
+      DetailsControl.DataContext = _family.Current;
     }
   }
 
@@ -60,7 +59,7 @@ public partial class MainWindow : Window
 
   private void DetailsControl_PersonInfoClick(object sender, RoutedEventArgs e)
   {
-    PersonInfoControl.DataContext = family.Current;
+    PersonInfoControl.DataContext = _family.Current;
     // Uses an animation to show the Person Info Control
     ((Storyboard)Resources["ShowPersonInfo"]).Begin(this);
   }
@@ -101,7 +100,7 @@ public partial class MainWindow : Window
 
   private void HidePersonInfo_StoryboardCompleted(object sender, EventArgs e)
   {
-    family.OnContentChanged();
+    _family.OnContentChanged();
     DetailsControl.SetDefaultFocus();
     enableButtons();
   }
@@ -184,18 +183,18 @@ public partial class MainWindow : Window
     if (!string.IsNullOrEmpty(dialog.FileName))
     {
       TaskBar.Current.Loading();
-      familyCollection.Save(dialog.FileName);
+      _familyCollection.Save(dialog.FileName);
       // Remove the file from its current position and add it back to the top/most recent position.
-      App.RecentFiles.Remove(familyCollection.FullyQualifiedFilename);
-      App.RecentFiles.Insert(0, familyCollection.FullyQualifiedFilename);
+      App.RecentFiles.Remove(_familyCollection.FullyQualifiedFilename);
+      App.RecentFiles.Insert(0, _familyCollection.FullyQualifiedFilename);
       BuildOpenMenu();
     }
     else
     {
-      familyCollection.FullyQualifiedFilename = string.Empty;
+      _familyCollection.FullyQualifiedFilename = string.Empty;
     }
 
-    family.OnContentChanged();
+    _family.OnContentChanged();
     UpdateStatus();
     TaskBar.Current.Restore();
     removeControlFocus();
@@ -220,8 +219,8 @@ public partial class MainWindow : Window
   private void GedcomLocalizationControl_ContinueButtonClick(object sender, RoutedEventArgs e)
   {
     GedcomLocalizationControl.Visibility = Visibility.Hidden;
-    appSettings.EnableUTF8 = (bool)GedcomLocalizationControl.EnableUTF8CheckBox.IsChecked;
-    appSettings.Save();
+    _appSettings.EnableUTF8 = (bool)GedcomLocalizationControl.EnableUTF8CheckBox.IsChecked;
+    _appSettings.Save();
     ImportGedcom();
   }
 
@@ -279,12 +278,12 @@ public partial class MainWindow : Window
       {
         ShowDetailsPane();
         // This will tell the diagram to redraw and the details panel to update.
-        family.OnContentChanged();
+        _family.OnContentChanged();
         // Remove the file from its current position and add it back to the top/most recent position.
         App.RecentFiles.Remove(file);
         App.RecentFiles.Insert(0, file);
         BuildOpenMenu();
-        family.IsDirty = false;
+        _family.IsDirty = false;
         UpdateStatus();
       }
       else
@@ -330,17 +329,17 @@ public partial class MainWindow : Window
 
     #region prompt to save before merging
 
-    if (family.IsDirty)
+    if (_family.IsDirty)
     {
       MessageBoxResult result = MessageBox.Show(Properties.Resources.SaveBeforeMerge, Properties.Resources.Save, MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
 
       if (result == MessageBoxResult.Yes)
       {
 
-        if (!string.IsNullOrEmpty(familyCollection.FullyQualifiedFilename))
+        if (!string.IsNullOrEmpty(_familyCollection.FullyQualifiedFilename))
         {
-          oldFilePath = familyCollection.FullyQualifiedFilename;
-          familyCollection.Save(familyCollection.FullyQualifiedFilename);
+          oldFilePath = _familyCollection.FullyQualifiedFilename;
+          _familyCollection.Save(_familyCollection.FullyQualifiedFilename);
         }
         else
         {
@@ -357,7 +356,7 @@ public partial class MainWindow : Window
           if (!string.IsNullOrEmpty(dialog.FileName))
           {
             oldFilePath = dialog.FileName;
-            familyCollection.Save(dialog.FileName);
+            _familyCollection.Save(dialog.FileName);
           }
         }
 
@@ -419,7 +418,7 @@ public partial class MainWindow : Window
             MergeControl.summary = summary;
             MergeControl.ShowSummary();
           }
-          family.OnContentChanged();
+          _family.OnContentChanged();
         }
         catch
         {
@@ -463,12 +462,12 @@ public partial class MainWindow : Window
       LoadFamily(file);
       ShowDetailsPane();
       // This will tell the diagram to redraw and the details panel to update.
-      family.OnContentChanged();
+      _family.OnContentChanged();
       // Remove the file from its current position and add it back to the top/most recent position.
       App.RecentFiles.Remove(file);
       App.RecentFiles.Insert(0, file);
       BuildOpenMenu();
-      family.IsDirty = false;
+      _family.IsDirty = false;
     }
     UpdateStatus();
     e.Handled = true;
@@ -491,7 +490,7 @@ public partial class MainWindow : Window
 
     Title = Title = Properties.Resources.FamilyShow + " " + Properties.Resources.SavingStatus;  //Update status bar
                                                                                                 // Prompt to save if the file has not been saved before, otherwise just save to the existing file.
-    if (string.IsNullOrEmpty(familyCollection.FullyQualifiedFilename))
+    if (string.IsNullOrEmpty(_familyCollection.FullyQualifiedFilename))
     {
       CommonDialog dialog = new()
       {
@@ -505,20 +504,20 @@ public partial class MainWindow : Window
       if (!string.IsNullOrEmpty(dialog.FileName))
       {
         TaskBar.Current.Loading();
-        familyCollection.Save(dialog.FileName);
+        _familyCollection.Save(dialog.FileName);
         // Remove the file from its current position and add it back to the top/most recent position.
-        App.RecentFiles.Remove(familyCollection.FullyQualifiedFilename);
-        App.RecentFiles.Insert(0, familyCollection.FullyQualifiedFilename);
+        App.RecentFiles.Remove(_familyCollection.FullyQualifiedFilename);
+        App.RecentFiles.Insert(0, _familyCollection.FullyQualifiedFilename);
         BuildOpenMenu();
       }
     }
     else
     {
       TaskBar.Current.Loading();
-      familyCollection.Save(false);
+      _familyCollection.Save(false);
       // Remove the file from its current position and add it back to the top/most recent position.
-      App.RecentFiles.Remove(familyCollection.FullyQualifiedFilename);
-      App.RecentFiles.Insert(0, familyCollection.FullyQualifiedFilename);
+      App.RecentFiles.Remove(_familyCollection.FullyQualifiedFilename);
+      App.RecentFiles.Insert(0, _familyCollection.FullyQualifiedFilename);
       BuildOpenMenu();
     }
     App.canExecuteJumpList = true;
@@ -550,7 +549,7 @@ public partial class MainWindow : Window
       try
       {
 
-        ged.Export(family, source, repository, dialog.FileName, familyCollection.FullyQualifiedFilename, Properties.Resources.Language);
+        ged.Export(_family, _source, _repository, dialog.FileName, _familyCollection.FullyQualifiedFilename, Properties.Resources.Language);
         MessageBox.Show(this, Properties.Resources.GedcomExportSucessfulMessage,
             Properties.Resources.Export, MessageBoxButton.OK,
             MessageBoxImage.Information);
@@ -596,21 +595,21 @@ public partial class MainWindow : Window
   {
     giveControlFocus();
     RepositoriesControl.Visibility = Visibility.Visible;
-    RepositoriesControl.RepositoriesCombobox.ItemsSource = repository;
+    RepositoriesControl.RepositoriesCombobox.ItemsSource = _repository;
   }
 
   private void EditSources(object sender, RoutedEventArgs e)
   {
     giveControlFocus();
     SourcesControl.Visibility = Visibility.Visible;
-    SourcesControl.SourcesCombobox.ItemsSource = source;
+    SourcesControl.SourcesCombobox.ItemsSource = _source;
   }
 
   private void Statistics(object sender, EventArgs e)
   {
     giveControlFocus();
     StatisticsControl.Visibility = Visibility.Visible;
-    StatisticsControl.DisplayStats(family, source, repository);
+    StatisticsControl.DisplayStats(_family, _source, _repository);
   }
 
   private void Photos(object sender, EventArgs e)
@@ -618,7 +617,7 @@ public partial class MainWindow : Window
     giveControlFocus();
     enableMenus();
     PhotoViewerControl.Visibility = Visibility.Visible;
-    PhotoViewerControl.LoadPhotos(family);
+    PhotoViewerControl.LoadPhotos(_family);
 
   }
 
@@ -634,7 +633,7 @@ public partial class MainWindow : Window
     giveControlFocus();
     enableMenus();
     AttachmentViewerControl.Visibility = Visibility.Visible;
-    AttachmentViewerControl.LoadAttachments(family);
+    AttachmentViewerControl.LoadAttachments(_family);
   }
 
   private void Storys(object sender, EventArgs e)
@@ -673,7 +672,7 @@ public partial class MainWindow : Window
       System.Windows.Shapes.Rectangle diagram = new();
 
       //Print background when black theme is used because diagram has white text
-      if (appSettings.Theme == @"Themes\Black\BlackResources.xaml")
+      if (_appSettings.Theme == @"Themes\Black\BlackResources.xaml")
       {
         heightActual = DiagramBorder.ActualHeight;
         widthActual = DiagramBorder.ActualWidth;
@@ -715,7 +714,7 @@ public partial class MainWindow : Window
       pd.PrintVisual(pageArea, App.Family.Current.FullName);
 
       // Show the zoom control and time control again
-      if (hideDiagramControls == false)
+      if (_hideDiagramControls == false)
       {
         DiagramControl.ZoomSliderPanel.Visibility = Visibility.Visible;
         DiagramControl.TimeSliderPanel.Visibility = Visibility.Visible;
@@ -764,7 +763,7 @@ public partial class MainWindow : Window
       }
 
       // Show the zoom control and time control again
-      if (hideDiagramControls == false)
+      if (_hideDiagramControls == false)
       {
         DiagramControl.ZoomSliderPanel.Visibility = Visibility.Visible;
         DiagramControl.TimeSliderPanel.Visibility = Visibility.Visible;
@@ -787,10 +786,10 @@ public partial class MainWindow : Window
     Application.Current.Resources = rd;
 
     // Save the theme setting
-    appSettings.Theme = theme;
-    appSettings.Save();
+    _appSettings.Theme = theme;
+    _appSettings.Save();
 
-    family.OnContentChanged();
+    _family.OnContentChanged();
     PersonInfoControl.OnThemeChange();
     UpdateStatus();
     DiagramControl.TimeSlider.Value = DateTime.Now.Year;
@@ -837,17 +836,17 @@ public partial class MainWindow : Window
     ReleasePhotos();
 
     // Do not prompt for fully saved or welcome screen new families.
-    if (!family.IsDirty || (family.IsDirty && family.Count == 0))
+    if (!_family.IsDirty || (_family.IsDirty && _family.Count == 0))
     {
 
-      family.Clear();
-      source.Clear();
-      repository.Clear();
+      _family.Clear();
+      _source.Clear();
+      _repository.Clear();
 
-      familyCollection.FullyQualifiedFilename = null;
-      family.OnContentChanged();
+      _familyCollection.FullyQualifiedFilename = null;
+      _family.OnContentChanged();
       ShowNewUserControl();
-      family.IsDirty = false;
+      _family.IsDirty = false;
     }
     else
     {
@@ -858,7 +857,7 @@ public partial class MainWindow : Window
       {
 
         // Prompt to save if the file has not been saved before.
-        if (string.IsNullOrEmpty(familyCollection.FullyQualifiedFilename))
+        if (string.IsNullOrEmpty(_familyCollection.FullyQualifiedFilename))
         {
           CommonDialog dialog = new()
           {
@@ -877,21 +876,21 @@ public partial class MainWindow : Window
           {
             if (!string.IsNullOrEmpty(dialog.FileName))
             {
-              familyCollection.Save(dialog.FileName);
+              _familyCollection.Save(dialog.FileName);
               // Remove the file from its current position and add it back to the top/most recent position.
-              App.RecentFiles.Remove(familyCollection.FullyQualifiedFilename);
-              App.RecentFiles.Insert(0, familyCollection.FullyQualifiedFilename);
+              App.RecentFiles.Remove(_familyCollection.FullyQualifiedFilename);
+              App.RecentFiles.Insert(0, _familyCollection.FullyQualifiedFilename);
               BuildOpenMenu();
 
-              family.Clear();
-              source.Clear();
-              repository.Clear();
+              _family.Clear();
+              _source.Clear();
+              _repository.Clear();
 
-              familyCollection.FullyQualifiedFilename = null;
-              family.OnContentChanged();
+              _familyCollection.FullyQualifiedFilename = null;
+              _family.OnContentChanged();
 
               ShowNewUserControl();
-              family.IsDirty = false;
+              _family.IsDirty = false;
             }
           }
 
@@ -900,35 +899,35 @@ public partial class MainWindow : Window
         // Otherwise just save to the existing file.
         else
         {
-          familyCollection.Save(false);
+          _familyCollection.Save(false);
           // Remove the file from its current position and add it back to the top/most recent position.
-          App.RecentFiles.Remove(familyCollection.FullyQualifiedFilename);
-          App.RecentFiles.Insert(0, familyCollection.FullyQualifiedFilename);
+          App.RecentFiles.Remove(_familyCollection.FullyQualifiedFilename);
+          App.RecentFiles.Insert(0, _familyCollection.FullyQualifiedFilename);
           BuildOpenMenu();
 
-          family.Clear();
-          source.Clear();
-          repository.Clear();
+          _family.Clear();
+          _source.Clear();
+          _repository.Clear();
 
-          familyCollection.FullyQualifiedFilename = null;
-          family.OnContentChanged();
+          _familyCollection.FullyQualifiedFilename = null;
+          _family.OnContentChanged();
 
           ShowNewUserControl();
-          family.IsDirty = false;
+          _family.IsDirty = false;
         }
       }
 
       if (result == MessageBoxResult.No)
       {
-        family.Clear();
-        source.Clear();
-        repository.Clear();
+        _family.Clear();
+        _source.Clear();
+        _repository.Clear();
 
-        familyCollection.FullyQualifiedFilename = null;
-        family.OnContentChanged();
+        _familyCollection.FullyQualifiedFilename = null;
+        _family.OnContentChanged();
 
         ShowNewUserControl();
-        family.IsDirty = false;
+        _family.IsDirty = false;
       }
 
       if (result == MessageBoxResult.Cancel)
@@ -981,24 +980,24 @@ public partial class MainWindow : Window
       {
         CollapseDetailsPanels();
         ShowDetailsPane();
-        family.OnContentChanged();
+        _family.OnContentChanged();
       }
 
       TaskBar.Current.Restore();
 
       // Do not add non default files to recent files list.
-      if (familyCollection.FullyQualifiedFilename.EndsWith(Properties.Resources.DefaultFamilyxExtension))
+      if (_familyCollection.FullyQualifiedFilename.EndsWith(Properties.Resources.DefaultFamilyxExtension))
       {
         // Remove the file from its current position and add it back to the top/most recent position.
-        App.RecentFiles.Remove(familyCollection.FullyQualifiedFilename);
-        App.RecentFiles.Insert(0, familyCollection.FullyQualifiedFilename);
+        App.RecentFiles.Remove(_familyCollection.FullyQualifiedFilename);
+        App.RecentFiles.Insert(0, _familyCollection.FullyQualifiedFilename);
         BuildOpenMenu();
-        family.IsDirty = false;
+        _family.IsDirty = false;
       }
 
     }
 
-    if (family.Count == 0)
+    if (_family.Count == 0)
     {
       ShowWelcomeScreen();
     }
@@ -1035,39 +1034,39 @@ public partial class MainWindow : Window
 
         if (SaveControl.Options() == "1")
         {
-          familyCollection.SavePrivacy(dialog.FileName, privacy);
+          _familyCollection.SavePrivacy(dialog.FileName, privacy);
         }
 
         if (SaveControl.Options() == "2")
         {
-          familyCollection.SaveCurrent(dialog.FileName, privacy);
+          _familyCollection.SaveCurrent(dialog.FileName, privacy);
         }
 
         if (SaveControl.Options() == "3")
         {
-          familyCollection.SaveDirect(dialog.FileName, privacy);
+          _familyCollection.SaveDirect(dialog.FileName, privacy);
         }
 
         if (SaveControl.Options() == "4")
         {
-          familyCollection.SaveGenerations(dialog.FileName, SaveControl.Ancestors(), SaveControl.Descendants(), privacy);     //then save and load the new family
+          _familyCollection.SaveGenerations(dialog.FileName, SaveControl.Ancestors(), SaveControl.Descendants(), privacy);     //then save and load the new family
         }
       }
     }
 
-    if (!string.IsNullOrEmpty(familyCollection.FullyQualifiedFilename))
+    if (!string.IsNullOrEmpty(_familyCollection.FullyQualifiedFilename))
     {
-      if (familyCollection.FullyQualifiedFilename.EndsWith(Properties.Resources.DefaultFamilyxExtension))
+      if (_familyCollection.FullyQualifiedFilename.EndsWith(Properties.Resources.DefaultFamilyxExtension))
       {
         // Remove the file from its current position and add it back to the top/most recent position.
-        App.RecentFiles.Remove(familyCollection.FullyQualifiedFilename);
-        App.RecentFiles.Insert(0, familyCollection.FullyQualifiedFilename);
+        App.RecentFiles.Remove(_familyCollection.FullyQualifiedFilename);
+        App.RecentFiles.Insert(0, _familyCollection.FullyQualifiedFilename);
         BuildOpenMenu();
-        family.IsDirty = false;
+        _family.IsDirty = false;
       }
     }
 
-    family.OnContentChanged();
+    _family.OnContentChanged();
     UpdateStatus();
     TaskBar.Current.Restore();
     App.canExecuteJumpList = true;
@@ -1084,7 +1083,7 @@ public partial class MainWindow : Window
 
     giveControlFocus();
     GedcomLocalizationControl.Visibility = Visibility.Visible;
-    GedcomLocalizationControl.EnableUTF8CheckBox.IsChecked = appSettings.EnableUTF8;
+    GedcomLocalizationControl.EnableUTF8CheckBox.IsChecked = _appSettings.EnableUTF8;
   }
 
   /// <summary>
@@ -1121,9 +1120,9 @@ public partial class MainWindow : Window
       try
       {
         GedcomImport ged = new();
-        loaded = ged.Import(family, source, repository, dialog.FileName, appSettings.EnableUTF8);
-        familyCollection.FullyQualifiedFilename = string.Empty;  //file name must be familyx, this ensures user is prompted to save file to familyx
-        family.IsDirty = false;
+        loaded = ged.Import(_family, _source, _repository, dialog.FileName, _appSettings.EnableUTF8);
+        _familyCollection.FullyQualifiedFilename = string.Empty;  //file name must be familyx, this ensures user is prompted to save file to familyx
+        _family.IsDirty = false;
       }
       catch
       {
@@ -1137,12 +1136,12 @@ public partial class MainWindow : Window
 
     CollapseDetailsPanels();
     ShowDetailsPane();
-    family.OnContentChanged();
+    _family.OnContentChanged();
     TaskBar.Current.Restore();
     UpdateStatus();
     App.canExecuteJumpList = true;
 
-    if (!loaded || family.Count == 0)
+    if (!loaded || _family.Count == 0)
     {
       ShowWelcomeScreen();
       UpdateStatus();
@@ -1159,16 +1158,16 @@ public partial class MainWindow : Window
     TaskBar.Current.Loading();
     ReleasePhotos();
 
-    familyCollection.FullyQualifiedFilename = fileName;
-    bool fileLoaded = familyCollection.LoadOPC();
+    _familyCollection.FullyQualifiedFilename = fileName;
+    bool fileLoaded = _familyCollection.LoadOPC();
 
     if (fileLoaded)
     {
-      familyCollection.FullyQualifiedFilename = fileName;
+      _familyCollection.FullyQualifiedFilename = fileName;
     }
     else
     {
-      familyCollection.FullyQualifiedFilename = string.Empty;
+      _familyCollection.FullyQualifiedFilename = string.Empty;
     }
 
     UpdateStatus();
@@ -1191,17 +1190,17 @@ public partial class MainWindow : Window
 
     MessageBox.Show(Properties.Resources.OldVersionMessage, Properties.Resources.Compatability, MessageBoxButton.OK, MessageBoxImage.Information);
 
-    familyCollection.FullyQualifiedFilename = fileName;
-    bool fileLoaded = familyCollection.LoadVersion2();
+    _familyCollection.FullyQualifiedFilename = fileName;
+    bool fileLoaded = _familyCollection.LoadVersion2();
 
     if (fileLoaded)
     {
-      familyCollection.FullyQualifiedFilename = Path.ChangeExtension(fileName, Properties.Resources.DefaultFamilyxExtension);
+      _familyCollection.FullyQualifiedFilename = Path.ChangeExtension(fileName, Properties.Resources.DefaultFamilyxExtension);
       SaveFamilyAs();
     }
     else
     {
-      familyCollection.FullyQualifiedFilename = string.Empty;
+      _familyCollection.FullyQualifiedFilename = string.Empty;
     }
 
     UpdateStatus();
@@ -1217,7 +1216,7 @@ public partial class MainWindow : Window
   /// </summary>
   private string[,] MergeFamily(string fileName)
   {
-    string[,] summary = familyCollection.MergeOPC(fileName);
+    string[,] summary = _familyCollection.MergeOPC(fileName);
     return summary;
   }
 
@@ -1248,9 +1247,9 @@ public partial class MainWindow : Window
         DiagramPane.ColumnDefinitions.Add(column1CloneForLayer0);
       }
 
-      if (family.Current != null)
+      if (_family.Current != null)
       {
-        DetailsControl.DataContext = family.Current;
+        DetailsControl.DataContext = _family.Current;
       }
 
       DetailsPane.Visibility = Visibility.Visible;
@@ -1268,7 +1267,7 @@ public partial class MainWindow : Window
     {
       DiagramControl.TimeSliderPanel.Visibility = Visibility.Hidden;
       DiagramControl.ZoomSliderPanel.Visibility = Visibility.Hidden;
-      hideDiagramControls = true;
+      _hideDiagramControls = true;
     }
   }
 
@@ -1281,7 +1280,7 @@ public partial class MainWindow : Window
     {
       DiagramControl.TimeSliderPanel.Visibility = Visibility.Visible;
       DiagramControl.ZoomSliderPanel.Visibility = Visibility.Visible;
-      hideDiagramControls = false;
+      _hideDiagramControls = false;
     }
   }
 
@@ -1325,20 +1324,20 @@ public partial class MainWindow : Window
           {
             CollapseDetailsPanels();
             ShowDetailsPane();
-            family.OnContentChanged();
+            _family.OnContentChanged();
           }
 
           // Do not add non default files to recent files list
-          if (familyCollection.FullyQualifiedFilename.EndsWith(Properties.Resources.DefaultFamilyxExtension))
+          if (_familyCollection.FullyQualifiedFilename.EndsWith(Properties.Resources.DefaultFamilyxExtension))
           {
             // Remove the file from its current position and add it back to the top/most recent position.
-            App.RecentFiles.Remove(familyCollection.FullyQualifiedFilename);
-            App.RecentFiles.Insert(0, familyCollection.FullyQualifiedFilename);
+            App.RecentFiles.Remove(_familyCollection.FullyQualifiedFilename);
+            App.RecentFiles.Insert(0, _familyCollection.FullyQualifiedFilename);
             BuildOpenMenu();
-            family.IsDirty = false;
+            _family.IsDirty = false;
           }
 
-          if (family.Count == 0)
+          if (_family.Count == 0)
           {
             ShowWelcomeScreen();
           }
@@ -1422,9 +1421,9 @@ public partial class MainWindow : Window
       DiagramPane.ColumnDefinitions.Add(column1CloneForLayer0);
     }
 
-    if (family.Current != null)
+    if (_family.Current != null)
     {
-      DetailsControl.DataContext = family.Current;
+      DetailsControl.DataContext = _family.Current;
     }
 
     DetailsPane.Visibility = Visibility.Visible;
@@ -1572,9 +1571,9 @@ public partial class MainWindow : Window
     ShowDetailsPane();
     DiagramControl.Visibility = Visibility.Visible;
 
-    if (family.Current != null)
+    if (_family.Current != null)
     {
-      DetailsControl.DataContext = family.Current;
+      DetailsControl.DataContext = _family.Current;
     }
   }
 
@@ -1584,7 +1583,7 @@ public partial class MainWindow : Window
   private void UpdateStatus()
   {
     // The current file name
-    string filename = Path.GetFileName(familyCollection.FullyQualifiedFilename);
+    string filename = Path.GetFileName(_familyCollection.FullyQualifiedFilename);
 
     // Default value for Title
     Title = Properties.Resources.FamilyShow;
@@ -1592,7 +1591,7 @@ public partial class MainWindow : Window
     // If the Welcome Control is visible, set Family.Show as window Title.
     if (WelcomeUserControl.Visibility == Visibility.Visible)
     {
-      family.IsDirty = false;
+      _family.IsDirty = false;
       Title = Properties.Resources.FamilyShow;
     }
     // In every other case, display the file name as the window Title and "Unsaved" if the file is not saved.
@@ -1655,9 +1654,9 @@ public partial class MainWindow : Window
     DiagramControl.Visibility = Visibility.Visible;
     enableButtons();
 
-    if (family.Current != null)
+    if (_family.Current != null)
     {
-      DetailsControl.DataContext = family.Current;
+      DetailsControl.DataContext = _family.Current;
     }
   }
 
@@ -1822,7 +1821,7 @@ public partial class MainWindow : Window
     // Make sure the file is saved before the app is closed.  
     // Allows user to cancel close request, save the file or to close without saving.
 
-    if (!family.IsDirty)
+    if (!_family.IsDirty)
     {
       return;
     }
@@ -1833,7 +1832,7 @@ public partial class MainWindow : Window
     if (result == MessageBoxResult.Yes)
     {
       // Prompt to save if the file has not been saved before, otherwise just save to the existing file.
-      if (string.IsNullOrEmpty(familyCollection.FullyQualifiedFilename))
+      if (string.IsNullOrEmpty(_familyCollection.FullyQualifiedFilename))
       {
         CommonDialog dialog = new()
         {
@@ -1846,19 +1845,19 @@ public partial class MainWindow : Window
 
         if (!string.IsNullOrEmpty(dialog.FileName))
         {
-          familyCollection.Save(dialog.FileName);
+          _familyCollection.Save(dialog.FileName);
           // Remove the file from its current position and add it back to the top/most recent position.
-          App.RecentFiles.Remove(familyCollection.FullyQualifiedFilename);
-          App.RecentFiles.Insert(0, familyCollection.FullyQualifiedFilename);
+          App.RecentFiles.Remove(_familyCollection.FullyQualifiedFilename);
+          App.RecentFiles.Insert(0, _familyCollection.FullyQualifiedFilename);
         }
       }
       else
       {
-        familyCollection.Save(false);
+        _familyCollection.Save(false);
 
         // Remove the file from its current position and add it back to the top/most recent position.
-        App.RecentFiles.Remove(familyCollection.FullyQualifiedFilename);
-        App.RecentFiles.Insert(0, familyCollection.FullyQualifiedFilename);
+        App.RecentFiles.Remove(_familyCollection.FullyQualifiedFilename);
+        App.RecentFiles.Insert(0, _familyCollection.FullyQualifiedFilename);
 
       }
       base.OnClosing(e);
@@ -1882,7 +1881,7 @@ public partial class MainWindow : Window
   /// </summary>
   public void PromptToSave()
   {
-    if (!family.IsDirty)
+    if (!_family.IsDirty)
     {
       return;
     }
@@ -1893,7 +1892,7 @@ public partial class MainWindow : Window
     if (result == MessageBoxResult.Yes)
     {
       // Prompt to save if the file has not been saved before, otherwise just save to the existing file.
-      if (string.IsNullOrEmpty(familyCollection.FullyQualifiedFilename))
+      if (string.IsNullOrEmpty(_familyCollection.FullyQualifiedFilename))
       {
         CommonDialog dialog = new()
         {
@@ -1906,20 +1905,20 @@ public partial class MainWindow : Window
 
         if (!string.IsNullOrEmpty(dialog.FileName))
         {
-          familyCollection.Save(dialog.FileName);
+          _familyCollection.Save(dialog.FileName);
 
-          if (!App.RecentFiles.Contains(familyCollection.FullyQualifiedFilename))
+          if (!App.RecentFiles.Contains(_familyCollection.FullyQualifiedFilename))
           {
-            App.RecentFiles.Add(familyCollection.FullyQualifiedFilename);
+            App.RecentFiles.Add(_familyCollection.FullyQualifiedFilename);
           }
         }
         else
         {
-          familyCollection.Save(false);
+          _familyCollection.Save(false);
 
-          if (!App.RecentFiles.Contains(familyCollection.FullyQualifiedFilename))
+          if (!App.RecentFiles.Contains(_familyCollection.FullyQualifiedFilename))
           {
-            App.RecentFiles.Add(familyCollection.FullyQualifiedFilename);
+            App.RecentFiles.Add(_familyCollection.FullyQualifiedFilename);
           }
         }
       }

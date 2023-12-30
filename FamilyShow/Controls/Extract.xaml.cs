@@ -14,8 +14,8 @@ public partial class Extract : System.Windows.Controls.UserControl
 
   #region fields
 
-  readonly PeopleCollection family = App.Family;
-  readonly People familyCollection = App.FamilyCollection;
+  private readonly PeopleCollection _family = App.Family;
+  private readonly People _familyCollection = App.FamilyCollection;
 
   #endregion
 
@@ -81,15 +81,15 @@ public partial class Extract : System.Windows.Controls.UserControl
     string folderName = Properties.Resources.Unknown + " (" + DateTime.Now.Day + "-" + DateTime.Now.Month + "-" + DateTime.Now.Year + ")";
     string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + App.ApplicationFolderName;
 
-    if (!string.IsNullOrEmpty(familyCollection.FullyQualifiedFilename))
+    if (!string.IsNullOrEmpty(_familyCollection.FullyQualifiedFilename))
     {
-      folderName = Path.GetFileNameWithoutExtension(familyCollection.FullyQualifiedFilename);
-      folderPath = Path.GetDirectoryName(familyCollection.FullyQualifiedFilename);
+      folderName = Path.GetFileNameWithoutExtension(_familyCollection.FullyQualifiedFilename);
+      folderPath = Path.GetDirectoryName(_familyCollection.FullyQualifiedFilename);
     }
 
-    if (currentPersonOnly && family.Current != null)
+    if (currentPersonOnly && _family.Current != null)
     {
-      folderName = folderName + " - " + family.Current.Name;
+      folderName = folderName + " - " + _family.Current.Name;
     }
 
     string contentpath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\" + App.ApplicationFolderName + @"\" + App.AppDataFolderName;
@@ -182,13 +182,13 @@ public partial class Extract : System.Windows.Controls.UserControl
     }
     else
     {
-      if (family.Current != null)
+      if (_family.Current != null)
       {
         Directory.CreateDirectory(Path.Combine(folderPath, folderName + @"\" + Attachment.AttachmentsFolderName));
         Directory.CreateDirectory(Path.Combine(folderPath, folderName + @"\" + Photo.PhotosFolderName));
         Directory.CreateDirectory(Path.Combine(folderPath, folderName + @"\" + Story.StoriesFolderName));
 
-        foreach (Photo p in family.Current.Photos)
+        foreach (Photo p in _family.Current.Photos)
         {
           string file = p.FullyQualifiedPath;
 
@@ -202,12 +202,12 @@ public partial class Extract : System.Windows.Controls.UserControl
 
         try
         {
-          FileInfo f = new(family.Current.Story.AbsolutePath);
-          f.CopyTo(Path.Combine(Path.Combine(folderPath, folderName + @"\" + Story.StoriesFolderName), Path.GetFileName(family.Current.Story.AbsolutePath)), true);
+          FileInfo f = new(_family.Current.Story.AbsolutePath);
+          f.CopyTo(Path.Combine(Path.Combine(folderPath, folderName + @"\" + Story.StoriesFolderName), Path.GetFileName(_family.Current.Story.AbsolutePath)), true);
         }
         catch { }
 
-        foreach (Attachment a in family.Current.Attachments)
+        foreach (Attachment a in _family.Current.Attachments)
         {
           string file = a.FullyQualifiedPath;
 

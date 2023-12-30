@@ -22,10 +22,10 @@ public class DiagramGroup : FrameworkElement
   private const double NodeSpace = 10;
 
   // Location of the group, relative to the row.
-  private Point location = new();
+  private Point _location;
 
   // List of nodes in the group.
-  private readonly List<DiagramNode> nodes = [];
+  private readonly List<DiagramNode> _nodes = [];
 
   #endregion
 
@@ -36,8 +36,8 @@ public class DiagramGroup : FrameworkElement
   /// </summary>
   public Point Location
   {
-    get { return location; }
-    set { location = value; }
+    get { return _location; }
+    set { _location = value; }
   }
 
   /// <summary>
@@ -45,7 +45,7 @@ public class DiagramGroup : FrameworkElement
   /// </summary>
   public ReadOnlyCollection<DiagramNode> Nodes
   {
-    get { return new ReadOnlyCollection<DiagramNode>(nodes); }
+    get { return new ReadOnlyCollection<DiagramNode>(_nodes); }
   }
 
   #endregion
@@ -56,7 +56,7 @@ public class DiagramGroup : FrameworkElement
   {
     // Let each node determine how large they want to be.
     Size size = new(double.PositiveInfinity, double.PositiveInfinity);
-    foreach (DiagramNode node in nodes)
+    foreach (DiagramNode node in _nodes)
     {
       node.Measure(size);
     }
@@ -74,13 +74,13 @@ public class DiagramGroup : FrameworkElement
   protected override int VisualChildrenCount
   {
     // Return the number of nodes.
-    get { return nodes.Count; }
+    get { return _nodes.Count; }
   }
 
   protected override Visual GetVisualChild(int index)
   {
     // Return the requested node.
-    return nodes[index];
+    return _nodes[index];
   }
 
   #endregion
@@ -90,7 +90,7 @@ public class DiagramGroup : FrameworkElement
   /// </summary>
   public void Add(DiagramNode node)
   {
-    nodes.Add(node);
+    _nodes.Add(node);
     AddVisualChild(node);
   }
 
@@ -99,12 +99,12 @@ public class DiagramGroup : FrameworkElement
   /// </summary>
   public void Clear()
   {
-    foreach (DiagramNode node in nodes)
+    foreach (DiagramNode node in _nodes)
     {
       RemoveVisualChild(node);
     }
 
-    nodes.Clear();
+    _nodes.Clear();
   }
 
   /// <summary>
@@ -112,7 +112,7 @@ public class DiagramGroup : FrameworkElement
   /// </summary>
   public void Reverse()
   {
-    nodes.Reverse();
+    _nodes.Reverse();
   }
 
   /// <summary>
@@ -129,7 +129,7 @@ public class DiagramGroup : FrameworkElement
     // Total size of the group.
     Size totalSize = new(0, 0);
 
-    foreach (DiagramNode node in nodes)
+    foreach (DiagramNode node in _nodes)
     {
       // Node location.
       bounds.X = pos;

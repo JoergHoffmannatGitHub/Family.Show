@@ -19,7 +19,7 @@ public class SourcesExport
 {
   #region fields
 
-  private StreamWriter tw;
+  private StreamWriter _tw;
 
   #endregion
 
@@ -29,26 +29,26 @@ public class SourcesExport
   public void ExportSources(string fileName, string familyFileName, SourceCollection source)
   {
 
-    tw = new StreamWriter(fileName);
+    _tw = new StreamWriter(fileName);
     //write the necessary html code for a html document
-    tw.WriteLine(Header());
-    tw.WriteLine(CSS());
-    tw.WriteLine(CSSprinting(7));
+    _tw.WriteLine(Header());
+    _tw.WriteLine(CSS());
+    _tw.WriteLine(CSSprinting(7));
 
-    tw.WriteLine("</head><body>");
-    tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
+    _tw.WriteLine("</head><body>");
+    _tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
 
-    tw.WriteLine("<i>" + Properties.Resources.SummaryOfSourcesForFile + " " + familyFileName + "</i><br/><br/>");
+    _tw.WriteLine("<i>" + Properties.Resources.SummaryOfSourcesForFile + " " + familyFileName + "</i><br/><br/>");
     //Write the column headings
-    tw.WriteLine(NormalSourceColumns());
+    _tw.WriteLine(NormalSourceColumns());
 
     foreach (Source s in source)
     {
-      tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
+      _tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
     }
 
-    tw.WriteLine(Footer());
-    tw.Close();
+    _tw.WriteLine(Footer());
+    _tw.Close();
   }
 
   #region data output methods

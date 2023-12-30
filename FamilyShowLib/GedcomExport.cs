@@ -34,18 +34,18 @@ public class GedcomExport
   #region fields
 
   // Writes the text (GEDCOM) file.
-  private StreamWriter writer;
+  private StreamWriter _writer;
 
   // Maps GUID IDs (which are too long for GEDCOM) to smaller IDs.
-  private readonly GedcomIdMap idMap = new();
+  private readonly GedcomIdMap _idMap = new();
 
   // The people collection that is being exported.
-  private PeopleCollection people;
-  private SourceCollection sources;
-  private RepositoryCollection repositories;
+  private PeopleCollection _people;
+  private SourceCollection _sources;
+  private RepositoryCollection _repositories;
 
   // Family group counter.
-  private int familyId = 1;
+  private int _familyId = 1;
 
   #endregion
 
@@ -54,11 +54,11 @@ public class GedcomExport
   /// </summary>
   public void Export(PeopleCollection peopleCollection, SourceCollection sourceCollection, RepositoryCollection repositoryCollection, string gedcomFilePath, string familyxFilePath, string language)
   {
-    people = peopleCollection;
-    sources = sourceCollection;
-    repositories = repositoryCollection;
+    _people = peopleCollection;
+    _sources = sourceCollection;
+    _repositories = repositoryCollection;
 
-    using (writer = new StreamWriter(gedcomFilePath))
+    using (_writer = new StreamWriter(gedcomFilePath))
     {
       WriteLine(0, "HEAD", "");
       ExportSummary(gedcomFilePath, familyxFilePath, language);
@@ -132,7 +132,7 @@ public class GedcomExport
   /// </summary>
   private void ExportSources()
   {
-    foreach (Source source in sources)
+    foreach (Source source in _sources)
     {
       WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@{0}@", source.Id), "SOUR");
       if (!string.IsNullOrEmpty(source.SourceRepository))
@@ -167,7 +167,7 @@ public class GedcomExport
   /// </summary>
   private void ExportRepositories()
   {
-    foreach (Repository r in repositories)
+    foreach (Repository r in _repositories)
     {
       WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@{0}@", r.Id), "REPO");
       if (!string.IsNullOrEmpty(r.RepositoryName))
@@ -189,12 +189,12 @@ public class GedcomExport
   {
 
     FamilyMap map = [];
-    map.Create(people);
+    map.Create(_people);
 
-    foreach (Person person in people)
+    foreach (Person person in _people)
     {
 
-      string id = idMap.Get(person.Id);
+      string id = _idMap.Get(person.Id);
 
       // Start of a new individual record.
       WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@{0}@", id), "INDI");
@@ -289,7 +289,7 @@ public class GedcomExport
   {
     bool exportableSource = false;
     int i = 0;
-    foreach (Source s in sources)
+    foreach (Source s in _sources)
     {
       if (s.Id == sourceID)
       {
@@ -315,7 +315,7 @@ public class GedcomExport
     // marriage / divorce information and children. The FamilyMap class
     // creates a list of family groups from the People collection.
     FamilyMap map = [];
-    map.Create(people);
+    map.Create(_people);
 
     // Created the family groups, now export each family.
     foreach (Family family in map.Values)
@@ -339,7 +339,7 @@ public class GedcomExport
     }
 
     // Start of new family record.
-    WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@F{0}@", familyId++), "FAM");
+    WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@F{0}@", _familyId++), "FAM");
 
     // Marriage info.
     ExportMarriage(family.ParentLeft, family.ParentRight, family.Relationship);
@@ -348,7 +348,7 @@ public class GedcomExport
     foreach (Person child in family.Children)
     {
 
-      WriteLine(1, "CHIL", string.Format(CultureInfo.InvariantCulture, "@{0}@", idMap.Get(child.Id)));
+      WriteLine(1, "CHIL", string.Format(CultureInfo.InvariantCulture, "@{0}@", _idMap.Get(child.Id)));
 
       // Export the adoption information
 
@@ -407,13 +407,13 @@ public class GedcomExport
     if (partnerLeft != null && partnerLeft.Gender == Gender.Male)
     {
       WriteLine(1, "HUSB", string.Format(CultureInfo.InvariantCulture,
-      "@{0}@", idMap.Get(partnerLeft.Id)));
+      "@{0}@", _idMap.Get(partnerLeft.Id)));
     }
 
     if (partnerLeft != null && partnerLeft.Gender == Gender.Female)
     {
       WriteLine(1, "WIFE", string.Format(CultureInfo.InvariantCulture,
-      "@{0}@", idMap.Get(partnerLeft.Id)));
+      "@{0}@", _idMap.Get(partnerLeft.Id)));
     }
 
     if (!partnerLeft.Spouses.Contains(partnerRight))
@@ -425,13 +425,13 @@ public class GedcomExport
     if (partnerRight != null && partnerRight.Gender == Gender.Male)
     {
       WriteLine(1, "HUSB", string.Format(CultureInfo.InvariantCulture,
-      "@{0}@", idMap.Get(partnerRight.Id)));
+      "@{0}@", _idMap.Get(partnerRight.Id)));
     }
 
     if (partnerRight != null && partnerRight.Gender == Gender.Female)
     {
       WriteLine(1, "WIFE", string.Format(CultureInfo.InvariantCulture,
-      "@{0}@", idMap.Get(partnerRight.Id)));
+      "@{0}@", _idMap.Get(partnerRight.Id)));
     }
 
     if (relationship == null)
@@ -805,7 +805,7 @@ public class GedcomExport
     // does not contain carriage returns or exceed the line length.
     if (value.Length < ValueLimit && !value.Contains('\r') && !value.Contains('\n'))
     {
-      writer.WriteLine(string.Format(
+      _writer.WriteLine(string.Format(
           CultureInfo.InvariantCulture,
           "{0} {1} {2}", level, tag, value));
 
@@ -839,12 +839,12 @@ public class GedcomExport
         // the concatenation tag (CONT) for all other lines.
         if (lineIndex == 0 && chunkIndex == 0)
         {
-          writer.WriteLine(string.Format(CultureInfo.InvariantCulture,
+          _writer.WriteLine(string.Format(CultureInfo.InvariantCulture,
               "{0} {1} {2}", level, tag, chunk));
         }
         else
         {
-          writer.WriteLine(string.Format(CultureInfo.InvariantCulture,
+          _writer.WriteLine(string.Format(CultureInfo.InvariantCulture,
               "{0} {1} {2}", level + 1, "CONC", chunk));
         }
       }
@@ -852,7 +852,7 @@ public class GedcomExport
       // All lines except the last line have the continue (CONT) tag.
       if (lineIndex < lines.Length - 1)
       {
-        writer.WriteLine(string.Format(CultureInfo.InvariantCulture,
+        _writer.WriteLine(string.Format(CultureInfo.InvariantCulture,
            "{0} {1}", level + 1, "CONT"));
       }
     }
@@ -864,15 +864,15 @@ public class GedcomExport
 /// exceed 22 characters so GUIDs (Person.Id type) cannot be used
 /// when exporting. 
 /// </summary>
-class GedcomIdMap
+internal class GedcomIdMap
 {
   #region fields
 
   // Quick lookup that maps a GUID to a GEDCOM ID.
-  private readonly Dictionary<string, string> map = [];
+  private readonly Dictionary<string, string> _map = [];
 
   // The next ID to assign.
-  private int nextId;
+  private int _nextId;
 
   #endregion
 
@@ -882,14 +882,14 @@ class GedcomIdMap
   public string Get(string guid)
   {
     // Return right away if already mapped.
-    if (map.TryGetValue(guid, out string id))
+    if (_map.TryGetValue(guid, out string id))
     {
       return id;
     }
 
     // Assign a new GEDCOM ID and add to map.
-    id = string.Format(CultureInfo.InvariantCulture, "I{0}", nextId++);
-    map[guid] = id;
+    id = string.Format(CultureInfo.InvariantCulture, "I{0}", _nextId++);
+    _map[guid] = id;
     return id;
   }
 }
@@ -897,7 +897,7 @@ class GedcomIdMap
 /// <summary>
 /// One family group. 
 /// </summary>
-class Family(Person parentLeft, Person parentRight)
+internal class Family(Person parentLeft, Person parentRight)
 {
   /// <summary>
   /// Get the left-side parent.
@@ -923,7 +923,7 @@ class Family(Person parentLeft, Person parentRight)
 /// <summary>
 /// Orgainzes the People collection into a list of families. 
 /// </summary>
-class FamilyMap : Dictionary<string, Family>
+internal class FamilyMap : Dictionary<string, Family>
 {
   /// <summary>
   /// Organize the People collection into a list of families. A family consists of

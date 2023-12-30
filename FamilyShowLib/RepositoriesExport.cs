@@ -19,7 +19,7 @@ public class RepositoriesExport
 {
   #region fields
 
-  private StreamWriter tw;
+  private StreamWriter _tw;
 
   #endregion
 
@@ -29,26 +29,26 @@ public class RepositoriesExport
   public void ExportRepositories(string fileName, string familyFileName, RepositoryCollection repository)
   {
 
-    tw = new StreamWriter(fileName);
+    _tw = new StreamWriter(fileName);
     //write the necessary html code for a html document
-    tw.WriteLine(Header());
-    tw.WriteLine(CSS());
-    tw.WriteLine(CSSprinting(4));
+    _tw.WriteLine(Header());
+    _tw.WriteLine(CSS());
+    _tw.WriteLine(CSSprinting(4));
 
-    tw.WriteLine("</head><body>");
-    tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
+    _tw.WriteLine("</head><body>");
+    _tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
 
-    tw.WriteLine("<i>" + Properties.Resources.SummaryOfRepositoriesForFile + " " + familyFileName + "</i><br/><br/>");
+    _tw.WriteLine("<i>" + Properties.Resources.SummaryOfRepositoriesForFile + " " + familyFileName + "</i><br/><br/>");
     //Write the table headers
-    tw.WriteLine(NormalRepositoryColumns());
+    _tw.WriteLine(NormalRepositoryColumns());
 
     foreach (Repository r in repository)
     {
-      tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
+      _tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
     }
 
-    tw.WriteLine(Footer());
-    tw.Close();
+    _tw.WriteLine(Footer());
+    _tw.Close();
   }
 
   #region data output methods

@@ -34,15 +34,15 @@ public partial class DiagramViewer : UserControl
   }
 
   // Used when manually scrolling.
-  private Point scrollStartPoint;
-  private Point scrollStartOffset;
+  private Point _scrollStartPoint;
+  private Point _scrollStartOffset;
 
   // Stores the top-left offset of the diagram. Used to auto-scroll
   // the new primary node to the location of the previous selected node.
-  private Point previousTopLeftOffset;
+  private Point _previousTopLeftOffset;
 
   // Timer that is used when animating a new diagram.
-  DispatcherTimer autoCenterTimer;
+  private DispatcherTimer _autoCenterTimer;
 
   #endregion
 
@@ -84,7 +84,7 @@ public partial class DiagramViewer : UserControl
   protected override void OnInitialized(EventArgs e)
   {
     // Timer used for animations.
-    autoCenterTimer = new DispatcherTimer();
+    _autoCenterTimer = new DispatcherTimer();
 
     // Events.
     Diagram.Loaded += new RoutedEventHandler(Diagram_Loaded);
@@ -135,7 +135,7 @@ public partial class DiagramViewer : UserControl
     // Save the current top-left offset before force the layout,
     // this is used later when animating the diagram.
     Point offset = GetTopLeftScrollOffset();
-    previousTopLeftOffset = new Point(
+    _previousTopLeftOffset = new Point(
         Grid.ActualWidth - ScrollViewer.HorizontalOffset - offset.X,
         Grid.ActualHeight - ScrollViewer.VerticalOffset - offset.Y);
 
@@ -281,8 +281,8 @@ public partial class DiagramViewer : UserControl
 
       // Offset the distance the diagram is scrolled from the 
       // previous top-left position.
-      offset.X += previousTopLeftOffset.X;
-      offset.Y += previousTopLeftOffset.Y;
+      offset.X += _previousTopLeftOffset.X;
+      offset.Y += _previousTopLeftOffset.Y;
 
       // Determine the distance between the two nodes.
       Rect primaryBounds = Diagram.PrimaryNodeBounds;
@@ -304,15 +304,15 @@ public partial class DiagramViewer : UserControl
     ScrollViewer.ScrollToVerticalOffset(Grid.Height - offset.Y);
 
     // Set a timer so there is a pause before centering the diagram.
-    autoCenterTimer.Interval = App.GetAnimationDuration(Const.AutoCenterAnimationPauseDuration);
-    autoCenterTimer.Tick += new EventHandler(OnAutoCenterPauseTimer);
-    autoCenterTimer.IsEnabled = true;
+    _autoCenterTimer.Interval = App.GetAnimationDuration(Const.AutoCenterAnimationPauseDuration);
+    _autoCenterTimer.Tick += new EventHandler(OnAutoCenterPauseTimer);
+    _autoCenterTimer.IsEnabled = true;
   }
 
-  void OnAutoCenterPauseTimer(object sender, EventArgs e)
+  private void OnAutoCenterPauseTimer(object sender, EventArgs e)
   {
     // Timer only fires once.
-    autoCenterTimer.IsEnabled = false;
+    _autoCenterTimer.IsEnabled = false;
 
     // Scroll the diagram so it's centered in the display area.
     AutoScrollToCenter();
@@ -428,9 +428,9 @@ public partial class DiagramViewer : UserControl
     if (ScrollViewer.IsMouseOver && !Diagram.IsMouseOver)
     {
       // Save starting point, used later when determining how much to scroll.
-      scrollStartPoint = e.GetPosition(this);
-      scrollStartOffset.X = ScrollViewer.HorizontalOffset;
-      scrollStartOffset.Y = ScrollViewer.VerticalOffset;
+      _scrollStartPoint = e.GetPosition(this);
+      _scrollStartOffset.X = ScrollViewer.HorizontalOffset;
+      _scrollStartOffset.Y = ScrollViewer.VerticalOffset;
 
       // Update the cursor if can scroll or not.
       Cursor = (ScrollViewer.ExtentWidth > ScrollViewer.ViewportWidth) ||
@@ -452,14 +452,14 @@ public partial class DiagramViewer : UserControl
 
       // Determine the new amount to scroll.
       Point delta = new(
-          (point.X > scrollStartPoint.X) ?
-              -(point.X - scrollStartPoint.X) : (scrollStartPoint.X - point.X),
-          (point.Y > scrollStartPoint.Y) ?
-              -(point.Y - scrollStartPoint.Y) : (scrollStartPoint.Y - point.Y));
+          (point.X > _scrollStartPoint.X) ?
+              -(point.X - _scrollStartPoint.X) : (_scrollStartPoint.X - point.X),
+          (point.Y > _scrollStartPoint.Y) ?
+              -(point.Y - _scrollStartPoint.Y) : (_scrollStartPoint.Y - point.Y));
 
       // Scroll to the new position.
-      ScrollViewer.ScrollToHorizontalOffset(scrollStartOffset.X + delta.X);
-      ScrollViewer.ScrollToVerticalOffset(scrollStartOffset.Y + delta.Y);
+      ScrollViewer.ScrollToHorizontalOffset(_scrollStartOffset.X + delta.X);
+      ScrollViewer.ScrollToVerticalOffset(_scrollStartOffset.Y + delta.Y);
     }
 
     base.OnPreviewMouseMove(e);

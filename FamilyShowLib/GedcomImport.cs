@@ -28,13 +28,13 @@ public class GedcomImport
   #region fields
 
   // The collection to add entries.
-  private PeopleCollection people;
-  private SourceCollection sources;
-  private RepositoryCollection repositories;
+  private PeopleCollection _people;
+  private SourceCollection _sources;
+  private RepositoryCollection _repositories;
 
   // Convert the GEDCOM file to an XML file which is easier 
   // to parse, this contains the GEDCOM info in an XML format.
-  private XmlDocument doc;
+  private XmlDocument _doc;
 
   #endregion
 
@@ -55,18 +55,18 @@ public class GedcomImport
 
     try
     {
-      people = peopleCollection;
-      sources = sourceCollection;
-      repositories = repositoryCollection;
+      _people = peopleCollection;
+      _sources = sourceCollection;
+      _repositories = repositoryCollection;
 
       // Convert the GEDCOM file to a temp XML file.
       GedcomConverter.ConvertToXml(gedcomFilePath, xmlFilePath, true, disableCharacterCheck);
 
-      doc = new XmlDocument();
-      doc.Load(xmlFilePath);
+      _doc = new XmlDocument();
+      _doc.Load(xmlFilePath);
 
       // Get list of people.
-      XmlNodeList list = doc.SelectNodes("/root/INDI");
+      XmlNodeList list = _doc.SelectNodes("/root/INDI");
 
       // Import data from the temp XML file to the people collection.
       ImportPeople(list);
@@ -127,24 +127,24 @@ public class GedcomImport
       person.Gender = GetGender(node);
       person.Restriction = GetRestriction(node);
 
-      ImportBirth(person, node, doc);
-      ImportDeath(person, node, doc);
-      ImportBurial(person, node, doc);
-      ImportCremation(person, node, doc);
-      ImportOccupation(person, node, doc);
-      ImportReligion(person, node, doc);
-      ImportEducation(person, node, doc);
+      ImportBirth(person, node, _doc);
+      ImportDeath(person, node, _doc);
+      ImportBurial(person, node, _doc);
+      ImportCremation(person, node, _doc);
+      ImportOccupation(person, node, _doc);
+      ImportReligion(person, node, _doc);
+      ImportEducation(person, node, _doc);
 
       ImportPhotosAttachments(person, node);
       ImportNote(person, node);
 
-      people.Add(person);
+      _people.Add(person);
     }
   }
 
   private void UpdatePeopleIDs()
   {
-    foreach (Person p in people)
+    foreach (Person p in _people)
     {
       string oldpId = p.Id;
       p.Id = Guid.NewGuid().ToString();
@@ -177,7 +177,7 @@ public class GedcomImport
   private void ImportSources()
   {
     // Get list of people.
-    XmlNodeList list = doc.SelectNodes("/root/SOUR");
+    XmlNodeList list = _doc.SelectNodes("/root/SOUR");
 
     foreach (XmlNode node in list)
     {
@@ -188,21 +188,21 @@ public class GedcomImport
         SourceName = GetValue(node, "TITL"),
         SourceAuthor = GetValue(node, "AUTH"),
         SourcePublisher = GetValue(node, "PUBL"),
-        SourceNote = ImportEventNote(node, "NOTE", doc),
+        SourceNote = ImportEventNote(node, "NOTE", _doc),
         SourceRepository = GetValueId(node, "REPO").Replace("@", string.Empty)
       };
 
-      sources.Add(source);
+      _sources.Add(source);
     }
   }
 
   private void UpdateSourceIDs()
   {
-    string[,] sourceIDMap = new string[2, sources.Count];
+    string[,] sourceIDMap = new string[2, _sources.Count];
 
     int i = 0;
 
-    foreach (Source s in sources)
+    foreach (Source s in _sources)
     {
       sourceIDMap[0, i] = s.Id.Replace("@", string.Empty);
       s.Id = "S" + (i + 1).ToString();
@@ -210,7 +210,7 @@ public class GedcomImport
       i++;
     }
 
-    foreach (Person p in people)
+    foreach (Person p in _people)
     {
       //only ever replace an id once
       bool replacedMarriage = false;
@@ -223,7 +223,7 @@ public class GedcomImport
       bool replacedEducation = false;
       bool replacedReligion = false;
 
-      for (int z = 0; z < sources.Count; z++)
+      for (int z = 0; z < _sources.Count; z++)
       {
 
         string s1 = sourceIDMap[0, z];
@@ -323,7 +323,7 @@ public class GedcomImport
   private void ImportRepositories()
   {
     // Get list of people.
-    XmlNodeList list = doc.SelectNodes("/root/REPO");
+    XmlNodeList list = _doc.SelectNodes("/root/REPO");
 
     foreach (XmlNode node in list)
     {
@@ -334,17 +334,17 @@ public class GedcomImport
         RepositoryName = GetValue(node, "NAME"),
         RepositoryAddress = GetValue(node, "ADDR")
       };
-      repositories.Add(repository);
+      _repositories.Add(repository);
     }
   }
 
   private void UpdateRepositoryIDs()
   {
-    string[,] repositoryIDMap = new string[2, repositories.Count];
+    string[,] repositoryIDMap = new string[2, _repositories.Count];
 
     int i = 0;
 
-    foreach (Repository r in repositories)
+    foreach (Repository r in _repositories)
     {
       repositoryIDMap[0, i] = r.Id.Replace("@", string.Empty);
       r.Id = "R" + (i + 1).ToString();
@@ -353,11 +353,11 @@ public class GedcomImport
     }
 
 
-    foreach (Source s in sources)
+    foreach (Source s in _sources)
     {
       bool replaced = false;  //only replace an id once!
 
-      for (int z = 0; z < repositories.Count; z++)
+      for (int z = 0; z < _repositories.Count; z++)
       {
         if (s.SourceRepository == repositoryIDMap[0, z])
         {
@@ -377,7 +377,7 @@ public class GedcomImport
   private void ImportFamilies()
   {
     // Get list of families.
-    XmlNodeList list = doc.SelectNodes("/root/FAM");
+    XmlNodeList list = _doc.SelectNodes("/root/FAM");
 
     foreach (XmlNode node in list)
     {
@@ -391,11 +391,11 @@ public class GedcomImport
 
       // Get the Person objects for the husband and wife,
       // required for marriage info and adding children.
-      Person husbandPerson = people.Find(husband);
-      Person wifePerson = people.Find(wife);
+      Person husbandPerson = _people.Find(husband);
+      Person wifePerson = _people.Find(wife);
 
       // Add any marriage / divorce details.
-      ImportMarriage(husbandPerson, wifePerson, node, doc);
+      ImportMarriage(husbandPerson, wifePerson, node, _doc);
 
       int i = 0;
 
@@ -403,7 +403,7 @@ public class GedcomImport
       foreach (string child in children)
       {
         // Get the Person object for the child.
-        Person childPerson = people.Find(child);
+        Person childPerson = _people.Find(child);
 
         string husbandChildModifier = children1[1, i];
         string wifeChildModifier = children1[2, i];
@@ -433,8 +433,8 @@ public class GedcomImport
 
         if (husbandPerson != null && wifePerson != null & childPerson != null)
         {
-          people.AddChild(husbandPerson, childPerson, husbandModifier);
-          people.AddChild(wifePerson, childPerson, wifeModifier);
+          _people.AddChild(husbandPerson, childPerson, husbandModifier);
+          _people.AddChild(wifePerson, childPerson, wifeModifier);
 
           List<Person> firstParentChildren = new(husbandPerson.NaturalChildren);
           List<Person> secondParentChildren = new(wifePerson.NaturalChildren);
@@ -456,7 +456,7 @@ public class GedcomImport
           {
             if (s != childPerson && wifeModifier == ParentChildModifier.Natural && husbandModifier == ParentChildModifier.Natural)
             {
-              people.AddSibling(childPerson, s);
+              _people.AddSibling(childPerson, s);
             }
           }
 
@@ -464,28 +464,28 @@ public class GedcomImport
 
         if (husbandPerson == null && wifePerson != null & childPerson != null)
         {
-          people.AddChild(wifePerson, childPerson, wifeModifier);
+          _people.AddChild(wifePerson, childPerson, wifeModifier);
 
           // Go through and add natural siblings
           foreach (Person s in wifePerson.NaturalChildren)
           {
             if (s != childPerson && wifeModifier == ParentChildModifier.Natural)
             {
-              people.AddSibling(childPerson, s);
+              _people.AddSibling(childPerson, s);
             }
           }
         }
 
         if (husbandPerson != null && wifePerson == null & childPerson != null)
         {
-          people.AddChild(husbandPerson, childPerson, husbandModifier);
+          _people.AddChild(husbandPerson, childPerson, husbandModifier);
 
           // Go through and add natural siblings
           foreach (Person s in husbandPerson.NaturalChildren)
           {
             if (s != childPerson && husbandModifier == ParentChildModifier.Natural)
             {
-              people.AddSibling(childPerson, s);
+              _people.AddSibling(childPerson, s);
             }
           }
         }
@@ -666,7 +666,7 @@ public class GedcomImport
   /// </summary>
   private void ImportNote(Person person, XmlNode node)
   {
-    string value = GetNote(node, "NOTE", doc);
+    string value = GetNote(node, "NOTE", _doc);
 
     try
     {

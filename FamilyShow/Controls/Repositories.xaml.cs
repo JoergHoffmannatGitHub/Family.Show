@@ -14,9 +14,9 @@ public partial class Repositories : UserControl
 
   #region fields
 
-  readonly People familyCollection = App.FamilyCollection;
-  readonly SourceCollection source = App.Sources;
-  readonly RepositoryCollection repository = App.Repositories;
+  private readonly People _familyCollection = App.FamilyCollection;
+  private readonly SourceCollection _source = App.Sources;
+  private readonly RepositoryCollection _repository = App.Repositories;
 
   #endregion
 
@@ -99,7 +99,7 @@ public partial class Repositories : UserControl
     if (!string.IsNullOrEmpty(dialog.FileName))
     {
       RepositoriesExport repostories = new();
-      repostories.ExportRepositories(dialog.FileName, Path.GetFileName(familyCollection.FullyQualifiedFilename), repository);
+      repostories.ExportRepositories(dialog.FileName, Path.GetFileName(_familyCollection.FullyQualifiedFilename), _repository);
     }
 
     if (File.Exists(dialog.FileName))
@@ -131,7 +131,7 @@ public partial class Repositories : UserControl
 
     string oldRepositoryIDs = string.Empty;
 
-    foreach (Repository s in repository)
+    foreach (Repository s in _repository)
     {
       oldRepositoryIDs += s.Id + "E";
     }
@@ -145,8 +145,8 @@ public partial class Repositories : UserControl
     string repositoryID = "R" + y.ToString();
 
     Repository newRepository = new(repositoryID, "", "");
-    repository.Add(newRepository);
-    repository.OnContentChanged();
+    _repository.Add(newRepository);
+    _repository.OnContentChanged();
   }
 
   private void Save()
@@ -168,7 +168,7 @@ public partial class Repositories : UserControl
 
       bool deletable = true;
 
-      foreach (Source s in source)
+      foreach (Source s in _source)
       {
         if (deletable == true)
         {
@@ -186,8 +186,8 @@ public partial class Repositories : UserControl
 
         if (result == MessageBoxResult.Yes)
         {
-          repository.Remove(repositoryToRemove);
-          repository.OnContentChanged();
+          _repository.Remove(repositoryToRemove);
+          _repository.OnContentChanged();
           Clear();
         }
 

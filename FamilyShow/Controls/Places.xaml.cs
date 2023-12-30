@@ -14,7 +14,7 @@ public partial class Places : UserControl
 
   #region fields
 
-  readonly PeopleCollection family = App.Family;
+  private readonly PeopleCollection _family = App.Family;
   public int minYear = DateTime.Now.Year;
 
   #endregion
@@ -218,17 +218,17 @@ public partial class Places : UserControl
 
           if (Options() == "1")
           {
-            summary = PlacesExport.ExportPlaces(family, filename, Privacy(), false, false, true, Burials(), Deaths(), Cremations(), Births(), Marriages());
+            summary = PlacesExport.ExportPlaces(_family, filename, Privacy(), false, false, true, Burials(), Deaths(), Cremations(), Births(), Marriages());
           }
 
           if (Options() == "2")
           {
-            summary = PlacesExport.ExportPlaces(family, filename, Privacy(), true, false, false, Burials(), Deaths(), Cremations(), Births(), Marriages());
+            summary = PlacesExport.ExportPlaces(_family, filename, Privacy(), true, false, false, Burials(), Deaths(), Cremations(), Births(), Marriages());
           }
 
           if (Options() == "3")
           {
-            summary = PlacesExport.ExportPlaces(family, filename, Privacy(), false, true, false, Burials(), Deaths(), Cremations(), Births(), Marriages());
+            summary = PlacesExport.ExportPlaces(_family, filename, Privacy(), false, true, false, Burials(), Deaths(), Cremations(), Births(), Marriages());
           }
 
           if (summary[1] == "No file")

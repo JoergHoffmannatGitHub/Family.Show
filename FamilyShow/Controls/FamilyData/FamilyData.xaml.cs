@@ -25,11 +25,11 @@ public partial class FamilyData : UserControl
     remove { RemoveHandler(CloseButtonClickEvent, value); }
   }
 
-  string ageFilter;
-  string surnameFilter;
-  string birthdateFilter;
-  string livingFilter;
-  string genderFilter;
+  private string _ageFilter;
+  private string _surnameFilter;
+  private string _birthdateFilter;
+  private string _livingFilter;
+  private string _genderFilter;
 
   public FamilyData()
   {
@@ -145,7 +145,7 @@ public partial class FamilyData : UserControl
     GenderDistributionControl1.Refresh();
   }
 
-  void OnFamilyContentChanged(object sender, ContentChangedEventArgs e)
+  private void OnFamilyContentChanged(object sender, ContentChangedEventArgs e)
   {
     Refresh();
   }
@@ -153,7 +153,7 @@ public partial class FamilyData : UserControl
   /// <summary>
   /// A control lost focus. Refresh the chart controls if a cell was updated.
   /// </summary>
-  void FamilyEditor_LostFocus(object sender, RoutedEventArgs e)
+  private void FamilyEditor_LostFocus(object sender, RoutedEventArgs e)
   {
     if (e.OriginalSource is TextBox || e.OriginalSource is CheckBox)
     {
@@ -319,7 +319,7 @@ public partial class FamilyData : UserControl
   /// <summary>
   /// Allow the analytic user controls to reset their selections when the filter is reset
   /// </summary>
-  void FilterTextBox_ResetFilter(object sender, RoutedEventArgs e)
+  private void FilterTextBox_ResetFilter(object sender, RoutedEventArgs e)
   {
     TagCloudControl.ClearSelection();
     AgeDistributionControl.ClearSelection();
@@ -327,11 +327,11 @@ public partial class FamilyData : UserControl
     GenderDistributionControl1.ClearSelection();
     LivingDistributionControl1.ClearSelection();
 
-    surnameFilter = null;
-    ageFilter = null;
-    birthdateFilter = null;
-    livingFilter = null;
-    genderFilter = null;
+    _surnameFilter = null;
+    _ageFilter = null;
+    _birthdateFilter = null;
+    _livingFilter = null;
+    _genderFilter = null;
     scrollToTop();
 
   }
@@ -339,11 +339,11 @@ public partial class FamilyData : UserControl
   /// <summary>
   /// Selection changed in the chart, update the filter.
   /// </summary>
-  void TagCloudControl_TagSelectionChanged(object sender, RoutedEventArgs e)
+  private void TagCloudControl_TagSelectionChanged(object sender, RoutedEventArgs e)
   {
 
     string filter = e.OriginalSource as string;
-    surnameFilter = filter;
+    _surnameFilter = filter;
     if (filter != null)
     {
       UpdateFilter(filter);
@@ -353,11 +353,11 @@ public partial class FamilyData : UserControl
   /// <summary>
   /// Selection changed in the chart, update the filter.
   /// </summary>
-  void AgeDistributionControl_CategorySelectionChanged(object sender, RoutedEventArgs e)
+  private void AgeDistributionControl_CategorySelectionChanged(object sender, RoutedEventArgs e)
   {
 
     string filter = e.OriginalSource as string;
-    ageFilter = filter;
+    _ageFilter = filter;
     if (filter != null)
     {
       UpdateFilter(filter);
@@ -367,12 +367,12 @@ public partial class FamilyData : UserControl
   /// <summary>
   /// Selection changed in the chart, update the filter.
   /// </summary>
-  void BirthdaysControl_SelectionChanged(object sender, RoutedEventArgs e)
+  private void BirthdaysControl_SelectionChanged(object sender, RoutedEventArgs e)
   {
 
     if (e.OriginalSource is DateTime date)
     {
-      birthdateFilter = date.ToShortDateString();
+      _birthdateFilter = date.ToShortDateString();
       UpdateFilter(date.ToShortDateString());
     }
   }
@@ -380,11 +380,11 @@ public partial class FamilyData : UserControl
   /// <summary>
   /// Selection changed in the chart, update the filter.
   /// </summary>
-  void GenderDistributionControl1_CategorySelectionChanged(object sender, RoutedEventArgs e)
+  private void GenderDistributionControl1_CategorySelectionChanged(object sender, RoutedEventArgs e)
   {
 
     string filter = e.OriginalSource as string;
-    genderFilter = filter;
+    _genderFilter = filter;
     if (filter != null)
     {
       UpdateFilter(filter);
@@ -394,11 +394,11 @@ public partial class FamilyData : UserControl
   /// <summary>
   /// Selection changed in the chart, update the filter.
   /// </summary>
-  void LivingDistributionControl1_CategorySelectionChanged(object sender, RoutedEventArgs e)
+  private void LivingDistributionControl1_CategorySelectionChanged(object sender, RoutedEventArgs e)
   {
 
     string filter = e.OriginalSource as string;
-    livingFilter = filter;
+    _livingFilter = filter;
     if (filter != null)
     {
       UpdateFilter(filter);
@@ -419,27 +419,27 @@ public partial class FamilyData : UserControl
   /// </summary>
   private void UpdateControls(string filter)
   {
-    if (ageFilter != filter)
+    if (_ageFilter != filter)
     {
       AgeDistributionControl.ClearSelection();
     }
 
-    if (surnameFilter != filter)
+    if (_surnameFilter != filter)
     {
       TagCloudControl.ClearSelection();
     }
 
-    if (birthdateFilter != filter)
+    if (_birthdateFilter != filter)
     {
       BirthdaysControl.ClearSelection();
     }
 
-    if (livingFilter != filter)
+    if (_livingFilter != filter)
     {
       LivingDistributionControl1.ClearSelection();
     }
 
-    if (genderFilter != filter)
+    if (_genderFilter != filter)
     {
       GenderDistributionControl1.ClearSelection();
     }

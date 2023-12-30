@@ -15,7 +15,7 @@ namespace Microsoft.FamilyShow;
 
 public partial class SharedBirthdays : UserControl
 {
-  private static ListCollectionView lcv;
+  private static ListCollectionView s_lcv;
 
   #region dependency properties
 
@@ -68,7 +68,7 @@ public partial class SharedBirthdays : UserControl
     SharedBirthdays sharedBirthdays = ((SharedBirthdays)sender);
 
     // ListCollectionView is used for sorting and grouping
-    lcv = new ListCollectionView((IList)args.NewValue)
+    s_lcv = new ListCollectionView((IList)args.NewValue)
     {
       // Include only those people with a birthdate
       Filter = new Predicate<object>(FilterPerson),
@@ -78,9 +78,9 @@ public partial class SharedBirthdays : UserControl
     };
 
     // Group the collection by the month and day of the person's birthdate
-    lcv.GroupDescriptions.Add(new PropertyGroupDescription("BirthMonthAndDay"));
+    s_lcv.GroupDescriptions.Add(new PropertyGroupDescription("BirthMonthAndDay"));
 
-    sharedBirthdays.GroupedItemsControl.ItemsSource = lcv;
+    sharedBirthdays.GroupedItemsControl.ItemsSource = s_lcv;
   }
 
   private void GroupedListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -95,7 +95,7 @@ public partial class SharedBirthdays : UserControl
 
   internal static void Refresh()
   {
-    lcv.Refresh();
+    s_lcv.Refresh();
   }
 
   internal void ClearSelection()

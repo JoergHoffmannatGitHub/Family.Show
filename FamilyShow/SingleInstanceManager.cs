@@ -44,7 +44,7 @@ internal class SingleInstanceManager : WindowsFormsApplicationBase
   }
 
   [STAThread]
-  static void Main(string[] args)
+  private static void Main(string[] args)
   {
     SingleInstanceManager manager = new();
     manager.Run(args);

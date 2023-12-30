@@ -21,12 +21,12 @@ public class Source : INotifyPropertyChanged, IEquatable<Source>
 
   #region Fields and Constants
 
-  private string id;
-  private string sourceName;
-  private string sourceAuthor;
-  private string sourcePublisher;
-  private string sourceNote;
-  private string sourceRepository;
+  private string _id;
+  private string _sourceName;
+  private string _sourceAuthor;
+  private string _sourcePublisher;
+  private string _sourceNote;
+  private string _sourceRepository;
 
   #endregion
 
@@ -35,12 +35,12 @@ public class Source : INotifyPropertyChanged, IEquatable<Source>
   [XmlAttribute]
   public string Id
   {
-    get { return id; }
+    get { return _id; }
     set
     {
-      if (id != value)
+      if (_id != value)
       {
-        id = value;
+        _id = value;
         OnPropertyChanged(nameof(Id));
       }
     }
@@ -48,12 +48,12 @@ public class Source : INotifyPropertyChanged, IEquatable<Source>
 
   public string SourceName
   {
-    get { return sourceName; }
+    get { return _sourceName; }
     set
     {
-      if (sourceName != value)
+      if (_sourceName != value)
       {
-        sourceName = value;
+        _sourceName = value;
         OnPropertyChanged(nameof(SourceName));
       }
     }
@@ -61,12 +61,12 @@ public class Source : INotifyPropertyChanged, IEquatable<Source>
 
   public string SourceAuthor
   {
-    get { return sourceAuthor; }
+    get { return _sourceAuthor; }
     set
     {
-      if (sourceAuthor != value)
+      if (_sourceAuthor != value)
       {
-        sourceAuthor = value;
+        _sourceAuthor = value;
         OnPropertyChanged(nameof(SourceAuthor));
       }
     }
@@ -74,12 +74,12 @@ public class Source : INotifyPropertyChanged, IEquatable<Source>
 
   public string SourcePublisher
   {
-    get { return sourcePublisher; }
+    get { return _sourcePublisher; }
     set
     {
-      if (sourcePublisher != value)
+      if (_sourcePublisher != value)
       {
-        sourcePublisher = value;
+        _sourcePublisher = value;
         OnPropertyChanged(nameof(SourcePublisher));
       }
     }
@@ -87,12 +87,12 @@ public class Source : INotifyPropertyChanged, IEquatable<Source>
 
   public string SourceNote
   {
-    get { return sourceNote; }
+    get { return _sourceNote; }
     set
     {
-      if (sourceNote != value)
+      if (_sourceNote != value)
       {
-        sourceNote = value;
+        _sourceNote = value;
         OnPropertyChanged(nameof(SourceNote));
       }
     }
@@ -100,12 +100,12 @@ public class Source : INotifyPropertyChanged, IEquatable<Source>
 
   public string SourceRepository
   {
-    get { return sourceRepository; }
+    get { return _sourceRepository; }
     set
     {
-      if (sourceRepository != value)
+      if (_sourceRepository != value)
       {
-        sourceRepository = value;
+        _sourceRepository = value;
         OnPropertyChanged(nameof(SourceRepository));
       }
     }
@@ -114,7 +114,7 @@ public class Source : INotifyPropertyChanged, IEquatable<Source>
   [XmlIgnore]
   public string SourceNameAndId
   {
-    get { return id + " " + sourceName; }
+    get { return _id + " " + _sourceName; }
     set { }
   }
 
@@ -128,7 +128,7 @@ public class Source : INotifyPropertyChanged, IEquatable<Source>
   /// </summary>
   public Source()
   {
-    sourceName = Properties.Resources.Unknown;
+    _sourceName = Properties.Resources.Unknown;
   }
 
   /// <summary>
@@ -140,32 +140,32 @@ public class Source : INotifyPropertyChanged, IEquatable<Source>
   {
     if (!string.IsNullOrEmpty(sourceId))
     {
-      id = sourceId;
+      _id = sourceId;
     }
 
     if (!string.IsNullOrEmpty(sourceName))
     {
-      this.sourceName = sourceName;
+      _sourceName = sourceName;
     }
 
     if (!string.IsNullOrEmpty(sourceAuthor))
     {
-      this.sourceAuthor = sourceAuthor;
+      _sourceAuthor = sourceAuthor;
     }
 
     if (!string.IsNullOrEmpty(sourcePublisher))
     {
-      this.sourcePublisher = sourcePublisher;
+      _sourcePublisher = sourcePublisher;
     }
 
     if (!string.IsNullOrEmpty(sourceNote))
     {
-      this.sourceNote = sourceNote;
+      _sourceNote = sourceNote;
     }
 
     if (!string.IsNullOrEmpty(sourceRepository))
     {
-      this.sourceRepository = sourceRepository;
+      _sourceRepository = sourceRepository;
     }
   }
 

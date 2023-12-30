@@ -12,18 +12,18 @@ using Microsoft.FamilyShowLib;
 
 namespace Microsoft.FamilyShow;
 
-class DiagramLogic
+internal class DiagramLogic
 {
   #region fields
 
   // DPI information at which this Visual is measured and rendered.
-  private DpiScale dpiScale;
+  private DpiScale _dpiScale;
 
   // Callback when a node is clicked.
-  private RoutedEventHandler nodeClickHandler;
+  private RoutedEventHandler _nodeClickHandler;
 
   // Filter year for nodes and connectors.
-  private double displayYear;
+  private double _displayYear;
 
   #endregion
 
@@ -34,7 +34,7 @@ class DiagramLogic
   /// </summary>
   public RoutedEventHandler NodeClickHandler
   {
-    set { nodeClickHandler = value; }
+    set { _nodeClickHandler = value; }
   }
 
   /// <summary>
@@ -60,12 +60,12 @@ class DiagramLogic
   {
     set
     {
-      if (displayYear != value)
+      if (_displayYear != value)
       {
-        displayYear = value;
+        _displayYear = value;
         foreach (DiagramConnectorNode connectorNode in PersonLookup.Values)
         {
-          connectorNode.Node.DisplayYear = displayYear;
+          connectorNode.Node.DisplayYear = _displayYear;
         }
       }
     }
@@ -130,7 +130,7 @@ class DiagramLogic
     // The list of people, this is a global list shared by the application.
     Family = App.Family;
 
-    this.dpiScale = dpiScale;
+    _dpiScale = dpiScale;
 
     Clear();
   }
@@ -248,7 +248,7 @@ class DiagramLogic
     };
     if (clickEvent)
     {
-      node.Click += nodeClickHandler;
+      node.Click += _nodeClickHandler;
     }
 
     return node;
@@ -291,7 +291,7 @@ class DiagramLogic
         DiagramConnectorNode connectorNode = new(node, group, row);
         PersonLookup.Add(node.Person, connectorNode);
         Connections.Add(new MarriedDiagramConnector(married,
-          PersonLookup[person], connectorNode, dpiScale));
+          PersonLookup[person], connectorNode, _dpiScale));
       }
     }
   }
@@ -568,7 +568,7 @@ class DiagramLogic
     if (PersonLookup.TryGetValue(person, out DiagramConnectorNode personConnector) &&
         PersonLookup.TryGetValue(spouse, out DiagramConnectorNode spouseConnector))
     {
-      Connections.Add(new MarriedDiagramConnector(isMarried, personConnector, spouseConnector, dpiScale));
+      Connections.Add(new MarriedDiagramConnector(isMarried, personConnector, spouseConnector, _dpiScale));
     }
   }
 
@@ -584,7 +584,7 @@ class DiagramLogic
     // which can hinder garbage collection. 
     foreach (DiagramConnectorNode node in PersonLookup.Values)
     {
-      node.Node.Click -= nodeClickHandler;
+      node.Node.Click -= _nodeClickHandler;
     }
 
     // Clear the connection info.
@@ -592,7 +592,7 @@ class DiagramLogic
     PersonLookup.Clear();
 
     // Time filter.
-    displayYear = DateTime.Now.Year;
+    _displayYear = DateTime.Now.Year;
   }
 
   /// <summary>

@@ -15,10 +15,10 @@ public partial class Sources : UserControl
 
   #region fields
 
-  readonly People familyCollection = App.FamilyCollection;
-  readonly PeopleCollection family = App.Family;
-  readonly SourceCollection source = App.Sources;
-  readonly RepositoryCollection repository = App.Repositories;
+  private readonly People _familyCollection = App.FamilyCollection;
+  private readonly PeopleCollection _family = App.Family;
+  private readonly SourceCollection _source = App.Sources;
+  private readonly RepositoryCollection _repository = App.Repositories;
 
   #endregion
 
@@ -91,7 +91,7 @@ public partial class Sources : UserControl
 
       try
       {
-        SourceRepository.Content = "(" + repository.Find(SourceRepositoryEditTextBox.Text).RepositoryName + ")";
+        SourceRepository.Content = "(" + _repository.Find(SourceRepositoryEditTextBox.Text).RepositoryName + ")";
       }
       catch
       {
@@ -114,7 +114,7 @@ public partial class Sources : UserControl
     if (!string.IsNullOrEmpty(dialog.FileName))
     {
       SourcesExport sources = new();
-      sources.ExportSources(dialog.FileName, Path.GetFileName(familyCollection.FullyQualifiedFilename), source);
+      sources.ExportSources(dialog.FileName, Path.GetFileName(_familyCollection.FullyQualifiedFilename), _source);
     }
 
     if (File.Exists(dialog.FileName))
@@ -152,7 +152,7 @@ public partial class Sources : UserControl
 
     string oldSourceIDs = string.Empty;
 
-    foreach (Source s in source)
+    foreach (Source s in _source)
     {
       oldSourceIDs += s.Id + "E";
     }
@@ -166,8 +166,8 @@ public partial class Sources : UserControl
     string sourceID = "S" + y.ToString();
 
     Source newSource = new(sourceID, "", "", "", "", "");
-    source.Add(newSource);
-    source.OnContentChanged();
+    _source.Add(newSource);
+    _source.OnContentChanged();
   }
 
   private void Save()
@@ -194,7 +194,7 @@ public partial class Sources : UserControl
 
       bool deletable = true;
 
-      foreach (Person p in family)
+      foreach (Person p in _family)
       {
 
         if (deletable == true)
@@ -253,8 +253,8 @@ public partial class Sources : UserControl
 
         if (result == MessageBoxResult.Yes)
         {
-          source.Remove(sourceToRemove);
-          source.OnContentChanged();
+          _source.Remove(sourceToRemove);
+          _source.OnContentChanged();
           Clear();
         }
       }
@@ -269,7 +269,7 @@ public partial class Sources : UserControl
   {
     try
     {
-      SourceRepository.Content = "(" + repository.Find(SourceRepositoryEditTextBox.Text).RepositoryName + ")";
+      SourceRepository.Content = "(" + _repository.Find(SourceRepositoryEditTextBox.Text).RepositoryName + ")";
     }
     catch
     {

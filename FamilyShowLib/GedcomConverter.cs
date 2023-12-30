@@ -18,7 +18,7 @@ namespace Microsoft.FamilyShowLib;
 /// <summary>
 /// Converts a GEDCOM file to an XML file.
 /// </summary>
-static class GedcomConverter
+internal static class GedcomConverter
 {
 
   /// Create an xml file that contains the same hierarchy specified in 
@@ -157,7 +157,7 @@ static class GedcomConverter
 /// <summary>
 /// Parses one line in a GEDCOM file.
 /// </summary>
-partial class GedcomLine
+internal partial class GedcomLine
 {
   #region regex
 

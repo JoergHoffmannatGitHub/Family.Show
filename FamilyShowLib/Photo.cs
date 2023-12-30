@@ -16,8 +16,8 @@ public class Photo : INotifyPropertyChanged
   #region Fields and Constants
 
   public const string PhotosFolderName = "Images";
-  private string relativePath;
-  private bool isAvatar;
+  private string _relativePath;
+  private bool _isAvatar;
 
   #endregion
 
@@ -28,12 +28,12 @@ public class Photo : INotifyPropertyChanged
   /// </summary>
   public string RelativePath
   {
-    get { return relativePath; }
+    get { return _relativePath; }
     set
     {
-      if (relativePath != value)
+      if (_relativePath != value)
       {
-        relativePath = value;
+        _relativePath = value;
         OnPropertyChanged("relativePath");
       }
     }
@@ -52,7 +52,7 @@ public class Photo : INotifyPropertyChanged
       App.ApplicationFolderName);
       tempFolder = Path.Combine(tempFolder, App.AppDataFolderName);
 
-      return Path.Combine(tempFolder, relativePath);
+      return Path.Combine(tempFolder, _relativePath);
     }
     set
     {
@@ -65,12 +65,12 @@ public class Photo : INotifyPropertyChanged
   /// </summary>
   public bool IsAvatar
   {
-    get { return isAvatar; }
+    get { return _isAvatar; }
     set
     {
-      if (isAvatar != value)
+      if (_isAvatar != value)
       {
-        isAvatar = value;
+        _isAvatar = value;
         OnPropertyChanged(nameof(IsAvatar));
       }
     }
@@ -94,7 +94,7 @@ public class Photo : INotifyPropertyChanged
     if (!string.IsNullOrEmpty(photoPath))
     {
       // Copy the photo to the images folder
-      relativePath = Copy(photoPath);
+      _relativePath = Copy(photoPath);
     }
   }
 

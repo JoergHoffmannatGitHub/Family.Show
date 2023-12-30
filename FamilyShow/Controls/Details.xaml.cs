@@ -19,20 +19,18 @@ public partial class Details : UserControl
 {
   #region fields
 
-  readonly PeopleCollection family = App.Family;
-  readonly SourceCollection sources = App.Sources;
+  private readonly PeopleCollection _family = App.Family;
+  private readonly SourceCollection _sources = App.Sources;
+  private Gender _genderFilter = Gender.Male;
+  private bool _resetFilter;     //When true, enables quick filter reset
+  private bool _existingFilter;  //When true, enables automatic filtering on gender and relatives
+  private bool _ignoreGender;    //When true, enables filtering on gender
 
-  Gender genderFilter = Gender.Male;
-
-  bool ResetFilter = false;     //When true, enables quick filter reset
-  bool ExistingFilter = false;  //When true, enables automatic filtering on gender and relatives
-  bool ignoreGender = false;    //When true, enables filtering on gender
-
-  private StreamWriter tw;
+  private StreamWriter _tw;
 
   // Setting the ItemsSource selects the first item which raises the SelectionChanged event.
   // This flag prevents the initialization code from making the selection.
-  bool ignoreSelection = true;
+  private bool _ignoreSelection = true;
 
   #endregion
 
@@ -53,19 +51,19 @@ public partial class Details : UserControl
 
     // Bind the Family ListView and turn off the allow the selection 
     // change event to change the selected item.
-    FamilyListView.ItemsSource = family;
-    ignoreSelection = false;
+    FamilyListView.ItemsSource = _family;
+    _ignoreSelection = false;
 
     // Set the default sort order for the Family ListView to 
     // the person's first name.
-    ICollectionView view = System.Windows.Data.CollectionViewSource.GetDefaultView(family);
+    ICollectionView view = System.Windows.Data.CollectionViewSource.GetDefaultView(_family);
     view.SortDescriptions.Add(new SortDescription("FirstName", ListSortDirection.Ascending));
 
     // Handle event when the selected person changes so can select 
     // the item in the list.
-    family.CurrentChanged += new EventHandler(Family_CurrentChanged);
+    _family.CurrentChanged += new EventHandler(Family_CurrentChanged);
 
-    ExistingPeopleListBox.ItemsSource = family;
+    ExistingPeopleListBox.ItemsSource = _family;
 
   }
 
@@ -136,7 +134,7 @@ public partial class Details : UserControl
         }
 
         person.OnPropertyChanged("HasAttachments");
-        family.OnContentChanged();
+        _family.OnContentChanged();
       }
     }
   }
@@ -366,7 +364,7 @@ public partial class Details : UserControl
         case FamilyMemberComboBoxValue.Brother:
           relationship = Properties.Resources.Brother;
           // Assume that the new person has the same last name.
-          surname = family.Current.LastName;
+          surname = _family.Current.LastName;
           break;
         case FamilyMemberComboBoxValue.Daughter:
           relationship = Properties.Resources.Daughter;
@@ -374,13 +372,13 @@ public partial class Details : UserControl
         case FamilyMemberComboBoxValue.Son:
           relationship = Properties.Resources.Son;
           // Assume that the new person has the same last name as the husband
-          if ((family.Current.Gender == Gender.Female) && (family.Current.Spouses.Count > 0) && (family.Current.Spouses[0].Gender == Gender.Male))
+          if ((_family.Current.Gender == Gender.Female) && (_family.Current.Spouses.Count > 0) && (_family.Current.Spouses[0].Gender == Gender.Male))
           {
-            surname = family.Current.Spouses[0].LastName;
+            surname = _family.Current.Spouses[0].LastName;
           }
           else
           {
-            surname = family.Current.LastName;
+            surname = _family.Current.LastName;
           }
 
           break;
@@ -437,8 +435,8 @@ public partial class Details : UserControl
       newPerson.BirthPlace = BirthPlaceInputTextBox.Text;
 
       bool SelectParent = false;
-      ParentSetCollection possibleParents = family.Current.PossibleParentSets;
-      _ = family.Current.Parents.Count;
+      ParentSetCollection possibleParents = _family.Current.PossibleParentSets;
+      _ = _family.Current.Parents.Count;
 
       // Perform the action based on the selected relationship
       switch ((FamilyMemberComboBoxValue)FamilyMemberComboBox.SelectedValue)
@@ -446,9 +444,9 @@ public partial class Details : UserControl
         case FamilyMemberComboBoxValue.Father:
           newPerson.Gender = Gender.Male;
 
-          RelationshipHelper.AddParent(family, family.Current, newPerson);
+          RelationshipHelper.AddParent(_family, _family.Current, newPerson);
 
-          if (family.Current.Parents.Count == 2)
+          if (_family.Current.Parents.Count == 2)
           {
             // Person has parents, choice another default.
             SetNextFamilyMemberAction(FamilyMemberComboBoxValue.Brother);
@@ -463,9 +461,9 @@ public partial class Details : UserControl
         case FamilyMemberComboBoxValue.Mother:
           newPerson.Gender = Gender.Female;
 
-          RelationshipHelper.AddParent(family, family.Current, newPerson);
+          RelationshipHelper.AddParent(_family, _family.Current, newPerson);
 
-          if (family.Current.Parents.Count == 2)
+          if (_family.Current.Parents.Count == 2)
           {
             // Person has parents, choice another default.
             SetNextFamilyMemberAction(FamilyMemberComboBoxValue.Brother);
@@ -487,7 +485,7 @@ public partial class Details : UserControl
           }
           else
           {
-            RelationshipHelper.AddSibling(family, family.Current, newPerson);
+            RelationshipHelper.AddSibling(_family, _family.Current, newPerson);
           }
 
           break;
@@ -502,48 +500,48 @@ public partial class Details : UserControl
           }
           else
           {
-            RelationshipHelper.AddSibling(family, family.Current, newPerson);
+            RelationshipHelper.AddSibling(_family, _family.Current, newPerson);
           }
 
           break;
 
         case FamilyMemberComboBoxValue.Spouse:
-          RelationshipHelper.AddSpouse(family, family.Current, newPerson, SpouseModifier.Current);
+          RelationshipHelper.AddSpouse(_family, _family.Current, newPerson, SpouseModifier.Current);
           SetNextFamilyMemberAction(FamilyMemberComboBoxValue.Son);
           break;
 
         case FamilyMemberComboBoxValue.Son:
           newPerson.Gender = Gender.Male;
 
-          if (family.Current.Spouses.Count > 1)
+          if (_family.Current.Spouses.Count > 1)
           {
-            possibleParents = family.Current.MakeParentSets();
+            possibleParents = _family.Current.MakeParentSets();
             SelectParent = true;
           }
           else
           {
-            RelationshipHelper.AddChild(family, family.Current, newPerson, ParentChildModifier.Natural);
+            RelationshipHelper.AddChild(_family, _family.Current, newPerson, ParentChildModifier.Natural);
           }
 
           break;
 
         case FamilyMemberComboBoxValue.Daughter:
           newPerson.Gender = Gender.Female;
-          if (family.Current.Spouses.Count > 1)
+          if (_family.Current.Spouses.Count > 1)
           {
-            possibleParents = family.Current.MakeParentSets();
+            possibleParents = _family.Current.MakeParentSets();
             SelectParent = true;
           }
           else
           {
-            RelationshipHelper.AddChild(family, family.Current, newPerson, ParentChildModifier.Natural);
+            RelationshipHelper.AddChild(_family, _family.Current, newPerson, ParentChildModifier.Natural);
           }
 
           break;
         case FamilyMemberComboBoxValue.Unrelated:
-          family.Add(newPerson);
-          family.Current = newPerson;
-          family.OnContentChanged();
+          _family.Add(newPerson);
+          _family.Current = newPerson;
+          _family.OnContentChanged();
           SetNextFamilyMemberAction(FamilyMemberComboBoxValue.Father);
           break;
       }
@@ -560,8 +558,8 @@ public partial class Details : UserControl
         FamilyMemberComboBox.SelectedIndex = -1;
         FamilyMemberAddButton.Focus();
       }
-      family.OnContentChanged(newPerson);
-      family.OnContentChanged(family.Current);
+      _family.OnContentChanged(newPerson);
+      _family.OnContentChanged(_family.Current);
     }
   }
 
@@ -590,21 +588,21 @@ public partial class Details : UserControl
       {
         case FamilyMemberComboBoxValue.Brother:
           newPerson.Gender = Gender.Male;
-          RelationshipHelper.AddParent(family, newPerson, (ParentSet)ParentsListBox.SelectedValue);
+          RelationshipHelper.AddParent(_family, newPerson, (ParentSet)ParentsListBox.SelectedValue);
           break;
 
         case FamilyMemberComboBoxValue.Sister:
           newPerson.Gender = Gender.Female;
-          RelationshipHelper.AddParent(family, newPerson, (ParentSet)ParentsListBox.SelectedValue);
+          RelationshipHelper.AddParent(_family, newPerson, (ParentSet)ParentsListBox.SelectedValue);
           break;
         case FamilyMemberComboBoxValue.Son:
           newPerson.Gender = Gender.Male;
-          RelationshipHelper.AddParent(family, newPerson, (ParentSet)ParentsListBox.SelectedValue);
+          RelationshipHelper.AddParent(_family, newPerson, (ParentSet)ParentsListBox.SelectedValue);
           break;
 
         case FamilyMemberComboBoxValue.Daughter:
           newPerson.Gender = Gender.Female;
-          RelationshipHelper.AddParent(family, newPerson, (ParentSet)ParentsListBox.SelectedValue);
+          RelationshipHelper.AddParent(_family, newPerson, (ParentSet)ParentsListBox.SelectedValue);
           break;
       }
 
@@ -614,8 +612,8 @@ public partial class Details : UserControl
       // Use animation to hide the Details Add Intermediate section
       ((Storyboard)Resources["CollapseDetailsAddIntermediate"]).Begin(this);
 
-      family.OnContentChanged(newPerson);
-      family.OnContentChanged(family.Current);
+      _family.OnContentChanged(newPerson);
+      _family.OnContentChanged(_family.Current);
 
     }
   }
@@ -629,7 +627,7 @@ public partial class Details : UserControl
 
       bool PersonAdded = false; //flag when person is added
 
-      if (existingPerson != family.Current && existingPerson != null)
+      if (existingPerson != _family.Current && existingPerson != null)
       {
         // Perform the action based on the selected relationship
         switch ((ExistingFamilyMemberComboBoxValue)ExistingFamilyMemberComboBox.SelectedValue)
@@ -638,7 +636,7 @@ public partial class Details : UserControl
           case ExistingFamilyMemberComboBoxValue.Father:
             if (existingPerson.Gender == Gender.Male)
             {
-              RelationshipHelper.AddExistingParent(family, family.Current, existingPerson, ParentChildModifier.Natural);
+              RelationshipHelper.AddExistingParent(_family, _family.Current, existingPerson, ParentChildModifier.Natural);
             }
 
             break;
@@ -646,7 +644,7 @@ public partial class Details : UserControl
           case ExistingFamilyMemberComboBoxValue.Mother:
             if (existingPerson.Gender == Gender.Female)
             {
-              RelationshipHelper.AddExistingParent(family, family.Current, existingPerson, ParentChildModifier.Natural);
+              RelationshipHelper.AddExistingParent(_family, _family.Current, existingPerson, ParentChildModifier.Natural);
             }
 
             break;
@@ -654,7 +652,7 @@ public partial class Details : UserControl
           case ExistingFamilyMemberComboBoxValue.Brother:
             if (existingPerson.Gender == Gender.Male)
             {
-              RelationshipHelper.AddExistingSibling(family, family.Current, existingPerson);
+              RelationshipHelper.AddExistingSibling(_family, _family.Current, existingPerson);
             }
 
             break;
@@ -663,16 +661,16 @@ public partial class Details : UserControl
 
             if (existingPerson.Gender == Gender.Female)
             {
-              RelationshipHelper.AddExistingSibling(family, family.Current, existingPerson);
+              RelationshipHelper.AddExistingSibling(_family, _family.Current, existingPerson);
             }
 
             break;
 
 
           case ExistingFamilyMemberComboBoxValue.Spouse:
-            if (!existingPerson.Spouses.Contains(family.Current))
+            if (!existingPerson.Spouses.Contains(_family.Current))
             {
-              RelationshipHelper.AddExistingSpouse(family, family.Current, existingPerson, SpouseModifier.Current);
+              RelationshipHelper.AddExistingSpouse(_family, _family.Current, existingPerson, SpouseModifier.Current);
             }
 
             break;
@@ -681,7 +679,7 @@ public partial class Details : UserControl
 
             if (existingPerson.Gender == Gender.Male)
             {
-              RelationshipHelper.AddExistingChild(family, family.Current, existingPerson, ParentChildModifier.Natural);
+              RelationshipHelper.AddExistingChild(_family, _family.Current, existingPerson, ParentChildModifier.Natural);
             }
 
             break;
@@ -690,7 +688,7 @@ public partial class Details : UserControl
 
             if (existingPerson.Gender == Gender.Female)
             {
-              RelationshipHelper.AddExistingChild(family, family.Current, existingPerson, ParentChildModifier.Natural);
+              RelationshipHelper.AddExistingChild(_family, _family.Current, existingPerson, ParentChildModifier.Natural);
             }
 
             break;
@@ -706,15 +704,15 @@ public partial class Details : UserControl
 
       if (PersonAdded == true)
       {
-        family.OnContentChanged();
+        _family.OnContentChanged();
         // Use animation to hide the Details Add section
         ((Storyboard)Resources["CollapseAddExisting"]).Begin(this);
 
         FamilyMemberComboBox.SelectedIndex = -1;
         FamilyMemberAddButton.Focus();
-        family.OnContentChanged();
-        family.OnContentChanged(family.Current);
-        family.OnContentChanged(existingPerson);
+        _family.OnContentChanged();
+        _family.OnContentChanged(_family.Current);
+        _family.OnContentChanged(existingPerson);
       }
 
     }
@@ -746,29 +744,29 @@ public partial class Details : UserControl
 
     if (ExistingFamilyMemberComboBox.SelectedIndex != -1)
     {
-      ignoreGender = false;
+      _ignoreGender = false;
       switch ((ExistingFamilyMemberComboBoxValue)ExistingFamilyMemberComboBox.SelectedValue)
       {
         case ExistingFamilyMemberComboBoxValue.Father:
-          genderFilter = Gender.Male;
+          _genderFilter = Gender.Male;
           break;
         case ExistingFamilyMemberComboBoxValue.Mother:
-          genderFilter = Gender.Female;
+          _genderFilter = Gender.Female;
           break;
         case ExistingFamilyMemberComboBoxValue.Brother:
-          genderFilter = Gender.Male;
+          _genderFilter = Gender.Male;
           break;
         case ExistingFamilyMemberComboBoxValue.Sister:
-          genderFilter = Gender.Female;
+          _genderFilter = Gender.Female;
           break;
         case ExistingFamilyMemberComboBoxValue.Spouse:
-          ignoreGender = true;
+          _ignoreGender = true;
           break;
         case ExistingFamilyMemberComboBoxValue.Son:
-          genderFilter = Gender.Male;
+          _genderFilter = Gender.Male;
           break;
         case ExistingFamilyMemberComboBoxValue.Daughter:
-          genderFilter = Gender.Female;
+          _genderFilter = Gender.Female;
           break;
       }
 
@@ -797,24 +795,24 @@ public partial class Details : UserControl
     if (!string.IsNullOrEmpty(dialog.FileName))
     {
 
-      Person p = family.Current;
+      Person p = _family.Current;
       string filename = dialog.FileName;
 
-      tw = new StreamWriter(filename);
+      _tw = new StreamWriter(filename);
       //write the necessary html code for a html document
-      tw.WriteLine(Header());
-      tw.WriteLine(CSS());
-      tw.WriteLine(CSSprinting(9));
+      _tw.WriteLine(Header());
+      _tw.WriteLine(CSS());
+      _tw.WriteLine(CSSprinting(9));
 
-      tw.WriteLine("</head><body>");
-      tw.WriteLine("<h2>Family.Show</h2>");
+      _tw.WriteLine("</head><body>");
+      _tw.WriteLine("<h2>Family.Show</h2>");
 
       #region export citations
 
-      tw.WriteLine("<i>Summary of citations for " + p.FullName + "</i><br/><br/>");
+      _tw.WriteLine("<i>Summary of citations for " + p.FullName + "</i><br/><br/>");
 
       //write the table headers
-      tw.WriteLine("<table id=\"citationtable\" border=\"1\" rules=\"all\" frame=\"box\">\n" +
+      _tw.WriteLine("<table id=\"citationtable\" border=\"1\" rules=\"all\" frame=\"box\">\n" +
       "<thead>\n" +
       "<tr>\n" +
       "<th width=\"10%\">Field</th>\n" +
@@ -854,10 +852,10 @@ public partial class Details : UserControl
         religionLink = "[<a href=\"" + p.ReligionLink + "\">Link</a>]";
       }
 
-      tw.WriteLine("<tr><td>Birth</td><td>" + p.BirthDateDescriptor + " " + dateformat(p.BirthDate) + " " + p.BirthPlace + "</td><td>" + p.BirthCitation + "</td><td>" + p.BirthCitationActualText + "</td><td>" + p.BirthCitationNote + "</td><td>" + birthLink + "</td><td>" + p.BirthSource + "</td></tr>");
-      tw.WriteLine("<tr><td>Occupation</td><td>" + p.Occupation + "</td><td>" + p.OccupationCitation + "</td><td>" + p.OccupationCitationActualText + "</td><td>" + p.OccupationCitationNote + "</td><td>" + occupationLink + "</td><td>" + p.OccupationSource + "</td></tr>");
-      tw.WriteLine("<tr><td>Education</td><td>" + p.Education + "</td><td>" + p.EducationCitation + "</td><td>" + p.EducationCitationActualText + "</td><td>" + p.EducationCitationNote + "</td><td>" + educationLink + "</td><td>" + p.EducationSource + "</td></tr>");
-      tw.WriteLine("<tr><td>Religion</td><td>" + p.Religion + "</td><td>" + p.ReligionCitation + "</td><td>" + p.ReligionCitationActualText + "</td><td>" + p.ReligionCitationNote + "</td><td>" + religionLink + "</td><td>" + p.ReligionSource + "</td></tr>");
+      _tw.WriteLine("<tr><td>Birth</td><td>" + p.BirthDateDescriptor + " " + dateformat(p.BirthDate) + " " + p.BirthPlace + "</td><td>" + p.BirthCitation + "</td><td>" + p.BirthCitationActualText + "</td><td>" + p.BirthCitationNote + "</td><td>" + birthLink + "</td><td>" + p.BirthSource + "</td></tr>");
+      _tw.WriteLine("<tr><td>Occupation</td><td>" + p.Occupation + "</td><td>" + p.OccupationCitation + "</td><td>" + p.OccupationCitationActualText + "</td><td>" + p.OccupationCitationNote + "</td><td>" + occupationLink + "</td><td>" + p.OccupationSource + "</td></tr>");
+      _tw.WriteLine("<tr><td>Education</td><td>" + p.Education + "</td><td>" + p.EducationCitation + "</td><td>" + p.EducationCitationActualText + "</td><td>" + p.EducationCitationNote + "</td><td>" + educationLink + "</td><td>" + p.EducationSource + "</td></tr>");
+      _tw.WriteLine("<tr><td>Religion</td><td>" + p.Religion + "</td><td>" + p.ReligionCitation + "</td><td>" + p.ReligionCitationActualText + "</td><td>" + p.ReligionCitationNote + "</td><td>" + religionLink + "</td><td>" + p.ReligionSource + "</td></tr>");
 
       foreach (Relationship rel in p.Relationships)
       {
@@ -914,7 +912,7 @@ public partial class Details : UserControl
             m8 = ((SpouseRelationship)rel).MarriageCitationActualText;
           }
 
-          tw.WriteLine("<tr><td>Marriage</td><td>" + rel.RelationTo + " " + m1 + " " + m2 + " " + m3 + "</td><td>" + m4 + "</td><td>" + m8 + "</td><td>" + m7 + "</td><td>" + m6 + "</td><td>" + m5 + "</td><td></td></tr>");
+          _tw.WriteLine("<tr><td>Marriage</td><td>" + rel.RelationTo + " " + m1 + " " + m2 + " " + m3 + "</td><td>" + m4 + "</td><td>" + m8 + "</td><td>" + m7 + "</td><td>" + m6 + "</td><td>" + m5 + "</td><td></td></tr>");
 
           if (((SpouseRelationship)rel).SpouseModifier == SpouseModifier.Former)
           {
@@ -962,7 +960,7 @@ public partial class Details : UserControl
               d8 = ((SpouseRelationship)rel).DivorceCitationActualText;
             }
 
-            tw.WriteLine("<tr><td>Divorce</td><td>" + rel.RelationTo + " " + d1 + " " + d2 + "</td><td>" + d8 + "</td><td>" + d7 + "</td><td>" + d6 + "</td><td>" + d4 + "</td><td></td></tr>");
+            _tw.WriteLine("<tr><td>Divorce</td><td>" + rel.RelationTo + " " + d1 + " " + d2 + "</td><td>" + d8 + "</td><td>" + d7 + "</td><td>" + d6 + "</td><td>" + d4 + "</td><td></td></tr>");
 
           }
         }
@@ -991,28 +989,28 @@ public partial class Details : UserControl
           cremationLink = "[<a href=\"" + p.CremationLink + "\">Link</a>]";
         }
 
-        tw.WriteLine("<tr><td>Death</td><td>" + p.DeathDateDescriptor + " " + dateformat(p.DeathDate) + " " + p.DeathPlace + "</td><td>" + p.DeathCitation + "</td><td>" + p.DeathCitationActualText + "</td><td>" + p.DeathCitationNote + "</td><td>" + deathLink + "</td><td>" + p.DeathSource + "</td></tr>");
-        tw.WriteLine("<tr><td>Burial</td><td>" + p.BurialDateDescriptor + " " + dateformat(p.BurialDate) + " " + p.BurialPlace + "</td><td>" + p.BurialCitation + "</td><td>" + p.BurialCitationActualText + "</td><td>" + p.BurialCitationNote + "</td><td>" + burialLink + "</td><td>" + p.BurialSource + "</td></tr>");
-        tw.WriteLine("<tr><td>Cremation</td><td>" + p.CremationDateDescriptor + " " + dateformat(p.CremationDate) + " " + p.CremationPlace + "</td><td>" + p.CremationCitation + "</td><td>" + p.CremationCitationActualText + "</td><td>" + p.CremationCitationNote + "</td><td>" + cremationLink + "</td><td>" + p.CremationSource + "</td></tr>");
+        _tw.WriteLine("<tr><td>Death</td><td>" + p.DeathDateDescriptor + " " + dateformat(p.DeathDate) + " " + p.DeathPlace + "</td><td>" + p.DeathCitation + "</td><td>" + p.DeathCitationActualText + "</td><td>" + p.DeathCitationNote + "</td><td>" + deathLink + "</td><td>" + p.DeathSource + "</td></tr>");
+        _tw.WriteLine("<tr><td>Burial</td><td>" + p.BurialDateDescriptor + " " + dateformat(p.BurialDate) + " " + p.BurialPlace + "</td><td>" + p.BurialCitation + "</td><td>" + p.BurialCitationActualText + "</td><td>" + p.BurialCitationNote + "</td><td>" + burialLink + "</td><td>" + p.BurialSource + "</td></tr>");
+        _tw.WriteLine("<tr><td>Cremation</td><td>" + p.CremationDateDescriptor + " " + dateformat(p.CremationDate) + " " + p.CremationPlace + "</td><td>" + p.CremationCitation + "</td><td>" + p.CremationCitationActualText + "</td><td>" + p.CremationCitationNote + "</td><td>" + cremationLink + "</td><td>" + p.CremationSource + "</td></tr>");
       }
       #endregion
 
       #region export sources
 
-      if (sources.Count > 0)  //only export sources if there are sources to export
+      if (_sources.Count > 0)  //only export sources if there are sources to export
       {
-        tw.WriteLine("</table><br/><br/><i>Summary of sources</i><br/><br/>");
+        _tw.WriteLine("</table><br/><br/><i>Summary of sources</i><br/><br/>");
         //Export column headers
-        tw.WriteLine(NormalSourceColumns());
+        _tw.WriteLine(NormalSourceColumns());
 
         //Export Sources
-        foreach (Source s in sources)
+        foreach (Source s in _sources)
         {
-          tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
+          _tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
         }
       }
-      tw.WriteLine(Footer());
-      tw.Close();
+      _tw.WriteLine(Footer());
+      _tw.Close();
 
       #endregion
 
@@ -1140,7 +1138,7 @@ public partial class Details : UserControl
   private void DoneEditCitationsButton_Click(object sender, RoutedEventArgs e)
   {
     // Let the collection know that it has been updated so that the diagram control will update.
-    family.OnContentChanged();
+    _family.OnContentChanged();
   }
 
   private void CitationsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1154,12 +1152,12 @@ public partial class Details : UserControl
   /// </summary>
   private void UpdateCitationsCombobox()
   {
-    if (family.Current == null)
+    if (_family.Current == null)
     {
       return;
     }
 
-    Person p = family.Current;
+    Person p = _family.Current;
     {
       CitationDetailsEditTextBox.Text = string.Empty;
       CitationActualTextEditTextBox.Text = string.Empty;
@@ -1237,7 +1235,7 @@ public partial class Details : UserControl
               SourceEditTextBox.Text = p.BirthSource;
             }
 
-            s = sources.Find(p.BirthSource);
+            s = _sources.Find(p.BirthSource);
 
             if (p.BirthSource != null && s != null)
             {
@@ -1271,7 +1269,7 @@ public partial class Details : UserControl
               SourceEditTextBox.Text = p.DeathSource;
             }
 
-            s = sources.Find(p.DeathSource);
+            s = _sources.Find(p.DeathSource);
 
             if (p.DeathSource != null && s != null)
             {
@@ -1304,7 +1302,7 @@ public partial class Details : UserControl
               SourceEditTextBox.Text = p.EducationSource;
             }
 
-            s = sources.Find(p.EducationSource);
+            s = _sources.Find(p.EducationSource);
 
             if (p.EducationSource != null && s != null)
             {
@@ -1338,7 +1336,7 @@ public partial class Details : UserControl
               SourceEditTextBox.Text = p.OccupationSource;
             }
 
-            s = sources.Find(p.OccupationSource);
+            s = _sources.Find(p.OccupationSource);
 
             if (p.OccupationSource != null && s != null)
             {
@@ -1372,7 +1370,7 @@ public partial class Details : UserControl
               SourceEditTextBox.Text = p.ReligionSource;
             }
 
-            s = sources.Find(p.ReligionSource);
+            s = _sources.Find(p.ReligionSource);
 
             if (p.ReligionSource != null && s != null)
             {
@@ -1406,7 +1404,7 @@ public partial class Details : UserControl
               SourceEditTextBox.Text = p.BurialSource;
             }
 
-            s = sources.Find(p.BurialSource);
+            s = _sources.Find(p.BurialSource);
 
             if (p.BurialSource != null && s != null)
             {
@@ -1440,7 +1438,7 @@ public partial class Details : UserControl
               SourceEditTextBox.Text = p.CremationSource;
             }
 
-            s = sources.Find(p.CremationSource);
+            s = _sources.Find(p.CremationSource);
 
             if (p.CremationSource != null && s != null)
             {
@@ -1451,17 +1449,17 @@ public partial class Details : UserControl
         }
       }
     }
-    family.OnContentChanged();
+    _family.OnContentChanged();
   }
 
   private void CitationTextBox_LostFocus(object sender, RoutedEventArgs e)
   {
-    if (family.Current == null)
+    if (_family.Current == null)
     {
       return;
     }
 
-    Person p = family.Current;
+    Person p = _family.Current;
 
     if (CitationsComboBox.SelectedItem != null)
     {
@@ -1524,7 +1522,7 @@ public partial class Details : UserControl
           p.CremationLink = CitationLinkEditTextBox.Text;
           break;
       }
-      family.OnContentChanged();
+      _family.OnContentChanged();
 
     }
   }
@@ -1555,32 +1553,32 @@ public partial class Details : UserControl
 
   private void SearchMapBirthPlace(object sender, RoutedEventArgs e)
   {
-    SearchMap(family.Current.BirthPlace.ToString());
+    SearchMap(_family.Current.BirthPlace.ToString());
   }
 
   private void SearchMapDeathPlace(object sender, RoutedEventArgs e)
   {
-    SearchMap(family.Current.DeathPlace.ToString());
+    SearchMap(_family.Current.DeathPlace.ToString());
   }
 
   private void ChangeBirthDescriptorForward(object sender, RoutedEventArgs e)
   {
-    family.Current.BirthDateDescriptor = forwardDateDescriptor(family.Current.BirthDateDescriptor);
+    _family.Current.BirthDateDescriptor = forwardDateDescriptor(_family.Current.BirthDateDescriptor);
   }
 
   private void ChangeBirthDescriptorBackward(object sender, RoutedEventArgs e)
   {
-    family.Current.BirthDateDescriptor = backwardDateDescriptor(family.Current.BirthDateDescriptor);
+    _family.Current.BirthDateDescriptor = backwardDateDescriptor(_family.Current.BirthDateDescriptor);
   }
 
   private void ChangeDeathDescriptorForward(object sender, RoutedEventArgs e)
   {
-    family.Current.DeathDateDescriptor = forwardDateDescriptor(family.Current.DeathDateDescriptor);
+    _family.Current.DeathDateDescriptor = forwardDateDescriptor(_family.Current.DeathDateDescriptor);
   }
 
   private void ChangeDeathDescriptorBackward(object sender, RoutedEventArgs e)
   {
-    family.Current.DeathDateDescriptor = backwardDateDescriptor(family.Current.DeathDateDescriptor);
+    _family.Current.DeathDateDescriptor = backwardDateDescriptor(_family.Current.DeathDateDescriptor);
   }
 
   private void DoneEditButton_Click(object sender, RoutedEventArgs e)
@@ -1600,7 +1598,7 @@ public partial class Details : UserControl
     }
 
     // Let the collection know that it has been updated so that the diagram control will update.
-    family.OnContentChanged();
+    _family.OnContentChanged();
 
     //This must be called to ensure that if a person's restriction changes
     //the appropriate fields in the relationship citations panel become readonly/editable.
@@ -1630,37 +1628,37 @@ public partial class Details : UserControl
     }
 
     // Let the collection know that it has been updated so that the diagram control will update.
-    family.OnContentChanged();
+    _family.OnContentChanged();
   }
 
   private void ChangeBurialDescriptorForward(object sender, RoutedEventArgs e)
   {
-    family.Current.BurialDateDescriptor = forwardDateDescriptor(family.Current.BurialDateDescriptor);
+    _family.Current.BurialDateDescriptor = forwardDateDescriptor(_family.Current.BurialDateDescriptor);
   }
 
   private void ChangeBurialDescriptorBackward(object sender, RoutedEventArgs e)
   {
-    family.Current.BurialDateDescriptor = backwardDateDescriptor(family.Current.BurialDateDescriptor);
+    _family.Current.BurialDateDescriptor = backwardDateDescriptor(_family.Current.BurialDateDescriptor);
   }
 
   private void ChangeCremationDescriptorForward(object sender, RoutedEventArgs e)
   {
-    family.Current.CremationDateDescriptor = forwardDateDescriptor(family.Current.CremationDateDescriptor);
+    _family.Current.CremationDateDescriptor = forwardDateDescriptor(_family.Current.CremationDateDescriptor);
   }
 
   private void ChangeCremationDescriptorBackward(object sender, RoutedEventArgs e)
   {
-    family.Current.CremationDateDescriptor = backwardDateDescriptor(family.Current.CremationDateDescriptor);
+    _family.Current.CremationDateDescriptor = backwardDateDescriptor(_family.Current.CremationDateDescriptor);
   }
 
   private void SearchMapBurialPlace(object sender, RoutedEventArgs e)
   {
-    SearchMap(family.Current.BurialPlace.ToString());
+    SearchMap(_family.Current.BurialPlace.ToString());
   }
 
   private void SearchMapCremationPlace(object sender, RoutedEventArgs e)
   {
-    SearchMap(family.Current.CremationPlace.ToString());
+    SearchMap(_family.Current.CremationPlace.ToString());
   }
 
   #endregion
@@ -1707,7 +1705,7 @@ public partial class Details : UserControl
           break;
       }
 
-      RelationshipHelper.UpdateSpouseStatus(family.Current, (Person)SpousesCombobox.SelectedItem, (SpouseModifier)SpouseStatusListbox.SelectedItem);
+      RelationshipHelper.UpdateSpouseStatus(_family.Current, (Person)SpousesCombobox.SelectedItem, (SpouseModifier)SpouseStatusListbox.SelectedItem);
 
       //Some fields are only editable for former spouses.
       ToEditTextBox.IsEnabled = ((SpouseModifier)SpouseStatusListbox.SelectedItem == SpouseModifier.Former);
@@ -1715,13 +1713,13 @@ public partial class Details : UserControl
 
       UpdateRCitationsComboBox();
     }
-    family.OnContentChanged();
+    _family.OnContentChanged();
   }
 
   private void SpousesCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
   {
 
-    if (family.Current == null)
+    if (_family.Current == null)
     {
       return;
     }
@@ -1730,7 +1728,7 @@ public partial class Details : UserControl
     {
       RelationshipsCitationsComboBox.SelectedIndex = 0;
 
-      foreach (Relationship rel in family.Current.Relationships)
+      foreach (Relationship rel in _family.Current.Relationships)
       {
         if (rel.RelationshipType == RelationshipType.Spouse && rel.RelationTo.Equals((Person)SpousesCombobox.SelectedItem))
         {
@@ -1781,7 +1779,7 @@ public partial class Details : UserControl
 
   private void UpdateRCitationsComboBox()
   {
-    if (family.Current == null)
+    if (_family.Current == null)
     {
       return;
     }
@@ -1804,7 +1802,7 @@ public partial class Details : UserControl
     if (RelationshipsCitationsComboBox.SelectedIndex != -1 && SpousesCombobox.SelectedItem != null)
     {
 
-      foreach (Relationship rel in family.Current.Relationships)
+      foreach (Relationship rel in _family.Current.Relationships)
       {
         if (rel.RelationshipType == RelationshipType.Spouse && rel.RelationTo.Equals((Person)SpousesCombobox.SelectedItem))
         {
@@ -1863,7 +1861,7 @@ public partial class Details : UserControl
                   RCitationActualTextEditTextBox.Text = spouseRel.DivorceCitationActualText;
                 }
 
-                Source s = sources.Find(spouseRel.DivorceSource);
+                Source s = _sources.Find(spouseRel.DivorceSource);
 
                 if (s != null)
                 {
@@ -1902,7 +1900,7 @@ public partial class Details : UserControl
                   RCitationActualTextEditTextBox.Text = spouseRel.MarriageCitationActualText;
                 }
 
-                Source s1 = sources.Find(spouseRel.MarriageSource);
+                Source s1 = _sources.Find(spouseRel.MarriageSource);
 
                 if (s1 != null)
                 {
@@ -1920,12 +1918,12 @@ public partial class Details : UserControl
         }
       }
     }
-    family.OnContentChanged();
+    _family.OnContentChanged();
   }
 
   private void RCitationLinkEditTextBox_LostFocus(object sender, RoutedEventArgs e)
   {
-    if (family.Current == null)
+    if (_family.Current == null)
     {
       return;
     }
@@ -1937,13 +1935,13 @@ public partial class Details : UserControl
       switch ((RCitationsComboBoxValue)RelationshipsCitationsComboBox.SelectedValue)
       {
         case RCitationsComboBoxValue.Marriage:
-          RelationshipHelper.UpdateMarriageLink(family.Current, (Person)SpousesCombobox.SelectedItem, link);
+          RelationshipHelper.UpdateMarriageLink(_family.Current, (Person)SpousesCombobox.SelectedItem, link);
           break;
         case RCitationsComboBoxValue.Divorce:
-          RelationshipHelper.UpdateDivorceLink(family.Current, (Person)SpousesCombobox.SelectedItem, link);
+          RelationshipHelper.UpdateDivorceLink(_family.Current, (Person)SpousesCombobox.SelectedItem, link);
           break;
       }
-      family.OnContentChanged();
+      _family.OnContentChanged();
 
     }
   }
@@ -1951,7 +1949,7 @@ public partial class Details : UserControl
   private void RCitationDetailsEditTextBox_LostFocus(object sender, RoutedEventArgs e)
   {
 
-    if (family.Current == null)
+    if (_family.Current == null)
     {
       return;
     }
@@ -1963,13 +1961,13 @@ public partial class Details : UserControl
       switch ((RCitationsComboBoxValue)RelationshipsCitationsComboBox.SelectedValue)
       {
         case RCitationsComboBoxValue.Marriage:
-          RelationshipHelper.UpdateMarriageCitation(family.Current, (Person)SpousesCombobox.SelectedItem, CitationDetails);
+          RelationshipHelper.UpdateMarriageCitation(_family.Current, (Person)SpousesCombobox.SelectedItem, CitationDetails);
           break;
         case RCitationsComboBoxValue.Divorce:
-          RelationshipHelper.UpdateDivorceCitation(family.Current, (Person)SpousesCombobox.SelectedItem, CitationDetails);
+          RelationshipHelper.UpdateDivorceCitation(_family.Current, (Person)SpousesCombobox.SelectedItem, CitationDetails);
           break;
       }
-      family.OnContentChanged();
+      _family.OnContentChanged();
 
     }
 
@@ -1978,7 +1976,7 @@ public partial class Details : UserControl
   private void RCitationActualTextEditTextBox_LostFocus(object sender, RoutedEventArgs e)
   {
 
-    if (family.Current == null)
+    if (_family.Current == null)
     {
       return;
     }
@@ -1990,20 +1988,20 @@ public partial class Details : UserControl
       switch ((RCitationsComboBoxValue)RelationshipsCitationsComboBox.SelectedValue)
       {
         case RCitationsComboBoxValue.Marriage:
-          RelationshipHelper.UpdateMarriageCitationActualText(family.Current, (Person)SpousesCombobox.SelectedItem, CitationActualText);
+          RelationshipHelper.UpdateMarriageCitationActualText(_family.Current, (Person)SpousesCombobox.SelectedItem, CitationActualText);
           break;
         case RCitationsComboBoxValue.Divorce:
-          RelationshipHelper.UpdateDivorceCitationActualText(family.Current, (Person)SpousesCombobox.SelectedItem, CitationActualText);
+          RelationshipHelper.UpdateDivorceCitationActualText(_family.Current, (Person)SpousesCombobox.SelectedItem, CitationActualText);
           break;
       }
-      family.OnContentChanged();
+      _family.OnContentChanged();
     }
 
   }
 
   private void RCitationNoteEditTextBox_LostFocus(object sender, RoutedEventArgs e)
   {
-    if (family.Current == null)
+    if (_family.Current == null)
     {
       return;
     }
@@ -2015,24 +2013,24 @@ public partial class Details : UserControl
       switch ((RCitationsComboBoxValue)RelationshipsCitationsComboBox.SelectedValue)
       {
         case RCitationsComboBoxValue.Marriage:
-          RelationshipHelper.UpdateMarriageCitationNote(family.Current, (Person)SpousesCombobox.SelectedItem, CitationNote);
+          RelationshipHelper.UpdateMarriageCitationNote(_family.Current, (Person)SpousesCombobox.SelectedItem, CitationNote);
           break;
         case RCitationsComboBoxValue.Divorce:
-          RelationshipHelper.UpdateDivorceCitationNote(family.Current, (Person)SpousesCombobox.SelectedItem, CitationNote);
+          RelationshipHelper.UpdateDivorceCitationNote(_family.Current, (Person)SpousesCombobox.SelectedItem, CitationNote);
           break;
       }
-      family.OnContentChanged();
+      _family.OnContentChanged();
     }
   }
 
   private void RSourceEditTextBox_LostFocus(object sender, RoutedEventArgs e)
   {
-    if (family.Current == null)
+    if (_family.Current == null)
     {
       return;
     }
 
-    Source s = sources.Find(RSourceEditTextBox.Text.ToString());
+    Source s = _sources.Find(RSourceEditTextBox.Text.ToString());
 
     if (s != null)
     {
@@ -2050,25 +2048,25 @@ public partial class Details : UserControl
       switch ((RCitationsComboBoxValue)RelationshipsCitationsComboBox.SelectedValue)
       {
         case RCitationsComboBoxValue.Marriage:
-          RelationshipHelper.UpdateMarriageSource(family.Current, (Person)SpousesCombobox.SelectedItem, Source);
+          RelationshipHelper.UpdateMarriageSource(_family.Current, (Person)SpousesCombobox.SelectedItem, Source);
           break;
         case RCitationsComboBoxValue.Divorce:
-          RelationshipHelper.UpdateDivorceSource(family.Current, (Person)SpousesCombobox.SelectedItem, Source);
+          RelationshipHelper.UpdateDivorceSource(_family.Current, (Person)SpousesCombobox.SelectedItem, Source);
           break;
       }
-      family.OnContentChanged();
+      _family.OnContentChanged();
     }
   }
 
   private void ParentsCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
   {
 
-    if (family.Current == null)
+    if (_family.Current == null)
     {
       return;
     }
 
-    foreach (Relationship rel in family.Current.Relationships)
+    foreach (Relationship rel in _family.Current.Relationships)
     {
       if (rel.RelationshipType == RelationshipType.Parent && rel.RelationTo.Equals((Person)ParentsCombobox.SelectedItem))
       {
@@ -2077,14 +2075,14 @@ public partial class Details : UserControl
       }
     }
 
-    family.OnContentChanged();
+    _family.OnContentChanged();
   }
 
   private void ParentChildListbox_SelectionChanged(object sender, SelectionChangedEventArgs e)
   {
 
     Person p = (Person)ParentsCombobox.SelectedItem;
-    Person c = family.Current;
+    Person c = _family.Current;
 
     bool needsUpdate = new();
 
@@ -2122,26 +2120,26 @@ public partial class Details : UserControl
     {
       if (ParentChildListbox.SelectedItem != null)
       {
-        RelationshipHelper.UpdateParentChildStatus((Person)ParentsCombobox.SelectedValue, family.Current, (ParentChildModifier)ParentChildListbox.SelectedItem);
+        RelationshipHelper.UpdateParentChildStatus((Person)ParentsCombobox.SelectedValue, _family.Current, (ParentChildModifier)ParentChildListbox.SelectedItem);
 
         if ((ParentChildModifier)ParentChildListbox.SelectedItem == ParentChildModifier.Adopted || (ParentChildModifier)ParentChildListbox.SelectedItem == ParentChildModifier.Foster)
         {
-          RelationshipHelper.RemoveSiblingRelationships(family.Current, (Person)ParentsCombobox.SelectedValue);
+          RelationshipHelper.RemoveSiblingRelationships(_family.Current, (Person)ParentsCombobox.SelectedValue);
 
-          family.Current.OnPropertyChanged("HasSiblings");
-          family.Current.OnPropertyChanged("Siblings");
-          family.Current.OnPropertyChanged("IsDeletable");
+          _family.Current.OnPropertyChanged("HasSiblings");
+          _family.Current.OnPropertyChanged("Siblings");
+          _family.Current.OnPropertyChanged("IsDeletable");
 
         }
         if ((ParentChildModifier)ParentChildListbox.SelectedItem == ParentChildModifier.Natural)
         {
-          RelationshipHelper.UpdateSiblings(family, family.Current);
-          family.Current.OnPropertyChanged("HasSiblings");
-          family.Current.OnPropertyChanged("Siblings");
-          family.Current.OnPropertyChanged("IsDeletable");
+          RelationshipHelper.UpdateSiblings(_family, _family.Current);
+          _family.Current.OnPropertyChanged("HasSiblings");
+          _family.Current.OnPropertyChanged("Siblings");
+          _family.Current.OnPropertyChanged("IsDeletable");
         }
       }
-      family.OnContentChanged();
+      _family.OnContentChanged();
     }
   }
 
@@ -2153,21 +2151,21 @@ public partial class Details : UserControl
     if (result == MessageBoxResult.Yes)
     {
 
-      RelationshipHelper.RemoveParentChildRelationship(family.Current, (Person)ParentsCombobox.SelectedValue);
-      RelationshipHelper.RemoveSiblingRelationships(family.Current, (Person)ParentsCombobox.SelectedValue);  //update to remove only siblings if present in the parent set containing selected parent
+      RelationshipHelper.RemoveParentChildRelationship(_family.Current, (Person)ParentsCombobox.SelectedValue);
+      RelationshipHelper.RemoveSiblingRelationships(_family.Current, (Person)ParentsCombobox.SelectedValue);  //update to remove only siblings if present in the parent set containing selected parent
 
-      if (family.Current.Parents.Count >= 2)  //There must be at least 2 parents for a parent set
+      if (_family.Current.Parents.Count >= 2)  //There must be at least 2 parents for a parent set
       {
-        family.Current.OnPropertyChanged("PossibleParentSets");
+        _family.Current.OnPropertyChanged("PossibleParentSets");
       }
 
-      family.Current.OnPropertyChanged("HasParents");
-      family.Current.OnPropertyChanged("Parents");
-      family.Current.OnPropertyChanged("HasSiblings");
-      family.Current.OnPropertyChanged("Siblings");
-      family.Current.OnPropertyChanged("IsDeletable");
+      _family.Current.OnPropertyChanged("HasParents");
+      _family.Current.OnPropertyChanged("Parents");
+      _family.Current.OnPropertyChanged("HasSiblings");
+      _family.Current.OnPropertyChanged("Siblings");
+      _family.Current.OnPropertyChanged("IsDeletable");
 
-      family.OnContentChanged();
+      _family.OnContentChanged();
 
     }
 
@@ -2180,11 +2178,11 @@ public partial class Details : UserControl
 
     if (result == MessageBoxResult.Yes)
     {
-      RelationshipHelper.RemoveSiblingRelationshipsOneToOne(family.Current, (Person)SiblingsCombobox.SelectedValue);
-      family.Current.OnPropertyChanged("HasSiblings");
-      family.Current.OnPropertyChanged("Siblings");
-      family.Current.OnPropertyChanged("IsDeletable");
-      family.OnContentChanged();
+      RelationshipHelper.RemoveSiblingRelationshipsOneToOne(_family.Current, (Person)SiblingsCombobox.SelectedValue);
+      _family.Current.OnPropertyChanged("HasSiblings");
+      _family.Current.OnPropertyChanged("Siblings");
+      _family.Current.OnPropertyChanged("IsDeletable");
+      _family.OnContentChanged();
     }
 
   }
@@ -2196,11 +2194,11 @@ public partial class Details : UserControl
 
     if (result == MessageBoxResult.Yes)
     {
-      RelationshipHelper.RemoveSpouseRelationship(family.Current, (Person)SpousesCombobox.SelectedValue);
-      family.Current.OnPropertyChanged("HasSpouse");
-      family.Current.OnPropertyChanged("Spouses");
-      family.Current.OnPropertyChanged("IsDeletable");
-      family.OnContentChanged();
+      RelationshipHelper.RemoveSpouseRelationship(_family.Current, (Person)SpousesCombobox.SelectedValue);
+      _family.Current.OnPropertyChanged("HasSpouse");
+      _family.Current.OnPropertyChanged("Spouses");
+      _family.Current.OnPropertyChanged("IsDeletable");
+      _family.OnContentChanged();
     }
 
   }
@@ -2217,15 +2215,15 @@ public partial class Details : UserControl
       if (marriageDate == DateTime.MinValue)
       {
         // Clear the marriage date
-        RelationshipHelper.UpdateMarriageDate(family.Current, (Person)SpousesCombobox.SelectedItem, null);
+        RelationshipHelper.UpdateMarriageDate(_family.Current, (Person)SpousesCombobox.SelectedItem, null);
       }
       else
       {
-        RelationshipHelper.UpdateMarriageDate(family.Current, (Person)SpousesCombobox.SelectedItem, marriageDate);
+        RelationshipHelper.UpdateMarriageDate(_family.Current, (Person)SpousesCombobox.SelectedItem, marriageDate);
       }
 
       // Let the collection know that it has been updated
-      family.OnContentChanged();
+      _family.OnContentChanged();
 
       #endregion
     }
@@ -2243,15 +2241,15 @@ public partial class Details : UserControl
       if (divorceDate == DateTime.MinValue)
       {
         // Clear the divorce date
-        RelationshipHelper.UpdateDivorceDate(family.Current, (Person)SpousesCombobox.SelectedItem, null);
+        RelationshipHelper.UpdateDivorceDate(_family.Current, (Person)SpousesCombobox.SelectedItem, null);
       }
       else
       {
-        RelationshipHelper.UpdateDivorceDate(family.Current, (Person)SpousesCombobox.SelectedItem, divorceDate);
+        RelationshipHelper.UpdateDivorceDate(_family.Current, (Person)SpousesCombobox.SelectedItem, divorceDate);
       }
 
       // Let the collection know that it has been updated
-      family.OnContentChanged();
+      _family.OnContentChanged();
 
       #endregion
     }
@@ -2265,10 +2263,10 @@ public partial class Details : UserControl
       #region Perform the businless logic for updating the marriage place
 
       string marriagePlace = PlaceEditTextBox.Text;
-      RelationshipHelper.UpdateMarriagePlace(family.Current, (Person)SpousesCombobox.SelectedItem, marriagePlace);
+      RelationshipHelper.UpdateMarriagePlace(_family.Current, (Person)SpousesCombobox.SelectedItem, marriagePlace);
 
       // Let the collection know that it has been updated
-      family.OnContentChanged();
+      _family.OnContentChanged();
 
       #endregion
     }
@@ -2278,44 +2276,44 @@ public partial class Details : UserControl
   {
     string text = FromDescriptor.Content.ToString();
     text = forwardDateDescriptor(text);
-    RelationshipHelper.UpdateMarriageDateDescriptor(family.Current, (Person)SpousesCombobox.SelectedItem, text);
+    RelationshipHelper.UpdateMarriageDateDescriptor(_family.Current, (Person)SpousesCombobox.SelectedItem, text);
     FromDescriptor.Content = text;
 
     // Let the collection know that it has been updated
-    family.OnContentChanged();
+    _family.OnContentChanged();
   }
 
   private void ChangeMarriageDescriptorBackward(object sender, RoutedEventArgs e)
   {
     string text = FromDescriptor.Content.ToString();
     text = backwardDateDescriptor(text);
-    RelationshipHelper.UpdateMarriageDateDescriptor(family.Current, (Person)SpousesCombobox.SelectedItem, text);
+    RelationshipHelper.UpdateMarriageDateDescriptor(_family.Current, (Person)SpousesCombobox.SelectedItem, text);
     FromDescriptor.Content = text;
 
     // Let the collection know that it has been updated
-    family.OnContentChanged();
+    _family.OnContentChanged();
   }
 
   private void ChangeDivorceDescriptorForward(object sender, RoutedEventArgs e)
   {
     string text = ToDescriptor.Content.ToString();
     text = forwardDateDescriptor(text);
-    RelationshipHelper.UpdateDivorceDateDescriptor(family.Current, (Person)SpousesCombobox.SelectedItem, text);
+    RelationshipHelper.UpdateDivorceDateDescriptor(_family.Current, (Person)SpousesCombobox.SelectedItem, text);
     ToDescriptor.Content = text;
 
     // Let the collection know that it has been updated
-    family.OnContentChanged();
+    _family.OnContentChanged();
   }
 
   private void ChangeDivorceDescriptorBackward(object sender, RoutedEventArgs e)
   {
     string text = ToDescriptor.Content.ToString();
     text = backwardDateDescriptor(text);
-    RelationshipHelper.UpdateDivorceDateDescriptor(family.Current, (Person)SpousesCombobox.SelectedItem, text);
+    RelationshipHelper.UpdateDivorceDateDescriptor(_family.Current, (Person)SpousesCombobox.SelectedItem, text);
     ToDescriptor.Content = text;
 
     // Let the collection know that it has been updated
-    family.OnContentChanged();
+    _family.OnContentChanged();
   }
 
   /// <summary>
@@ -2336,18 +2334,18 @@ public partial class Details : UserControl
   private void Next_Click(object sender, RoutedEventArgs e)
   {
     //find the index of the current person
-    int i = family.IndexOf((Person)DataContext);
+    int i = _family.IndexOf((Person)DataContext);
     //then get search for the person with the next index
-    Person p = family.Next(i);
+    Person p = _family.Next(i);
 
     //if not null, set to the next person
     if (p != null)
     {
-      family.Current = p;
+      _family.Current = p;
     }
     else  //otherwise the person is at the end of the list so go to the start of the list
     {
-      family.Current = family.Next(-1);
+      _family.Current = _family.Next(-1);
     }
   }
 
@@ -2357,17 +2355,17 @@ public partial class Details : UserControl
   private void Previous_Click(object sender, RoutedEventArgs e)
   {
     //find the index of the current person
-    int i = family.IndexOf((Person)DataContext);
+    int i = _family.IndexOf((Person)DataContext);
     //then get search for the person with the previous index
-    Person p = family.Previous(i);
+    Person p = _family.Previous(i);
 
     if (p != null)  //if not null, set to the previous person
     {
-      family.Current = p;
+      _family.Current = p;
     }
     else  //otherwise the person is at the start of the list so go to the end of the list
     {
-      family.Current = family.Previous(family.Count);
+      _family.Current = _family.Previous(_family.Count);
     }
   }
 
@@ -2413,7 +2411,7 @@ public partial class Details : UserControl
         }
       }
       person.OnPropertyChanged("HasPhoto");
-      family.OnContentChanged();
+      _family.OnContentChanged();
     }
     // Mark the event as handled, so the control's native Drop handler is not called.
     e.Handled = true;
@@ -2434,17 +2432,17 @@ public partial class Details : UserControl
   /// </summary>
   private void FamilyListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
   {
-    if (!ignoreSelection)
+    if (!_ignoreSelection)
     {
-      ignoreSelection = true;
+      _ignoreSelection = true;
       Person selected = (Person)((ListBox)sender).SelectedItem;
       if (selected != null)
       {
-        family.Current = selected;
-        DataContext = family.Current;
+        _family.Current = selected;
+        DataContext = _family.Current;
       }
 
-      ignoreSelection = false;
+      _ignoreSelection = false;
     }
   }
 
@@ -2471,7 +2469,7 @@ public partial class Details : UserControl
     if (ExistingPeopleListBox.ItemsSource != null)
     {
       //Use collection view to filter the listbox
-      ICollectionView view = System.Windows.Data.CollectionViewSource.GetDefaultView(family);
+      ICollectionView view = System.Windows.Data.CollectionViewSource.GetDefaultView(_family);
       view.Filter = new Predicate<object>(ExistingPeopleFilter);
     }
 
@@ -2481,16 +2479,16 @@ public partial class Details : UserControl
   /// Event handler when the selected node changes. Select the 
   /// current person in the list.
   /// </summary>
-  void Family_CurrentChanged(object sender, EventArgs e)
+  private void Family_CurrentChanged(object sender, EventArgs e)
   {
-    if (!ignoreSelection)
+    if (!_ignoreSelection)
     {
-      ignoreSelection = true;
+      _ignoreSelection = true;
       //reset the FamilyListView
       FilterTextBox.Text = string.Empty;
-      FamilyListView.SelectedItem = family.Current;
-      FamilyListView.ScrollIntoView(family.Current);
-      ignoreSelection = false;
+      FamilyListView.SelectedItem = _family.Current;
+      FamilyListView.ScrollIntoView(_family.Current);
+      _ignoreSelection = false;
 
       //Reset the existing people list 
       UpdateExistingFilter();
@@ -2527,21 +2525,21 @@ public partial class Details : UserControl
 
       _ = new Person();
       Person nextPerson;
-      if (family.Count > 0)
+      if (_family.Count > 0)
       {
 
 
-        if (family.Current.HasSpouse)
+        if (_family.Current.HasSpouse)
         {
-          nextPerson = family.Current.Spouses[0];
+          nextPerson = _family.Current.Spouses[0];
         }
-        else if (family.Current.HasSiblings)
+        else if (_family.Current.HasSiblings)
         {
-          nextPerson = family.Current.Siblings[0];
+          nextPerson = _family.Current.Siblings[0];
         }
-        else if (family.Current.HasParents)
+        else if (_family.Current.HasParents)
         {
-          nextPerson = family.Current.Parents[0];
+          nextPerson = _family.Current.Parents[0];
         }
         else
         {
@@ -2556,22 +2554,22 @@ public partial class Details : UserControl
 
       // Deleting a person requires deleting that person from their relations with other people
       // Call the relationship helper to handle delete.
-      RelationshipHelper.DeletePerson(family, family.Current);
+      RelationshipHelper.DeletePerson(_family, _family.Current);
 
-      if (family.Count > 0)
+      if (_family.Count > 0)
       {
         // Current person is deleted, choose someone else as the current person
 
         if (nextPerson != null)
         {
-          family.Current = nextPerson;
+          _family.Current = nextPerson;
         }
         else
         {
-          family.Current = family[0];
+          _family.Current = _family[0];
         }
 
-        family.OnContentChanged();
+        _family.OnContentChanged();
         SetDefaultFocus();
       }
       else
@@ -2725,7 +2723,7 @@ public partial class Details : UserControl
     disableButtons();
     AddExistingButton.Focus();
 
-    ExistingFilter = true;  //start filtering on gender and relatives
+    _existingFilter = true;  //start filtering on gender and relatives
 
     //set default add action as spouse as this is most common
     ExistingFamilyMemberComboBox.SelectedItem = ExistingFamilyMemberComboBoxValue.Spouse;
@@ -2738,19 +2736,19 @@ public partial class Details : UserControl
   private void CollapseAddExisting_StoryboardCompleted(object sender, EventArgs e)
   {
 
-    ExistingFilter = false;  //stop filtering on gender and relatives
-    ResetFilter = true;      //allow quick filter reset
+    _existingFilter = false;  //stop filtering on gender and relatives
+    _resetFilter = true;      //allow quick filter reset
 
     ExistingFamilyMemberComboBox.SelectedIndex = -1;  //set Existing Family Member Combo Box to -1 so it updates when the Existing people panel loads
     FilterTextBox.Text = string.Empty;              //reset all filter textboxes 
     ExistingFilterTextBox.Text = string.Empty;
     UpdateExistingFilter();                         //quick filter update
-    ResetFilter = false;
+    _resetFilter = false;
 
     enableButtons();
     FamilyMemberAddButton.Focus();
 
-    family.OnContentChanged();
+    _family.OnContentChanged();
   }
 
   private void enableButtons()
@@ -2935,7 +2933,7 @@ public partial class Details : UserControl
   /// </summary>
   private void SetFamilyMemberAddButton()
   {
-    if (family.Current.Parents.Count == 2)
+    if (_family.Current.Parents.Count == 2)
     {
       // Person has parents, choice another default.
       SetNextFamilyMemberAction(FamilyMemberComboBoxValue.Brother);
@@ -2957,45 +2955,45 @@ public partial class Details : UserControl
   {
     Person person = item as Person;
 
-    if (ExistingFilter == true)
+    if (_existingFilter == true)
     {
 
       //filter the current person
-      if (family.Current == person)
+      if (_family.Current == person)
       {
         return false;
       }
 
-      if (family.Current.Parents.Contains(person)) //filter the current person's parents
+      if (_family.Current.Parents.Contains(person)) //filter the current person's parents
       {
         return false;
       }
 
-      if (family.Current.Spouses.Contains(person)) //filter the current person's spouses
+      if (_family.Current.Spouses.Contains(person)) //filter the current person's spouses
       {
         return false;
       }
 
-      if (family.Current.PreviousSpouses.Contains(person)) //filter the current persons previous spouses
+      if (_family.Current.PreviousSpouses.Contains(person)) //filter the current persons previous spouses
       {
         return false;
       }
 
-      if (family.Current.Siblings.Contains(person))  //filter the current persons siblings
+      if (_family.Current.Siblings.Contains(person))  //filter the current persons siblings
       {
         return false;
       }
 
-      if (family.Current.Children.Contains(person)) //filter the current persons children
+      if (_family.Current.Children.Contains(person)) //filter the current persons children
       {
         return false;
       }
 
-      if (ignoreGender == false)
+      if (_ignoreGender == false)
       {
         if (!string.IsNullOrEmpty(ExistingFilterTextBox.Text))
         {
-          if (person.Gender == genderFilter && person.FullName.Contains(ExistingFilterTextBox.Text, StringComparison.CurrentCultureIgnoreCase))
+          if (person.Gender == _genderFilter && person.FullName.Contains(ExistingFilterTextBox.Text, StringComparison.CurrentCultureIgnoreCase))
           {
             return true;
           }
@@ -3006,7 +3004,7 @@ public partial class Details : UserControl
         }
         else
         {
-          if (person.Gender == genderFilter)
+          if (person.Gender == _genderFilter)
           {
             return true;
           }
@@ -3021,7 +3019,7 @@ public partial class Details : UserControl
         return (person.FullName.Contains(ExistingFilterTextBox.Text, StringComparison.CurrentCultureIgnoreCase));
       }
     }
-    else if (ResetFilter == true)  //quick reset
+    else if (_resetFilter == true)  //quick reset
     {
       return true;
     }
@@ -3049,9 +3047,9 @@ public partial class Details : UserControl
     }
     else
     {
-      if (sources.Find(sourceId) != null)  //Event has citation
+      if (_sources.Find(sourceId) != null)  //Event has citation
       {
-        box.ToolTip = sources.Find(sourceId).SourceNameAndId;  //Use friendly name
+        box.ToolTip = _sources.Find(sourceId).SourceNameAndId;  //Use friendly name
 
         if (!string.IsNullOrEmpty(citation))
         {
@@ -3073,21 +3071,21 @@ public partial class Details : UserControl
   private void ToolTip_All(object sender, ToolTipEventArgs e)
   {
 
-    UpdateToolTip(BirthDateEditTextBox, family.Current.BirthSource, family.Current.BirthCitation);
-    UpdateToolTip(BirthPlaceEditTextBox, family.Current.BirthSource, family.Current.BirthCitation);
+    UpdateToolTip(BirthDateEditTextBox, _family.Current.BirthSource, _family.Current.BirthCitation);
+    UpdateToolTip(BirthPlaceEditTextBox, _family.Current.BirthSource, _family.Current.BirthCitation);
 
-    UpdateToolTip(DeathDateEditTextBox, family.Current.DeathSource, family.Current.DeathCitation);
-    UpdateToolTip(DeathPlaceEditTextBox, family.Current.DeathSource, family.Current.DeathCitation);
+    UpdateToolTip(DeathDateEditTextBox, _family.Current.DeathSource, _family.Current.DeathCitation);
+    UpdateToolTip(DeathPlaceEditTextBox, _family.Current.DeathSource, _family.Current.DeathCitation);
 
-    UpdateToolTip(CremationDateEditTextBox, family.Current.CremationSource, family.Current.CremationCitation);
-    UpdateToolTip(CremationPlaceEditTextBox, family.Current.CremationSource, family.Current.CremationCitation);
+    UpdateToolTip(CremationDateEditTextBox, _family.Current.CremationSource, _family.Current.CremationCitation);
+    UpdateToolTip(CremationPlaceEditTextBox, _family.Current.CremationSource, _family.Current.CremationCitation);
 
-    UpdateToolTip(BurialDateEditTextBox, family.Current.BurialSource, family.Current.BurialCitation);
-    UpdateToolTip(BurialPlaceEditTextBox, family.Current.BurialSource, family.Current.BurialCitation);
+    UpdateToolTip(BurialDateEditTextBox, _family.Current.BurialSource, _family.Current.BurialCitation);
+    UpdateToolTip(BurialPlaceEditTextBox, _family.Current.BurialSource, _family.Current.BurialCitation);
 
-    UpdateToolTip(EducationEditTextBox, family.Current.EducationSource, family.Current.EducationCitation);
-    UpdateToolTip(OccupationEditTextBox, family.Current.EducationSource, family.Current.EducationCitation);
-    UpdateToolTip(ReligionEditTextBox, family.Current.EducationSource, family.Current.EducationCitation);
+    UpdateToolTip(EducationEditTextBox, _family.Current.EducationSource, _family.Current.EducationCitation);
+    UpdateToolTip(OccupationEditTextBox, _family.Current.EducationSource, _family.Current.EducationCitation);
+    UpdateToolTip(ReligionEditTextBox, _family.Current.EducationSource, _family.Current.EducationCitation);
 
   }
 

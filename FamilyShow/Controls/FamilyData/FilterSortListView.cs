@@ -16,33 +16,33 @@ namespace Microsoft.FamilyShow;
 public class Filter
 {
   // Parsed data from the filter string.
-  private string filterText;
-  private int? maximumAge;
-  private int? minimumAge;
-  private DateTime? filterDate;
-  private bool photos = false;
-  private bool restrictions = false;
-  private bool attachments = false;
-  private bool notes = false;
-  private bool images = false;
-  private bool living = false;
-  private bool citations = false;
+  private string _filterText;
+  private int? _maximumAge;
+  private int? _minimumAge;
+  private DateTime? _filterDate;
+  private bool _photos;
+  private bool _restrictions;
+  private bool _attachments;
+  private bool _notes;
+  private bool _images;
+  private bool _living;
+  private bool _citations;
 
-  private bool nophotos = false;
-  private bool norestrictions = false;
-  private bool noattachments = false;
-  private bool nonotes = false;
-  private bool noimages = false;
-  private bool noliving = false;
-  private bool nocitations = false;
-  private string gender;
+  private bool _nophotos;
+  private bool _norestrictions;
+  private bool _noattachments;
+  private bool _nonotes;
+  private bool _noimages;
+  private bool _noliving;
+  private bool _nocitations;
+  private string _gender;
 
   /// <summary>
   /// Indicates if the filter is empty.
   /// </summary>
   public bool IsEmpty
   {
-    get { return string.IsNullOrEmpty(filterText); }
+    get { return string.IsNullOrEmpty(_filterText); }
   }
 
   /// <summary>
@@ -50,8 +50,8 @@ public class Filter
   /// </summary>
   public bool Matches(string text)
   {
-    return (filterText != null && text != null &&
-        text.Contains(filterText, StringComparison.CurrentCultureIgnoreCase));
+    return (_filterText != null && text != null &&
+        text.Contains(_filterText, StringComparison.CurrentCultureIgnoreCase));
   }
 
   /// <summary>
@@ -59,7 +59,7 @@ public class Filter
   /// </summary>
   public bool Matches(DateTime? date)
   {
-    return (date != null && date.Value.ToShortDateString().Contains(filterText));
+    return (date != null && date.Value.ToShortDateString().Contains(_filterText));
   }
 
   /// <summary>
@@ -67,17 +67,17 @@ public class Filter
   /// </summary>
   public bool MatchesYear(DateTime? date)
   {
-    return (date != null && date.Value.Year.ToString(CultureInfo.CurrentCulture).Contains(filterText));
+    return (date != null && date.Value.Year.ToString(CultureInfo.CurrentCulture).Contains(_filterText));
   }
 
   public bool MatchesPhotos(bool photo)
   {
-    if (photo == true && photos == true)
+    if (photo == true && _photos == true)
     {
       return true;
     }
 
-    if (nophotos == true && photo == false)
+    if (_nophotos == true && photo == false)
     {
       return true;
     }
@@ -87,12 +87,12 @@ public class Filter
 
   public bool MatchesRestrictions(bool restriction)
   {
-    if (restriction == true && restrictions == true)
+    if (restriction == true && _restrictions == true)
     {
       return true;
     }
 
-    if (norestrictions == true && restriction == false)
+    if (_norestrictions == true && restriction == false)
     {
       return true;
     }
@@ -102,12 +102,12 @@ public class Filter
 
   public bool MatchesCitations(bool citation)
   {
-    if (citation == true && citations == true)
+    if (citation == true && _citations == true)
     {
       return true;
     }
 
-    if (nocitations == true && citation == false)
+    if (_nocitations == true && citation == false)
     {
       return true;
     }
@@ -117,12 +117,12 @@ public class Filter
 
   public bool MatchesAttachments(bool attachment)
   {
-    if (attachment == true && attachments == true)
+    if (attachment == true && _attachments == true)
     {
       return true;
     }
 
-    if (noattachments == true && attachment == false)
+    if (_noattachments == true && attachment == false)
     {
       return true;
     }
@@ -132,12 +132,12 @@ public class Filter
 
   public bool MatchesNotes(bool note)
   {
-    if (note == true && notes == true)
+    if (note == true && _notes == true)
     {
       return true;
     }
 
-    if (nonotes == true && note == false)
+    if (_nonotes == true && note == false)
     {
       return true;
     }
@@ -147,12 +147,12 @@ public class Filter
 
   public bool MatchesLiving(bool isliving)
   {
-    if (isliving == true && living == true)
+    if (isliving == true && _living == true)
     {
       return true;
     }
 
-    if (noliving == true && isliving == false)
+    if (_noliving == true && isliving == false)
     {
       return true;
     }
@@ -162,12 +162,12 @@ public class Filter
 
   public bool MatchesImages(bool image)
   {
-    if (image == true && images == true)
+    if (image == true && _images == true)
     {
       return true;
     }
 
-    if (noimages == true && image == false)
+    if (_noimages == true && image == false)
     {
       return true;
     }
@@ -177,7 +177,7 @@ public class Filter
 
   public bool MatchesGender(string genders)
   {
-    if (genders == gender)
+    if (genders == _gender)
     {
       return true;
     }
@@ -190,8 +190,8 @@ public class Filter
   /// </summary>
   public bool MatchesMonth(DateTime? date)
   {
-    return (date != null && filterDate != null &&
-        date.Value.Month == filterDate.Value.Month);
+    return (date != null && _filterDate != null &&
+        date.Value.Month == _filterDate.Value.Month);
   }
 
   /// <summary>
@@ -199,8 +199,8 @@ public class Filter
   /// </summary>
   public bool MatchesDay(DateTime? date)
   {
-    return (date != null && filterDate != null &&
-        date.Value.Day == filterDate.Value.Day);
+    return (date != null && _filterDate != null &&
+        date.Value.Day == _filterDate.Value.Day);
   }
 
   /// <summary>
@@ -215,20 +215,20 @@ public class Filter
     }
 
     // Check single age.
-    if (minimumAge != null && age.Value == minimumAge.Value)
+    if (_minimumAge != null && age.Value == _minimumAge.Value)
     {
       return true;
     }
 
     // Check for a range.
-    if (minimumAge != null && maximumAge != null &&
-        age.Value >= minimumAge && age <= maximumAge)
+    if (_minimumAge != null && _maximumAge != null &&
+        age.Value >= _minimumAge && age <= _maximumAge)
     {
       return true;
     }
 
     // Check for an ending age.
-    if (minimumAge == null && maximumAge != null && age.Value >= maximumAge)
+    if (_minimumAge == null && _maximumAge != null && age.Value >= _maximumAge)
     {
       return true;
     }
@@ -242,30 +242,30 @@ public class Filter
   public void Parse(string text)
   {
     // Initialize fields.
-    filterText = "";
-    gender = "";
-    filterDate = null;
-    minimumAge = null;
-    maximumAge = null;
+    _filterText = "";
+    _gender = "";
+    _filterDate = null;
+    _minimumAge = null;
+    _maximumAge = null;
 
-    photos = false;
-    restrictions = false;
-    attachments = false;
-    notes = false;
-    images = false;
-    living = false;
-    citations = false;
+    _photos = false;
+    _restrictions = false;
+    _attachments = false;
+    _notes = false;
+    _images = false;
+    _living = false;
+    _citations = false;
 
-    nophotos = false;
-    norestrictions = false;
-    noattachments = false;
-    nonotes = false;
-    noimages = false;
-    noliving = false;
-    nocitations = false;
+    _nophotos = false;
+    _norestrictions = false;
+    _noattachments = false;
+    _nonotes = false;
+    _noimages = false;
+    _noliving = false;
+    _nocitations = false;
 
     // Store the filter text.
-    filterText = string.IsNullOrEmpty(text) ? "" : text.ToLower(CultureInfo.CurrentCulture).Trim();
+    _filterText = string.IsNullOrEmpty(text) ? "" : text.ToLower(CultureInfo.CurrentCulture).Trim();
 
     // Parse date and age.
     ParseDate();
@@ -286,9 +286,9 @@ public class Filter
   /// </summary>
   private void ParseDate()
   {
-    if (DateTime.TryParse(filterText, out DateTime date))
+    if (DateTime.TryParse(_filterText, out DateTime date))
     {
-      filterDate = date;
+      _filterDate = date;
     }
   }
 
@@ -297,14 +297,14 @@ public class Filter
   /// </summary>
   private void ParsePhotos()
   {
-    if (filterText.Equals(Properties.Resources.Photos, StringComparison.CurrentCultureIgnoreCase))
+    if (_filterText.Equals(Properties.Resources.Photos, StringComparison.CurrentCultureIgnoreCase))
     {
-      photos = true;
+      _photos = true;
     }
 
-    if (filterText.Equals("!" + Properties.Resources.Photos, StringComparison.CurrentCultureIgnoreCase))
+    if (_filterText.Equals("!" + Properties.Resources.Photos, StringComparison.CurrentCultureIgnoreCase))
     {
-      nophotos = true;
+      _nophotos = true;
     }
   }
 
@@ -313,14 +313,14 @@ public class Filter
   /// </summary>
   private void ParseGender()
   {
-    if (filterText.Equals(Properties.Resources.Female, StringComparison.CurrentCultureIgnoreCase))
+    if (_filterText.Equals(Properties.Resources.Female, StringComparison.CurrentCultureIgnoreCase))
     {
-      gender = Properties.Resources.Female.ToLower();
+      _gender = Properties.Resources.Female.ToLower();
     }
 
-    if (filterText.Equals(Properties.Resources.Male, StringComparison.CurrentCultureIgnoreCase))
+    if (_filterText.Equals(Properties.Resources.Male, StringComparison.CurrentCultureIgnoreCase))
     {
-      gender = Properties.Resources.Male.ToLower();
+      _gender = Properties.Resources.Male.ToLower();
     }
   }
 
@@ -329,14 +329,14 @@ public class Filter
   /// </summary>
   private void ParseRestrictions()
   {
-    if (filterText.Equals(Properties.Resources.Restriction, StringComparison.CurrentCultureIgnoreCase))
+    if (_filterText.Equals(Properties.Resources.Restriction, StringComparison.CurrentCultureIgnoreCase))
     {
-      restrictions = true;
+      _restrictions = true;
     }
 
-    if (filterText.Equals("!" + Properties.Resources.Restriction, StringComparison.CurrentCultureIgnoreCase))
+    if (_filterText.Equals("!" + Properties.Resources.Restriction, StringComparison.CurrentCultureIgnoreCase))
     {
-      norestrictions = true;
+      _norestrictions = true;
     }
   }
 
@@ -345,14 +345,14 @@ public class Filter
   /// </summary>
   private void ParseImages()
   {
-    if (filterText.Equals(Properties.Resources.Image, StringComparison.CurrentCultureIgnoreCase))
+    if (_filterText.Equals(Properties.Resources.Image, StringComparison.CurrentCultureIgnoreCase))
     {
-      images = true;
+      _images = true;
     }
 
-    if (filterText.Equals("!" + Properties.Resources.Image, StringComparison.CurrentCultureIgnoreCase))
+    if (_filterText.Equals("!" + Properties.Resources.Image, StringComparison.CurrentCultureIgnoreCase))
     {
-      noimages = true;
+      _noimages = true;
     }
   }
 
@@ -361,14 +361,14 @@ public class Filter
   /// </summary>
   private void ParseNotes()
   {
-    if (filterText.Equals(Properties.Resources.Note, StringComparison.CurrentCultureIgnoreCase))
+    if (_filterText.Equals(Properties.Resources.Note, StringComparison.CurrentCultureIgnoreCase))
     {
-      notes = true;
+      _notes = true;
     }
 
-    if (filterText.Equals("!" + Properties.Resources.Note, StringComparison.CurrentCultureIgnoreCase))
+    if (_filterText.Equals("!" + Properties.Resources.Note, StringComparison.CurrentCultureIgnoreCase))
     {
-      nonotes = true;
+      _nonotes = true;
     }
   }
 
@@ -377,14 +377,14 @@ public class Filter
   /// </summary>
   private void ParseAttachments()
   {
-    if (filterText.Equals(Properties.Resources.Attachment, StringComparison.CurrentCultureIgnoreCase))
+    if (_filterText.Equals(Properties.Resources.Attachment, StringComparison.CurrentCultureIgnoreCase))
     {
-      attachments = true;
+      _attachments = true;
     }
 
-    if (filterText.Equals("!" + Properties.Resources.Attachment, StringComparison.CurrentCultureIgnoreCase))
+    if (_filterText.Equals("!" + Properties.Resources.Attachment, StringComparison.CurrentCultureIgnoreCase))
     {
-      noattachments = true;
+      _noattachments = true;
     }
   }
 
@@ -393,14 +393,14 @@ public class Filter
   /// </summary>
   private void ParseLiving()
   {
-    if (filterText.Equals(Properties.Resources.Living, StringComparison.CurrentCultureIgnoreCase))
+    if (_filterText.Equals(Properties.Resources.Living, StringComparison.CurrentCultureIgnoreCase))
     {
-      living = true;
+      _living = true;
     }
 
-    if (filterText.Equals(Properties.Resources.Deceased, StringComparison.CurrentCultureIgnoreCase))
+    if (_filterText.Equals(Properties.Resources.Deceased, StringComparison.CurrentCultureIgnoreCase))
     {
-      noliving = true;
+      _noliving = true;
     }
   }
 
@@ -409,14 +409,14 @@ public class Filter
   /// </summary>
   private void ParseCitations()
   {
-    if (filterText.Equals(Properties.Resources.Citations, StringComparison.CurrentCultureIgnoreCase))
+    if (_filterText.Equals(Properties.Resources.Citations, StringComparison.CurrentCultureIgnoreCase))
     {
-      citations = true;
+      _citations = true;
     }
 
-    if (filterText.Equals("!" + Properties.Resources.Citations, StringComparison.CurrentCultureIgnoreCase))
+    if (_filterText.Equals("!" + Properties.Resources.Citations, StringComparison.CurrentCultureIgnoreCase))
     {
-      nocitations = true;
+      _nocitations = true;
     }
   }
 
@@ -428,33 +428,33 @@ public class Filter
   {
 
     // Single age.
-    if (int.TryParse(filterText, out int age))
+    if (int.TryParse(_filterText, out int age))
     {
-      minimumAge = age;
+      _minimumAge = age;
     }
 
     // Age range.
-    if (filterText.Contains('-'))
+    if (_filterText.Contains('-'))
     {
-      string[] list = filterText.Split('-');
+      string[] list = _filterText.Split('-');
 
       if (int.TryParse(list[0], out age))
       {
-        minimumAge = age;
+        _minimumAge = age;
       }
 
       if (int.TryParse(list[1], out age))
       {
-        maximumAge = age;
+        _maximumAge = age;
       }
     }
 
     // Ending age.
-    if (filterText.EndsWith('+'))
+    if (_filterText.EndsWith('+'))
     {
-      if (int.TryParse(filterText.AsSpan(0, filterText.Length - 1), out age))
+      if (int.TryParse(_filterText.AsSpan(0, _filterText.Length - 1), out age))
       {
-        maximumAge = age;
+        _maximumAge = age;
       }
     }
   }

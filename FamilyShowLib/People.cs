@@ -70,7 +70,7 @@ public class People
     public const string DataFileName = "default.familyx";
   }
 
-  private readonly string OPCContentFileName = "content.xml";
+  private readonly string _opcContentFileName = "content.xml";
 
   #endregion
 
@@ -369,7 +369,7 @@ public class People
 
     // Create xml content file
     XmlSerializer xml = new(typeof(People));
-    using (Stream stream = new FileStream(Path.Combine(tempFolder, OPCContentFileName), FileMode.Create, FileAccess.Write, FileShare.None))
+    using (Stream stream = new FileStream(Path.Combine(tempFolder, _opcContentFileName), FileMode.Create, FileAccess.Write, FileShare.None))
     {
       xml.Serialize(stream, this);
     }
@@ -794,7 +794,7 @@ public class People
 
       XmlSerializer xml = new(typeof(People));
 
-      using (FileStream stream = new(tempFolder + OPCContentFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+      using (FileStream stream = new(tempFolder + _opcContentFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
       {
         People pc = (People)xml.Deserialize(stream);
         stream.Close();
@@ -1114,7 +1114,7 @@ public class People
       Person reselectAfterMerge = PeopleCollection.Current;  //get the current person so they can be given focus after the merge
 
       XmlSerializer xml = new(typeof(People));
-      using (FileStream stream = new(tempFolder + OPCContentFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+      using (FileStream stream = new(tempFolder + _opcContentFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
       {
         People merge = (People)xml.Deserialize(stream);  //add all the people, sources, and repositories from the new file to a people collection for comparison to take place
         stream.Close();
@@ -2224,20 +2224,20 @@ public class SourceCollection : ObservableCollection<Source>, INotifyPropertyCha
 {
   public SourceCollection() { }
 
-  private Source current;
-  private bool dirty;
+  private Source _current;
+  private bool _dirty;
 
   ///<summary>
   ///Source currently selected in application
   ///</summary>
   public Source Current
   {
-    get { return current; }
+    get { return _current; }
     set
     {
-      if (current != value)
+      if (_current != value)
       {
-        current = value;
+        _current = value;
         OnPropertyChanged(nameof(Current));
         OnCurrentChanged();
       }
@@ -2249,8 +2249,8 @@ public class SourceCollection : ObservableCollection<Source>, INotifyPropertyCha
   ///</summary>
   public bool IsDirty
   {
-    get { return dirty; }
-    set { dirty = value; }
+    get { return _dirty; }
+    set { _dirty = value; }
   }
 
   public event EventHandler<SourceContentChangedEventArgs> ContentChanged;
@@ -2261,7 +2261,7 @@ public class SourceCollection : ObservableCollection<Source>, INotifyPropertyCha
 
   public void OnContentChanged()
   {
-    dirty = true;
+    _dirty = true;
     ContentChanged?.Invoke(this, new SourceContentChangedEventArgs(null));
   }
 
@@ -2270,7 +2270,7 @@ public class SourceCollection : ObservableCollection<Source>, INotifyPropertyCha
   /// </summary>
   public void OnContentChanged(Source newSource)
   {
-    dirty = true;
+    _dirty = true;
     ContentChanged?.Invoke(this, new SourceContentChangedEventArgs(newSource));
   }
 
@@ -2333,20 +2333,20 @@ public class RepositoryCollection : ObservableCollection<Repository>, INotifyPro
 {
   public RepositoryCollection() { }
 
-  private Repository current;
-  private bool dirty;
+  private Repository _current;
+  private bool _dirty;
 
   /// <summary>
   /// Repository currently selected in application
   /// </summary>
   public Repository Current
   {
-    get { return current; }
+    get { return _current; }
     set
     {
-      if (current != value)
+      if (_current != value)
       {
-        current = value;
+        _current = value;
         OnPropertyChanged(nameof(Current));
         OnCurrentChanged();
       }
@@ -2358,8 +2358,8 @@ public class RepositoryCollection : ObservableCollection<Repository>, INotifyPro
   /// </summary>
   public bool IsDirty
   {
-    get { return dirty; }
-    set { dirty = value; }
+    get { return _dirty; }
+    set { _dirty = value; }
   }
 
   public event EventHandler<RepositoryContentChangedEventArgs> ContentChanged;
@@ -2370,7 +2370,7 @@ public class RepositoryCollection : ObservableCollection<Repository>, INotifyPro
 
   public void OnContentChanged()
   {
-    dirty = true;
+    _dirty = true;
     ContentChanged?.Invoke(this, new RepositoryContentChangedEventArgs(null));
   }
 
@@ -2379,7 +2379,7 @@ public class RepositoryCollection : ObservableCollection<Repository>, INotifyPro
   /// </summary>
   public void OnContentChanged(Repository newRepository)
   {
-    dirty = true;
+    _dirty = true;
     ContentChanged?.Invoke(this, new RepositoryContentChangedEventArgs(newRepository));
   }
 
@@ -2442,20 +2442,20 @@ public class PeopleCollection : ObservableCollection<Person>, INotifyPropertyCha
 {
   public PeopleCollection() { }
 
-  private Person current;
-  private bool dirty;
+  private Person _current;
+  private bool _dirty;
 
   /// <summary>
   /// Person currently selected in application
   /// </summary>
   public Person Current
   {
-    get { return current; }
+    get { return _current; }
     set
     {
-      if (current != value)
+      if (_current != value)
       {
-        current = value;
+        _current = value;
         OnPropertyChanged(nameof(Current));
         OnCurrentChanged();
       }
@@ -2467,8 +2467,8 @@ public class PeopleCollection : ObservableCollection<Person>, INotifyPropertyCha
   /// </summary>
   public bool IsDirty
   {
-    get { return dirty; }
-    set { dirty = value; }
+    get { return _dirty; }
+    set { _dirty = value; }
   }
 
   /// <summary>
@@ -2495,7 +2495,7 @@ public class PeopleCollection : ObservableCollection<Person>, INotifyPropertyCha
 
   public void OnContentChanged()
   {
-    dirty = true;
+    _dirty = true;
     ContentChanged?.Invoke(this, new ContentChangedEventArgs(null));
   }
 
@@ -2504,7 +2504,7 @@ public class PeopleCollection : ObservableCollection<Person>, INotifyPropertyCha
   /// </summary>
   public void OnContentChanged(Person newPerson)
   {
-    dirty = true;
+    _dirty = true;
     ContentChanged?.Invoke(this, new ContentChangedEventArgs(newPerson));
   }
 

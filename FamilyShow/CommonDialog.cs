@@ -21,7 +21,7 @@ public class FilterEntry(string display, string extension)
 /// <summary>
 /// Displays the common Open and SaveAs dialogs using the Vista-style dialogs.
 /// </summary>
-class CommonDialog
+internal class CommonDialog
 {
   #region properties
 

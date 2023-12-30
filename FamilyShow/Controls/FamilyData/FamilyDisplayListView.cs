@@ -6,7 +6,7 @@ using Microsoft.FamilyShowLib;
 
 namespace Microsoft.FamilyShow;
 
-class FamilyDisplayListView : FilterSortListView
+internal class FamilyDisplayListView : FilterSortListView
 {
   /// <summary>
   /// Called for each item in the list. Return true if the item should be in

@@ -23,10 +23,10 @@ public class DiagramRow : FrameworkElement
   #region fields
 
   // Location of the row, relative to the diagram.
-  private Point location = new();
+  private Point _location;
 
   // List of groups in the row.
-  private readonly List<DiagramGroup> groups = [];
+  private readonly List<DiagramGroup> _groups = [];
 
   #endregion
 
@@ -42,8 +42,8 @@ public class DiagramRow : FrameworkElement
   /// </summary>
   public Point Location
   {
-    get { return location; }
-    set { location = value; }
+    get { return _location; }
+    set { _location = value; }
   }
 
   /// <summary>
@@ -51,7 +51,7 @@ public class DiagramRow : FrameworkElement
   /// </summary>
   public ReadOnlyCollection<DiagramGroup> Groups
   {
-    get { return new ReadOnlyCollection<DiagramGroup>(groups); }
+    get { return new ReadOnlyCollection<DiagramGroup>(_groups); }
   }
 
   public int NodeCount
@@ -59,7 +59,7 @@ public class DiagramRow : FrameworkElement
     get
     {
       int count = 0;
-      foreach (DiagramGroup group in groups)
+      foreach (DiagramGroup group in _groups)
       {
         count += group.Nodes.Count;
       }
@@ -76,7 +76,7 @@ public class DiagramRow : FrameworkElement
   {
     // Let each group determine how large they want to be.
     Size size = new(double.PositiveInfinity, double.PositiveInfinity);
-    foreach (DiagramGroup group in groups)
+    foreach (DiagramGroup group in _groups)
     {
       group.Measure(size);
     }
@@ -94,13 +94,13 @@ public class DiagramRow : FrameworkElement
   protected override int VisualChildrenCount
   {
     // Return the number of groups.
-    get { return groups.Count; }
+    get { return _groups.Count; }
   }
 
   protected override Visual GetVisualChild(int index)
   {
     // Return the requested group.
-    return groups[index];
+    return _groups[index];
   }
 
   #endregion
@@ -110,7 +110,7 @@ public class DiagramRow : FrameworkElement
   /// </summary>
   public void Add(DiagramGroup group)
   {
-    groups.Add(group);
+    _groups.Add(group);
     AddVisualChild(group);
   }
 
@@ -119,13 +119,13 @@ public class DiagramRow : FrameworkElement
   /// </summary>
   public void Clear()
   {
-    foreach (DiagramGroup group in groups)
+    foreach (DiagramGroup group in _groups)
     {
       group.Clear();
       RemoveVisualChild(group);
     }
 
-    groups.Clear();
+    _groups.Clear();
   }
 
   /// <summary>
@@ -142,7 +142,7 @@ public class DiagramRow : FrameworkElement
     // Total size of the row.
     Size totalSize = new(0, 0);
 
-    foreach (DiagramGroup group in groups)
+    foreach (DiagramGroup group in _groups)
     {
       // Group location.
       bounds.X = pos;

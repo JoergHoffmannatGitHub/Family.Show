@@ -31,7 +31,7 @@ public class HtmlExport
 
   #region fields
 
-  private StreamWriter tw;
+  private StreamWriter _tw;
 
   #endregion
 
@@ -43,27 +43,27 @@ public class HtmlExport
   public void ExportAll(PeopleCollection peopleCollection, SourceCollection sourceCollection, RepositoryCollection repositoryCollection, string htmlFilePath, string familyxFileName, bool privacy, bool sourcesbool)
   {
     string filename = Path.GetFileName(htmlFilePath);
-    tw = new StreamWriter(filename);
+    _tw = new StreamWriter(filename);
     //write the necessary html code for a html document
-    tw.WriteLine(Header());
-    tw.WriteLine(JavaScripts());
-    tw.WriteLine(CSS());
-    tw.WriteLine(CSSprinting(15));
+    _tw.WriteLine(Header());
+    _tw.WriteLine(JavaScripts());
+    _tw.WriteLine(CSS());
+    _tw.WriteLine(CSSprinting(15));
 
-    tw.WriteLine("</head><body onload=\"javascript:showhideall('hide_all')\">");
-    tw.WriteLine(Buttons());
+    _tw.WriteLine("</head><body onload=\"javascript:showhideall('hide_all')\">");
+    _tw.WriteLine(Buttons());
 
-    tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
-    tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
+    _tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
+    _tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
 
     if (!string.IsNullOrEmpty(familyxFileName))
     {
-      tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
+      _tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
     }
 
-    tw.WriteLine(Properties.Resources.NumberOfPeople + " <b>" + peopleCollection.Count + "</b><br/><br/>");
+    _tw.WriteLine(Properties.Resources.NumberOfPeople + " <b>" + peopleCollection.Count + "</b><br/><br/>");
 
-    tw.WriteLine(NormalTableColumns());
+    _tw.WriteLine(NormalTableColumns());
 
     //write all people to the html file
     foreach (Person p in peopleCollection)
@@ -77,21 +77,21 @@ public class HtmlExport
 
       if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
       {
-        tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        _tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
       }
       else if (p.Restriction == Restriction.Private) //a private record should not be exported
       {
-        tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        _tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
       }
       else
       {
         if (p.Note != null)
         {
-          tw.WriteLine(dataWithNote(p, sourceArray));
+          _tw.WriteLine(dataWithNote(p, sourceArray));
         }
         else
         {
-          tw.WriteLine(dataWithoutNote(p, sourceArray));
+          _tw.WriteLine(dataWithoutNote(p, sourceArray));
         }
       }
     }
@@ -100,26 +100,26 @@ public class HtmlExport
     {
       if (sourceCollection.Count > 0)
       {
-        tw.WriteLine("</table>");
-        tw.WriteLine(NormalSourceColumns());
+        _tw.WriteLine("</table>");
+        _tw.WriteLine(NormalSourceColumns());
         foreach (Source s in sourceCollection)
         {
-          tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
+          _tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
         }
       }
       if (repositoryCollection.Count > 0)
       {
-        tw.WriteLine("</table>");
-        tw.WriteLine(NormalRepositoryColumns());
+        _tw.WriteLine("</table>");
+        _tw.WriteLine(NormalRepositoryColumns());
         foreach (Repository r in repositoryCollection)
         {
-          tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
+          _tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
         }
       }
     }
 
-    tw.WriteLine(Footer());
-    tw.Close();
+    _tw.WriteLine(Footer());
+    _tw.Close();
   }
 
   /// <summary>
@@ -129,7 +129,7 @@ public class HtmlExport
   {
     PeopleCollection pc = [];
     string filename = Path.GetFileName(htmlFilePath);
-    tw = new StreamWriter(filename);
+    _tw = new StreamWriter(filename);
 
     //add the current person, their parents, spouses, previous spouses, children and siblings to the export people collection
 
@@ -162,19 +162,19 @@ public class HtmlExport
 
     //write the necessary html code for a html document
 
-    tw.WriteLine(Header());
-    tw.WriteLine(JavaScripts());
-    tw.WriteLine(CSS());
-    tw.WriteLine(CSSprinting(16));
+    _tw.WriteLine(Header());
+    _tw.WriteLine(JavaScripts());
+    _tw.WriteLine(CSS());
+    _tw.WriteLine(CSSprinting(16));
 
-    tw.WriteLine("</head><body onload=\"javascripts\">");
-    tw.WriteLine(Buttons());
-    tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
-    tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
+    _tw.WriteLine("</head><body onload=\"javascripts\">");
+    _tw.WriteLine(Buttons());
+    _tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
+    _tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
 
     if (!string.IsNullOrEmpty(familyxFileName))
     {
-      tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
+      _tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
     }
 
     int i = pc.Count;
@@ -184,10 +184,10 @@ public class HtmlExport
       i = 0;
     }
 
-    tw.WriteLine(CurrentPersonString(peopleCollection.Current, privacy));
-    tw.WriteLine(Properties.Resources.SummaryOfPeople + " <b>" + i + "</b><br/><br/>");
+    _tw.WriteLine(CurrentPersonString(peopleCollection.Current, privacy));
+    _tw.WriteLine(Properties.Resources.SummaryOfPeople + " <b>" + i + "</b><br/><br/>");
 
-    tw.WriteLine("<table id=\"qstable\" border=\"1\" rules=\"all\" frame=\"box\">\n" +
+    _tw.WriteLine("<table id=\"qstable\" border=\"1\" rules=\"all\" frame=\"box\">\n" +
     "<thead>\n" +
     "<tr>\n" +
     "<th width=\"5%\">" + Properties.Resources.RelationshipToCurrentPerson + "</th> \n" +
@@ -267,17 +267,17 @@ public class HtmlExport
 
           if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
           {
-            tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + relationship + "</td><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+            _tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + relationship + "</td><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
           }
           else if (p.Restriction == Restriction.Private) //a private record should not be exported
           {
-            tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+            _tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
           }
           else
           {
             if (p.Note != null)
             {
-              tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"personhighlight\"><td>" + relationship + "</td><td>" + p.FirstName + "</td><td>"
+              _tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"personhighlight\"><td>" + relationship + "</td><td>" + p.FirstName + "</td><td>"
                   + p.LastName + "</td><td>" + p.Age + "</td><td>"
                   + p.BirthDateDescriptor + " " + dateformat(p.BirthDate) + sourceArray[0, 0] + "</td><td>"
                   + p.BirthPlace + sourceArray[0, 0] + "</td><td>"
@@ -292,12 +292,12 @@ public class HtmlExport
                   + p.CremationDateDescriptor + " " + dateformat(p.CremationDate) + sourceArray[0, 6] + "</td>"
                   + "</td><td><p class=\"notelink\">[<a href=\"javascript:showhide('id_" + p.Id + "')\">Note</a>]</p></td></tr>");
 
-              tw.WriteLine("<tr id=\"note_id_" + p.Id + "\" class=\"noteshown\"><td colspan=\"16\"><b>" + Properties.Resources.Note + "</b>: <pre>" + p.Note + "</pre></td></tr>");
+              _tw.WriteLine("<tr id=\"note_id_" + p.Id + "\" class=\"noteshown\"><td colspan=\"16\"><b>" + Properties.Resources.Note + "</b>: <pre>" + p.Note + "</pre></td></tr>");
 
             }
             else
             {
-              tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + relationship + "</td><td>" + p.FirstName + "</td><td>"
+              _tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + relationship + "</td><td>" + p.FirstName + "</td><td>"
               + p.LastName + "</td><td>" + p.Age + "</td><td>"
               + p.BirthDateDescriptor + " " + dateformat(p.BirthDate) + sourceArray[0, 0] + "</td><td>"
               + p.BirthPlace + sourceArray[0, 0] + "</td><td>"
@@ -319,26 +319,26 @@ public class HtmlExport
     {
       if (sourceCollection.Count > 0)
       {
-        tw.WriteLine("</table>");
-        tw.WriteLine(NormalSourceColumns());
+        _tw.WriteLine("</table>");
+        _tw.WriteLine(NormalSourceColumns());
         foreach (Source s in sourceCollection)
         {
-          tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
+          _tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
         }
       }
       if (repositoryCollection.Count > 0)
       {
-        tw.WriteLine("</table>");
-        tw.WriteLine(NormalRepositoryColumns());
+        _tw.WriteLine("</table>");
+        _tw.WriteLine(NormalRepositoryColumns());
         foreach (Repository r in repositoryCollection)
         {
-          tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
+          _tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
         }
       }
     }
 
-    tw.WriteLine(Footer());
-    tw.Close();
+    _tw.WriteLine(Footer());
+    _tw.Close();
   }
 
   /// <summary>
@@ -348,7 +348,7 @@ public class HtmlExport
   {
     PeopleCollection pc = [];
     string filename = Path.GetFileName(htmlFilePath);
-    tw = new StreamWriter(filename);
+    _tw = new StreamWriter(filename);
 
     //add the current person, their parents, spouses, children and siblings to the export people collection
 
@@ -357,23 +357,23 @@ public class HtmlExport
 
     //write the necessary html code for a html document
 
-    tw.WriteLine(Header());
-    tw.WriteLine(JavaScripts());
-    tw.WriteLine(CSS());
-    tw.WriteLine(CSSprinting(15));
+    _tw.WriteLine(Header());
+    _tw.WriteLine(JavaScripts());
+    _tw.WriteLine(CSS());
+    _tw.WriteLine(CSSprinting(15));
 
-    tw.WriteLine("</head><body>");
-    tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
-    tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
+    _tw.WriteLine("</head><body>");
+    _tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
+    _tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
 
     if (!string.IsNullOrEmpty(familyxFileName))
     {
-      tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
+      _tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
     }
 
-    tw.WriteLine(CurrentPersonString(peopleCollection.Current, privacy));
-    tw.WriteLine(Properties.Resources.NumberOfPeople + " <b>" + pc.Count + "</b><br/><br/>");
-    tw.WriteLine(NormalTableColumns());
+    _tw.WriteLine(CurrentPersonString(peopleCollection.Current, privacy));
+    _tw.WriteLine(Properties.Resources.NumberOfPeople + " <b>" + pc.Count + "</b><br/><br/>");
+    _tw.WriteLine(NormalTableColumns());
 
 
     //write all the appropriate people to the html file including relationship to current person
@@ -389,21 +389,21 @@ public class HtmlExport
 
       if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
       {
-        tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        _tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
       }
       else if (p.Restriction == Restriction.Private) //a private record should not be exported
       {
-        tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        _tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
       }
       else
       {
         if (p.Note != null)
         {
-          tw.WriteLine(dataWithNote(p, sourceArray));
+          _tw.WriteLine(dataWithNote(p, sourceArray));
         }
         else
         {
-          tw.WriteLine(dataWithoutNote(p, sourceArray));
+          _tw.WriteLine(dataWithoutNote(p, sourceArray));
         }
       }
     }
@@ -412,25 +412,25 @@ public class HtmlExport
     {
       if (sourceCollection.Count > 0)
       {
-        tw.WriteLine("</table>");
-        tw.WriteLine(NormalSourceColumns());
+        _tw.WriteLine("</table>");
+        _tw.WriteLine(NormalSourceColumns());
         foreach (Source s in sourceCollection)
         {
-          tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
+          _tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
         }
       }
       if (repositoryCollection.Count > 0)
       {
-        tw.WriteLine("</table>");
-        tw.WriteLine(NormalRepositoryColumns());
+        _tw.WriteLine("</table>");
+        _tw.WriteLine(NormalRepositoryColumns());
         foreach (Repository r in repositoryCollection)
         {
-          tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
+          _tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
         }
       }
     }
-    tw.WriteLine(Footer());
-    tw.Close();
+    _tw.WriteLine(Footer());
+    _tw.Close();
   }
 
   /// <summary>
@@ -440,7 +440,7 @@ public class HtmlExport
   {
     PeopleCollection pc = [];
     string filename = Path.GetFileName(htmlFilePath);
-    tw = new StreamWriter(filename);
+    _tw = new StreamWriter(filename);
 
     #region filter logic
 
@@ -622,25 +622,25 @@ public class HtmlExport
 
     //write the necessary html code for a html document
 
-    tw.WriteLine(Header());
-    tw.WriteLine(JavaScripts());
-    tw.WriteLine(CSS());
-    tw.WriteLine(CSSprinting(15));
+    _tw.WriteLine(Header());
+    _tw.WriteLine(JavaScripts());
+    _tw.WriteLine(CSS());
+    _tw.WriteLine(CSSprinting(15));
 
-    tw.WriteLine("</head><body onload=\"javascript:showhideall('hide_all')\">");
-    tw.WriteLine(Buttons());
-    tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
-    tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
+    _tw.WriteLine("</head><body onload=\"javascript:showhideall('hide_all')\">");
+    _tw.WriteLine(Buttons());
+    _tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
+    _tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
 
     if (!string.IsNullOrEmpty(familyxFileName))
     {
-      tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
+      _tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
     }
 
-    tw.WriteLine(Properties.Resources.FilteredOn + " <b>" + searchfield + "</b><br/>");
-    tw.WriteLine(searchfield + ": <b>" + searchtext + "</b><br/>");
-    tw.WriteLine(Properties.Resources.NumberOfPeople + " <b>" + pc.Count + "</b><br/><br/>");
-    tw.WriteLine(NormalTableColumns());
+    _tw.WriteLine(Properties.Resources.FilteredOn + " <b>" + searchfield + "</b><br/>");
+    _tw.WriteLine(searchfield + ": <b>" + searchtext + "</b><br/>");
+    _tw.WriteLine(Properties.Resources.NumberOfPeople + " <b>" + pc.Count + "</b><br/><br/>");
+    _tw.WriteLine(NormalTableColumns());
 
     //write all the appropriate people to the html file including relationship to current person
     foreach (Person p in pc)
@@ -654,21 +654,21 @@ public class HtmlExport
 
       if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
       {
-        tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        _tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
       }
       else if (p.Restriction == Restriction.Private) //a private record should not be exported
       {
-        tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        _tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
       }
       else
       {
         if (p.Note != null)
         {
-          tw.WriteLine(dataWithNote(p, sourceArray));
+          _tw.WriteLine(dataWithNote(p, sourceArray));
         }
         else
         {
-          tw.WriteLine(dataWithoutNote(p, sourceArray));
+          _tw.WriteLine(dataWithoutNote(p, sourceArray));
         }
       }
     }
@@ -677,25 +677,25 @@ public class HtmlExport
     {
       if (sourceCollection.Count > 0)
       {
-        tw.WriteLine("</table>");
-        tw.WriteLine(NormalSourceColumns());
+        _tw.WriteLine("</table>");
+        _tw.WriteLine(NormalSourceColumns());
         foreach (Source s in sourceCollection)
         {
-          tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
+          _tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
         }
       }
       if (repositoryCollection.Count > 0)
       {
-        tw.WriteLine("</table>");
-        tw.WriteLine(NormalRepositoryColumns());
+        _tw.WriteLine("</table>");
+        _tw.WriteLine(NormalRepositoryColumns());
         foreach (Repository r in repositoryCollection)
         {
-          tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
+          _tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
         }
       }
     }
-    tw.WriteLine(Footer());
-    tw.Close();
+    _tw.WriteLine(Footer());
+    _tw.Close();
   }
 
   /// <summary>
@@ -711,7 +711,7 @@ public class HtmlExport
   {
     PeopleCollection pc = [];
     string filename = Path.GetFileName(htmlFilePath);
-    tw = new StreamWriter(filename);
+    _tw = new StreamWriter(filename);
 
     //add the current person, their spouses and siblings to the export people collection and then repeat for each specified generation
 
@@ -900,27 +900,27 @@ public class HtmlExport
 
     //write the necessary html code for a html document
 
-    tw.WriteLine(Header());
-    tw.WriteLine(JavaScripts());
-    tw.WriteLine(CSS());
-    tw.WriteLine(CSSprinting(15));
+    _tw.WriteLine(Header());
+    _tw.WriteLine(JavaScripts());
+    _tw.WriteLine(CSS());
+    _tw.WriteLine(CSSprinting(15));
 
-    tw.WriteLine("</head><body onload=\"javascript:showhideall('hide_all')\">");
-    tw.WriteLine(Buttons());
-    tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
-    tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
+    _tw.WriteLine("</head><body onload=\"javascript:showhideall('hide_all')\">");
+    _tw.WriteLine(Buttons());
+    _tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
+    _tw.WriteLine("<i>" + Properties.Resources.SummaryOfPeople + "</i><br/><br/>");
 
     if (!string.IsNullOrEmpty(familyxFileName))
     {
-      tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
+      _tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
     }
 
-    tw.WriteLine(CurrentPersonString(peopleCollection.Current, privacy));
-    tw.WriteLine(Properties.Resources.AncestralGenerations + " <b>" + ancestors + "</b><br/>");
-    tw.WriteLine(Properties.Resources.DescendantGenerations + " <b>" + descendants + "</b><br/>");
-    tw.WriteLine(Properties.Resources.FamilyShow + " <b>" + pc.Count + "</b><br/><br/>");
+    _tw.WriteLine(CurrentPersonString(peopleCollection.Current, privacy));
+    _tw.WriteLine(Properties.Resources.AncestralGenerations + " <b>" + ancestors + "</b><br/>");
+    _tw.WriteLine(Properties.Resources.DescendantGenerations + " <b>" + descendants + "</b><br/>");
+    _tw.WriteLine(Properties.Resources.FamilyShow + " <b>" + pc.Count + "</b><br/><br/>");
 
-    tw.WriteLine(NormalTableColumns());
+    _tw.WriteLine(NormalTableColumns());
 
     //write all the appropriate people to the html file including relationship to current person
     foreach (Person p in pc)
@@ -934,21 +934,21 @@ public class HtmlExport
 
       if (p.IsLiving == true && privacy == true && p.Restriction != Restriction.Private) //quick privacy option
       {
-        tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        _tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.Living + "</td><td>" + p.LastName + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
       }
       else if (p.Restriction == Restriction.Private) //a private record should not be exported
       {
-        tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        _tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + Properties.Resources.PrivateRecord + "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
       }
       else
       {
         if (p.Note != null)
         {
-          tw.WriteLine(dataWithNote(p, sourceArray));
+          _tw.WriteLine(dataWithNote(p, sourceArray));
         }
         else
         {
-          tw.WriteLine(dataWithoutNote(p, sourceArray));
+          _tw.WriteLine(dataWithoutNote(p, sourceArray));
         }
       }
     }
@@ -957,25 +957,25 @@ public class HtmlExport
     {
       if (sourceCollection.Count > 0)
       {
-        tw.WriteLine("</table>");
-        tw.WriteLine(NormalSourceColumns());
+        _tw.WriteLine("</table>");
+        _tw.WriteLine(NormalSourceColumns());
         foreach (Source s in sourceCollection)
         {
-          tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
+          _tw.WriteLine("<tr><td><a name=\"" + s.Id + "\"></a>" + s.Id + "</td><td>" + s.SourceName + "</td><td>" + s.SourceAuthor + "</td><td>" + s.SourcePublisher + "</td><td>" + s.SourceNote + "</td><td>" + s.SourceRepository + "</td></tr>");
         }
       }
       if (repositoryCollection.Count > 0)
       {
-        tw.WriteLine("</table>");
-        tw.WriteLine(NormalRepositoryColumns());
+        _tw.WriteLine("</table>");
+        _tw.WriteLine(NormalRepositoryColumns());
         foreach (Repository r in repositoryCollection)
         {
-          tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
+          _tw.WriteLine("<tr><td><a name=\"" + r.Id + "\"></a>" + r.Id + "</td><td>" + r.RepositoryName + "</td><td>" + r.RepositoryAddress + "</td></tr>");
         }
       }
     }
-    tw.WriteLine(Footer());
-    tw.Close();
+    _tw.WriteLine(Footer());
+    _tw.Close();
   }
 
   /// <summary>
@@ -985,22 +985,22 @@ public class HtmlExport
   {
     PeopleCollection pc = [];
     string filename = Path.GetFileName(htmlFilePath);
-    tw = new StreamWriter(filename);
+    _tw = new StreamWriter(filename);
 
     //write the necessary html code for a html document
 
-    tw.WriteLine(Header());
-    tw.WriteLine(CSSevents());
+    _tw.WriteLine(Header());
+    _tw.WriteLine(CSSevents());
 
-    tw.WriteLine("</head><body>");
-    tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
-    tw.WriteLine("<i>" + Properties.Resources.Events + " " + startYear.ToString() + " - " + endYear.ToString() + "</i><br/><br/>");
+    _tw.WriteLine("</head><body>");
+    _tw.WriteLine("<h2>" + Properties.Resources.FamilyShow + "</h2>");
+    _tw.WriteLine("<i>" + Properties.Resources.Events + " " + startYear.ToString() + " - " + endYear.ToString() + "</i><br/><br/>");
     if (!string.IsNullOrEmpty(familyxFileName))
     {
-      tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
+      _tw.WriteLine("<b>" + Path.GetFileNameWithoutExtension(familyxFileName) + " " + Properties.Resources.FamilyTree + "</b><br/>");
     }
 
-    tw.WriteLine("<div class=\"timeline\">");
+    _tw.WriteLine("<div class=\"timeline\">");
 
     // Ensure we use actual decades and not just 10 year periods
     do
@@ -1022,7 +1022,7 @@ public class HtmlExport
       if (i < DateTime.Now.Year) // Only export events which have happened.
       {
 
-        tw.WriteLine("<p class=\"decade\"><span class=\"tick\">&#8212;</span><b>" + i.ToString() + "-" + ii.ToString() + "</b></p>");
+        _tw.WriteLine("<p class=\"decade\"><span class=\"tick\">&#8212;</span><b>" + i.ToString() + "-" + ii.ToString() + "</b></p>");
 
         int year = 0;
 
@@ -1043,11 +1043,11 @@ public class HtmlExport
 
               if (!string.IsNullOrEmpty(p.BirthPlace))
               {
-                tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasBornOn + " " + dateformat(p.BirthDate) + " " + Properties.Resources.In + " " + p.BirthPlace + ".</p>");
+                _tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasBornOn + " " + dateformat(p.BirthDate) + " " + Properties.Resources.In + " " + p.BirthPlace + ".</p>");
               }
               else
               {
-                tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasBornOn + " " + dateformat(p.BirthDate) + ".</p>");
+                _tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasBornOn + " " + dateformat(p.BirthDate) + ".</p>");
               }
             }
           }
@@ -1069,11 +1069,11 @@ public class HtmlExport
             {
               if (!string.IsNullOrEmpty(p.DeathPlace))
               {
-                tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.DiedOn + " " + dateformat(p.DeathDate) + " " + Properties.Resources.In + " " + p.DeathPlace + ".</p>");
+                _tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.DiedOn + " " + dateformat(p.DeathDate) + " " + Properties.Resources.In + " " + p.DeathPlace + ".</p>");
               }
               else
               {
-                tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.DiedOn + " " + dateformat(p.DeathDate) + ".</p>");
+                _tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.DiedOn + " " + dateformat(p.DeathDate) + ".</p>");
               }
             }
             year = 0;
@@ -1093,11 +1093,11 @@ public class HtmlExport
             {
               if (!string.IsNullOrEmpty(p.BurialPlace))
               {
-                tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasBuriedOn + " " + dateformat(p.BurialDate) + " " + Properties.Resources.At + " " + p.BurialPlace + ".</p>");
+                _tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasBuriedOn + " " + dateformat(p.BurialDate) + " " + Properties.Resources.At + " " + p.BurialPlace + ".</p>");
               }
               else
               {
-                tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasBuriedOn + " " + dateformat(p.BurialDate) + ".</p>");
+                _tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasBuriedOn + " " + dateformat(p.BurialDate) + ".</p>");
               }
             }
             year = 0;
@@ -1117,11 +1117,11 @@ public class HtmlExport
             {
               if (!string.IsNullOrEmpty(p.CremationPlace))
               {
-                tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasCrematedOn + " " + dateformat(p.CremationDate) + " " + Properties.Resources.At + " " + p.CremationPlace + ".</p>");
+                _tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasCrematedOn + " " + dateformat(p.CremationDate) + " " + Properties.Resources.At + " " + p.CremationPlace + ".</p>");
               }
               else
               {
-                tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasCrematedOn + " " + dateformat(p.CremationDate) + ".</p>");
+                _tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasCrematedOn + " " + dateformat(p.CremationDate) + ".</p>");
               }
             }
             year = 0;
@@ -1129,9 +1129,9 @@ public class HtmlExport
         }
       }
     }
-    tw.WriteLine("</div>");
-    tw.WriteLine(Footer());
-    tw.Close();
+    _tw.WriteLine("</div>");
+    _tw.WriteLine(Footer());
+    _tw.Close();
 
   }
 

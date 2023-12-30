@@ -188,13 +188,13 @@ public partial class PersonInfo : UserControl
     StoryRichTextBox.Selection.ApplyPropertyValue(FontFamilyProperty, FontsComboBox.SelectedValue);
   }
 
-  void StoryRichTextBox_SelectionChanged(object sender, RoutedEventArgs e)
+  private void StoryRichTextBox_SelectionChanged(object sender, RoutedEventArgs e)
   {
     // Update the toolbar controls based on the current selected text.
     UpdateButtons();
   }
 
-  void StoryRichTextBox_TextChanged(object sender, TextChangedEventArgs e)
+  private void StoryRichTextBox_TextChanged(object sender, TextChangedEventArgs e)
   {
     //Update the toolbar controls based on the current selected text.
     UpdateButtons();

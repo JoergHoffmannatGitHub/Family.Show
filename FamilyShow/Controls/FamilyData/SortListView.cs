@@ -46,13 +46,13 @@ public class SortListViewColumn : GridViewColumn
 public class SortListView : ListView
 {
   // The current column that is sorted.
-  private SortListViewColumn sortColumn;
+  private SortListViewColumn _sortColumn;
 
   // The previous column that was sorted.
-  private SortListViewColumn previousSortColumn;
+  private SortListViewColumn _previousSortColumn;
 
   // The current direction the header is sorted;
-  private ListSortDirection sortDirection;
+  private ListSortDirection _sortDirection;
 
   protected override void OnInitialized(EventArgs e)
   {
@@ -78,18 +78,18 @@ public class SortListView : ListView
     }
 
     // See if a new column was clicked, or the same column was clicked.
-    if (sortColumn != column)
+    if (_sortColumn != column)
     {
       // A new column was clicked.
-      previousSortColumn = sortColumn;
-      sortColumn = column;
-      sortDirection = ListSortDirection.Ascending;
+      _previousSortColumn = _sortColumn;
+      _sortColumn = column;
+      _sortDirection = ListSortDirection.Ascending;
     }
     else
     {
       // The same column was clicked, change the sort order.
-      previousSortColumn = null;
-      sortDirection = (sortDirection == ListSortDirection.Ascending) ?
+      _previousSortColumn = null;
+      _sortDirection = (_sortDirection == ListSortDirection.Ascending) ?
           ListSortDirection.Descending : ListSortDirection.Ascending;
     }
 
@@ -110,7 +110,7 @@ public class SortListView : ListView
 
     // Specify the new sorting information.
     dataView.SortDescriptions.Clear();
-    SortDescription description = new(propertyName, sortDirection);
+    SortDescription description = new(propertyName, _sortDirection);
     dataView.SortDescriptions.Add(description);
 
     dataView.Refresh();
@@ -124,25 +124,25 @@ public class SortListView : ListView
     Style headerStyle;
 
     // Restore the previous header.
-    if (previousSortColumn != null && previousSortColumn.SortStyle != null)
+    if (_previousSortColumn != null && _previousSortColumn.SortStyle != null)
     {
-      headerStyle = TryFindResource(previousSortColumn.SortStyle) as Style;
+      headerStyle = TryFindResource(_previousSortColumn.SortStyle) as Style;
       if (headerStyle != null)
       {
-        previousSortColumn.HeaderContainerStyle = headerStyle;
+        _previousSortColumn.HeaderContainerStyle = headerStyle;
       }
     }
 
     // Update the current header.
-    if (sortColumn.SortStyle != null)
+    if (_sortColumn.SortStyle != null)
     {
       // The name of the resource to use for the header.
-      string resourceName = sortColumn.SortStyle + sortDirection.ToString();
+      string resourceName = _sortColumn.SortStyle + _sortDirection.ToString();
 
       headerStyle = TryFindResource(resourceName) as Style;
       if (headerStyle != null)
       {
-        sortColumn.HeaderContainerStyle = headerStyle;
+        _sortColumn.HeaderContainerStyle = headerStyle;
       }
     }
   }

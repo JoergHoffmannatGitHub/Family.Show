@@ -182,27 +182,27 @@ public class ComposingConverter : IValueConverter
 {
   #region IValueCOnverter Members
 
-  private readonly List<IValueConverter> converters = [];
+  private readonly List<IValueConverter> _converters = [];
 
   public Collection<IValueConverter> Converters
   {
-    get { return new Collection<IValueConverter>(converters); }
+    get { return new Collection<IValueConverter>(_converters); }
   }
 
   public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
   {
-    for (int i = 0; i < converters.Count; i++)
+    for (int i = 0; i < _converters.Count; i++)
     {
-      value = converters[i].Convert(value, targetType, parameter, culture);
+      value = _converters[i].Convert(value, targetType, parameter, culture);
     }
     return value;
   }
 
   public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
   {
-    for (int i = converters.Count - 1; i >= 0; i--)
+    for (int i = _converters.Count - 1; i >= 0; i--)
     {
-      value = converters[i].ConvertBack(value, targetType, parameter, culture);
+      value = _converters[i].ConvertBack(value, targetType, parameter, culture);
     }
     return value;
   }

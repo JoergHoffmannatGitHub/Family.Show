@@ -13,9 +13,9 @@ namespace Microsoft.FamilyShow;
 /// </summary>
 public partial class Merge : UserControl
 {
-  int i = 0;      // A counter for all duplicate people
-  int count = 0;  // Index of current person with differing info
-  int total = 0;  // Total number of people with differing info
+  private int _i;      // A counter for all duplicate people
+  private int _count;  // Index of current person with differing info
+  private int _total;  // Total number of people with differing info
   public string[,] summary;
 
   public Merge()
@@ -95,21 +95,21 @@ public partial class Merge : UserControl
   /// </summary>
   private int CountHighlights()
   {
-    total = 0;
-    i = 0;
+    _total = 0;
+    _i = 0;
 
     do
     {
-      bool anyHighlighted = CurrentPerson(i);
-      i++;
+      bool anyHighlighted = CurrentPerson(_i);
+      _i++;
       if (anyHighlighted)
       {
-        total++;
+        _total++;
       }
     }
-    while (i < App.FamilyCollection.ExistingPeopleCollection.Count);
+    while (_i < App.FamilyCollection.ExistingPeopleCollection.Count);
 
-    return total;
+    return _total;
 
   }
 
@@ -122,30 +122,30 @@ public partial class Merge : UserControl
 
     do
     {
-      i++;
+      _i++;
 
-      if (i < App.FamilyCollection.ExistingPeopleCollection.Count)
+      if (_i < App.FamilyCollection.ExistingPeopleCollection.Count)
       {
-        anyHighlighted = CurrentPerson(i);
+        anyHighlighted = CurrentPerson(_i);
 
         if (anyHighlighted)
         {
-          count++;
+          _count++;
         }
 
-        if (total != 0)
+        if (_total != 0)
         {
-          FileProgressBar.Value = (count * 100) / total;
-          FileProgressText.Text = count + "/" + total;
+          FileProgressBar.Value = (_count * 100) / _total;
+          FileProgressText.Text = _count + "/" + _total;
           //If Windows 7 we can update progress on the status bar
           TaskBar.Current.Progress((int)FileProgressBar.Value);
 
         }
       }
     }
-    while (!anyHighlighted && i < App.FamilyCollection.ExistingPeopleCollection.Count);  //find next differeing record
+    while (!anyHighlighted && _i < App.FamilyCollection.ExistingPeopleCollection.Count);  //find next differeing record
 
-    if (i >= App.FamilyCollection.ExistingPeopleCollection.Count)
+    if (_i >= App.FamilyCollection.ExistingPeopleCollection.Count)
     {
       ShowSummary();
     }
@@ -158,8 +158,8 @@ public partial class Merge : UserControl
   private void SavePerson()
   {
 
-    Person p1 = App.FamilyCollection.ExistingPeopleCollection[i];
-    Person p2 = App.FamilyCollection.DuplicatePeopleCollection[i];
+    Person p1 = App.FamilyCollection.ExistingPeopleCollection[_i];
+    Person p2 = App.FamilyCollection.DuplicatePeopleCollection[_i];
 
     if (p1 != null && p2 != null)
     {
@@ -747,8 +747,8 @@ public partial class Merge : UserControl
   /// </summary>
   public void ShowSummary()
   {
-    i = 0;
-    count = 0;
+    _i = 0;
+    _count = 0;
     MergeDuplicateSummary.Visibility = Visibility.Collapsed;
     MergeDuplicates.Visibility = Visibility.Collapsed;
     Summary.Visibility = Visibility.Visible;
@@ -774,8 +774,8 @@ public partial class Merge : UserControl
       ShowSummary();
     }
 
-    count = 0;
-    i = 0;
+    _count = 0;
+    _i = 0;
 
   }
 

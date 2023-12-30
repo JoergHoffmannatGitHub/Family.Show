@@ -15,7 +15,7 @@ public class Story : INotifyPropertyChanged
   #region Fields and Constants
 
   public const string StoriesFolderName = "Stories";
-  private string relativePath;
+  private string _relativePath;
 
   #endregion
 
@@ -26,12 +26,12 @@ public class Story : INotifyPropertyChanged
   /// </summary>
   public string RelativePath
   {
-    get { return relativePath; }
+    get { return _relativePath; }
     set
     {
-      if (relativePath != value)
+      if (_relativePath != value)
       {
-        relativePath = value;
+        _relativePath = value;
         OnPropertyChanged("relativePath");
       }
     }
@@ -50,9 +50,9 @@ public class Story : INotifyPropertyChanged
       App.ApplicationFolderName);
       tempFolder = Path.Combine(tempFolder, App.AppDataFolderName);
 
-      if (relativePath != null)
+      if (_relativePath != null)
       {
-        return Path.Combine(tempFolder, relativePath);
+        return Path.Combine(tempFolder, _relativePath);
       }
       else
       {
@@ -104,7 +104,7 @@ public class Story : INotifyPropertyChanged
       using (FileStream stream = File.Create(storyAbsolutePath))
       {
         // Store the relative path to the story
-        relativePath = Path.Combine(StoriesFolderName, storyFileName);
+        _relativePath = Path.Combine(StoriesFolderName, storyFileName);
 
         // Save the story to disk
         if (storyText.CanSave(dataFormat))

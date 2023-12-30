@@ -16,7 +16,7 @@ public class Attachment : INotifyPropertyChanged
   #region Fields and Constants
 
   public const string AttachmentsFolderName = "Attachments";
-  private string relativePath;
+  private string _relativePath;
 
   #endregion
 
@@ -27,12 +27,12 @@ public class Attachment : INotifyPropertyChanged
   /// </summary>
   public string RelativePath
   {
-    get { return relativePath; }
+    get { return _relativePath; }
     set
     {
-      if (relativePath != value)
+      if (_relativePath != value)
       {
-        relativePath = value;
+        _relativePath = value;
         OnPropertyChanged("relativePath");
       }
     }
@@ -43,7 +43,7 @@ public class Attachment : INotifyPropertyChanged
   /// </summary>
   public string FileName
   {
-    get { return Path.GetFileName(relativePath); }
+    get { return Path.GetFileName(_relativePath); }
     set { }
   }
 
@@ -61,7 +61,7 @@ public class Attachment : INotifyPropertyChanged
       App.ApplicationFolderName);
       tempFolder = Path.Combine(tempFolder, App.AppDataFolderName);
 
-      return Path.Combine(tempFolder, relativePath);
+      return Path.Combine(tempFolder, _relativePath);
     }
     set
     {
@@ -87,7 +87,7 @@ public class Attachment : INotifyPropertyChanged
     if (!string.IsNullOrEmpty(attachmentPath))
     {
       // Copy the attachment to the attachments folder
-      relativePath = Copy(attachmentPath);
+      _relativePath = Copy(attachmentPath);
     }
   }
 

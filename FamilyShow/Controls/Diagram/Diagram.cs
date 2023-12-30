@@ -28,7 +28,7 @@ namespace Microsoft.FamilyShow;
 /// <summary>
 /// Diagram that lays out and displays the nodes.
 /// </summary>
-class Diagram : FrameworkElement
+internal class Diagram : FrameworkElement
 {
   #region fields
 
@@ -59,32 +59,32 @@ class Diagram : FrameworkElement
   }
 
   // List of rows in the diagram. Each row contains groups, and each group contains nodes.
-  private readonly List<DiagramRow> rows = [];
+  private readonly List<DiagramRow> _rows = [];
 
   // Populates the rows with nodes.
-  private readonly DiagramLogic logic;
+  private readonly DiagramLogic _logic;
 
   // Size of the diagram. Used to layout all of the nodes before the
   // control gets an actual size.
-  private Size totalSize = new(0, 0);
+  private Size _totalSize = new(0, 0);
 
   // Zoom level of the diagram.
-  private double scale = 0;
+  private double _scale;
 
   // Bounding area of the selected node, the selected node is the 
   // non-primary node that is selected, and will become the primary node.
-  private Rect selectedNodeBounds = Rect.Empty;
+  private Rect _selectedNodeBounds = Rect.Empty;
 
   // Flag if currently populating or not. Necessary since diagram populate 
   // contains several parts and animations, request to update the diagram
   // are ignored when this flag is set.
-  private bool populating;
+  private bool _populating;
 
   // The person that has been added to the diagram.
-  private Person newPerson;
+  private Person _newPerson;
 
   // Timer used with the repopulating animation.
-  private readonly DispatcherTimer animationTimer = new();
+  private readonly DispatcherTimer _animationTimer = new();
 
   // Flag if the row and group borders should be drawn.
   public static bool displayBorder = Properties.Settings.Default.ShowOutline;
@@ -132,13 +132,13 @@ class Diagram : FrameworkElement
   /// </summary>
   public double Scale
   {
-    get { return scale; }
+    get { return _scale; }
     set
     {
-      if (scale != value)
+      if (_scale != value)
       {
-        scale = value;
-        LayoutTransform = new ScaleTransform(scale, scale);
+        _scale = value;
+        LayoutTransform = new ScaleTransform(_scale, _scale);
       }
     }
   }
@@ -151,7 +151,7 @@ class Diagram : FrameworkElement
     set
     {
       // Filter nodes and connections based on the year.
-      logic.DisplayYear = value;
+      _logic.DisplayYear = value;
       InvalidateVisual();
     }
   }
@@ -161,7 +161,7 @@ class Diagram : FrameworkElement
   /// </summary>
   public double MinimumYear
   {
-    get { return logic.MinimumYear; }
+    get { return _logic.MinimumYear; }
   }
 
   /// <summary>
@@ -169,7 +169,7 @@ class Diagram : FrameworkElement
   /// </summary>
   public Rect PrimaryNodeBounds
   {
-    get { return logic.GetNodeBounds(logic.Family.Current); }
+    get { return _logic.GetNodeBounds(_logic.Family.Current); }
   }
 
   /// <summary>
@@ -179,7 +179,7 @@ class Diagram : FrameworkElement
   /// </summary>
   public Rect SelectedNodeBounds
   {
-    get { return selectedNodeBounds; }
+    get { return _selectedNodeBounds; }
   }
 
   /// <summary>
@@ -187,7 +187,7 @@ class Diagram : FrameworkElement
   /// </summary>
   public int NodeCount
   {
-    get { return logic.PersonLookup.Count; }
+    get { return _logic.PersonLookup.Count; }
   }
 
   #endregion
@@ -195,16 +195,16 @@ class Diagram : FrameworkElement
   public Diagram()
   {
     // Init the diagram logic, which handles all of the layout logic.
-    logic = new DiagramLogic(VisualTreeHelper.GetDpi(this))
+    _logic = new DiagramLogic(VisualTreeHelper.GetDpi(this))
     {
       NodeClickHandler = new RoutedEventHandler(OnNodeClick)
     };
 
     // Can have an empty People collection when in design tools such as Blend.
-    if (logic.Family != null)
+    if (_logic.Family != null)
     {
-      logic.Family.ContentChanged += new EventHandler<ContentChangedEventArgs>(OnFamilyContentChanged);
-      logic.Family.CurrentChanged += new EventHandler(OnFamilyCurrentChanged);
+      _logic.Family.ContentChanged += new EventHandler<ContentChangedEventArgs>(OnFamilyContentChanged);
+      _logic.Family.CurrentChanged += new EventHandler(OnFamilyCurrentChanged);
     }
   }
 
@@ -356,20 +356,20 @@ class Diagram : FrameworkElement
   protected override int VisualChildrenCount
   {
     // Return the number of rows.
-    get { return rows.Count; }
+    get { return _rows.Count; }
   }
 
   protected override Visual GetVisualChild(int index)
   {
     // Return the requested row.
-    return rows[index];
+    return _rows[index];
   }
 
   protected override Size MeasureOverride(Size availableSize)
   {
     // Let each row determine how large they want to be.
     Size size = new(double.PositiveInfinity, double.PositiveInfinity);
-    foreach (DiagramRow row in rows)
+    foreach (DiagramRow row in _rows)
     {
       row.Measure(size);
     }
@@ -398,12 +398,12 @@ class Diagram : FrameworkElement
     // Total size of the diagram.
     Size size = new(0, 0);
 
-    foreach (DiagramRow row in rows)
+    foreach (DiagramRow row in _rows)
     {
       // Row location, center the row horizontaly.
       bounds.Y = pos;
-      bounds.X = (totalSize.Width == 0) ? 0 :
-          bounds.X = (totalSize.Width - row.DesiredSize.Width) / 2;
+      bounds.X = (_totalSize.Width == 0) ? 0 :
+          bounds.X = (_totalSize.Width - row.DesiredSize.Width) / 2;
 
       // Row Size.
       bounds.Width = row.DesiredSize.Width;
@@ -425,7 +425,7 @@ class Diagram : FrameworkElement
 
     // Store the size, this is necessary so the diagram
     // can be laid out without a valid Width property.
-    totalSize = size;
+    _totalSize = size;
     return size;
   }
 
@@ -447,7 +447,7 @@ class Diagram : FrameworkElement
       int rownumber = 1;
       int labelnumber = 1;
       // Draws borders around the rows and groups.
-      foreach (DiagramRow row in rows)
+      foreach (DiagramRow row in _rows)
       {
         // Display row border.
 
@@ -459,7 +459,7 @@ class Diagram : FrameworkElement
         connectionTextFont), connectionTextSize, Brushes.PaleVioletRed,
         VisualTreeHelper.GetDpi(this).PixelsPerDip);
 
-        if (rownumber != rows.Count)
+        if (rownumber != _rows.Count)
         {
           Vector size = new(row.DesiredSize.Width + 10, row.DesiredSize.Height - 5);
           Rect bounds = new(row.Location, size);
@@ -493,31 +493,31 @@ class Diagram : FrameworkElement
 
     if (displayDates == false)
     {
-      foreach (DiagramConnectorNode connector in logic.PersonLookup.Values)
+      foreach (DiagramConnectorNode connector in _logic.PersonLookup.Values)
       {
         connector.Node.HideBottomLabel();
       }
 
-      foreach (DiagramConnector connector in logic.Connections)
+      foreach (DiagramConnector connector in _logic.Connections)
       {
         connector.ShowDate = false;
       }
     }
     else
     {
-      foreach (DiagramConnectorNode connector in logic.PersonLookup.Values)
+      foreach (DiagramConnectorNode connector in _logic.PersonLookup.Values)
       {
         connector.Node.UpdateBottomLabel();
       }
 
-      foreach (DiagramConnector connector in logic.Connections)
+      foreach (DiagramConnector connector in _logic.Connections)
       {
         connector.ShowDate = true;
       }
     }
 
     // Draw child connectors first, so marriage information appears on top.
-    foreach (DiagramConnector connector in logic.Connections)
+    foreach (DiagramConnector connector in _logic.Connections)
     {
       if (connector.IsChildConnector)
       {
@@ -526,7 +526,7 @@ class Diagram : FrameworkElement
     }
 
     // Draw all other non-child connectors.
-    foreach (DiagramConnector connector in logic.Connections)
+    foreach (DiagramConnector connector in _logic.Connections)
     {
       if (!connector.IsChildConnector)
       {
@@ -535,7 +535,7 @@ class Diagram : FrameworkElement
     }
   }
 
-  void OnToggleBorderClick(object sender, RoutedEventArgs e)
+  private void OnToggleBorderClick(object sender, RoutedEventArgs e)
   {
     // Display or hide the row and group borders.
     displayBorder = !displayBorder;
@@ -549,7 +549,7 @@ class Diagram : FrameworkElement
     InvalidateVisual();
   }
 
-  void OnToggleBloodlines(object sender, RoutedEventArgs e)
+  private void OnToggleBloodlines(object sender, RoutedEventArgs e)
   {
     // Display or hide the Bloodlines.
     showBloodlines = !showBloodlines;
@@ -564,7 +564,7 @@ class Diagram : FrameworkElement
     UpdateDiagram();
   }
 
-  void OnToggleNodeCount(object sender, RoutedEventArgs e)
+  private void OnToggleNodeCount(object sender, RoutedEventArgs e)
   {
     // Display or hide additional generations
     showGenerations = !showGenerations;
@@ -581,7 +581,7 @@ class Diagram : FrameworkElement
 
   }
 
-  void OnToggleDate(object sender, RoutedEventArgs e)
+  private void OnToggleDate(object sender, RoutedEventArgs e)
   {
 
     // Display or hide the dates
@@ -597,7 +597,7 @@ class Diagram : FrameworkElement
     UpdateDiagram();
   }
 
-  void OnToggleFiltered(object sender, RoutedEventArgs e)
+  private void OnToggleFiltered(object sender, RoutedEventArgs e)
   {
 
     // Display or hide filtered people
@@ -614,7 +614,7 @@ class Diagram : FrameworkElement
     UpdateDiagram();
   }
 
-  void OnToggleInLaws(object sender, RoutedEventArgs e)
+  private void OnToggleInLaws(object sender, RoutedEventArgs e)
   {
 
     // Display or hide the In laws
@@ -631,7 +631,7 @@ class Diagram : FrameworkElement
     UpdateDiagram();
   }
 
-  void OnToggleAncestors(object sender, RoutedEventArgs e)
+  private void OnToggleAncestors(object sender, RoutedEventArgs e)
   {
 
     // Display or hide ancestors
@@ -648,7 +648,7 @@ class Diagram : FrameworkElement
     UpdateDiagram();
   }
 
-  void OnToggleImmediateFamily(object sender, RoutedEventArgs e)
+  private void OnToggleImmediateFamily(object sender, RoutedEventArgs e)
   {
 
     // Display or hide immediate family
@@ -665,7 +665,7 @@ class Diagram : FrameworkElement
     UpdateDiagram();
   }
 
-  void OnToggleDescendants(object sender, RoutedEventArgs e)
+  private void OnToggleDescendants(object sender, RoutedEventArgs e)
   {
 
     // Display or hide the descendants
@@ -682,7 +682,7 @@ class Diagram : FrameworkElement
     UpdateDiagram();
   }
 
-  void OnToggleSiblings(object sender, RoutedEventArgs e)
+  private void OnToggleSiblings(object sender, RoutedEventArgs e)
   {
 
     // Display or hide the siblings
@@ -699,7 +699,7 @@ class Diagram : FrameworkElement
     UpdateDiagram();
   }
 
-  void OnToggleAuntsUncles(object sender, RoutedEventArgs e)
+  private void OnToggleAuntsUncles(object sender, RoutedEventArgs e)
   {
 
     // Display or hide the aunts and uncles
@@ -717,7 +717,7 @@ class Diagram : FrameworkElement
 
   }
 
-  void OnTogglePreviousSpouses(object sender, RoutedEventArgs e)
+  private void OnTogglePreviousSpouses(object sender, RoutedEventArgs e)
   {
 
     // Display or hide the previous spouses
@@ -734,7 +734,7 @@ class Diagram : FrameworkElement
     UpdateDiagram();
   }
 
-  void OnToggleSpouses(object sender, RoutedEventArgs e)
+  private void OnToggleSpouses(object sender, RoutedEventArgs e)
   {
 
     // Display or hide the spouses
@@ -751,7 +751,7 @@ class Diagram : FrameworkElement
     UpdateDiagram();
   }
 
-  void OnTogglePhotos(object sender, RoutedEventArgs e)
+  private void OnTogglePhotos(object sender, RoutedEventArgs e)
   {
 
     // Display or hide the photos
@@ -775,14 +775,14 @@ class Diagram : FrameworkElement
   /// </summary>
   private void Clear()
   {
-    foreach (DiagramRow row in rows)
+    foreach (DiagramRow row in _rows)
     {
       row.Clear();
       RemoveVisualChild(row);
     }
 
-    rows.Clear();
-    logic.Clear();
+    _rows.Clear();
+    _logic.Clear();
   }
 
   /// <summary>
@@ -792,15 +792,15 @@ class Diagram : FrameworkElement
   private void Populate()
   {
     // Set flag to ignore future updates until complete.
-    populating = true;
+    _populating = true;
 
     // Update the nodes in the diagram.
     UpdateDiagram();
 
     // First hide all of the nodes except the primary node.
-    foreach (DiagramConnectorNode connector in logic.PersonLookup.Values)
+    foreach (DiagramConnectorNode connector in _logic.PersonLookup.Values)
     {
-      if (connector.Node.Person != logic.Family.Current)
+      if (connector.Node.Person != _logic.Family.Current)
       {
         connector.Node.Visibility = Visibility.Hidden;
       }
@@ -812,9 +812,9 @@ class Diagram : FrameworkElement
     InvalidateMeasure();
 
     // Pause before displaying the new nodes.
-    animationTimer.Interval = App.GetAnimationDuration(Const.AnimationPauseDuration);
-    animationTimer.Tick += new EventHandler(OnAnimationTimer);
-    animationTimer.IsEnabled = true;
+    _animationTimer.Interval = App.GetAnimationDuration(Const.AnimationPauseDuration);
+    _animationTimer.Tick += new EventHandler(OnAnimationTimer);
+    _animationTimer.IsEnabled = true;
 
     // Let other controls know the diagram has been repopulated.
     OnDiagramPopulated();
@@ -823,13 +823,13 @@ class Diagram : FrameworkElement
   /// <summary>
   /// The animation pause timer is complete, finish populating the diagram.
   /// </summary>
-  void OnAnimationTimer(object sender, EventArgs e)
+  private void OnAnimationTimer(object sender, EventArgs e)
   {
     // Turn off the timer.
-    animationTimer.IsEnabled = false;
+    _animationTimer.IsEnabled = false;
 
     // Fade each node into view.
-    foreach (DiagramConnectorNode connector in logic.PersonLookup.Values)
+    foreach (DiagramConnectorNode connector in _logic.PersonLookup.Values)
     {
       if (connector.Node.Visibility != Visibility.Visible)
       {
@@ -843,7 +843,7 @@ class Diagram : FrameworkElement
     // Redraw connector lines.
     InvalidateVisual();
 
-    populating = false;
+    _populating = false;
   }
 
   /// <summary>
@@ -853,7 +853,7 @@ class Diagram : FrameworkElement
   /// </summary>
   private void UpdateDiagram()
   {
-    int MaximumNodes = logic.Family.Count;
+    int MaximumNodes = _logic.Family.Count;
 
     if (!showGenerations)
     {
@@ -862,7 +862,7 @@ class Diagram : FrameworkElement
 
 
     // Necessary for Blend.
-    if (logic.Family == null)
+    if (_logic.Family == null)
     {
       return;
     }
@@ -871,14 +871,14 @@ class Diagram : FrameworkElement
     Clear();
 
     // Nothing to draw if there is not a primary person.
-    if (logic.Family.Current == null)
+    if (_logic.Family.Current == null)
     {
       return;
     }
 
     // Primary row.
-    Person primaryPerson = logic.Family.Current;
-    DiagramRow primaryRow = logic.CreatePrimaryRow(primaryPerson, 1.0, Const.RelatedMultiplier, hideSiblings, hideSpouses, hidePreviousSpouses);
+    Person primaryPerson = _logic.Family.Current;
+    DiagramRow primaryRow = _logic.CreatePrimaryRow(primaryPerson, 1.0, Const.RelatedMultiplier, hideSiblings, hideSpouses, hidePreviousSpouses);
     primaryRow.GroupSpace = Const.PrimaryRowGroupSpace;
     AddRow(primaryRow);
 
@@ -980,7 +980,7 @@ class Diagram : FrameworkElement
     row.Margin = new Thickness(0, 0, 0, Const.RowSpace);
 
     // Add another row.
-    DiagramRow childRow = logic.CreateChildrenRow(children, 1.0, Const.RelatedMultiplier, hideInLaws);
+    DiagramRow childRow = _logic.CreateChildrenRow(children, 1.0, Const.RelatedMultiplier, hideInLaws);
     childRow.GroupSpace = Const.ChildRowGroupSpace;
     AddRow(childRow);
     return childRow;
@@ -999,7 +999,7 @@ class Diagram : FrameworkElement
     }
 
     // Add another row.
-    DiagramRow parentRow = logic.CreateParentRow(parents, nodeScale, nodeScale * Const.RelatedMultiplier, hideAuntsUncles);
+    DiagramRow parentRow = _logic.CreateParentRow(parents, nodeScale, nodeScale * Const.RelatedMultiplier, hideAuntsUncles);
     parentRow.Margin = new Thickness(0, 0, 0, Const.RowSpace);
     parentRow.GroupSpace = Const.ParentRowGroupSpace;
     InsertRow(parentRow);
@@ -1014,7 +1014,7 @@ class Diagram : FrameworkElement
     if (row != null && row.NodeCount > 0)
     {
       AddVisualChild(row);
-      rows.Add(row);
+      _rows.Add(row);
     }
   }
 
@@ -1026,7 +1026,7 @@ class Diagram : FrameworkElement
     if (row != null && row.NodeCount > 0)
     {
       AddVisualChild(row);
-      rows.Insert(0, row);
+      _rows.Insert(0, row);
     }
   }
 
@@ -1040,7 +1040,7 @@ class Diagram : FrameworkElement
   {
     // Save the bounds for the current primary person, this 
     // is required later when animating the diagram.
-    selectedNodeBounds = logic.GetNodeBounds(logic.Family.Current);
+    _selectedNodeBounds = _logic.GetNodeBounds(_logic.Family.Current);
 
     // Repopulate the diagram.
     Populate();
@@ -1054,14 +1054,14 @@ class Diagram : FrameworkElement
   private void OnFamilyContentChanged(object sender, ContentChangedEventArgs e)
   {
     // Ignore if currently repopulating the diagram.
-    if (populating)
+    if (_populating)
     {
       return;
     }
 
     // Save the person that is being added to the diagram.
     // This is optional and can be null.
-    newPerson = e.NewPerson;
+    _newPerson = e.NewPerson;
 
     // Redraw the diagram.
     UpdateDiagram();
@@ -1080,7 +1080,7 @@ class Diagram : FrameworkElement
     {
       // Make it the primary node. This raises the CurrentChanged
       // event, which repopulates the diagram.
-      logic.Family.Current = node.Person;
+      _logic.Family.Current = node.Person;
     }
   }
 
@@ -1090,13 +1090,13 @@ class Diagram : FrameworkElement
   private void AnimateNewPerson()
   {
     // The new person is optional, can be null.
-    if (newPerson == null)
+    if (_newPerson == null)
     {
       return;
     }
 
     // Get the UI element to animate.                
-    DiagramNode node = logic.GetDiagramNode(newPerson);
+    DiagramNode node = _logic.GetDiagramNode(_newPerson);
     if (node != null)
     {
       // Create the new person animation.
@@ -1111,6 +1111,6 @@ class Diagram : FrameworkElement
 
     }
 
-    newPerson = null;
+    _newPerson = null;
   }
 }

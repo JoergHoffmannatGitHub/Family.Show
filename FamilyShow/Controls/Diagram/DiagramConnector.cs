@@ -22,8 +22,8 @@ public class DiagramConnectorNode(DiagramNode node, DiagramGroup group, DiagramR
   #region fields
 
   // Node location in the diagram.
-  private readonly DiagramRow row = row;
-  private readonly DiagramGroup group = group;
+  private readonly DiagramRow _row = row;
+  private readonly DiagramGroup _group = group;
   public bool displayDates = true;
 
   #endregion
@@ -84,15 +84,14 @@ public class DiagramConnectorNode(DiagramNode node, DiagramGroup group, DiagramR
   }
 
   #endregion
-
   /// <summary>
   /// Return the point shifted by the row and group location.
   /// </summary>
   private Point GetPoint(Point point)
   {
     point.Offset(
-        row.Location.X + group.Location.X,
-        row.Location.Y + group.Location.Y);
+        _row.Location.X + _group.Location.X,
+        _row.Location.Y + _group.Location.Y);
 
     return point;
   }
@@ -114,7 +113,7 @@ public abstract class DiagramConnector
   #region fields
 
   // Animation if the filtered state has changed.
-  private DoubleAnimation animation;
+  private DoubleAnimation _animation;
 
   #endregion
 
@@ -176,9 +175,9 @@ public abstract class DiagramConnector
       connectorPen.Brush.Opacity = (IsFiltered) ? Const.OpacityFiltered : Const.OpacityNormal;
 
       // Create animation if the filtered state has changed.
-      if (animation != null)
+      if (_animation != null)
       {
-        connectorPen.Brush.BeginAnimation(Brush.OpacityProperty, animation);
+        connectorPen.Brush.BeginAnimation(Brush.OpacityProperty, _animation);
       }
 
       return connectorPen;
@@ -254,9 +253,9 @@ public abstract class DiagramConnector
     };
 
     // Create animation if the filtered state has changed.
-    if (animation != null)
+    if (_animation != null)
     {
-      brush.BeginAnimation(Brush.OpacityProperty, animation);
+      brush.BeginAnimation(Brush.OpacityProperty, _animation);
     }
 
     return brush;
@@ -274,7 +273,7 @@ public abstract class DiagramConnector
     {
       // Filtered state did change, create the animation.
       IsFiltered = newFiltered;
-      animation = new DoubleAnimation
+      _animation = new DoubleAnimation
       {
         From = IsFiltered ? Const.OpacityNormal : Const.OpacityFiltered,
         To = IsFiltered ? Const.OpacityFiltered : Const.OpacityNormal,
@@ -284,7 +283,7 @@ public abstract class DiagramConnector
     else
     {
       // Filtered state did not change, clear the animation.
-      animation = null;
+      _animation = null;
     }
   }
 }
@@ -354,15 +353,15 @@ public class MarriedDiagramConnector : DiagramConnector
   #region fields
 
   // Connector line text.
-  private readonly double connectionTextSize;
-  private Color connectionTextColor;
-  private readonly FontFamily connectionTextFont;
+  private readonly double _connectionTextSize;
+  private Color _connectionTextColor;
+  private readonly FontFamily _connectionTextFont;
 
   // Flag if currently married or former.
-  private readonly bool married;
+  private readonly bool _married;
 
   // The Pixels Per Density Independent Pixel value.
-  private readonly double pixelsPerDip;
+  private readonly double _pixelsPerDip;
 
   #endregion
 
@@ -383,7 +382,7 @@ public class MarriedDiagramConnector : DiagramConnector
   {
     get
     {
-      if (married)
+      if (_married)
       {
         SpouseRelationship rel = StartNode.Node.Person.GetSpouseRelationship(EndNode.Node.Person);
         if (rel != null)
@@ -402,7 +401,7 @@ public class MarriedDiagramConnector : DiagramConnector
   {
     get
     {
-      if (!married)
+      if (!_married)
       {
         SpouseRelationship rel = StartNode.Node.Person.GetSpouseRelationship(EndNode.Node.Person);
         if (rel != null)
@@ -438,7 +437,7 @@ public class MarriedDiagramConnector : DiagramConnector
       }
 
       // Check the divorce date for former spouses.
-      if (!married && rel != null && rel.DivorceDate != null &&
+      if (!_married && rel != null && rel.DivorceDate != null &&
           (StartNode.Node.DisplayYear < rel.DivorceDate.Value.Year))
       {
         return true;
@@ -457,19 +456,19 @@ public class MarriedDiagramConnector : DiagramConnector
       base(startConnector, endConnector)
   {
     // Store if currently married or former.
-    married = isMarried;
+    _married = isMarried;
 
     // Get resources used to draw text.
-    connectionTextSize = (double)Application.Current.TryFindResource("ConnectionTextSize");
-    connectionTextColor = (Color)Application.Current.TryFindResource("ConnectionTextColor");
-    connectionTextFont = (FontFamily)Application.Current.TryFindResource("ConnectionTextFont");
+    _connectionTextSize = (double)Application.Current.TryFindResource("ConnectionTextSize");
+    _connectionTextColor = (Color)Application.Current.TryFindResource("ConnectionTextColor");
+    _connectionTextFont = (FontFamily)Application.Current.TryFindResource("ConnectionTextFont");
 
     // Gets the DPI information at which this Visual is measured and rendered.
-    pixelsPerDip = dpiScale.PixelsPerDip;
+    _pixelsPerDip = dpiScale.PixelsPerDip;
 
     // Get resourced used to draw the connection line.
     ResourcePen = (Pen)Application.Current.TryFindResource(
-        married ? "MarriedConnectionPen" : "FormerConnectionPen");
+        _married ? "MarriedConnectionPen" : "FormerConnectionPen");
   }
 
   /// <summary>
@@ -522,10 +521,10 @@ public class MarriedDiagramConnector : DiagramConnector
 
         FormattedText format = new(text,
             CultureInfo.CurrentUICulture,
-            FlowDirection.LeftToRight, new Typeface(connectionTextFont,
+            FlowDirection.LeftToRight, new Typeface(_connectionTextFont,
             FontStyles.Normal, FontWeights.Normal, FontStretches.Normal,
-            connectionTextFont), connectionTextSize, GetBrush(connectionTextColor),
-            pixelsPerDip);
+            _connectionTextFont), _connectionTextSize, GetBrush(_connectionTextColor),
+            _pixelsPerDip);
 
         drawingContext.DrawText(format, new Point(
             bounds.Left + ((bounds.Width / 2) - (format.Width / 2)),
@@ -533,16 +532,16 @@ public class MarriedDiagramConnector : DiagramConnector
       }
 
       // Previous marriage date.
-      if (!married && rel.DivorceDate != null && ShowDate == true)
+      if (!_married && rel.DivorceDate != null && ShowDate == true)
       {
         string text = rel.DivorceDateDescriptor + rel.DivorceDate.Value.Year.ToString(CultureInfo.CurrentCulture);
 
         FormattedText format = new(text,
             CultureInfo.CurrentUICulture,
-            FlowDirection.LeftToRight, new Typeface(connectionTextFont,
+            FlowDirection.LeftToRight, new Typeface(_connectionTextFont,
             FontStyles.Normal, FontWeights.Normal, FontStretches.Normal,
-            connectionTextFont), connectionTextSize, GetBrush(connectionTextColor),
-            pixelsPerDip);
+            _connectionTextFont), _connectionTextSize, GetBrush(_connectionTextColor),
+            _pixelsPerDip);
 
         drawingContext.DrawText(format, new Point(
             bounds.Left + ((bounds.Width / 2) - (format.Width / 2)),
