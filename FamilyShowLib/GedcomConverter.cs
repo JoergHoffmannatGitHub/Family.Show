@@ -237,9 +237,7 @@ partial class GedcomLine
       // tag and data contains the pointer reference.
       if (Tag[0] == '@')
       {
-        string temp = Tag;
-        Tag = Data;
-        Data = temp;
+        (Data, Tag) = (Tag, Data);
         int pos = Tag.IndexOf(' ');
 
         // Some GEDCOM files have additional info, 
