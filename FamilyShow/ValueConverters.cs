@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace Microsoft.FamilyShow;
+namespace FamilyShow;
 
 /// <summary>
 /// This converter is used to show DateTime in short date format

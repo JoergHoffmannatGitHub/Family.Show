@@ -4,9 +4,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-using Microsoft.FamilyShowLib;
+using FamilyShowLib;
 
-namespace Microsoft.FamilyShow;
+namespace FamilyShow;
 
 /// <summary>
 /// Interaction logic for Syncing.xaml

@@ -24,7 +24,7 @@ using System;
 using System.Globalization;
 using System.IO;
 
-namespace Microsoft.FamilyShowLib;
+namespace FamilyShowLib;
 
 public class HtmlExport
 {

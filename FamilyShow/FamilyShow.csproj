@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>$(TargetFrameworkVersion)-windows</TargetFramework>
@@ -11,7 +11,7 @@
     <TargetZone>LocalIntranet</TargetZone>
     <AssemblyOriginatorKeyFile>FamilyShow.snk</AssemblyOriginatorKeyFile>
     <ApplicationExtension>.application</ApplicationExtension>
-    <StartupObject>Microsoft.FamilyShow.SingleInstanceManager</StartupObject>
+    <StartupObject>FamilyShow.SingleInstanceManager</StartupObject>
     <ManifestCertificateThumbprint>9A4B76436B8C6C854E44E82E603D228E8ECB7AD4</ManifestCertificateThumbprint>
     <ManifestKeyFile>FamilyShow_TemporaryKey.pfx</ManifestKeyFile>
     <DelaySign>false</DelaySign>

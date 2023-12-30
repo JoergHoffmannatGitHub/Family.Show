@@ -1,4 +1,4 @@
-using Microsoft.FamilyShowLib;
+using FamilyShowLib;
 
 namespace FamilyShowLib.Tests;
 

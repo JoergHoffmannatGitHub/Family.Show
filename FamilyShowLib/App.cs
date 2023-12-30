@@ -1,7 +1,7 @@
 
 using System.Globalization;
 
-namespace Microsoft.FamilyShowLib;
+namespace FamilyShowLib;
 
 /// <summary>
 /// Stores the properties specific to this class library.

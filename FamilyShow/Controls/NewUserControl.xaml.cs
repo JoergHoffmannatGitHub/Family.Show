@@ -1,9 +1,9 @@
 using System;
 using System.Windows;
 
-using Microsoft.FamilyShowLib;
+using FamilyShowLib;
 
-namespace Microsoft.FamilyShow;
+namespace FamilyShow;
 
 /// <summary>
 /// Interaction logic for NewUserControl.xaml

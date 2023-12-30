@@ -21,9 +21,9 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
-using Microsoft.FamilyShowLib;
+using FamilyShowLib;
 
-namespace Microsoft.FamilyShow;
+namespace FamilyShow;
 
 /// <summary>
 /// Diagram that lays out and displays the nodes.

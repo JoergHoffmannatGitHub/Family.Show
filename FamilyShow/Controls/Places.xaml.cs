@@ -2,9 +2,9 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 
-using Microsoft.FamilyShowLib;
+using FamilyShowLib;
 
-namespace Microsoft.FamilyShow;
+namespace FamilyShow;
 
 /// <summary>
 /// Interaction logic for Places.xaml

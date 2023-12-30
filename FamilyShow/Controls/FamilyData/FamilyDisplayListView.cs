@@ -2,9 +2,9 @@
  * Derived class that filters data in the diagram view.
 */
 
-using Microsoft.FamilyShowLib;
+using FamilyShowLib;
 
-namespace Microsoft.FamilyShow;
+namespace FamilyShow;
 
 internal class FamilyDisplayListView : FilterSortListView
 {

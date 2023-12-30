@@ -1,4 +1,4 @@
-﻿using Microsoft.FamilyShow;
+﻿using FamilyShow;
 
 namespace FamilyShow.Tests.Controls.FamilyData;
 

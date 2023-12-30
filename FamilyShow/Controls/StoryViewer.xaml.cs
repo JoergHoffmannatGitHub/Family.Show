@@ -7,9 +7,9 @@ using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
 
-using Microsoft.FamilyShowLib;
+using FamilyShowLib;
 
-namespace Microsoft.FamilyShow;
+namespace FamilyShow;
 
 /// <summary>
 /// Interaction logic for StoryViewer.xaml

@@ -8,9 +8,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-using Microsoft.FamilyShowLib;
+using FamilyShowLib;
 
-namespace Microsoft.FamilyShow;
+namespace FamilyShow;
 
 internal class DiagramLogic
 {

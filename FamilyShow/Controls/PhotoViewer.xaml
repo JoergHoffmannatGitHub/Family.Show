@@ -1,11 +1,11 @@
 ﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Microsoft.FamilyShow"
+             xmlns:local="clr-namespace:FamilyShow"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2006"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Microsoft.FamilyShow.PhotoViewer"
-             xmlns:properties="clr-namespace:Microsoft.FamilyShow.Properties"
+             x:Class="FamilyShow.PhotoViewer"
+             xmlns:properties="clr-namespace:FamilyShow.Properties"
              IsVisibleChanged="UserControl_IsVisibleChanged">
   <UserControl.Resources>
     <local:ImageConverter x:Key="ImageConverter" />

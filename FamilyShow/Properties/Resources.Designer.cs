@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Microsoft.FamilyShow.Properties {
+namespace FamilyShow.Properties {
     using System;
     
     

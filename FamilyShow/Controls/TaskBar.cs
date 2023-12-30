@@ -2,7 +2,7 @@
 
 using System.Windows;
 
-namespace Microsoft.FamilyShow;
+namespace FamilyShow;
 
 /// <summary>
 /// This class is a helper class for the <see cref="TaskbarManager"/> type.

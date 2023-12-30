@@ -2,7 +2,7 @@
 
 using Microsoft.VisualBasic.ApplicationServices;
 
-namespace Microsoft.FamilyShow;
+namespace FamilyShow;
 
 /// <summary>
 /// Method based on Single Instance Detection Sample http://msdn.microsoft.com/en-us/library/ms771662.aspx

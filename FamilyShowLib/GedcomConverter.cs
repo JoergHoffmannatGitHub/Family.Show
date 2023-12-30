@@ -13,7 +13,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 
-namespace Microsoft.FamilyShowLib;
+namespace FamilyShowLib;
 
 /// <summary>
 /// Converts a GEDCOM file to an XML file.

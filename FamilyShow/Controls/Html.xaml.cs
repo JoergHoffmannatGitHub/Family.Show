@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using System.Windows;
 
-using Microsoft.FamilyShowLib;
+using FamilyShowLib;
 
-namespace Microsoft.FamilyShow;
+namespace FamilyShow;
 
 /// <summary>
 /// Interaction logic for Html.xaml

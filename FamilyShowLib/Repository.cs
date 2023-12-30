@@ -10,7 +10,7 @@ using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
-namespace Microsoft.FamilyShowLib;
+namespace FamilyShowLib;
 
 /// <summary>
 /// Describes a repository

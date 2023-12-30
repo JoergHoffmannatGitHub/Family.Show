@@ -3,8 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2006"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Microsoft.FamilyShow.AttachmentViewer"
-             xmlns:properties="clr-namespace:Microsoft.FamilyShow.Properties"
+             x:Class="FamilyShow.AttachmentViewer"
+             xmlns:properties="clr-namespace:FamilyShow.Properties"
              IsVisibleChanged="UserControl_IsVisibleChanged">
   <UserControl.Resources>
 

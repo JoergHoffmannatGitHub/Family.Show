@@ -1,8 +1,8 @@
 ﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="Microsoft.FamilyShow.NewUserControl"
-             xmlns:local="clr-namespace:Microsoft.FamilyShow"
-             xmlns:properties="clr-namespace:Microsoft.FamilyShow.Properties">
+             x:Class="FamilyShow.NewUserControl"
+             xmlns:local="clr-namespace:FamilyShow"
+             xmlns:properties="clr-namespace:FamilyShow.Properties">
 
   <UserControl.Resources>
     <local:ImageConverter x:Key="ImageConverter" />

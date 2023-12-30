@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace Microsoft.FamilyShowLib;
+namespace FamilyShowLib;
 
 /// <summary>
 /// Simple representation of a serializable photo associated with the Person class

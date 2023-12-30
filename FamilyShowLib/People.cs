@@ -18,7 +18,7 @@ using System.Windows;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Microsoft.FamilyShowLib;
+namespace FamilyShowLib;
 
 /// <summary>
 /// Argument that is passed with the ContentChanged event. Contains the

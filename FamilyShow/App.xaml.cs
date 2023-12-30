@@ -7,12 +7,12 @@ using System.Windows;
 using System.Windows.Input;
 using System.Xml.Serialization;
 
-using Microsoft.FamilyShow.Properties;
-using Microsoft.FamilyShowLib;
+using FamilyShow.Properties;
+using FamilyShowLib;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
 
-namespace Microsoft.FamilyShow;
+namespace FamilyShow;
 
 internal partial class App : Application
 {

@@ -23,7 +23,7 @@
 
 using System.IO;
 
-namespace Microsoft.FamilyShowLib;
+namespace FamilyShowLib;
 
 public class PlacesExport
 {
