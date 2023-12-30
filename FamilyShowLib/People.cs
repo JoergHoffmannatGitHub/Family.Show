@@ -24,43 +24,27 @@ namespace Microsoft.FamilyShowLib;
 /// Argument that is passed with the ContentChanged event. Contains the
 /// person that was added to the list. The person can be null.
 /// </summary>
-public class ContentChangedEventArgs : EventArgs
+public class ContentChangedEventArgs(Person newPerson) : EventArgs
 {
-  public Person NewPerson { get; }
-
-  public ContentChangedEventArgs(Person newPerson)
-  {
-    NewPerson = newPerson;
-  }
-
+  public Person NewPerson { get; } = newPerson;
 }
 
 /// <summary>
 /// Argument that is passed with the ContentChanged event. Contains the
 /// source that was added to the list. The source can be null.
 /// </summary>
-public class SourceContentChangedEventArgs : EventArgs
+public class SourceContentChangedEventArgs(Source newSource) : EventArgs
 {
-  public Source NewSource { get; }
-
-  public SourceContentChangedEventArgs(Source newSource)
-  {
-    NewSource = newSource;
-  }
+  public Source NewSource { get; } = newSource;
 }
 
 /// <summary>
 /// Argument that is passed with the ContentChanged event. Contains the
 /// source that was added to the list. The repository can be null.
 /// </summary>
-public class RepositoryContentChangedEventArgs : EventArgs
+public class RepositoryContentChangedEventArgs(Repository newRepository) : EventArgs
 {
-  public Repository NewRepository { get; }
-
-  public RepositoryContentChangedEventArgs(Repository newRepository)
-  {
-    NewRepository = newRepository;
-  }
+  public Repository NewRepository { get; } = newRepository;
 }
 
 /// <summary>

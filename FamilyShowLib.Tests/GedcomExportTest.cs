@@ -34,3 +34,14 @@ public class GedcomIdMapTest
     Assert.Equal("I3", sut.Get(personId));
   }
 }
+
+public class FamilyTest
+{
+  [Fact]
+  public void Family()
+  {
+    Family sut = new(new(), new())!;
+
+    Assert.NotNull(sut);
+  }
+}

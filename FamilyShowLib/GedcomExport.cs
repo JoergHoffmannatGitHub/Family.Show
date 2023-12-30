@@ -897,17 +897,17 @@ class GedcomIdMap
 /// <summary>
 /// One family group. 
 /// </summary>
-class Family
+class Family(Person parentLeft, Person parentRight)
 {
   /// <summary>
   /// Get the left-side parent.
   /// </summary>
-  public Person ParentLeft { get; }
+  public Person ParentLeft { get; } = parentLeft;
 
   /// <summary>
   /// Get the right-side parent.
   /// </summary>
-  public Person ParentRight { get; }
+  public Person ParentRight { get; } = parentRight;
 
   /// <summary>
   /// Get or set the relationship for the two parents.
@@ -918,12 +918,6 @@ class Family
   /// Get the list of children.
   /// </summary>
   public List<Person> Children { get; } = [];
-
-  public Family(Person parentLeft, Person parentRight)
-  {
-    ParentLeft = parentLeft;
-    ParentRight = parentRight;
-  }
 }
 
 /// <summary>

@@ -17,13 +17,13 @@ namespace Microsoft.FamilyShow;
 /// <summary>
 /// One of the nodes in a connection.
 /// </summary>
-public class DiagramConnectorNode
+public class DiagramConnectorNode(DiagramNode node, DiagramGroup group, DiagramRow row)
 {
   #region fields
 
   // Node location in the diagram.
-  private readonly DiagramRow row;
-  private readonly DiagramGroup group;
+  private readonly DiagramRow row = row;
+  private readonly DiagramGroup group = group;
   public bool displayDates = true;
 
   #endregion
@@ -33,7 +33,7 @@ public class DiagramConnectorNode
   /// <summary>
   /// Node for this connection point.
   /// </summary>
-  public DiagramNode Node { get; }
+  public DiagramNode Node { get; } = node;
 
   /// <summary>
   /// Center of the node relative to the diagram.
@@ -84,13 +84,6 @@ public class DiagramConnectorNode
   }
 
   #endregion
-
-  public DiagramConnectorNode(DiagramNode node, DiagramGroup group, DiagramRow row)
-  {
-    Node = node;
-    this.group = group;
-    this.row = row;
-  }
 
   /// <summary>
   /// Return the point shifted by the row and group location.
