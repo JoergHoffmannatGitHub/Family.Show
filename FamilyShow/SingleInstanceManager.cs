@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 using Microsoft.VisualBasic.ApplicationServices;
 
@@ -29,7 +28,7 @@ internal class SingleInstanceManager : WindowsFormsApplicationBase
     // First time app is launched.
     _app = new App();
     _app.InitializeComponent();
-    _app.ProcessArgs(eventArgs.CommandLine.ToArray());
+    _app.ProcessArgs([.. eventArgs.CommandLine]);
     _app.Run();
 
     return false;
@@ -41,7 +40,7 @@ internal class SingleInstanceManager : WindowsFormsApplicationBase
     base.OnStartupNextInstance(eventArgs);
 
     _app.Activate();
-    _app.ProcessArgs(eventArgs.CommandLine.ToArray());
+    _app.ProcessArgs([.. eventArgs.CommandLine]);
   }
 
   [STAThread]

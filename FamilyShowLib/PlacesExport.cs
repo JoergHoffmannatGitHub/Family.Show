@@ -624,10 +624,10 @@ public class PlacesExport
 
     tw.Close();
 
-    string[] summary = new string[2];
-
-    summary[0] = i.ToString() + " " + Properties.Resources.PlacesExported;
-    summary[1] = fileName.ToString();
+    string[] summary = [
+      i.ToString() + " " + Properties.Resources.PlacesExported,
+      fileName.ToString()
+    ];
 
     if (i == 0)
     {
