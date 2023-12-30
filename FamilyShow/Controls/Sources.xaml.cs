@@ -102,7 +102,7 @@ namespace Microsoft.FamilyShow
 
     private void Export()
     {
-      CommonDialog dialog = new CommonDialog
+      CommonDialog dialog = new()
       {
         InitialDirectory = People.ApplicationFolderPath
       };
@@ -113,7 +113,7 @@ namespace Microsoft.FamilyShow
 
       if (!string.IsNullOrEmpty(dialog.FileName))
       {
-        SourcesExport sources = new SourcesExport();
+        SourcesExport sources = new();
         sources.ExportSources(dialog.FileName, Path.GetFileName(familyCollection.FullyQualifiedFilename), source);
       }
 
@@ -165,7 +165,7 @@ namespace Microsoft.FamilyShow
 
       string sourceID = "S" + y.ToString();
 
-      Source newSource = new Source(sourceID, "", "", "", "", "");
+      Source newSource = new(sourceID, "", "", "", "", "");
       source.Add(newSource);
       source.OnContentChanged();
     }

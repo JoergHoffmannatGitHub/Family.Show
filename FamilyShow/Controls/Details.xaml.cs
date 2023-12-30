@@ -176,7 +176,7 @@ namespace Microsoft.FamilyShow
         string newFileName = Path.GetFileNameWithoutExtension(fullFilePath) + Guid.NewGuid().ToString() + fileExtension;
         string tempFilePath = Path.Combine(appLocation, newFileName);
 
-        FileInfo ofi = new FileInfo(fullFilePath);
+        FileInfo ofi = new(fullFilePath);
         ofi.CopyTo(tempFilePath, true);
 
         try
@@ -208,7 +208,7 @@ namespace Microsoft.FamilyShow
 
       if (attachmentCount > 0)
       {
-        CommonDialog dialog = new CommonDialog
+        CommonDialog dialog = new()
         {
           InitialDirectory = attachmentLocation
         };
@@ -234,7 +234,7 @@ namespace Microsoft.FamilyShow
             //only link files which are in the temp directory and which are of allowed file types
             if (File.Exists(Path.Combine(attachmentLocation, Path.GetFileName(dialog.FileName))))
             {
-              Attachment attachment = new Attachment
+              Attachment attachment = new()
               {
                 RelativePath = Path.Combine(Attachment.AttachmentsFolderName, Path.GetFileName(dialog.FileName))
               };
@@ -265,7 +265,7 @@ namespace Microsoft.FamilyShow
     {
       Person person = (Person)DataContext;
 
-      CommonDialog dialog = new CommonDialog
+      CommonDialog dialog = new()
       {
         InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
       };
@@ -275,7 +275,7 @@ namespace Microsoft.FamilyShow
 
       if (!string.IsNullOrEmpty(dialog.FileName))
       {
-        Attachment attachment = new Attachment(dialog.FileName);
+        Attachment attachment = new(dialog.FileName);
         // Associate the attachment with the person.
         person.Attachments.Add(attachment);
         person.OnPropertyChanged("HasAttachments");
@@ -302,7 +302,7 @@ namespace Microsoft.FamilyShow
           {
             if (App.IsAttachmentFileSupported(fileName))
             {
-              Attachment attachment = new Attachment(fileName);
+              Attachment attachment = new(fileName);
               // Associate the attachment with the person.
               person.Attachments.Add(attachment);
             }
@@ -423,7 +423,7 @@ namespace Microsoft.FamilyShow
         // To make it a little more user friendly, set the next action for the family member button to be the same as the current relationship being added.
         SetNextFamilyMemberAction((FamilyMemberComboBoxValue)FamilyMemberComboBox.SelectedValue);
         // The new person to be added
-        Person newPerson = new Person(NamesInputTextBox.Text, SurnameInputTextBox.Text)
+        Person newPerson = new(NamesInputTextBox.Text, SurnameInputTextBox.Text)
         {
           IsLiving = (IsLivingInputCheckbox.IsChecked == null) || (bool)IsLivingInputCheckbox.IsChecked
         };
@@ -573,7 +573,7 @@ namespace Microsoft.FamilyShow
 
       if (FamilyMemberComboBox.SelectedItem != null)  //prevents program crashing when user presses enter more than one before add is completed.
       {
-        Person newPerson = new Person(NamesInputTextBox.Text, SurnameInputTextBox.Text)
+        Person newPerson = new(NamesInputTextBox.Text, SurnameInputTextBox.Text)
         {
           IsLiving = (IsLivingInputCheckbox.IsChecked == null) || (bool)IsLivingInputCheckbox.IsChecked
         };
@@ -785,7 +785,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void ExportCitations_Click(object sender, RoutedEventArgs e)
     {
-      CommonDialog dialog = new CommonDialog
+      CommonDialog dialog = new()
       {
         InitialDirectory = People.ApplicationFolderPath
       };
@@ -2086,7 +2086,7 @@ namespace Microsoft.FamilyShow
       Person p = (Person)ParentsCombobox.SelectedItem;
       Person c = family.Current;
 
-      bool needsUpdate = new bool();
+      bool needsUpdate = new();
 
       foreach (Relationship rel in c.Relationships)
       {
@@ -2389,7 +2389,7 @@ namespace Microsoft.FamilyShow
           // Handles photo files
           if (App.IsPhotoFileSupported(fileName))
           {
-            Photo photo = new Photo(fileName);
+            Photo photo = new(fileName);
 
             // Make the new photo the person's avatar if 
             // 1. The user drops one photo.

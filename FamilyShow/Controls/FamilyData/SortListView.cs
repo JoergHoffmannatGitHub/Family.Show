@@ -110,7 +110,7 @@ namespace Microsoft.FamilyShow
 
       // Specify the new sorting information.
       dataView.SortDescriptions.Clear();
-      SortDescription description = new SortDescription(propertyName, sortDirection);
+      SortDescription description = new(propertyName, sortDirection);
       dataView.SortDescriptions.Add(description);
 
       dataView.Refresh();

@@ -143,7 +143,7 @@ namespace Microsoft.FamilyShow
           {
             try
             {
-              FileInfo f = new FileInfo(file);
+              FileInfo f = new(file);
               f.CopyTo(Path.Combine(Path.Combine(folderPath, folderName + @"\" + Attachment.AttachmentsFolderName), Path.GetFileName(file)), true);
             }
             catch { }
@@ -158,7 +158,7 @@ namespace Microsoft.FamilyShow
           {
             try
             {
-              FileInfo f = new FileInfo(file);
+              FileInfo f = new(file);
               f.CopyTo(Path.Combine(Path.Combine(folderPath, folderName + @"\" + Photo.PhotosFolderName), Path.GetFileName(file)), true);
             }
             catch { }
@@ -173,7 +173,7 @@ namespace Microsoft.FamilyShow
           {
             try
             {
-              FileInfo f = new FileInfo(file);
+              FileInfo f = new(file);
               f.CopyTo(Path.Combine(Path.Combine(folderPath, folderName + @"\" + Story.StoriesFolderName), Path.GetFileName(file)), true);
             }
             catch { }
@@ -194,7 +194,7 @@ namespace Microsoft.FamilyShow
 
             try
             {
-              FileInfo f = new FileInfo(file);
+              FileInfo f = new(file);
               f.CopyTo(Path.Combine(Path.Combine(folderPath, folderName + @"\" + Photo.PhotosFolderName), Path.GetFileName(file)), true);
             }
             catch { }
@@ -202,7 +202,7 @@ namespace Microsoft.FamilyShow
 
           try
           {
-            FileInfo f = new FileInfo(family.Current.Story.AbsolutePath);
+            FileInfo f = new(family.Current.Story.AbsolutePath);
             f.CopyTo(Path.Combine(Path.Combine(folderPath, folderName + @"\" + Story.StoriesFolderName), Path.GetFileName(family.Current.Story.AbsolutePath)), true);
           }
           catch { }
@@ -213,7 +213,7 @@ namespace Microsoft.FamilyShow
 
             try
             {
-              FileInfo f = new FileInfo(file);
+              FileInfo f = new(file);
               f.CopyTo(Path.Combine(Path.Combine(folderPath, folderName + @"\" + Attachment.AttachmentsFolderName), Path.GetFileName(file)), true);
             }
             catch { }

@@ -69,7 +69,7 @@ namespace Microsoft.FamilyShow
         string newFileName = Path.GetFileNameWithoutExtension(fullFilePath) + Guid.NewGuid().ToString() + fileExtension;
         string tempFilePath = Path.Combine(appLocation, newFileName);
 
-        FileInfo ofi = new FileInfo(fullFilePath);
+        FileInfo ofi = new(fullFilePath);
         ofi.CopyTo(tempFilePath, true);
 
         try

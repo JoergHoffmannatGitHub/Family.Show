@@ -109,7 +109,7 @@ namespace Microsoft.FamilyShowLib
       {
 
         // Create a new person that will be added to the collection.
-        Person person = new Person
+        Person person = new()
         {
           // Import details about the person.
           FirstName = GetNames(node),
@@ -181,7 +181,7 @@ namespace Microsoft.FamilyShowLib
 
       foreach (XmlNode node in list)
       {
-        Source source = new Source
+        Source source = new()
         {
           // Import details about the person.
           Id = GetId(node),
@@ -327,7 +327,7 @@ namespace Microsoft.FamilyShowLib
 
       foreach (XmlNode node in list)
       {
-        Repository repository = new Repository
+        Repository repository = new()
         {
           // Import details about the person.
           Id = GetId(node),
@@ -436,8 +436,8 @@ namespace Microsoft.FamilyShowLib
             people.AddChild(husbandPerson, childPerson, husbandModifier);
             people.AddChild(wifePerson, childPerson, wifeModifier);
 
-            List<Person> firstParentChildren = new List<Person>(husbandPerson.NaturalChildren);
-            List<Person> secondParentChildren = new List<Person>(wifePerson.NaturalChildren);
+            List<Person> firstParentChildren = new(husbandPerson.NaturalChildren);
+            List<Person> secondParentChildren = new(wifePerson.NaturalChildren);
 
             // Combined children list that is returned.
             List<Person> naturalChildren = [];
@@ -553,7 +553,7 @@ namespace Microsoft.FamilyShowLib
         // Add info to husband.
         if (husband.GetSpouseRelationship(wife) == null)
         {
-          SpouseRelationship husbandMarriage = new SpouseRelationship(wife, modifier)
+          SpouseRelationship husbandMarriage = new(wife, modifier)
           {
             MarriageDate = marriageDate,
             MarriageDateDescriptor = marriageDateDescriptor,
@@ -582,7 +582,7 @@ namespace Microsoft.FamilyShowLib
         // Add info to wife.
         if (wife.GetSpouseRelationship(husband) == null)
         {
-          SpouseRelationship wifeMarriage = new SpouseRelationship(husband, modifier)
+          SpouseRelationship wifeMarriage = new(husband, modifier)
           {
             MarriageDate = marriageDate,
             MarriageDateDescriptor = marriageDateDescriptor,
@@ -609,8 +609,8 @@ namespace Microsoft.FamilyShowLib
       }
       else
       {
-        SpouseRelationship wifeMarriage = new SpouseRelationship(husband, SpouseModifier.Current);
-        SpouseRelationship husbandMarriage = new SpouseRelationship(wife, SpouseModifier.Current);
+        SpouseRelationship wifeMarriage = new(husband, SpouseModifier.Current);
+        SpouseRelationship husbandMarriage = new(wife, SpouseModifier.Current);
 
         wife.Relationships.Add(wifeMarriage);
         husband.Relationships.Add(husbandMarriage);
@@ -639,7 +639,7 @@ namespace Microsoft.FamilyShowLib
           // Only import a photo if it actually exists and it is a supported format.
           if (File.Exists(files[i]) && App.IsPhotoFileSupported(files[i]))
           {
-            Photo photo = new Photo(files[i])
+            Photo photo = new(files[i])
             {
               IsAvatar = (i == 0)
             };
@@ -647,7 +647,7 @@ namespace Microsoft.FamilyShowLib
           }
           else if (File.Exists(files[i]) && App.IsAttachmentFileSupported(files[i]))
           {
-            Attachment attachment = new Attachment(files[i]);
+            Attachment attachment = new(files[i]);
             person.Attachments.Add(attachment);
           }
         }

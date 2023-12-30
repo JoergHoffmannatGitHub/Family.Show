@@ -95,7 +95,7 @@ namespace Microsoft.FamilyShow
     {
       foreach (string file in App.RecentFiles)
       {
-        Button fileButton = new Button
+        Button fileButton = new()
         {
           Content = System.IO.Path.GetFileName(file),
           CommandParameter = file,

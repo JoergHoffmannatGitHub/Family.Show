@@ -115,7 +115,7 @@ namespace Microsoft.FamilyShowLib
     {
 
       // The photo file being copied
-      FileInfo fi = new FileInfo(fileName);
+      FileInfo fi = new(fileName);
 
       // Absolute path to the application folder
       string appLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),

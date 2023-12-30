@@ -384,7 +384,7 @@ namespace Microsoft.FamilyShowLib
       Directory.CreateDirectory(tempFolder);
 
       // Create xml content file
-      XmlSerializer xml = new XmlSerializer(typeof(People));
+      XmlSerializer xml = new(typeof(People));
       using (Stream stream = new FileStream(Path.Combine(tempFolder, OPCContentFileName), FileMode.Create, FileAccess.Write, FileShare.None))
       {
         xml.Serialize(stream, this);
@@ -808,9 +808,9 @@ namespace Microsoft.FamilyShowLib
 
         OPCUtility.ExtractPackage(FullyQualifiedFilename, tempFolder, true);
 
-        XmlSerializer xml = new XmlSerializer(typeof(People));
+        XmlSerializer xml = new(typeof(People));
 
-        using (FileStream stream = new FileStream(tempFolder + OPCContentFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+        using (FileStream stream = new(tempFolder + OPCContentFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
         {
           People pc = (People)xml.Deserialize(stream);
           stream.Close();
@@ -908,8 +908,8 @@ namespace Microsoft.FamilyShowLib
           FullyQualifiedFilename = DefaultFullyQualifiedFilename;
         }
 
-        XmlSerializer xml = new XmlSerializer(typeof(People));
-        using (FileStream stream = new FileStream(FullyQualifiedFilename, FileMode.Open, FileAccess.Read, FileShare.Read))
+        XmlSerializer xml = new(typeof(People));
+        using (FileStream stream = new(FullyQualifiedFilename, FileMode.Open, FileAccess.Read, FileShare.Read))
         {
           People pc = (People)xml.Deserialize(stream);
           stream.Close();
@@ -1037,7 +1037,7 @@ namespace Microsoft.FamilyShowLib
                   // Convert rft to plain text
                   // See http://msdn.microsoft.com/en-us/library/cc488002.aspx for details.
 
-                  System.Windows.Forms.RichTextBox rtBox = new System.Windows.Forms.RichTextBox();
+                  System.Windows.Forms.RichTextBox rtBox = new();
 
                   // Get the contents of the RTF file. Note that when it is
                   // stored in the string, it is encoded as UTF-16.
@@ -1129,8 +1129,8 @@ namespace Microsoft.FamilyShowLib
 
         Person reselectAfterMerge = PeopleCollection.Current;  //get the current person so they can be given focus after the merge
 
-        XmlSerializer xml = new XmlSerializer(typeof(People));
-        using (FileStream stream = new FileStream(tempFolder + OPCContentFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+        XmlSerializer xml = new(typeof(People));
+        using (FileStream stream = new(tempFolder + OPCContentFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
         {
           People merge = (People)xml.Deserialize(stream);  //add all the people, sources, and repositories from the new file to a people collection for comparison to take place
           stream.Close();
@@ -1144,8 +1144,8 @@ namespace Microsoft.FamilyShowLib
             }
           }
 
-          People duplicates = new People();   //collection for duplicates
-          People imports = new People();      //collection for imports
+          People duplicates = new();   //collection for duplicates
+          People imports = new();      //collection for imports
 
           //Update sources and repositories first, then people.
 

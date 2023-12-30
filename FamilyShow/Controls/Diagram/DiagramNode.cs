@@ -58,7 +58,7 @@ namespace Microsoft.FamilyShow
     private Person person;
 
     // Location of the node, relative to its parent group.
-    private Point location = new Point();
+    private Point location = new();
 
     // The type of node.
     private NodeType type = NodeType.Related;
@@ -297,7 +297,7 @@ namespace Microsoft.FamilyShow
       get
       {
         // The real center of the node.
-        Point point = new Point(location.X + (DesiredSize.Width / 2), location.Y);
+        Point point = new(location.X + (DesiredSize.Width / 2), location.Y);
 
         // Shift the center to the left. This is an estimate since we don't 
         // know the exact position of the person drawing within the node.
@@ -393,7 +393,7 @@ namespace Microsoft.FamilyShow
         // Scale the person drawing part of the node, not the entire node.
         if (Template.FindName("Person", this) is FrameworkElement personElement)
         {
-          ScaleTransform transform = new ScaleTransform(Scale, Scale);
+          ScaleTransform transform = new(Scale, Scale);
           personElement.LayoutTransform = transform;
         }
       }

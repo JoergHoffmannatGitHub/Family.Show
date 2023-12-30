@@ -254,7 +254,7 @@ namespace Microsoft.FamilyShow
     protected SolidColorBrush GetBrush(Color color)
     {
       // Create the brush.
-      SolidColorBrush brush = new SolidColorBrush(color)
+      SolidColorBrush brush = new(color)
       {
         // Set the opacity based on the filtered state.
         Opacity = (IsFiltered) ? Const.OpacityFiltered : Const.OpacityNormal
@@ -513,7 +513,7 @@ namespace Microsoft.FamilyShow
         arcHeight = 35;
       }
 
-      Point middlePoint = new Point(startPoint.X + ((endPoint.X - startPoint.X) / 2), startPoint.Y - arcHeight);
+      Point middlePoint = new(startPoint.X + ((endPoint.X - startPoint.X) / 2), startPoint.Y - arcHeight);
 
       // Draw the arc, get the bounds so can draw connection text.
       Rect bounds = DrawArc(drawingContext, Pen, startPoint, middlePoint, endPoint);
@@ -527,7 +527,7 @@ namespace Microsoft.FamilyShow
         {
           string text = rel.MarriageDateDescriptor + rel.MarriageDate.Value.Year.ToString(CultureInfo.CurrentCulture);
 
-          FormattedText format = new FormattedText(text,
+          FormattedText format = new(text,
               CultureInfo.CurrentUICulture,
               FlowDirection.LeftToRight, new Typeface(connectionTextFont,
               FontStyles.Normal, FontWeights.Normal, FontStretches.Normal,
@@ -544,7 +544,7 @@ namespace Microsoft.FamilyShow
         {
           string text = rel.DivorceDateDescriptor + rel.DivorceDate.Value.Year.ToString(CultureInfo.CurrentCulture);
 
-          FormattedText format = new FormattedText(text,
+          FormattedText format = new(text,
               CultureInfo.CurrentUICulture,
               FlowDirection.LeftToRight, new Typeface(connectionTextFont,
               FontStyles.Normal, FontWeights.Normal, FontStretches.Normal,
@@ -564,8 +564,8 @@ namespace Microsoft.FamilyShow
     private static Rect DrawArc(DrawingContext drawingContext, Pen pen,
         Point startPoint, Point middlePoint, Point endPoint)
     {
-      PathGeometry geometry = new PathGeometry();
-      PathFigure figure = new PathFigure
+      PathGeometry geometry = new();
+      PathFigure figure = new()
       {
         StartPoint = startPoint
       };

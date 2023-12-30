@@ -23,7 +23,7 @@ namespace Microsoft.FamilyShow
     #region fields
 
     // Location of the row, relative to the diagram.
-    private Point location = new Point();
+    private Point location = new();
 
     // List of groups in the row.
     private readonly List<DiagramGroup> groups = [];
@@ -75,7 +75,7 @@ namespace Microsoft.FamilyShow
     protected override Size MeasureOverride(Size availableSize)
     {
       // Let each group determine how large they want to be.
-      Size size = new Size(double.PositiveInfinity, double.PositiveInfinity);
+      Size size = new(double.PositiveInfinity, double.PositiveInfinity);
       foreach (DiagramGroup group in groups)
       {
         group.Measure(size);
@@ -137,10 +137,10 @@ namespace Microsoft.FamilyShow
       double pos = 0;
 
       // Bounding area of the group.
-      Rect bounds = new Rect();
+      Rect bounds = new();
 
       // Total size of the row.
-      Size totalSize = new Size(0, 0);
+      Size totalSize = new(0, 0);
 
       foreach (DiagramGroup group in groups)
       {

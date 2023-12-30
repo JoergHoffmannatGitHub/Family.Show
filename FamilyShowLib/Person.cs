@@ -583,7 +583,7 @@ namespace Microsoft.FamilyShowLib
         }
         else
         {
-          StringBuilder returnValue = new StringBuilder();
+          StringBuilder returnValue = new();
           returnValue.Append("Born ");
           returnValue.Append(
               birthDate.Value.ToString(
@@ -1726,7 +1726,7 @@ namespace Microsoft.FamilyShowLib
         // Only need to get the parent set if there are two parents.
         if (Parents.Count == 2)
         {
-          ParentSet parentSet = new ParentSet(Parents[0], Parents[1]);
+          ParentSet parentSet = new(Parents[0], Parents[1]);
           return parentSet;
         }
         else
@@ -1750,7 +1750,7 @@ namespace Microsoft.FamilyShowLib
         {
           foreach (Person spouse in parent.Spouses)
           {
-            ParentSet ps = new ParentSet(parent, spouse);
+            ParentSet ps = new(parent, spouse);
 
             // Don't add the same parent set twice.
             if (!parentSets.Contains(ps))
@@ -2493,7 +2493,7 @@ namespace Microsoft.FamilyShowLib
 
       foreach (Person spouse in Spouses)
       {
-        ParentSet ps = new ParentSet(this, spouse);
+        ParentSet ps = new(this, spouse);
 
         // Don't add the same parent set twice.
         if (!parentSets.Contains(ps))

@@ -37,7 +37,7 @@ namespace Microsoft.FamilyShowLib
     private StreamWriter writer;
 
     // Maps GUID IDs (which are too long for GEDCOM) to smaller IDs.
-    private readonly GedcomIdMap idMap = new GedcomIdMap();
+    private readonly GedcomIdMap idMap = new();
 
     // The people collection that is being exported.
     private PeopleCollection people;
@@ -954,7 +954,7 @@ namespace Microsoft.FamilyShowLib
           {
             // Use an additional sets if they exist
             Person parentLeft = parents[j];
-            Person parentRight = new Person();
+            Person parentRight = new();
             if (parents.Count > j + 1)
             {
               parentRight = (parents.Count > j + 1) ? parents[j + 1] : null;
@@ -965,7 +965,7 @@ namespace Microsoft.FamilyShowLib
             if (!ContainsKey(key))
             {
               // This parent group does not exist, add it to the list.
-              Family details = new Family(parentLeft, parentRight)
+              Family details = new(parentLeft, parentRight)
               {
                 Relationship = parentLeft.GetSpouseRelationship(parentRight)
               };
@@ -991,7 +991,7 @@ namespace Microsoft.FamilyShowLib
           if (!ContainsKey(key))
           {
             // This marriage group is not in the list, add it to the list.
-            Family details = new Family(person, spouse)
+            Family details = new(person, spouse)
             {
               Relationship = person.GetSpouseRelationship(spouse)
             };

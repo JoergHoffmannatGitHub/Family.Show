@@ -200,7 +200,7 @@ namespace Microsoft.FamilyShow
 
       if (Options() != "0") //only run if cancel not clicked
       {
-        CommonDialog dialog = new CommonDialog
+        CommonDialog dialog = new()
         {
           InitialDirectory = People.ApplicationFolderPath
         };
@@ -217,7 +217,7 @@ namespace Microsoft.FamilyShow
         {
           if (!string.IsNullOrEmpty(dialog.FileName))
           {
-            HtmlExport html = new HtmlExport();
+            HtmlExport html = new();
 
             int start = minYear;
             int end = DateTime.Now.Year;

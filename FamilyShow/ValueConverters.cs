@@ -224,7 +224,7 @@ namespace Microsoft.FamilyShow
       {
         try
         {
-          BitmapImage bitmap = new BitmapImage();
+          BitmapImage bitmap = new();
           bitmap.BeginInit();
           bitmap.CacheOption = BitmapCacheOption.OnLoad;
 

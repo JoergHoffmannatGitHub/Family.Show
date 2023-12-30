@@ -37,7 +37,7 @@ namespace Microsoft.FamilyShow
       InitializeComponent();
 
       // Get the data that is bound to the list.
-      CollectionViewSource source = new CollectionViewSource
+      CollectionViewSource source = new()
       {
         Source = App.Family
       };
@@ -84,7 +84,7 @@ namespace Microsoft.FamilyShow
 
     private static ListCollectionView CreateView(string group, string sort)
     {
-      ListCollectionView view = new ListCollectionView(App.Family);
+      ListCollectionView view = new(App.Family);
 
       // Apply sorting
       if (!string.IsNullOrEmpty(sort))
@@ -93,7 +93,7 @@ namespace Microsoft.FamilyShow
       }
 
       // Group the collection into tags. The tag cloud will be based on the group Name and ItemCount
-      PropertyGroupDescription groupDescription = new PropertyGroupDescription();
+      PropertyGroupDescription groupDescription = new();
       if (!string.IsNullOrEmpty(group))
       {
         groupDescription.PropertyName = group;

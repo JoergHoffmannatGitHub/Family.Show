@@ -56,7 +56,7 @@ namespace Microsoft.FamilyShow
         LoadStoryText(StoryViewer.Document);
 
         // Display all text in constrast color to the StoryViewer background.
-        TextRange textRange2 = new TextRange(StoryViewer.Document.ContentStart, StoryViewer.Document.ContentEnd);
+        TextRange textRange2 = new(StoryViewer.Document.ContentStart, StoryViewer.Document.ContentEnd);
         textRange2.Select(StoryViewer.Document.ContentStart, StoryViewer.Document.ContentEnd);
         textRange2.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("FlowDocumentFontColor"));
 
@@ -123,7 +123,7 @@ namespace Microsoft.FamilyShow
       if (person != null)
       {
         // Pass in a TextRange object to save the story     
-        TextRange textRange = new TextRange(StoryRichTextBox.Document.ContentStart, StoryRichTextBox.Document.ContentEnd);
+        TextRange textRange = new(StoryRichTextBox.Document.ContentStart, StoryRichTextBox.Document.ContentEnd);
         person.Story = new Story();
         //remove spaces  and {} from history file names
         //also use unique person Id in the file name so people with same name don't have thier history overwritten
@@ -135,7 +135,7 @@ namespace Microsoft.FamilyShow
         LoadStoryText(StoryViewer.Document);
 
         // Display all text in constrast color to the StoryViewer background.
-        TextRange textRange2 = new TextRange(StoryViewer.Document.ContentStart, StoryViewer.Document.ContentEnd);
+        TextRange textRange2 = new(StoryViewer.Document.ContentStart, StoryViewer.Document.ContentEnd);
         textRange2.Select(StoryViewer.Document.ContentStart, StoryViewer.Document.ContentEnd);
         textRange2.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("FlowDocumentFontColor"));
       }
@@ -165,7 +165,7 @@ namespace Microsoft.FamilyShow
       // Load the story into the story viewer
       if (person != null && person.Story != null)
       {
-        TextRange textRange = new TextRange(flowDocument.ContentStart, flowDocument.ContentEnd);
+        TextRange textRange = new(flowDocument.ContentStart, flowDocument.ContentEnd);
         person.Story.Load(textRange);
         person.Note = textRange.Text;
       }
@@ -173,7 +173,7 @@ namespace Microsoft.FamilyShow
       {
         // This person doesn't have a story.
         // Load the default story text
-        TextRange textRange = new TextRange(flowDocument.ContentStart, flowDocument.ContentEnd)
+        TextRange textRange = new(flowDocument.ContentStart, flowDocument.ContentEnd)
         {
           Text = Properties.Resources.DefaultStory
         };
@@ -309,7 +309,7 @@ namespace Microsoft.FamilyShow
 
       if (photoCount > 0)
       {
-        CommonDialog dialog = new CommonDialog
+        CommonDialog dialog = new()
         {
           InitialDirectory = photoLocation
         };
@@ -335,7 +335,7 @@ namespace Microsoft.FamilyShow
 
               if (i == 0)
               {
-                Photo photo = new Photo
+                Photo photo = new()
                 {
                   RelativePath = Path.Combine(Photo.PhotosFolderName, Path.GetFileName(dialog.FileName))
                 };
@@ -384,7 +384,7 @@ namespace Microsoft.FamilyShow
       Person person = (Person)DataContext;
 
       // Absolute path to the photos folder
-      CommonDialog dialog = new CommonDialog();
+      CommonDialog dialog = new();
       dialog.Filter.Add(new FilterEntry(Properties.Resources.ImageFiles, Properties.Resources.ImageExtension));
       dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
       dialog.Title = Properties.Resources.Open;
@@ -394,7 +394,7 @@ namespace Microsoft.FamilyShow
       {
         if (App.IsPhotoFileSupported(Path.GetFileName(dialog.FileName)))
         {
-          Photo photo = new Photo(dialog.FileName)
+          Photo photo = new(dialog.FileName)
           {
             RelativePath = Path.Combine(Photo.PhotosFolderName, Path.GetFileName(dialog.FileName))
           };
@@ -436,7 +436,7 @@ namespace Microsoft.FamilyShow
           // Handles photo files
           if (App.IsPhotoFileSupported(fileName))
           {
-            Photo photo = new Photo(fileName);
+            Photo photo = new(fileName);
 
             // Make the first photo added the person's avatar
             if (person.Photos.Count == 0)
@@ -472,7 +472,7 @@ namespace Microsoft.FamilyShow
         string path = photosListBox.SelectedItem.ToString();
 
         // Make sure that the file exists
-        FileInfo fi = new FileInfo(path);
+        FileInfo fi = new(path);
         if (fi.Exists)
         {
           SetDisplayPhoto(path);
@@ -502,7 +502,7 @@ namespace Microsoft.FamilyShow
 
       //This code must be used to create the bitmap
       //otherwise the program locks the image.
-      BitmapImage bitmap = new BitmapImage();
+      BitmapImage bitmap = new();
       bitmap.BeginInit();
       bitmap.CacheOption = BitmapCacheOption.OnLoad;
       bitmap.DecodePixelHeight = 280;  //max height of photo in viewer
@@ -591,7 +591,7 @@ namespace Microsoft.FamilyShow
       string newFileName = Path.GetFileNameWithoutExtension(path) + Guid.NewGuid().ToString() + fileExtension;
       string tempFilePath = Path.Combine(appLocation, newFileName);
 
-      FileInfo ofi = new FileInfo(path);
+      FileInfo ofi = new(path);
       ofi.CopyTo(tempFilePath, true);
 
       try
@@ -690,7 +690,7 @@ namespace Microsoft.FamilyShow
     public void OnThemeChange()
     {
       // Display all text in constrast color to the StoryViewer background.
-      TextRange textRange = new TextRange(StoryViewer.Document.ContentStart, StoryViewer.Document.ContentEnd);
+      TextRange textRange = new(StoryViewer.Document.ContentStart, StoryViewer.Document.ContentEnd);
       textRange.Select(StoryViewer.Document.ContentStart, StoryViewer.Document.ContentEnd);
       textRange.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("FlowDocumentFontColor"));
     }

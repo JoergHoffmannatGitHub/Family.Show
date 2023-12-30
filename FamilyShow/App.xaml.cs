@@ -27,9 +27,8 @@ namespace Microsoft.FamilyShow
     internal const string SampleFilesFolderName = "Sample Files";
 
     // The main list of family members that is shared for the entire application.
-    // The FamilyCollection and Family fields are accessed from the same thread,
-    // so suppressing the CA2211 code analysis warning.
-    public static People FamilyCollection = new People();
+    // The FamilyCollection and Family fields are accessed from the same thread.
+    public static People FamilyCollection = new();
     public static PeopleCollection Family = FamilyCollection.PeopleCollection;
     public static SourceCollection Sources = FamilyCollection.SourceCollection;
     public static RepositoryCollection Repositories = FamilyCollection.RepositoryCollection;
@@ -112,17 +111,17 @@ namespace Microsoft.FamilyShow
       string applicationFilePath = Assembly.GetExecutingAssembly().Location;
       _ = TaskBar.Create(window, Settings.Default.AppId, new JumpListLink[]
       {
-                new JumpListLink(applicationFilePath, FamilyShow.Properties.Resources.StartANewFamilyTree)
+                new(applicationFilePath, FamilyShow.Properties.Resources.StartANewFamilyTree)
                 {
                     Arguments = "/n",
                     IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 0),
                 },
-                new JumpListLink(applicationFilePath, FamilyShow.Properties.Resources.OpenMenu)
+                new(applicationFilePath, FamilyShow.Properties.Resources.OpenMenu)
                 {
                     Arguments = "/o",
                     IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 4),
                 },
-                new JumpListLink(applicationFilePath, FamilyShow.Properties.Resources.GedcomMenu)
+                new(applicationFilePath, FamilyShow.Properties.Resources.GedcomMenu)
                 {
                     Arguments = "/i",
                     IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 4),
@@ -191,7 +190,7 @@ namespace Microsoft.FamilyShow
         {
           foreach (string file in Directory.GetFiles(folder))
           {
-            FileInfo fileInfo = new FileInfo(file);
+            FileInfo fileInfo = new(file);
             if (string.Compare(fileInfo.Extension, FamilyShow.Properties.Resources.XamlExtension,
                 true, CultureInfo.InvariantCulture) == 0)
             {
@@ -226,7 +225,7 @@ namespace Microsoft.FamilyShow
       if (File.Exists(RecentFilesFilePath))
       {
         // Load the Recent Files from disk
-        XmlSerializer ser = new XmlSerializer(typeof(StringCollection));
+        XmlSerializer ser = new(typeof(StringCollection));
         using (TextReader reader = new StreamReader(RecentFilesFilePath))
         {
           RecentFiles = (StringCollection)ser.Deserialize(reader);
@@ -254,7 +253,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     public static void SaveRecentFiles()
     {
-      XmlSerializer ser = new XmlSerializer(typeof(StringCollection));
+      XmlSerializer ser = new(typeof(StringCollection));
       using (TextWriter writer = new StreamWriter(RecentFilesFilePath))
       {
         ser.Serialize(writer, RecentFiles);
@@ -359,7 +358,7 @@ namespace Microsoft.FamilyShow
       }
 
       // Create the file.
-      using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create)))
+      using (BinaryWriter writer = new(File.Open(path, FileMode.Create)))
       {
         writer.Write(fileContent);
       }

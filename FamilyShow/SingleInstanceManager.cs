@@ -47,7 +47,7 @@ namespace Microsoft.FamilyShow
     [STAThread]
     static void Main(string[] args)
     {
-      SingleInstanceManager manager = new SingleInstanceManager();
+      SingleInstanceManager manager = new();
       manager.Run(args);
     }
   }

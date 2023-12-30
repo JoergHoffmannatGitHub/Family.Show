@@ -86,7 +86,7 @@ namespace Microsoft.FamilyShow
 
     private void Export()
     {
-      CommonDialog dialog = new CommonDialog
+      CommonDialog dialog = new()
       {
         InitialDirectory = People.ApplicationFolderPath
       };
@@ -97,7 +97,7 @@ namespace Microsoft.FamilyShow
 
       if (!string.IsNullOrEmpty(dialog.FileName))
       {
-        RepositoriesExport repostories = new RepositoriesExport();
+        RepositoriesExport repostories = new();
         repostories.ExportRepositories(dialog.FileName, Path.GetFileName(familyCollection.FullyQualifiedFilename), repository);
       }
 
@@ -143,7 +143,7 @@ namespace Microsoft.FamilyShow
 
       string repositoryID = "R" + y.ToString();
 
-      Repository newRepository = new Repository(repositoryID, "", "");
+      Repository newRepository = new(repositoryID, "", "");
       repository.Add(newRepository);
       repository.OnContentChanged();
     }

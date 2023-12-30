@@ -195,7 +195,7 @@ namespace Microsoft.FamilyShow
 
       if (Options() != "0") //only run if cancel not clicked
       {
-        CommonDialog dialog = new CommonDialog
+        CommonDialog dialog = new()
         {
           InitialDirectory = People.ApplicationFolderPath
         };

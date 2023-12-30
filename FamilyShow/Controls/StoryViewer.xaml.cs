@@ -70,7 +70,7 @@ namespace Microsoft.FamilyShow
         LoadStoryText(StoryView.Document);
 
         // Display all text in constrast color to the StoryViewer background.
-        TextRange textRange = new TextRange(StoryView.Document.ContentStart, StoryView.Document.ContentEnd);
+        TextRange textRange = new(StoryView.Document.ContentStart, StoryView.Document.ContentEnd);
         textRange.Select(StoryView.Document.ContentStart, StoryView.Document.ContentEnd);
         textRange.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("FlowDocumentFontColor"));
 
@@ -132,7 +132,7 @@ namespace Microsoft.FamilyShow
         LoadStoryText(StoryView.Document);
 
         // Display all text in constrast color to the StoryViewer background.
-        TextRange textRange2 = new TextRange(StoryView.Document.ContentStart, StoryView.Document.ContentEnd);
+        TextRange textRange2 = new(StoryView.Document.ContentStart, StoryView.Document.ContentEnd);
         textRange2.Select(StoryView.Document.ContentStart, StoryView.Document.ContentEnd);
         textRange2.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("FlowDocumentFontColor"));
 
@@ -185,7 +185,7 @@ namespace Microsoft.FamilyShow
       if (person != null)
       {
         // Pass in a TextRange object to save the story     
-        TextRange textRange = new TextRange(StoryRichTextBox.Document.ContentStart, StoryRichTextBox.Document.ContentEnd);
+        TextRange textRange = new(StoryRichTextBox.Document.ContentStart, StoryRichTextBox.Document.ContentEnd);
 
         person.Story = new Story();
         //remove spaces  and {} from history file names
@@ -198,7 +198,7 @@ namespace Microsoft.FamilyShow
         LoadStoryText(StoryView.Document);
 
         // Display all text in constrast color to the StoryViewer background.
-        TextRange textRange2 = new TextRange(StoryView.Document.ContentStart, StoryView.Document.ContentEnd);
+        TextRange textRange2 = new(StoryView.Document.ContentStart, StoryView.Document.ContentEnd);
         textRange2.Select(StoryView.Document.ContentStart, StoryView.Document.ContentEnd);
         textRange2.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("FlowDocumentFontColor"));
 
@@ -231,7 +231,7 @@ namespace Microsoft.FamilyShow
       // Load the story into the story viewer
       if (person != null && person.Story != null)
       {
-        TextRange textRange = new TextRange(flowDocument.ContentStart, flowDocument.ContentEnd);
+        TextRange textRange = new(flowDocument.ContentStart, flowDocument.ContentEnd);
         person.Story.Load(textRange);
         person.Note = textRange.Text;
       }
@@ -239,7 +239,7 @@ namespace Microsoft.FamilyShow
       {
         // This person doesn't have a story.
         // Load the default story text
-        TextRange textRange = new TextRange(flowDocument.ContentStart, flowDocument.ContentEnd)
+        TextRange textRange = new(flowDocument.ContentStart, flowDocument.ContentEnd)
         {
           Text = Properties.Resources.DefaultStory
         };
@@ -359,7 +359,7 @@ namespace Microsoft.FamilyShow
     public void OnThemeChange()
     {
       // Display all text in constrast color to the StoryViewer background.
-      TextRange textRange = new TextRange(StoryView.Document.ContentStart, StoryView.Document.ContentEnd);
+      TextRange textRange = new(StoryView.Document.ContentStart, StoryView.Document.ContentEnd);
       textRange.Select(StoryView.Document.ContentStart, StoryView.Document.ContentEnd);
       textRange.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("FlowDocumentFontColor"));
     }

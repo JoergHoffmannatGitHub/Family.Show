@@ -44,7 +44,7 @@ namespace Microsoft.FamilyShow
     private void AddButton_Click(object sender, RoutedEventArgs e)
     {
       // Create a new person with the specified inputs
-      Person newPerson = new Person(NamesInputTextBox.Text, SurnameInputTextBox.Text)
+      Person newPerson = new(NamesInputTextBox.Text, SurnameInputTextBox.Text)
       {
         // Setup the properties based on the input
         Gender = ((bool)MaleRadioButton.IsChecked) ? Gender.Male : Gender.Female,

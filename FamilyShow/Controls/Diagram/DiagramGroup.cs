@@ -22,7 +22,7 @@ namespace Microsoft.FamilyShow
     private const double NodeSpace = 10;
 
     // Location of the group, relative to the row.
-    private Point location = new Point();
+    private Point location = new();
 
     // List of nodes in the group.
     private readonly List<DiagramNode> nodes = [];
@@ -55,7 +55,7 @@ namespace Microsoft.FamilyShow
     protected override Size MeasureOverride(Size availableSize)
     {
       // Let each node determine how large they want to be.
-      Size size = new Size(double.PositiveInfinity, double.PositiveInfinity);
+      Size size = new(double.PositiveInfinity, double.PositiveInfinity);
       foreach (DiagramNode node in nodes)
       {
         node.Measure(size);
@@ -124,10 +124,10 @@ namespace Microsoft.FamilyShow
       double pos = 0;
 
       // Bounding area of the node.
-      Rect bounds = new Rect();
+      Rect bounds = new();
 
       // Total size of the group.
-      Size totalSize = new Size(0, 0);
+      Size totalSize = new(0, 0);
 
       foreach (DiagramNode node in nodes)
       {

@@ -34,7 +34,7 @@ namespace Microsoft.FamilyShowLib
       // Used to create the .xml file, XmlWriterSettings. Indent is 
       // specified if you want to examine the xml file, otherwise
       // it should be removed.
-      XmlWriterSettings settings = new XmlWriterSettings
+      XmlWriterSettings settings = new()
       {
         Indent = true
       };
@@ -44,10 +44,10 @@ namespace Microsoft.FamilyShowLib
         writer.WriteStartElement("root");
 
         // Convert each line of the gedcom file to an xml element.
-        using (StreamReader sr = new StreamReader(gedcomFilePath))
+        using (StreamReader sr = new(gedcomFilePath))
         {
           string text;
-          GedcomLine line = new GedcomLine();
+          GedcomLine line = new();
           while ((text = sr.ReadLine()) != null)
           {
             // Some GEDCOM files indent each line with whitespace, delete any
@@ -101,7 +101,7 @@ namespace Microsoft.FamilyShowLib
     /// </summary>
     private static void CombineSplitValues(string xmlFilePath)
     {
-      XmlDocument doc = new XmlDocument();
+      XmlDocument doc = new();
       doc.Load(xmlFilePath);
 
       // Get all nodes that contain child continue nodes.

@@ -669,7 +669,7 @@ namespace Microsoft.FamilyShow
 
     private void PrintButton_Click(object sender, EventArgs e)
     {
-      PrintDialog dlg = new PrintDialog();
+      PrintDialog dlg = new();
 
       //Animated progress bar does not render well on print
       FileProgressBar.Visibility = Visibility.Collapsed;
@@ -686,17 +686,17 @@ namespace Microsoft.FamilyShow
     private static void Print(PrintDialog pd, Border border)
     {
       // Make a Grid to hold the contents.
-      Grid pageArea = new Grid();
+      Grid pageArea = new();
 
       double padding = 20;
       double titlepadding = 25;
 
       pageArea.Height = border.Height;
 
-      VisualBrush diagramFill = new VisualBrush(border);
+      VisualBrush diagramFill = new(border);
 
       // Titles
-      TextBlock titles = new TextBlock();
+      TextBlock titles = new();
       if (!string.IsNullOrEmpty(App.FamilyCollection.FullyQualifiedFilename))
       {
         titles.Text = Properties.Resources.StatisticsReportFor + " " + Path.GetFileName(App.FamilyCollection.FullyQualifiedFilename);
@@ -707,7 +707,7 @@ namespace Microsoft.FamilyShow
       }
 
       // Data
-      System.Windows.Shapes.Rectangle diagram = new System.Windows.Shapes.Rectangle
+      System.Windows.Shapes.Rectangle diagram = new()
       {
         Margin = new Thickness(0, titlepadding, 0, 0),
         Fill = diagramFill,
@@ -721,7 +721,7 @@ namespace Microsoft.FamilyShow
       pageArea.Children.Add(diagram);
 
       // Arrange
-      Rect container = new Rect(0, 0, border.ActualWidth, border.ActualHeight + titlepadding);
+      Rect container = new(0, 0, border.ActualWidth, border.ActualHeight + titlepadding);
       pageArea.Arrange(container);
 
       string title = Path.GetFileName(App.FamilyCollection.FullyQualifiedFilename) + " " + Properties.Resources.StatisticsReport;
@@ -732,7 +732,7 @@ namespace Microsoft.FamilyShow
 
     private static ListCollectionView CreateView(string group, string sort)
     {
-      ListCollectionView view = new ListCollectionView(App.Family);
+      ListCollectionView view = new(App.Family);
 
       // Apply sorting
       if (!string.IsNullOrEmpty(sort))
@@ -741,7 +741,7 @@ namespace Microsoft.FamilyShow
       }
 
       // Group the collection into tags. The tag cloud will be based on the group Name and ItemCount
-      PropertyGroupDescription groupDescription = new PropertyGroupDescription();
+      PropertyGroupDescription groupDescription = new();
       if (!string.IsNullOrEmpty(group))
       {
         groupDescription.PropertyName = group;
@@ -971,7 +971,7 @@ namespace Microsoft.FamilyShow
       long b = 0;
       foreach (string name in a)
       {
-        FileInfo info = new FileInfo(name);
+        FileInfo info = new(name);
         b += info.Length;
       }
 

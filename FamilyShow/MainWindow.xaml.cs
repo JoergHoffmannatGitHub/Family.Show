@@ -173,7 +173,7 @@ namespace Microsoft.FamilyShow
     {
       MergeControl.Visibility = Visibility.Hidden;
 
-      CommonDialog dialog = new CommonDialog
+      CommonDialog dialog = new()
       {
         InitialDirectory = People.ApplicationFolderPath
       };
@@ -345,7 +345,7 @@ namespace Microsoft.FamilyShow
           else
           {
 
-            CommonDialog dialog = new CommonDialog
+            CommonDialog dialog = new()
             {
               InitialDirectory = People.ApplicationFolderPath
             };
@@ -375,7 +375,7 @@ namespace Microsoft.FamilyShow
 
       Title = Properties.Resources.FamilyShow + " " + Properties.Resources.MergingStatus;  //Update status bar
 
-      CommonDialog mergedialog = new CommonDialog
+      CommonDialog mergedialog = new()
       {
         InitialDirectory = People.ApplicationFolderPath
       };
@@ -493,7 +493,7 @@ namespace Microsoft.FamilyShow
                                                                                                   // Prompt to save if the file has not been saved before, otherwise just save to the existing file.
       if (string.IsNullOrEmpty(familyCollection.FullyQualifiedFilename))
       {
-        CommonDialog dialog = new CommonDialog
+        CommonDialog dialog = new()
         {
           InitialDirectory = People.ApplicationFolderPath
         };
@@ -535,7 +535,7 @@ namespace Microsoft.FamilyShow
     private void ExportGedcom(object sender, EventArgs e)
     {
       Title = Properties.Resources.FamilyShow + " " + Properties.Resources.ExportingStatus;
-      CommonDialog dialog = new CommonDialog
+      CommonDialog dialog = new()
       {
         InitialDirectory = People.ApplicationFolderPath
       };
@@ -546,7 +546,7 @@ namespace Microsoft.FamilyShow
 
       if (!string.IsNullOrEmpty(dialog.FileName))
       {
-        GedcomExport ged = new GedcomExport();
+        GedcomExport ged = new();
         try
         {
 
@@ -651,7 +651,7 @@ namespace Microsoft.FamilyShow
 
     private void Print(object sender, RoutedEventArgs e)
     {
-      PrintDialog pd = new PrintDialog();
+      PrintDialog pd = new();
 
       if (pd.ShowDialog().GetValueOrDefault())
       {
@@ -660,7 +660,7 @@ namespace Microsoft.FamilyShow
         DiagramControl.TimeSliderPanel.Visibility = Visibility.Hidden;
 
         //Make a stackpanel to hold the contents.
-        StackPanel pageArea = new StackPanel();
+        StackPanel pageArea = new();
 
         double padding = 20;
         double titleheight = 25;
@@ -670,7 +670,7 @@ namespace Microsoft.FamilyShow
         VisualBrush diagramFill;
 
         //Diagram
-        System.Windows.Shapes.Rectangle diagram = new System.Windows.Shapes.Rectangle();
+        System.Windows.Shapes.Rectangle diagram = new();
 
         //Print background when black theme is used because diagram has white text
         if (appSettings.Theme == @"Themes\Black\BlackResources.xaml")
@@ -693,7 +693,7 @@ namespace Microsoft.FamilyShow
         }
 
         //Titles
-        TextBlock titles = new TextBlock
+        TextBlock titles = new()
         {
           Height = titleheight,
           Text = Properties.Resources.ReportHeader1 + " " + App.Family.Current.FullName + " " + Properties.Resources.ReportHeader2 + " " + DiagramControl.YearFilter.Content.ToString()
@@ -726,7 +726,7 @@ namespace Microsoft.FamilyShow
 
     private void ExportXps(object sender, EventArgs e)
     {
-      CommonDialog dialog = new CommonDialog
+      CommonDialog dialog = new()
       {
         InitialDirectory = People.ApplicationFolderPath
       };
@@ -741,7 +741,7 @@ namespace Microsoft.FamilyShow
         {
           // Create the XPS document from the window's main container (in this case, a grid) 
           Package package = Package.Open(dialog.FileName, FileMode.Create);
-          XpsDocument xpsDoc = new XpsDocument(package);
+          XpsDocument xpsDoc = new(package);
           XpsDocumentWriter xpsWriter = XpsDocument.CreateXpsDocumentWriter(xpsDoc);
 
           // Hide the zoom control and time control before the diagram is saved
@@ -860,7 +860,7 @@ namespace Microsoft.FamilyShow
           // Prompt to save if the file has not been saved before.
           if (string.IsNullOrEmpty(familyCollection.FullyQualifiedFilename))
           {
-            CommonDialog dialog = new CommonDialog
+            CommonDialog dialog = new()
             {
               InitialDirectory = People.ApplicationFolderPath
             };
@@ -950,7 +950,7 @@ namespace Microsoft.FamilyShow
       Title = Properties.Resources.FamilyShow + " " + Properties.Resources.LoadingStatus;
       PromptToSave();
 
-      CommonDialog dialog = new CommonDialog
+      CommonDialog dialog = new()
       {
         InitialDirectory = People.ApplicationFolderPath
       };
@@ -1018,7 +1018,7 @@ namespace Microsoft.FamilyShow
       if (SaveControl.Options() != "0")
       {
         Title = Title = Properties.Resources.FamilyShow + " " + Properties.Resources.SavingStatus;  //Update status bar
-        CommonDialog dialog = new CommonDialog
+        CommonDialog dialog = new()
         {
           InitialDirectory = People.ApplicationFolderPath
         };
@@ -1095,7 +1095,7 @@ namespace Microsoft.FamilyShow
       App.canExecuteJumpList = false;
       bool loaded = true;
 
-      CommonDialog dialog = new CommonDialog
+      CommonDialog dialog = new()
       {
         InitialDirectory = People.ApplicationFolderPath
       };
@@ -1120,7 +1120,7 @@ namespace Microsoft.FamilyShow
 
         try
         {
-          GedcomImport ged = new GedcomImport();
+          GedcomImport ged = new();
           loaded = ged.Import(family, source, repository, dialog.FileName, appSettings.EnableUTF8);
           familyCollection.FullyQualifiedFilename = string.Empty;  //file name must be familyx, this ensures user is prompted to save file to familyx
           family.IsDirty = false;
@@ -1718,9 +1718,9 @@ namespace Microsoft.FamilyShow
     private void BuildOpenMenu()
     {
       // Store the menu items with icons
-      MenuItem open = new MenuItem();
-      MenuItem import = new MenuItem();
-      MenuItem merge = new MenuItem();
+      MenuItem open = new();
+      MenuItem import = new();
+      MenuItem merge = new();
 
       foreach (object element in OpenMenu.Items)
       {
@@ -1761,7 +1761,7 @@ namespace Microsoft.FamilyShow
 
         foreach (string file in App.RecentFiles)
         {
-          MenuItem item = new MenuItem
+          MenuItem item = new()
           {
             Header = i + ". " + Path.GetFileName(file),
             CommandParameter = file
@@ -1773,7 +1773,7 @@ namespace Microsoft.FamilyShow
 
         OpenMenu.Items.Add(new Separator());
 
-        MenuItem openMenuItem4 = new MenuItem
+        MenuItem openMenuItem4 = new()
         {
           Header = Properties.Resources.ClearRecentFilesMenu
         };
@@ -1789,8 +1789,8 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private void BuildThemesMenu()
     {
-      MenuItem theme1 = new MenuItem();
-      MenuItem theme2 = new MenuItem();
+      MenuItem theme1 = new();
+      MenuItem theme2 = new();
 
       theme1.Header = Properties.Resources.Black;
       theme1.CommandParameter = @"Themes\Black\BlackResources.xaml";
@@ -1835,7 +1835,7 @@ namespace Microsoft.FamilyShow
         // Prompt to save if the file has not been saved before, otherwise just save to the existing file.
         if (string.IsNullOrEmpty(familyCollection.FullyQualifiedFilename))
         {
-          CommonDialog dialog = new CommonDialog
+          CommonDialog dialog = new()
           {
             InitialDirectory = People.ApplicationFolderPath
           };
@@ -1895,7 +1895,7 @@ namespace Microsoft.FamilyShow
         // Prompt to save if the file has not been saved before, otherwise just save to the existing file.
         if (string.IsNullOrEmpty(familyCollection.FullyQualifiedFilename))
         {
-          CommonDialog dialog = new CommonDialog
+          CommonDialog dialog = new()
           {
             InitialDirectory = People.ApplicationFolderPath
           };

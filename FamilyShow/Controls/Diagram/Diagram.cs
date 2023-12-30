@@ -66,7 +66,7 @@ namespace Microsoft.FamilyShow
 
     // Size of the diagram. Used to layout all of the nodes before the
     // control gets an actual size.
-    private Size totalSize = new Size(0, 0);
+    private Size totalSize = new(0, 0);
 
     // Zoom level of the diagram.
     private double scale = 0;
@@ -84,7 +84,7 @@ namespace Microsoft.FamilyShow
     private Person newPerson;
 
     // Timer used with the repopulating animation.
-    private readonly DispatcherTimer animationTimer = new DispatcherTimer();
+    private readonly DispatcherTimer animationTimer = new();
 
     // Flag if the row and group borders should be drawn.
     public static bool displayBorder = Properties.Settings.Default.ShowOutline;
@@ -221,98 +221,98 @@ namespace Microsoft.FamilyShow
       // Context menu so can display row and group borders.
       ContextMenu = new ContextMenu();
 
-      MenuItem outline = new MenuItem
+      MenuItem outline = new()
       {
         Header = Properties.Resources.ShowGenerationOutline
       };
       outline.Click += new RoutedEventHandler(OnToggleBorderClick);
       outline.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem generations = new MenuItem
+      MenuItem generations = new()
       {
         Header = Properties.Resources.ShowAllGenerations
       };
       generations.Click += new RoutedEventHandler(OnToggleNodeCount);
       generations.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem dates = new MenuItem
+      MenuItem dates = new()
       {
         Header = Properties.Resources.HideDates
       };
       dates.Click += new RoutedEventHandler(OnToggleDate);
       dates.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem ancestors = new MenuItem
+      MenuItem ancestors = new()
       {
         Header = Properties.Resources.HideAncestors
       };
       ancestors.Click += new RoutedEventHandler(OnToggleAncestors);
       ancestors.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem descendants = new MenuItem
+      MenuItem descendants = new()
       {
         Header = Properties.Resources.HideDescendants
       };
       descendants.Click += new RoutedEventHandler(OnToggleDescendants);
       descendants.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem siblings = new MenuItem
+      MenuItem siblings = new()
       {
         Header = Properties.Resources.HideSiblings
       };
       siblings.Click += new RoutedEventHandler(OnToggleSiblings);
       siblings.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem auntsUncles = new MenuItem
+      MenuItem auntsUncles = new()
       {
         Header = Properties.Resources.HideAuntsAndUncles
       };
       auntsUncles.Click += new RoutedEventHandler(OnToggleAuntsUncles);
       auntsUncles.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem inLaws = new MenuItem
+      MenuItem inLaws = new()
       {
         Header = Properties.Resources.HideInLaws
       };
       inLaws.Click += new RoutedEventHandler(OnToggleInLaws);
       inLaws.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem currentSpouse = new MenuItem
+      MenuItem currentSpouse = new()
       {
         Header = Properties.Resources.HideCurrentSpouse
       };
       currentSpouse.Click += new RoutedEventHandler(OnToggleSpouses);
       currentSpouse.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem previousSpouse = new MenuItem
+      MenuItem previousSpouse = new()
       {
         Header = Properties.Resources.HidePreviousSpouses
       };
       previousSpouse.Click += new RoutedEventHandler(OnTogglePreviousSpouses);
       previousSpouse.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem immediate = new MenuItem
+      MenuItem immediate = new()
       {
         Header = Properties.Resources.ShowImmediateFamilyOnly
       };
       immediate.Click += new RoutedEventHandler(OnToggleImmediateFamily);
       immediate.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem photos = new MenuItem
+      MenuItem photos = new()
       {
         Header = Properties.Resources.ShowPhotos
       };
       photos.Click += new RoutedEventHandler(OnTogglePhotos);
       photos.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem bloodlines = new MenuItem
+      MenuItem bloodlines = new()
       {
         Header = Properties.Resources.ShowBloodlines
       };
       bloodlines.Click += new RoutedEventHandler(OnToggleBloodlines);
       bloodlines.Foreground = SystemColors.MenuTextBrush;
 
-      MenuItem filtered = new MenuItem
+      MenuItem filtered = new()
       {
         Header = Properties.Resources.HideFiltered
       };
@@ -374,7 +374,7 @@ namespace Microsoft.FamilyShow
     protected override Size MeasureOverride(Size availableSize)
     {
       // Let each row determine how large they want to be.
-      Size size = new Size(double.PositiveInfinity, double.PositiveInfinity);
+      Size size = new(double.PositiveInfinity, double.PositiveInfinity);
       foreach (DiagramRow row in rows)
       {
         row.Measure(size);
@@ -399,10 +399,10 @@ namespace Microsoft.FamilyShow
       double pos = 0;
 
       // Bounding area of the row.
-      Rect bounds = new Rect();
+      Rect bounds = new();
 
       // Total size of the diagram.
-      Size size = new Size(0, 0);
+      Size size = new(0, 0);
 
       foreach (DiagramRow row in rows)
       {
@@ -458,7 +458,7 @@ namespace Microsoft.FamilyShow
           // Display row border.
 
           int generationNumber = labelnumber;
-          FormattedText format = new FormattedText(" " + generationNumber,
+          FormattedText format = new(" " + generationNumber,
           System.Globalization.CultureInfo.CurrentUICulture,
           FlowDirection.LeftToRight, new Typeface(connectionTextFont,
           FontStyles.Normal, FontWeights.Normal, FontStretches.Normal,
@@ -467,8 +467,8 @@ namespace Microsoft.FamilyShow
 
           if (rownumber != rows.Count)
           {
-            Vector size = new Vector(row.DesiredSize.Width + 10, row.DesiredSize.Height - 5);
-            Rect bounds = new Rect(row.Location, size);
+            Vector size = new(row.DesiredSize.Width + 10, row.DesiredSize.Height - 5);
+            Rect bounds = new(row.Location, size);
             bounds.Offset(-5, -30);
 
             if (size.Y > 50)
@@ -480,8 +480,8 @@ namespace Microsoft.FamilyShow
           }
           else
           {
-            Vector size = new Vector(row.DesiredSize.Width + 10, row.DesiredSize.Height + 35);
-            Rect bounds = new Rect(row.Location, size);
+            Vector size = new(row.DesiredSize.Width + 10, row.DesiredSize.Height + 35);
+            Rect bounds = new(row.Location, size);
             bounds.Offset(-5, -30);
 
             if (size.Y > 50)
@@ -1106,11 +1106,11 @@ namespace Microsoft.FamilyShow
       if (node != null)
       {
         // Create the new person animation.
-        DoubleAnimation anim = new DoubleAnimation(0, 1,
+        DoubleAnimation anim = new(0, 1,
             App.GetAnimationDuration(Const.NewPersonAnimationDuration));
 
         // Animate the node.
-        ScaleTransform transform = new ScaleTransform();
+        ScaleTransform transform = new();
         transform.BeginAnimation(ScaleTransform.ScaleXProperty, anim);
         transform.BeginAnimation(ScaleTransform.ScaleYProperty, anim);
         node.RenderTransform = transform;

@@ -208,7 +208,7 @@ namespace Microsoft.FamilyShow
     private Point GetTopLeftScrollOffset()
     {
       // Offset that is returned.
-      Point offset = new Point();
+      Point offset = new();
 
       // Empty offset if the diagram is empty.
       if (Diagram.ActualWidth == 0 || Diagram.ActualHeight == 0)
@@ -217,7 +217,7 @@ namespace Microsoft.FamilyShow
       }
 
       // Get the size of the diagram.
-      Size diagramSize = new Size(
+      Size diagramSize = new(
           Diagram.ActualWidth * Zoom,
           Diagram.ActualHeight * Zoom);
 
@@ -239,7 +239,7 @@ namespace Microsoft.FamilyShow
         return;
       }
 
-      Size diagramSize = new Size(
+      Size diagramSize = new(
           Diagram.ActualWidth * Zoom,
           Diagram.ActualHeight * Zoom);
 
@@ -286,7 +286,7 @@ namespace Microsoft.FamilyShow
 
         // Determine the distance between the two nodes.
         Rect primaryBounds = Diagram.PrimaryNodeBounds;
-        Point nodeDelta = new Point
+        Point nodeDelta = new()
         {
           X = (primaryBounds.Left + (primaryBounds.Width / 2)) -
             (selectedBounds.Left + (selectedBounds.Width / 2)),
@@ -333,11 +333,11 @@ namespace Microsoft.FamilyShow
 
       // Before auto scroll, determine the start and end 
       // points so the scrolling can be animated.
-      Point startLocation = new Point(
+      Point startLocation = new(
           ScrollViewer.HorizontalOffset,
           ScrollViewer.VerticalOffset);
 
-      Point endLocation = new Point(
+      Point endLocation = new(
           Grid.Width - offset.X - startLocation.X,
           Grid.Height - offset.Y - startLocation.Y);
 
@@ -355,14 +355,14 @@ namespace Microsoft.FamilyShow
     private void AnimateDiagram(Point endLocation)
     {
       // Create the animations, nonlinear by using accelration and deceleration.
-      DoubleAnimation horzAnim = new DoubleAnimation(endLocation.X, 0,
+      DoubleAnimation horzAnim = new(endLocation.X, 0,
           App.GetAnimationDuration(Const.AutoCenterAnimationDuration))
       {
         AccelerationRatio = .5,
         DecelerationRatio = .5
       };
 
-      DoubleAnimation vertAnim = new DoubleAnimation(endLocation.Y, 0,
+      DoubleAnimation vertAnim = new(endLocation.Y, 0,
           App.GetAnimationDuration(Const.AutoCenterAnimationDuration))
       {
         AccelerationRatio = .5,
@@ -370,7 +370,7 @@ namespace Microsoft.FamilyShow
       };
 
       // Animate the transform to make it appear like the diagram is moving.
-      TranslateTransform transform = new TranslateTransform();
+      TranslateTransform transform = new();
       transform.BeginAnimation(TranslateTransform.XProperty, horzAnim);
       transform.BeginAnimation(TranslateTransform.YProperty, vertAnim);
 
@@ -451,7 +451,7 @@ namespace Microsoft.FamilyShow
         Point point = e.GetPosition(this);
 
         // Determine the new amount to scroll.
-        Point delta = new Point(
+        Point delta = new(
             (point.X > scrollStartPoint.X) ?
                 -(point.X - scrollStartPoint.X) : (scrollStartPoint.X - point.X),
             (point.Y > scrollStartPoint.Y) ?

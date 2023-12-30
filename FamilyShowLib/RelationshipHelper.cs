@@ -193,8 +193,8 @@ namespace Microsoft.FamilyShowLib
     private static List<Person> GetChildren(ParentSet parentSet)
     {
       // Get list of both parents.
-      List<Person> firstParentChildren = new List<Person>(parentSet.FirstParent.Children);
-      List<Person> secondParentChildren = new List<Person>(parentSet.SecondParent.Children);
+      List<Person> firstParentChildren = new(parentSet.FirstParent.Children);
+      List<Person> secondParentChildren = new(parentSet.SecondParent.Children);
 
       // Combined children list that is returned.
       List<Person> children = [];

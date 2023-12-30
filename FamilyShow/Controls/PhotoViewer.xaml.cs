@@ -66,7 +66,7 @@ namespace Microsoft.FamilyShow
         string path = photosListBox.SelectedItem.ToString();
 
         // Make sure that the file exists
-        FileInfo fi = new FileInfo(path);
+        FileInfo fi = new(path);
         if (fi.Exists)
         {
           SetDisplayPhoto(path);
@@ -102,7 +102,7 @@ namespace Microsoft.FamilyShow
       string newFileName = Path.GetFileNameWithoutExtension(path) + Guid.NewGuid().ToString() + fileExtension;
       string tempFilePath = Path.Combine(appLocation, newFileName);
 
-      FileInfo ofi = new FileInfo(path);
+      FileInfo ofi = new(path);
       ofi.CopyTo(tempFilePath, true);
 
       try
@@ -123,7 +123,7 @@ namespace Microsoft.FamilyShow
     {
       //This code must be used to create the bitmap
       //otherwise the program locks the image.
-      BitmapImage bitmap = new BitmapImage();
+      BitmapImage bitmap = new();
       bitmap.BeginInit();
       bitmap.CacheOption = BitmapCacheOption.OnLoad;
       bitmap.DecodePixelHeight = 280;  //max height of photo in viewer

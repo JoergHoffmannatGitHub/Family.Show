@@ -132,8 +132,7 @@ namespace Microsoft.FamilyShow
     {
       Languages = new List<LanguagePair>
             {
-                new LanguagePair
-                {
+                new() {
                     Name = "English (United States)",
                     Code = "en-US"
                 }

@@ -29,7 +29,7 @@ namespace Microsoft.FamilyShowLib
       using (Package package = Package.Open(PackageFileName, FileMode.Create))
       {
         // Package the contents of the top directory
-        DirectoryInfo mainDirectory = new DirectoryInfo(targetDirectory);
+        DirectoryInfo mainDirectory = new(targetDirectory);
         CreatePart(package, mainDirectory, false);
 
         // Package the contents of the sub-directories
@@ -46,7 +46,7 @@ namespace Microsoft.FamilyShowLib
     private static void CreatePart(Package package, DirectoryInfo directoryInfo, bool storeInDirectory)
     {
 
-      XmlDocument xmlDoc = new XmlDocument();
+      XmlDocument xmlDoc = new();
       string contentpath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\" + App.ApplicationFolderName + @"\" + App.AppDataFolderName + @"\content.xml";
       try
       {
@@ -57,8 +57,8 @@ namespace Microsoft.FamilyShowLib
         //do nothing
       }
       // Create StringWriter object to get data from xml document.
-      StringWriter sw = new StringWriter();
-      XmlTextWriter xw = new XmlTextWriter(sw);
+      StringWriter sw = new();
+      XmlTextWriter xw = new(sw);
       xmlDoc.WriteTo(xw);
       string content = sw.ToString();
 
@@ -260,7 +260,7 @@ namespace Microsoft.FamilyShowLib
           partUriDocument, contentType);
 
       // Copy the data to the Document Part
-      using (FileStream fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read))
+      using (FileStream fileStream = new(file.FullName, FileMode.Open, FileAccess.Read))
       {
         CopyStream(fileStream, packagePartDocument.GetStream());
       }
@@ -290,7 +290,7 @@ namespace Microsoft.FamilyShowLib
         {
           // Create a new Target directory.  If the Target directory
           // exists, first delete it and then create a new empty one.
-          DirectoryInfo directoryInfo = new DirectoryInfo(targetDirectory);
+          DirectoryInfo directoryInfo = new(targetDirectory);
           if (directoryInfo.Exists)
           {
             directoryInfo.Delete(true);
@@ -358,16 +358,16 @@ namespace Microsoft.FamilyShowLib
 
         // Remove leading slash from the Part Uri, and make a new Uri from the result
         string stringPart = packagePart.Uri.ToString().TrimStart('/');
-        Uri partUri = new Uri(stringPart, UriKind.Relative);
+        Uri partUri = new(stringPart, UriKind.Relative);
 
         // Create a full Uri to the Part based on the Package Uri
-        Uri uriFullPartPath = new Uri(new Uri(pathToTarget, UriKind.Absolute), partUri);
+        Uri uriFullPartPath = new(new Uri(pathToTarget, UriKind.Absolute), partUri);
 
         // Create the necessary Directories based on the Full Part Path
         Directory.CreateDirectory(Path.GetDirectoryName(uriFullPartPath.LocalPath));
 
         // Create the file with the Part content
-        using (FileStream fileStream = new FileStream(uriFullPartPath.LocalPath, FileMode.Create))
+        using (FileStream fileStream = new(uriFullPartPath.LocalPath, FileMode.Create))
         {
           CopyStream(packagePart.GetStream(), fileStream);
         }
@@ -391,19 +391,19 @@ namespace Microsoft.FamilyShowLib
 
       // Remove leading slash from the Part Uri, and make a new Uri from the result
       string stringPart = packagePart.Uri.ToString().TrimStart('/');
-      Uri partUri = new Uri(stringPart, UriKind.Relative);
+      Uri partUri = new(stringPart, UriKind.Relative);
 
       //for merge, don't overwrite existing photos, stories or attachments, only add those with different file names.
       if (!File.Exists(Path.Combine(pathToTarget, stringPart)) || stringPart == "content.xml")
       {
         // Create a full Uri to the Part based on the Package Uri
-        Uri uriFullPartPath = new Uri(new Uri(pathToTarget, UriKind.Absolute), partUri);
+        Uri uriFullPartPath = new(new Uri(pathToTarget, UriKind.Absolute), partUri);
 
         // Create the necessary Directories based on the Full Part Path
         Directory.CreateDirectory(Path.GetDirectoryName(uriFullPartPath.LocalPath));
 
         // Create the file with the Part content
-        using (FileStream fileStream = new FileStream(uriFullPartPath.LocalPath, FileMode.Create))
+        using (FileStream fileStream = new(uriFullPartPath.LocalPath, FileMode.Create))
         {
           CopyStream(packagePart.GetStream(), fileStream);
         }

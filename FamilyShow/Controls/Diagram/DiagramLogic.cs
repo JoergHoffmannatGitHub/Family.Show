@@ -241,7 +241,7 @@ namespace Microsoft.FamilyShow
     /// </summary>
     private DiagramNode CreateNode(Person person, NodeType type, bool clickEvent)
     {
-      DiagramNode node = new DiagramNode
+      DiagramNode node = new()
       {
         Person = person,
         Type = type
@@ -288,7 +288,7 @@ namespace Microsoft.FamilyShow
           group.Add(node);
 
           // Add connection.
-          DiagramConnectorNode connectorNode = new DiagramConnectorNode(node, group, row);
+          DiagramConnectorNode connectorNode = new(node, group, row);
           PersonLookup.Add(node.Person, connectorNode);
           Connections.Add(new MarriedDiagramConnector(married,
             PersonLookup[person], connectorNode, dpiScale));
@@ -308,11 +308,11 @@ namespace Microsoft.FamilyShow
     public DiagramRow CreatePrimaryRow(Person person, double scale, double scaleRelated, bool hideSiblings, bool hideSpouses, bool hidePreviousSpouses)
     {
       // The primary node contains two groups, 
-      DiagramGroup primaryGroup = new DiagramGroup();
-      DiagramGroup leftGroup = new DiagramGroup();
+      DiagramGroup primaryGroup = new();
+      DiagramGroup leftGroup = new();
 
       // Set up the row.
-      DiagramRow row = new DiagramRow();
+      DiagramRow row = new();
 
       // Add primary node.
       DiagramNode node = CreateNode(person, NodeType.Primary, false, scale);
@@ -369,13 +369,13 @@ namespace Microsoft.FamilyShow
     public DiagramRow CreateChildrenRow(List<Person> children, double scale, double scaleRelated, bool hideInLaws)
     {
       // Setup the row.
-      DiagramRow row = new DiagramRow();
+      DiagramRow row = new();
 
       foreach (Person child in children)
       {
         // Each child is in their group, the group contains the child 
         // and any spouses. The groups does not contain siblings.
-        DiagramGroup group = new DiagramGroup();
+        DiagramGroup group = new();
         row.Add(group);
 
         // Child.
@@ -416,7 +416,7 @@ namespace Microsoft.FamilyShow
     public DiagramRow CreateParentRow(Collection<Person> parents, double scale, double scaleRelated, bool hideInLaws)
     {
       // Set up the row.
-      DiagramRow row = new DiagramRow();
+      DiagramRow row = new();
 
       int groupCount = 0;
 
@@ -424,7 +424,7 @@ namespace Microsoft.FamilyShow
       {
         // Each parent is in their group, the group contains the parent,
         // spouses and siblings.
-        DiagramGroup group = new DiagramGroup();
+        DiagramGroup group = new();
         row.Add(group);
 
         // Determine if this is a left or right oriented group.
