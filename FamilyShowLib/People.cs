@@ -2262,10 +2262,7 @@ public class SourceCollection : ObservableCollection<Source>, INotifyPropertyCha
   public void OnContentChanged()
   {
     dirty = true;
-    if (ContentChanged != null)
-    {
-      ContentChanged(this, new SourceContentChangedEventArgs(null));
-    }
+    ContentChanged?.Invoke(this, new SourceContentChangedEventArgs(null));
   }
 
   /// <summary>
@@ -2274,10 +2271,7 @@ public class SourceCollection : ObservableCollection<Source>, INotifyPropertyCha
   public void OnContentChanged(Source newSource)
   {
     dirty = true;
-    if (ContentChanged != null)
-    {
-      ContentChanged(this, new SourceContentChangedEventArgs(newSource));
-    }
+    ContentChanged?.Invoke(this, new SourceContentChangedEventArgs(newSource));
   }
 
   /// <summary> 
@@ -2286,10 +2280,7 @@ public class SourceCollection : ObservableCollection<Source>, INotifyPropertyCha
   public event EventHandler CurrentChanged;
   protected void OnCurrentChanged()
   {
-    if (CurrentChanged != null)
-    {
-      CurrentChanged(this, EventArgs.Empty);
-    }
+    CurrentChanged?.Invoke(this, EventArgs.Empty);
   }
 
   #region Add new source
@@ -2327,10 +2318,7 @@ public class SourceCollection : ObservableCollection<Source>, INotifyPropertyCha
 
   protected virtual void OnPropertyChanged(string propertyName)
   {
-    if (PropertyChanged != null)
-    {
-      PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-    }
+    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
   }
 
   #endregion
@@ -2383,10 +2371,7 @@ public class RepositoryCollection : ObservableCollection<Repository>, INotifyPro
   public void OnContentChanged()
   {
     dirty = true;
-    if (ContentChanged != null)
-    {
-      ContentChanged(this, new RepositoryContentChangedEventArgs(null));
-    }
+    ContentChanged?.Invoke(this, new RepositoryContentChangedEventArgs(null));
   }
 
   /// <summary>
@@ -2395,10 +2380,7 @@ public class RepositoryCollection : ObservableCollection<Repository>, INotifyPro
   public void OnContentChanged(Repository newRepository)
   {
     dirty = true;
-    if (ContentChanged != null)
-    {
-      ContentChanged(this, new RepositoryContentChangedEventArgs(newRepository));
-    }
+    ContentChanged?.Invoke(this, new RepositoryContentChangedEventArgs(newRepository));
   }
 
   /// <summary> 
@@ -2407,10 +2389,7 @@ public class RepositoryCollection : ObservableCollection<Repository>, INotifyPro
   public event EventHandler CurrentChanged;
   protected void OnCurrentChanged()
   {
-    if (CurrentChanged != null)
-    {
-      CurrentChanged(this, EventArgs.Empty);
-    }
+    CurrentChanged?.Invoke(this, EventArgs.Empty);
   }
 
   #region Add new repository
@@ -2448,10 +2427,7 @@ public class RepositoryCollection : ObservableCollection<Repository>, INotifyPro
 
   protected virtual void OnPropertyChanged(string propertyName)
   {
-    if (PropertyChanged != null)
-    {
-      PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-    }
+    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
   }
 
   #endregion
@@ -2520,10 +2496,7 @@ public class PeopleCollection : ObservableCollection<Person>, INotifyPropertyCha
   public void OnContentChanged()
   {
     dirty = true;
-    if (ContentChanged != null)
-    {
-      ContentChanged(this, new ContentChangedEventArgs(null));
-    }
+    ContentChanged?.Invoke(this, new ContentChangedEventArgs(null));
   }
 
   /// <summary>
@@ -2532,10 +2505,7 @@ public class PeopleCollection : ObservableCollection<Person>, INotifyPropertyCha
   public void OnContentChanged(Person newPerson)
   {
     dirty = true;
-    if (ContentChanged != null)
-    {
-      ContentChanged(this, new ContentChangedEventArgs(newPerson));
-    }
+    ContentChanged?.Invoke(this, new ContentChangedEventArgs(newPerson));
   }
 
   /// <summary> 
@@ -2544,10 +2514,7 @@ public class PeopleCollection : ObservableCollection<Person>, INotifyPropertyCha
   public event EventHandler CurrentChanged;
   protected void OnCurrentChanged()
   {
-    if (CurrentChanged != null)
-    {
-      CurrentChanged(this, EventArgs.Empty);
-    }
+    CurrentChanged?.Invoke(this, EventArgs.Empty);
   }
 
   #region Add new people / relationships
@@ -2661,10 +2628,7 @@ public class PeopleCollection : ObservableCollection<Person>, INotifyPropertyCha
   protected virtual void OnPropertyChanged(string propertyName)
   {
 
-    if (PropertyChanged != null)
-    {
-      PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-    }
+    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
   }
 
   #endregion

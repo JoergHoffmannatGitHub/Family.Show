@@ -114,19 +114,13 @@ class Diagram : FrameworkElement
 
   private void OnDiagramUpdated()
   {
-    if (DiagramUpdated != null)
-    {
-      DiagramUpdated(this, EventArgs.Empty);
-    }
+    DiagramUpdated?.Invoke(this, EventArgs.Empty);
   }
 
   public event EventHandler DiagramPopulated;
   private void OnDiagramPopulated()
   {
-    if (DiagramPopulated != null)
-    {
-      DiagramPopulated(this, EventArgs.Empty);
-    }
+    DiagramPopulated?.Invoke(this, EventArgs.Empty);
   }
 
   #endregion
