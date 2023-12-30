@@ -1,35 +1,34 @@
 using System.Windows;
 
-namespace Microsoft.FamilyShow
+namespace Microsoft.FamilyShow;
+
+/// <summary>
+/// Interaction logic for GedcomLocalization.xaml
+/// </summary>
+public partial class GedcomLocalization : System.Windows.Controls.UserControl
 {
-  /// <summary>
-  /// Interaction logic for GedcomLocalization.xaml
-  /// </summary>
-  public partial class GedcomLocalization : System.Windows.Controls.UserControl
+  public GedcomLocalization()
   {
-    public GedcomLocalization()
-    {
-      InitializeComponent();
-    }
+    InitializeComponent();
+  }
 
-    #region routed events
+  #region routed events
 
-    public static readonly RoutedEvent ContinueButtonClickEvent = EventManager.RegisterRoutedEvent(
-        "ContinueButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GedcomLocalization));
+  public static readonly RoutedEvent ContinueButtonClickEvent = EventManager.RegisterRoutedEvent(
+      "ContinueButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GedcomLocalization));
 
 
-    // Expose this event for this control's container
-    public event RoutedEventHandler ContinueButtonClick
-    {
-      add { AddHandler(ContinueButtonClickEvent, value); }
-      remove { RemoveHandler(ContinueButtonClickEvent, value); }
-    }
+  // Expose this event for this control's container
+  public event RoutedEventHandler ContinueButtonClick
+  {
+    add { AddHandler(ContinueButtonClickEvent, value); }
+    remove { RemoveHandler(ContinueButtonClickEvent, value); }
+  }
 
-    #endregion
+  #endregion
 
-    private void ContinueButton_Click(object sender, RoutedEventArgs e)
-    {
-      RaiseEvent(new RoutedEventArgs(ContinueButtonClickEvent));
-    }
+  private void ContinueButton_Click(object sender, RoutedEventArgs e)
+  {
+    RaiseEvent(new RoutedEventArgs(ContinueButtonClickEvent));
   }
 }

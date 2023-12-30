@@ -14,7 +14,7 @@ public class GedcomConverterTest
   public void ParseLine(string text, bool expectedResult, int level, string tag, string data)
   {
     var gedcomLine = new GedcomLine();
-    var result = gedcomLine.Parse(text, true);
+    bool result = gedcomLine.Parse(text, true);
     Assert.Equal(expectedResult, result);
     Assert.Equal(level, gedcomLine.Level);
     Assert.Equal(tag, gedcomLine.Tag);
@@ -24,16 +24,16 @@ public class GedcomConverterTest
   [Fact]
   public void ParseLineRegexToClean()
   {
-    var text = "1 SOUR EasyTree";
+    string text = "1 SOUR EasyTree";
     var expectedGedcomLine = new GedcomLine();
-    var expectedResult = expectedGedcomLine.Parse(text, true);
+    bool expectedResult = expectedGedcomLine.Parse(text, true);
     for (int i = char.MinValue; i < 32; i++)
     {
       text += Convert.ToChar(i);
     }
     text += Convert.ToChar(127);
     var gedcomLine = new GedcomLine();
-    var result = gedcomLine.Parse(text, false);
+    bool result = gedcomLine.Parse(text, false);
     Assert.Equal(expectedResult, result);
     Assert.Equal(expectedGedcomLine.Level, gedcomLine.Level);
     Assert.Equal(expectedGedcomLine.Tag, gedcomLine.Tag);

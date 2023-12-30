@@ -7,253 +7,252 @@ using System.Windows.Media.Imaging;
 
 using Microsoft.FamilyShowLib;
 
-namespace Microsoft.FamilyShow
+namespace Microsoft.FamilyShow;
+
+/// <summary>
+/// Interaction logic for PhotoViewer.xaml
+/// </summary>
+public partial class PhotoViewer : UserControl
 {
-  /// <summary>
-  /// Interaction logic for PhotoViewer.xaml
-  /// </summary>
-  public partial class PhotoViewer : UserControl
+  public PhotoViewer()
   {
-    public PhotoViewer()
+    InitializeComponent();
+  }
+
+  #region routed events
+
+  public static readonly RoutedEvent CloseButtonClickEvent = EventManager.RegisterRoutedEvent(
+      "CloseButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PhotoViewer));
+
+  // Expose the PhotoViewer Close Button click event
+  public event RoutedEventHandler CloseButtonClick
+  {
+    add { AddHandler(CloseButtonClickEvent, value); }
+    remove { RemoveHandler(CloseButtonClickEvent, value); }
+  }
+
+  #endregion
+
+  #region methods
+
+  private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+  {
+    if (Visibility == Visibility.Visible)
     {
-      InitializeComponent();
-    }
-
-    #region routed events
-
-    public static readonly RoutedEvent CloseButtonClickEvent = EventManager.RegisterRoutedEvent(
-        "CloseButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PhotoViewer));
-
-    // Expose the PhotoViewer Close Button click event
-    public event RoutedEventHandler CloseButtonClick
-    {
-      add { AddHandler(CloseButtonClickEvent, value); }
-      remove { RemoveHandler(CloseButtonClickEvent, value); }
-    }
-
-    #endregion
-
-    #region methods
-
-    private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-    {
-      if (Visibility == Visibility.Visible)
+      // Hide the photo tags and photo edit buttons if there is no main photo.
+      if (DisplayPhoto.Source == null)
       {
-        // Hide the photo tags and photo edit buttons if there is no main photo.
-        if (DisplayPhoto.Source == null)
-        {
-          TagsStackPanel.Visibility = Visibility.Hidden;
-          CaptionTextBlock.Visibility = Visibility.Collapsed;
-        }
-      }
-    }
-
-    /// <summary>
-    /// Handler for the CloseButton click event
-    /// </summary>
-    private void CloseButton_Click(object sender, RoutedEventArgs e)
-    {
-      // Raise the CloseButtonClickEvent to notify the container to close this control
-      RaiseEvent(new RoutedEventArgs(CloseButtonClickEvent));
-    }
-
-    private void PhotosListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-      ListBox photosListBox = sender as ListBox;
-      if (photosListBox.SelectedIndex != -1)
-      {
-        // Get the path to the selected photo
-        string path = photosListBox.SelectedItem.ToString();
-
-        // Make sure that the file exists
-        FileInfo fi = new(path);
-        if (fi.Exists)
-        {
-          SetDisplayPhoto(path);
-        }
-      }
-      else
-      {
-        // Clear the display photo
-        DisplayPhoto.Source = null;
-
-        // Hide the photos and tags
-
-        TagsStackPanel.Visibility = Visibility.Collapsed;
+        TagsStackPanel.Visibility = Visibility.Hidden;
         CaptionTextBlock.Visibility = Visibility.Collapsed;
-
-        //Clear tags and caption
-        TagsListBox.ItemsSource = null;
-        CaptionTextBlock.Text = string.Empty;
-        CaptionTextBlock.ToolTip = null; ;
       }
     }
+  }
 
-    private void OpenPhotoButton_Click(object sender, RoutedEventArgs e)
+  /// <summary>
+  /// Handler for the CloseButton click event
+  /// </summary>
+  private void CloseButton_Click(object sender, RoutedEventArgs e)
+  {
+    // Raise the CloseButtonClickEvent to notify the container to close this control
+    RaiseEvent(new RoutedEventArgs(CloseButtonClickEvent));
+  }
+
+  private void PhotosListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+  {
+    ListBox photosListBox = sender as ListBox;
+    if (photosListBox.SelectedIndex != -1)
     {
-      Photo photo = (Photo)PhotosListBox.SelectedItem;
-      string path = photo.FullyQualifiedPath;
+      // Get the path to the selected photo
+      string path = photosListBox.SelectedItem.ToString();
 
-      string appLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-              App.ApplicationFolderName);
-      appLocation = Path.Combine(appLocation, App.AppDataFolderName);
-
-      string fileExtension = Path.GetExtension(path);
-      string newFileName = Path.GetFileNameWithoutExtension(path) + Guid.NewGuid().ToString() + fileExtension;
-      string tempFilePath = Path.Combine(appLocation, newFileName);
-
-      FileInfo ofi = new(path);
-      ofi.CopyTo(tempFilePath, true);
-
-      try
+      // Make sure that the file exists
+      FileInfo fi = new(path);
+      if (fi.Exists)
       {
-        System.Diagnostics.Process.Start(tempFilePath);
+        SetDisplayPhoto(path);
       }
-      catch { }
     }
-
-    #endregion
-
-    #region helper methods
-
-    /// <summary>
-    /// Set the display photo
-    /// </summary>
-    private void SetDisplayPhoto(string path)
+    else
     {
-      //This code must be used to create the bitmap
-      //otherwise the program locks the image.
-      BitmapImage bitmap = new();
-      bitmap.BeginInit();
-      bitmap.CacheOption = BitmapCacheOption.OnLoad;
-      bitmap.DecodePixelHeight = 280;  //max height of photo in viewer
-      bitmap.UriSource = new Uri(path);
-      bitmap.EndInit();
+      // Clear the display photo
+      DisplayPhoto.Source = null;
 
-      DisplayPhoto.Source = bitmap;
+      // Hide the photos and tags
 
-      // Make sure the photo supports meta data before retrieving and displaying it
-      if (HasMetaData(path))
+      TagsStackPanel.Visibility = Visibility.Collapsed;
+      CaptionTextBlock.Visibility = Visibility.Collapsed;
+
+      //Clear tags and caption
+      TagsListBox.ItemsSource = null;
+      CaptionTextBlock.Text = string.Empty;
+      CaptionTextBlock.ToolTip = null; ;
+    }
+  }
+
+  private void OpenPhotoButton_Click(object sender, RoutedEventArgs e)
+  {
+    Photo photo = (Photo)PhotosListBox.SelectedItem;
+    string path = photo.FullyQualifiedPath;
+
+    string appLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            App.ApplicationFolderName);
+    appLocation = Path.Combine(appLocation, App.AppDataFolderName);
+
+    string fileExtension = Path.GetExtension(path);
+    string newFileName = Path.GetFileNameWithoutExtension(path) + Guid.NewGuid().ToString() + fileExtension;
+    string tempFilePath = Path.Combine(appLocation, newFileName);
+
+    FileInfo ofi = new(path);
+    ofi.CopyTo(tempFilePath, true);
+
+    try
+    {
+      System.Diagnostics.Process.Start(tempFilePath);
+    }
+    catch { }
+  }
+
+  #endregion
+
+  #region helper methods
+
+  /// <summary>
+  /// Set the display photo
+  /// </summary>
+  private void SetDisplayPhoto(string path)
+  {
+    //This code must be used to create the bitmap
+    //otherwise the program locks the image.
+    BitmapImage bitmap = new();
+    bitmap.BeginInit();
+    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+    bitmap.DecodePixelHeight = 280;  //max height of photo in viewer
+    bitmap.UriSource = new Uri(path);
+    bitmap.EndInit();
+
+    DisplayPhoto.Source = bitmap;
+
+    // Make sure the photo supports meta data before retrieving and displaying it
+    if (HasMetaData(path))
+    {
+      // Extract the photo's metadata
+      BitmapMetadata metadata = (BitmapMetadata)BitmapFrame.Create(new Uri(path)).Metadata;
+
+      // Display the photo's tags
+      if (metadata.Keywords != null)
       {
-        // Extract the photo's metadata
-        BitmapMetadata metadata = (BitmapMetadata)BitmapFrame.Create(new Uri(path)).Metadata;
-
-        // Display the photo's tags
-        if (metadata.Keywords != null)
-        {
-          TagsStackPanel.Visibility = Visibility.Visible;
-          TagsListBox.ItemsSource = metadata.Keywords;
-        }
-        else
-        {
-          TagsStackPanel.Visibility = Visibility.Hidden;
-          TagsListBox.ItemsSource = null;
-        }
-
-        // Display the photo's comment
-        if (metadata.Title != null)
-        {
-          CaptionTextBlock.Visibility = Visibility.Visible;
-          CaptionTextBlock.Text = metadata.Title;
-          CaptionTextBlock.ToolTip = metadata.Title;  //displays the full title if the title won't fit in the box
-        }
-        else
-        {
-          CaptionTextBlock.Visibility = Visibility.Collapsed;
-          CaptionTextBlock.Text = string.Empty;
-          CaptionTextBlock.ToolTip = null;
-        }
+        TagsStackPanel.Visibility = Visibility.Visible;
+        TagsListBox.ItemsSource = metadata.Keywords;
       }
       else
       {
-        // Clear tags and caption
         TagsStackPanel.Visibility = Visibility.Hidden;
         TagsListBox.ItemsSource = null;
+      }
+
+      // Display the photo's comment
+      if (metadata.Title != null)
+      {
+        CaptionTextBlock.Visibility = Visibility.Visible;
+        CaptionTextBlock.Text = metadata.Title;
+        CaptionTextBlock.ToolTip = metadata.Title;  //displays the full title if the title won't fit in the box
+      }
+      else
+      {
+        CaptionTextBlock.Visibility = Visibility.Collapsed;
         CaptionTextBlock.Text = string.Empty;
         CaptionTextBlock.ToolTip = null;
       }
-
     }
-
-    /// <summary>
-    /// Only JPEG photos support metadata.
-    /// </summary>
-    private static bool HasMetaData(string fileName)
+    else
     {
-      string extension = Path.GetExtension(fileName);
-
-      if (string.Compare(extension, ".jpg", true, CultureInfo.InvariantCulture) == 0 ||
-          string.Compare(extension, ".jpeg", true, CultureInfo.InvariantCulture) == 0)
-      {
-        return true;
-      }
-
-      return false;
+      // Clear tags and caption
+      TagsStackPanel.Visibility = Visibility.Hidden;
+      TagsListBox.ItemsSource = null;
+      CaptionTextBlock.Text = string.Empty;
+      CaptionTextBlock.ToolTip = null;
     }
-
-    public void SetDefaultFocus()
-    {
-      CloseButton.Focus();
-    }
-
-    public void LoadPhotos(PeopleCollection people)
-    {
-
-      PhotosListBox.Items.Clear();
-
-      PhotoCollection allPhotos = [];
-
-      foreach (Person p in people)
-      {
-        foreach (Photo photo in p.Photos)
-        {
-
-          bool add = true;
-
-          foreach (Photo existingPhoto in allPhotos)
-          {
-
-            if (string.IsNullOrEmpty(photo.RelativePath))
-            {
-              add = false;
-            }
-
-            if (existingPhoto.RelativePath == photo.RelativePath)
-            {
-              add = false;
-              break;
-            }
-
-          }
-          if (add == true)
-          {
-            allPhotos.Add(photo);
-          }
-        }
-
-        if (allPhotos.Count == 0)
-        {
-          View.Visibility = Visibility.Collapsed;
-        }
-        else
-        {
-          View.Visibility = Visibility.Visible;
-        }
-      }
-
-
-      foreach (Photo photo in allPhotos)
-      {
-        PhotosListBox.Items.Add(photo);
-      }
-
-      if (PhotosListBox.Items.Count > 0)
-      {
-        PhotosListBox.SelectedIndex = 0;
-      }
-    }
-
-    #endregion
 
   }
+
+  /// <summary>
+  /// Only JPEG photos support metadata.
+  /// </summary>
+  private static bool HasMetaData(string fileName)
+  {
+    string extension = Path.GetExtension(fileName);
+
+    if (string.Compare(extension, ".jpg", true, CultureInfo.InvariantCulture) == 0 ||
+        string.Compare(extension, ".jpeg", true, CultureInfo.InvariantCulture) == 0)
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+  public void SetDefaultFocus()
+  {
+    CloseButton.Focus();
+  }
+
+  public void LoadPhotos(PeopleCollection people)
+  {
+
+    PhotosListBox.Items.Clear();
+
+    PhotoCollection allPhotos = [];
+
+    foreach (Person p in people)
+    {
+      foreach (Photo photo in p.Photos)
+      {
+
+        bool add = true;
+
+        foreach (Photo existingPhoto in allPhotos)
+        {
+
+          if (string.IsNullOrEmpty(photo.RelativePath))
+          {
+            add = false;
+          }
+
+          if (existingPhoto.RelativePath == photo.RelativePath)
+          {
+            add = false;
+            break;
+          }
+
+        }
+        if (add == true)
+        {
+          allPhotos.Add(photo);
+        }
+      }
+
+      if (allPhotos.Count == 0)
+      {
+        View.Visibility = Visibility.Collapsed;
+      }
+      else
+      {
+        View.Visibility = Visibility.Visible;
+      }
+    }
+
+
+    foreach (Photo photo in allPhotos)
+    {
+      PhotosListBox.Items.Add(photo);
+    }
+
+    if (PhotosListBox.Items.Count > 0)
+    {
+      PhotosListBox.SelectedIndex = 0;
+    }
+  }
+
+  #endregion
+
 }
