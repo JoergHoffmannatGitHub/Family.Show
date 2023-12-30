@@ -204,7 +204,6 @@ namespace Microsoft.FamilyShowLib
     ///    
     /// The Level = 2, Tag = NAME, and Data = Personal Ancestral File.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
     public bool Parse(string text, bool disableCharacterCheck)
     {
       try

@@ -314,7 +314,6 @@ namespace Microsoft.FamilyShow
       OpenFamily();
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
     private void ImportGedcom(object sender, EventArgs e)
     {
       App.canExecuteJumpList = false;
@@ -1091,7 +1090,6 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Imports a selected GEDCOM file.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
     private void ImportGedcom()
     {
       App.canExecuteJumpList = false;

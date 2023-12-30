@@ -29,16 +29,9 @@ namespace Microsoft.FamilyShow
     // The main list of family members that is shared for the entire application.
     // The FamilyCollection and Family fields are accessed from the same thread,
     // so suppressing the CA2211 code analysis warning.
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
     public static People FamilyCollection = new People();
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
     public static PeopleCollection Family = FamilyCollection.PeopleCollection;
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
     public static SourceCollection Sources = FamilyCollection.SourceCollection;
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
     public static RepositoryCollection Repositories = FamilyCollection.RepositoryCollection;
 
     // The number of recent files to keep track of.
@@ -46,10 +39,7 @@ namespace Microsoft.FamilyShow
 
     // The path to the recent files file.
     private static readonly string RecentFilesFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Path.Combine(ApplicationFolderName, "RecentFiles.xml"));
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
     public static string args;
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
     public static bool canExecuteJumpList = true;
 
     #endregion

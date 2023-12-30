@@ -28,7 +28,6 @@ namespace Microsoft.FamilyShow
   /// <summary>
   /// Diagram that lays out and displays the nodes.
   /// </summary>
-  [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
   class Diagram : FrameworkElement
   {
     #region fields

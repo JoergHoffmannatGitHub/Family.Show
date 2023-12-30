@@ -32,7 +32,6 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Sets the callback that is called when a node is clicked.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
     public RoutedEventHandler NodeClickHandler
     {
       set { nodeClickHandler = value; }

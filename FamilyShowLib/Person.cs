@@ -1380,7 +1380,7 @@ namespace Microsoft.FamilyShowLib
     /// <summary>
     /// Gets or sets the person's graphical identity
     /// </summary>
-    [XmlIgnore, System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "value")]
+    [XmlIgnore]
     public string Avatar
     {
       get
@@ -1771,7 +1771,6 @@ namespace Microsoft.FamilyShowLib
     /// <summary>
     /// Calculated property that returns parent information
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "value")]
     [XmlIgnore]
     public bool HasParents
     {
@@ -1853,7 +1852,6 @@ namespace Microsoft.FamilyShowLib
     /// <summary>
     /// Calculated property that returns if a person has siblings
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "value")]
     [XmlIgnore]
     public bool HasSiblings
     {
@@ -1872,7 +1870,6 @@ namespace Microsoft.FamilyShowLib
     /// <summary>
     /// Calculated property that returns whether the person has 1 or more spouse(s).
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "value")]
     [XmlIgnore]
     public bool HasSpouse
     {

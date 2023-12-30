@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -620,7 +621,6 @@ namespace Microsoft.FamilyShowLib
     /// Import photo information from the GEDCOM XML file.
     /// Adds the photo if the referenced file exists.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
     private static void ImportPhotosAttachments(Person person, XmlNode node)
     {
       try
@@ -656,13 +656,14 @@ namespace Microsoft.FamilyShowLib
       {
         // There was an error importing a photo, ignore 
         // and continue processing the GEDCOM XML file.
+        // inform the developper
+        Debug.Assert(false);
       }
     }
 
     /// <summary>
     /// Import the note info from the GEDCOM XMl file.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
     private void ImportNote(Person person, XmlNode node)
     {
       string value = GetNote(node, "NOTE", doc);
@@ -678,13 +679,14 @@ namespace Microsoft.FamilyShowLib
       {
         // There was an error importing the note, ignore
         // and continue processing the GEDCOM XML file.
+        // inform the developper
+        Debug.Assert(false);
       }
     }
 
     /// <summary>
     /// Import the note info from the GEDCOM XMl file.  Event notes have variable paths.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
     private static string ImportEventNote(XmlNode node, string path, XmlDocument doc)
     {
       string value = GetNote(node, path, doc);
@@ -1113,7 +1115,6 @@ namespace Microsoft.FamilyShowLib
     /// Method to try and extract approximate dates from the wide variety of non standard date notations in use.
     /// Could be extended to work with more scenarios.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
     private static DateTime? GetValueDate(XmlNode node, string xpath)
     {
       DateTime? result = null;
@@ -1195,12 +1196,13 @@ namespace Microsoft.FamilyShowLib
       catch
       {
         // The date is invalid, ignore and continue processing.
+        // inform the developper
+        Debug.Assert(false);
       }
 
       return result;
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
     private static string GetValueDateDescriptor(XmlNode node, string xpath)
     {
       try
@@ -1266,12 +1268,13 @@ namespace Microsoft.FamilyShowLib
       catch
       {
         // The date is invalid, ignore and continue processing.
+        // inform the developper
+        Debug.Assert(false);
       }
 
       return string.Empty;
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
     private static string GetId(XmlNode node)
     {
       try
@@ -1284,11 +1287,12 @@ namespace Microsoft.FamilyShowLib
       catch
       {
         // Invalid line, keep processing the file.
+        // inform the developper
+        Debug.Assert(false);
       }
       return string.Empty;
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
     private static string GetValueId(XmlNode node, string xpath)
     {
       try
@@ -1302,11 +1306,12 @@ namespace Microsoft.FamilyShowLib
       catch
       {
         // Invalid line, keep processing the file.
+        // inform the developper
+        Debug.Assert(false);
       }
       return string.Empty;
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
     private static string GetValue(XmlNode node, string xpath)
     {
       try
@@ -1321,6 +1326,8 @@ namespace Microsoft.FamilyShowLib
       catch
       {
         //Invalid line, keep processing the file.
+        // inform the developper
+        Debug.Assert(false);
       }
       return string.Empty;
     }

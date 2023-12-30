@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -785,7 +786,6 @@ namespace Microsoft.FamilyShowLib
     /// Load the list of people from disk using the Open Package Convention format
     /// Returns true if the file was loaded sucessfully.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
     public bool LoadOPC()
     {
 
@@ -880,6 +880,8 @@ namespace Microsoft.FamilyShowLib
       {
         // Could not load the file. Handle all exceptions
         // the same, ignore and continue.
+        // inform the developper
+        Debug.Assert(false);
         FullyQualifiedFilename = string.Empty;
         // Warn user of problem with file.
         return false;
@@ -890,7 +892,6 @@ namespace Microsoft.FamilyShowLib
     /// Load the list of people from an old .family file and convert to .familyx format.
     /// Returns true if the file was converted and loaded sucessfully.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
     public bool LoadVersion2()
     {
 
@@ -1076,6 +1077,8 @@ namespace Microsoft.FamilyShowLib
       {
         // Could not load the file. Handle all exceptions
         // the same, ignore and continue.
+        // inform the developper
+        Debug.Assert(false);
         FullyQualifiedFilename = string.Empty;
         // Warn user of problem with file.
         return false;
@@ -1089,7 +1092,6 @@ namespace Microsoft.FamilyShowLib
     /// <summary>
     /// Merges people from another tree in to the current tree 
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
     public string[,] MergeOPC(string fileName)
     {
 

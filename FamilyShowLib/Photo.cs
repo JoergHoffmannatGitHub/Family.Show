@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
 
@@ -42,7 +43,6 @@ namespace Microsoft.FamilyShowLib
     /// The fully qualified path to the photo.
     /// </summary>
     [XmlIgnore]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "value")]
     public string FullyQualifiedPath
     {
       get
@@ -111,7 +111,6 @@ namespace Microsoft.FamilyShowLib
     /// Copies the photo file to the application photos folder. 
     /// Returns the relative path to the copied photo.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
     private static string Copy(string fileName)
     {
 
@@ -173,6 +172,8 @@ namespace Microsoft.FamilyShowLib
       {
         // Could not copy the photo. Handle all exceptions 
         // the same, ignore and continue.
+        // inform the developper
+        Debug.Assert(false);
       }
 
       return photoRelLocation;

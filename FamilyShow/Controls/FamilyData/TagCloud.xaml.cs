@@ -147,7 +147,6 @@ namespace Microsoft.FamilyShow
     }
   }
 
-  [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
   class CountToFontSizeConverter : IMultiValueConverter
   {
     #region IMultiValueConverter Members

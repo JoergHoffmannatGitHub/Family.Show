@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
 
@@ -50,7 +51,6 @@ namespace Microsoft.FamilyShowLib
     /// <summary>
     /// The fully qualified path to the attachment.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "value")]
     [XmlIgnore]
     public string FullyQualifiedPath
     {
@@ -104,7 +104,6 @@ namespace Microsoft.FamilyShowLib
     /// Copies the attachment file to the application attachments folder. 
     /// Returns the relative path to the copied attachment.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
     private static string Copy(string fileName)
     {
 
@@ -166,6 +165,8 @@ namespace Microsoft.FamilyShowLib
       {
         // Could not copy the photo. Handle all exceptions 
         // the same, ignore and continue.
+        // inform the developper
+        Debug.Assert(false);
       }
 
       return attachmentRelLocation;

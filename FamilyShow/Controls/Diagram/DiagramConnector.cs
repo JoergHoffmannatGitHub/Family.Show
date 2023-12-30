@@ -341,7 +341,6 @@ namespace Microsoft.FamilyShow
     /// <summary>
     /// Draw the connection between the two nodes.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
     public override bool Draw(DrawingContext drawingContext)
     {
       if (!base.Draw(drawingContext))
