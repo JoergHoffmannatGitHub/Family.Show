@@ -15,7 +15,7 @@
     <ManifestCertificateThumbprint>9A4B76436B8C6C854E44E82E603D228E8ECB7AD4</ManifestCertificateThumbprint>
     <ManifestKeyFile>FamilyShow_TemporaryKey.pfx</ManifestKeyFile>
     <DelaySign>false</DelaySign>
-    <PublishUrl>https://github.com/fredatgithub/FamilyShow/releases</PublishUrl>
+    <PublishUrl>https://github.com/JoergHoffmannatGitHub/Family.Show/releases</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>

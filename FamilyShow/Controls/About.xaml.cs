@@ -71,7 +71,7 @@ public partial class About : System.Windows.Controls.UserControl
     {
       Process.Start(new ProcessStartInfo
       {
-        FileName = "https://github.com/fredatgithub/FamilyShow",
+        FileName = "https://github.com/JoergHoffmannatGitHub/Family.Show",
         UseShellExecute = true
       });
     }

@@ -4,8 +4,8 @@
     <VersionSuffix>alpha</VersionSuffix>
     <Product>Family.Show</Product>
     <Copyright>© $([System.DateTime]::Now.ToString('yyyy'))</Copyright>
-    <PackageProjectUrl>https://github.com/fredatgithub/FamilyShow</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/fredatgithub/FamilyShow/releases</RepositoryUrl>
+    <RepositoryUrl>https://github.com/JoergHoffmannatGitHub/Family.Show</RepositoryUrl>
+    <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
     <NoWarn>CA1416</NoWarn>
   </PropertyGroup>
   <!-- Versioning projects -->
