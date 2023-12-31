@@ -12,7 +12,7 @@
  * are written to the XHtml 1.0 Transitional Standard and CSS2 standard.
  * For further information see the http://www.w3.org/
  * 
- * tw.WriteLine(Microsoft.FamilyShowLib.Properties.Resources.Tree + " <b>" + Path.GetFileNameWithoutExtension(familyxFileName) + "</b><br/>"); is utilised to provide some helper funtions for reports.  
+ * tw.WriteLine(FamilyShowLib.Properties.Resources.Tree + " <b>" + Path.GetFileNameWithoutExtension(familyxFileName) + "</b><br/>"); is utilised to provide some helper funtions for reports.  
  * for example to hide/show a note.  For users who have Java disabled, 
  * the Html file is written so that all notes will be shown in the file.
  * 
@@ -1446,7 +1446,7 @@ public class HtmlExport
   }
 
   /// <summary>
-  /// Write the tw.WriteLine(Microsoft.FamilyShowLib.Properties.Resources.Tree + " <b>" + Path.GetFileNameWithoutExtension(familyxFileName) + "</b><br/>");s
+  /// Write the tw.WriteLine(FamilyShowLib.Properties.Resources.Tree + " <b>" + Path.GetFileNameWithoutExtension(familyxFileName) + "</b><br/>");s
   /// </summary>
   private static string JavaScripts()
   {

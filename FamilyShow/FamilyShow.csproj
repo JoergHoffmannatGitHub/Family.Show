@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>$(TargetFrameworkVersion)-windows</TargetFramework>
-    <RootNamespace>Microsoft.FamilyShow</RootNamespace>
+    <RootNamespace>FamilyShow</RootNamespace>
     <MinFrameworkVersionRequired>3.0</MinFrameworkVersionRequired>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <SignManifests>false</SignManifests>

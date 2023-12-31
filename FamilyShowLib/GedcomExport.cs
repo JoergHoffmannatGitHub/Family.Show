@@ -860,7 +860,7 @@ public class GedcomExport
 }
 
 /// <summary>
-/// Maps Microsoft.FamilyShow Person.Id to a GEDCOM ID. GEDCOM IDs cannot 
+/// Maps FamilyShow Person.Id to a GEDCOM ID. GEDCOM IDs cannot 
 /// exceed 22 characters so GUIDs (Person.Id type) cannot be used
 /// when exporting. 
 /// </summary>

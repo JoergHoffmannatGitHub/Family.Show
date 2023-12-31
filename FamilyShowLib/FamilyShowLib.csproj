@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkVersion)-windows</TargetFramework>
     <OutputType>Library</OutputType>
-    <RootNamespace>Microsoft.FamilyShowLib</RootNamespace>
+    <RootNamespace>FamilyShowLib</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>FamilyShowLib.snk</AssemblyOriginatorKeyFile>
     <UseWindowsForms>true</UseWindowsForms>
