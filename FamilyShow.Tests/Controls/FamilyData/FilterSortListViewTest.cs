@@ -1,6 +1,4 @@
-﻿using FamilyShow;
-
-namespace FamilyShow.Tests.Controls.FamilyData;
+﻿namespace FamilyShow.Tests.Controls.FamilyData;
 
 public class FilterSortListViewTest
 {

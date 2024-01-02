@@ -1,9 +1,9 @@
-using System.Windows;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
-using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
+using System.Xml.Linq;
 
 namespace FamilyShow;
 
@@ -49,11 +49,11 @@ public partial class Language : UserControl
 
   // Using a DependencyProperty as the backing store for SelectedLanguage.  This enables animation, styling, binding, etc...
   public static readonly DependencyProperty SelectedLanguageProperty =
-      DependencyProperty.Register(
-          "SelectedLanguage",
-          typeof(string),
-          typeof(Language),
-          new UIPropertyMetadata("en-US", SelectedLanguagePropertyChanged));
+    DependencyProperty.Register(
+      "SelectedLanguage",
+      typeof(string),
+      typeof(Language),
+      new UIPropertyMetadata("en-US", SelectedLanguagePropertyChanged));
 
   private static void SelectedLanguagePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
   {
@@ -74,7 +74,7 @@ public partial class Language : UserControl
   #region Routed Events
 
   public static readonly RoutedEvent CloseButtonClickEvent = EventManager.RegisterRoutedEvent(
-      "CloseButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Language));
+    "CloseButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Language));
 
   // Expose this event for this control's container
   public event RoutedEventHandler CloseButtonClick
@@ -105,12 +105,13 @@ public partial class Language : UserControl
       try
       {
         var document = XDocument.Load(Properties.Settings.Default.LanguagesFileName);
-        IEnumerable<LanguagePair> languages = from language in document.Descendants("Language")
-                        select new LanguagePair
-                        {
-                          Name = language.Attribute("Name").Value,
-                          Code = language.Attribute("Code").Value
-                        };
+        IEnumerable<LanguagePair> languages =
+          from language in document.Descendants("Language")
+          select new LanguagePair
+          {
+            Name = language.Attribute("Name").Value,
+            Code = language.Attribute("Code").Value
+          };
 
         var languageList = languages.ToList();
         if (languageList != null && languageList.Count != 0)
@@ -123,20 +124,19 @@ public partial class Language : UserControl
 
     // Read the language setting and select the appropriate language in the dropdown box.
     LanguagePair userLanguage = Languages.FirstOrDefault(
-        pair => string.Equals(
-            pair.Code, Properties.Settings.Default.Language)) ?? Languages[0];
+      pair => string.Equals(pair.Code, Properties.Settings.Default.Language)) ?? Languages[0];
     SelectedLanguage = userLanguage.Code;
   }
 
   private void InitializeDefaultLanguage()
   {
     Languages = new List<LanguagePair>
-          {
-              new() {
-                  Name = "English (United States)",
-                  Code = "en-US"
-              }
-          };
+    {
+      new() {
+        Name = "English (United States)",
+        Code = "en-US"
+      }
+    };
   }
 
   #endregion

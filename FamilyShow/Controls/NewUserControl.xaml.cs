@@ -1,5 +1,6 @@
 using System;
 using System.Windows;
+using System.Windows.Controls;
 
 using FamilyShowLib;
 
@@ -9,7 +10,7 @@ namespace FamilyShow;
 /// Interaction logic for NewUserControl.xaml
 /// </summary>
 
-public partial class NewUserControl : System.Windows.Controls.UserControl
+public partial class NewUserControl : UserControl
 {
   #region fields
 
@@ -28,7 +29,7 @@ public partial class NewUserControl : System.Windows.Controls.UserControl
   #region routed events
 
   public static readonly RoutedEvent AddButtonClickEvent = EventManager.RegisterRoutedEvent(
-      "AddButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NewUserControl));
+    "AddButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(NewUserControl));
 
   // Expose this event for this control's container
   public event RoutedEventHandler AddButtonClick

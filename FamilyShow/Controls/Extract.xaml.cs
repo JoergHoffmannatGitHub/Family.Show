@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 
 using FamilyShowLib;
 
@@ -9,7 +10,7 @@ namespace FamilyShow;
 /// <summary>
 /// Interaction logic for Extract.xaml
 /// </summary>
-public partial class Extract : System.Windows.Controls.UserControl
+public partial class Extract : UserControl
 {
 
   #region fields
@@ -27,10 +28,10 @@ public partial class Extract : System.Windows.Controls.UserControl
   #region routed events
 
   public static readonly RoutedEvent ExtractButtonClickEvent = EventManager.RegisterRoutedEvent(
-      "ExtractButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Extract));
+    "ExtractButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Extract));
 
   public static readonly RoutedEvent CancelButtonClickEvent = EventManager.RegisterRoutedEvent(
-      "CancelButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Extract));
+    "CancelButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Extract));
 
   // Expose this event for this control's container
   public event RoutedEventHandler CancelButtonClick

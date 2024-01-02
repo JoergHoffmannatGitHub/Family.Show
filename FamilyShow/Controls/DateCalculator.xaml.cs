@@ -1,12 +1,13 @@
 using System;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace FamilyShow;
 
 /// <summary>
 /// Interaction logic for DateCalculator.xaml
 /// </summary>
-public partial class DateCalculator : System.Windows.Controls.UserControl
+public partial class DateCalculator : UserControl
 {
 
   public DateCalculator()

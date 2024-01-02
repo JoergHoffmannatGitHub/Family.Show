@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 
 using FamilyShowLib;
 
@@ -9,7 +10,7 @@ namespace FamilyShow;
 /// <summary>
 /// Interaction logic for Html.xaml
 /// </summary>
-public partial class Html : System.Windows.Controls.UserControl
+public partial class Html : UserControl
 {
 
   #region fields
@@ -32,7 +33,7 @@ public partial class Html : System.Windows.Controls.UserControl
   #region routed events
 
   public static readonly RoutedEvent CancelButtonClickEvent = EventManager.RegisterRoutedEvent(
-      "CancelButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Html));
+    "CancelButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Html));
 
   // Expose this event for this control's container
   public event RoutedEventHandler CancelButtonClick

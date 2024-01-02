@@ -1,6 +1,6 @@
-﻿using Microsoft.WindowsAPICodePack.Taskbar;
+﻿using System.Windows;
 
-using System.Windows;
+using Microsoft.WindowsAPICodePack.Taskbar;
 
 namespace FamilyShow;
 

@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,7 +30,7 @@ public partial class Sources : UserControl
   #region routed events
 
   public static readonly RoutedEvent CancelButtonClickEvent = EventManager.RegisterRoutedEvent(
-      "CancelButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Sources));
+    "CancelButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Sources));
 
   public event RoutedEventHandler CancelButtonClick
   {

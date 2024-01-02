@@ -1,7 +1,5 @@
 ﻿using System.Globalization;
 
-using FamilyShowLib;
-
 namespace FamilyShowLib.Tests;
 
 public class GedcomExportTest

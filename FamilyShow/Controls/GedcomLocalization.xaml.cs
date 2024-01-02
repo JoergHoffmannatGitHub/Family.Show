@@ -1,11 +1,12 @@
 using System.Windows;
+using System.Windows.Controls;
 
 namespace FamilyShow;
 
 /// <summary>
 /// Interaction logic for GedcomLocalization.xaml
 /// </summary>
-public partial class GedcomLocalization : System.Windows.Controls.UserControl
+public partial class GedcomLocalization : UserControl
 {
   public GedcomLocalization()
   {
@@ -15,7 +16,7 @@ public partial class GedcomLocalization : System.Windows.Controls.UserControl
   #region routed events
 
   public static readonly RoutedEvent ContinueButtonClickEvent = EventManager.RegisterRoutedEvent(
-      "ContinueButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GedcomLocalization));
+    "ContinueButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GedcomLocalization));
 
 
   // Expose this event for this control's container

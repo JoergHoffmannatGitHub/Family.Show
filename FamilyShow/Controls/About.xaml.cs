@@ -4,13 +4,14 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace FamilyShow;
 
 /// <summary>
 /// Interaction logic for About.xaml
 /// </summary>
-public partial class About : System.Windows.Controls.UserControl
+public partial class About : UserControl
 {
   public About()
   {

@@ -8,7 +8,9 @@ using System.Windows.Input;
 using System.Xml.Serialization;
 
 using FamilyShow.Properties;
+
 using FamilyShowLib;
+
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Taskbar;
 
@@ -112,21 +114,21 @@ internal partial class App : Application
     string applicationFilePath = Assembly.GetExecutingAssembly().Location;
     _ = TaskBar.Create(window, Settings.Default.AppId, new JumpListLink[]
     {
-              new(applicationFilePath, FamilyShow.Properties.Resources.StartANewFamilyTree)
-              {
-                  Arguments = "/n",
-                  IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 0),
-              },
-              new(applicationFilePath, FamilyShow.Properties.Resources.OpenMenu)
-              {
-                  Arguments = "/o",
-                  IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 4),
-              },
-              new(applicationFilePath, FamilyShow.Properties.Resources.GedcomMenu)
-              {
-                  Arguments = "/i",
-                  IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 4),
-              }
+      new(applicationFilePath, FamilyShow.Properties.Resources.StartANewFamilyTree)
+      {
+        Arguments = "/n",
+        IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 0),
+      },
+      new(applicationFilePath, FamilyShow.Properties.Resources.OpenMenu)
+      {
+        Arguments = "/o",
+        IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 4),
+      },
+      new(applicationFilePath, FamilyShow.Properties.Resources.GedcomMenu)
+      {
+        Arguments = "/i",
+        IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 4),
+      }
     });
   }
 

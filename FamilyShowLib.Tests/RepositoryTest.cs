@@ -1,6 +1,4 @@
-﻿using FamilyShowLib;
-
-namespace FamilyShowLib.Tests;
+﻿namespace FamilyShowLib.Tests;
 
 public class RepositoryTest
 {
