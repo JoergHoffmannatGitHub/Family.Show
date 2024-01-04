@@ -104,9 +104,7 @@ jobs:
 
     # Archive the package
     - name: Create archive
-      run: Compress-Archive -Path FamilyShow/bin/$env:Configuration/* -DestinationPath FamilyShow/bin/$env:Configuration\${{ github.ref }}
-      env:
-        Configuration: Release
+      run: Compress-Archive -Path FamilyShow/bin/Release/* -DestinationPath FamilyShow/bin/Release/${{ github.ref }}
 
     # Create the release:  https://github.com/actions/create-release
     - name: Create release
@@ -124,9 +122,8 @@ jobs:
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        Configuration: Release
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}  # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-        asset_path: FamilyShow/bin/$env:Configuration\${{ github.ref }}
+        asset_path: FamilyShow/bin/Release/${{ github.ref }}
         asset_name: Family.Show-${{ github.ref }}
         asset_content_type: application/zip
