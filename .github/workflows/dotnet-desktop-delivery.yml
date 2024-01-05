@@ -102,6 +102,18 @@ jobs:
     # - name: Remove the pfx
     #   run: Remove-Item -path $env:Wap_Project_Directory\GitHubActionsWorkflow.pfx
 
+    # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
+    # - name: Upload build artifacts
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: MSIX Package
+    #     path: ${{ env.Wap_Project_Directory }}\AppPackages
+    # - name: Upload build artifacts
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: Family.Show-${{ matrix.configuration }}
+    #     path: FamilyShow/bin/${{ matrix.configuration }}/*
+
     # Archive the package
     - name: Create archive
       run: Compress-Archive -Path FamilyShow/bin/Release/* -DestinationPath FamilyShow/bin/Release/${{ github.ref_name }}
@@ -117,6 +129,8 @@ jobs:
         release_name:  ${{ github.ref_name }}
         draft: false
         prerelease: false
+        replacesArtifacts: false
+        allowUpdates: true
 
     # Upload release asset:   https://github.com/actions/upload-release-asset
     - name: Update release asset
