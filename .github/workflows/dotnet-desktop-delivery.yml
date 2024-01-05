@@ -116,7 +116,7 @@ jobs:
 
     # Archive the package
     - name: Create archive
-      run: Compress-Archive -Path FamilyShow/bin/Release/* -DestinationPath FamilyShow/bin/Release/Family.Show-${{ github.ref_name }}
+      run: Compress-Archive -Path FamilyShow/bin/Release/* -DestinationPath FamilyShow/bin/Release/Family.Show-${{ github.ref_name }}.zip
 
     # Create the release:  https://github.com/actions/create-release
     # - name: Create release
