@@ -47,19 +47,19 @@ jobs:
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test --configuration $env:Configuration --no-restore -p:CollectCoverage=true -p:CoverletOutput=../CoverageResults/$env:Configuration/ -p:MergeWith="../CoverageResults/$env:Configuration/coverage.json" -p:CoverletOutputFormat=json --logger GitHubActions -- RunConfiguration.CollectSourceInformation=true
+      run: dotnet test --configuration $env:Configuration --no-restore -p:CollectCoverage=true -p:CoverletOutput=../CoverageResults/$env:Configuration/ -p:CoverletOutputFormat=opencover --logger GitHubActions -- RunConfiguration.CollectSourceInformation=true
       env:
         Configuration: ${{ matrix.configuration }}
  
     # Create coverage badges
-    # - name: OpenCover Badge Generator
-    #   uses: danpetitt/open-cover-badge-generator-action@v1.0.9
-    #   with:
-    #     path-to-opencover-xml: ../CoverageResults/Release/coverage.opencover.xml
-    #     path-to-badges: ./
-    #     minimum-coverage: 75
-    #     commit-badges: false
-    #     repo-token: ${{ secrets.CI_TOKEN }}
+    - name: OpenCover Badge Generator
+      uses: danpetitt/open-cover-badge-generator-action@v1.0.9
+      with:
+        path-to-opencover-xml: ../CoverageResults/Release/coverage.opencover.xml
+        path-to-badges: ./
+        minimum-coverage: 75
+        commit-badges: false
+        repo-token: ${{ secrets.CI_TOKEN }}
 
     # Archive the package
     - name: Create archive
