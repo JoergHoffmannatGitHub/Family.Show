@@ -1,25 +1,41 @@
 # Family.Show
 
-This C# project is intend to continue [Family.Show](https://github.com/JoergHoffmannatGitHub/CodePlex_FamilyShow) originally hosted on [http://familyshow.codeplex.com/](http://web.archive.org/web/20170504160027/http://familyshow.codeplex.com/).
+![GitHub License](https://img.shields.io/github/license/JoergHoffmannatGitHub/Family.Show)
+![example workflow](https://github.com/JoergHoffmannatGitHub/Family.Show/actions/workflows/dotnet-desktop.yml/badge.svg)
+![example workflow](https://github.com/JoergHoffmannatGitHub/Family.Show/actions/workflows/dotnet-desktop-delivery.yml/badge.svg)
+
+<!-- ![Windows badge](misc/badge-windows.svg) -->
+
+This C# project is intend to continue [Family.Show](https://github.com/JoergHoffmannatGitHub/CodePlex_FamilyShow) originally hosted on [http://familyshow.codeplex.com/](http://web.archive.org/web/20170504160027/http://familyshow.codeplex.com/) by Vertigo.
+
+This project is contiued as [My Family Tree](https://chronoplexsoftware.com/myfamilytree/) from Chronoplex Software.
 
 The starting point is the latest version [4.5](https://github.com/JoergHoffmannatGitHub/CodePlex_FamilyShow/tree/main/4.0).
 
-## What is Family.Show?
+## Overview
 
 For a hobby that revolves around dead people, genealogy is remarkably popular: it's the fastest growing scene in North America. And a perfect study for our first Windows Presentation Foundation (WPF) reference application.
 
-Our designers employed every trick in the WPF book– styles, resources, templates, data binding, animation, transforms– to present an innovative visualization of the classic family tree, freeing our developers to concentrate on behind-the-scenes features like XPS, Windows Vista "light up", and ClickOnce for WPF.
-
 ![Alt text](./FamilyShowDetail-1.jpg?raw=true)
 
-## Installation
+Family.Show is a Windows Presentation Foundation (WPF) reference application. Vertigo Software collaborated with Microsoft to build Family.Show as a tool for developers to use as a reference for building their own applications using WPF. In addition, Family.Show is intended to be a functional application that genealogy enthusiasts and everyday users can use to build their family trees and family histories.
 
-Download the sources and compile and run FamilyShow. More to come.
+A detailed discussion [Family.Show - A WPF Reference Application](https://github.com/JoergHoffmannatGitHub/CodePlex_FamilyShow/blob/main/Family.Show%20-%20A%20WPF%20Reference%20Application.pdf)
 
-### Prerequisites
+The aim of this project is the enhancment with actual technologies:
 
-- Microsoft Visual Studio Community 2022 or Visual Studio Code.
-- .Net 8 or higher is needed to run FamilyShow. .Net components are installed with Microsoft Visual Studio Community 2022 17.8.
+- Unit tests
+- CI/CD
+- NuGet pakages
+- Installer
+- Domain model architecture
+- Performance
+- Integrate help (XPS or CHM, translation)
+- Additional formats (GEDCOM 5.5.1, GEDCOM 7, Gramps)
+
+### Requirements
+
+Family.Show runs on Microsoft Windows 10. To run the application on Microsoft Windows without .NET 8, you must first download and install version 8.0 of .NET 8. The framework can be downloaded at https://dotnet.microsoft.com/en-us/download/dotnet/8.0.
 
 ## Example
 
@@ -45,7 +61,7 @@ GEDCOM is a widely used format in other family tree software. Family.Show has su
 
 - People (INDI [Name, Surname, Suffix) including Restriction (RESN) tags.
 - Events (BIRT [Date, Place], DEAT [Date, Place], MARR [Date, Place], DIV [Date], OCCU [Description], EDUC [Description], RELI [Description])
-- Citations, sources, repositories and notes. 
+- Citations, sources, repositories and notes.
 - Photos when the GEDCOM file references a local file.
 
 **Extended characters, other languages and GEDCOM files**
@@ -55,7 +71,7 @@ Family.Show has full support for the UTF-8 encoding format. Unfortunately most G
 **Notes**
 
 - Restriction tags (RESN) are imported. Supported restrictions are Locked and Privacy.
-- Family.Show has a dedicated field "IsLiving" for recording if a person is alive or not. GEDCOM has no such equivalent field, instead relying on DEAT and BIRT tags to provide this information. Often, DEAT tags are missing if nothing is known of the individuals death so during import, it is not possible to determine the IsLiving status. In this case, the rule used is that a person with no DEAT tag is living unless their age is greater than 90. In the few cases of people being older than this, users can simply update the record manually. 
+- Family.Show has a dedicated field "IsLiving" for recording if a person is alive or not. GEDCOM has no such equivalent field, instead relying on DEAT and BIRT tags to provide this information. Often, DEAT tags are missing if nothing is known of the individuals death so during import, it is not possible to determine the IsLiving status. In this case, the rule used is that a person with no DEAT tag is living unless their age is greater than 90. In the few cases of people being older than this, users can simply update the record manually.
 - Often approximate dates are present in GEDCOM files. On import, Family.Show will attempt to analyse dates which are not in a standard format. Dates which are about (ABT), before (BEF) or after (AFT) are supported. Sometimes quarterly information is in a GEDCOM DATE tag e.g. Jan-Feb-Mar 2009. In this case, ABT 01/01/2009 will be recorded. Given that there are so many possible ways of recording date information, inevitably, some information may be lost in transfer. 
 - Family.Show does not fully support the GEDCOM standard. If you import a GEDCOM file with additional fields this information will not be transferred.
 
