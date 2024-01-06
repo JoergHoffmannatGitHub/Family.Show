@@ -53,7 +53,7 @@ jobs:
     - name: OpenCover Badge Generator
       uses: danpetitt/open-cover-badge-generator-action@v1.0.9
       with:
-        path-to-opencover-xml: ../CoverageResults/Release/coverage.opencover.xml
+        path-to-opencover-xml: ../CoverageResults/coverage.opencover.xml
         path-to-badges: ./
         minimum-coverage: 75
         commit-badges: false
