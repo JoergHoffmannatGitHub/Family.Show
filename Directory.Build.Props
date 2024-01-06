@@ -13,9 +13,10 @@
     <TargetFrameworkVersion>net8.0</TargetFrameworkVersion>
     <MicrosoftWindowsAPICodePackShellVersion>1.1.5</MicrosoftWindowsAPICodePackShellVersion>
     <!-- Tests -->
-    <MicrosoftNETTestSdkVerion>17.6.0</MicrosoftNETTestSdkVerion>
-    <XunitVerion>2.4.2</XunitVerion>
-    <XunitRunnerVisualstudioVerion>2.4.2</XunitRunnerVisualstudioVerion>
+    <GitHubActionsTestLoggerVersion>2.3.3</GitHubActionsTestLoggerVersion>
+    <MicrosoftNETTestSdkVerion>17.8.0</MicrosoftNETTestSdkVerion>
+    <XunitVerion>2.6.5</XunitVerion>
+    <XunitRunnerVisualstudioVerion>2.5.6</XunitRunnerVisualstudioVerion>
     <CoverletCollectorVerion>6.0.0</CoverletCollectorVerion>
   </PropertyGroup>
 </Project>

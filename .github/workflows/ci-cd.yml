@@ -47,7 +47,7 @@ jobs:
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test --configuration $env:Configuration --no-restore
+      run: dotnet test --configuration $env:Configuration --no-restore --logger GitHubActions -- RunConfiguration.CollectSourceInformation=true
       env:
         Configuration: ${{ matrix.configuration }}
 

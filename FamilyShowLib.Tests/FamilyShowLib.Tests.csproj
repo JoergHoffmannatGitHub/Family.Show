@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkVersion)-windows</TargetFramework>
@@ -12,6 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GitHubActionsTestLogger" Version="$(GitHubActionsTestLoggerVersion)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNETTestSdkVerion)" />
     <PackageReference Include="xunit" Version="$(XunitVerion)" />
     <PackageReference Include="xunit.runner.visualstudio" Version="$(XunitRunnerVisualstudioVerion)">
