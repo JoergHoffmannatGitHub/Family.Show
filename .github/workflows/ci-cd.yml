@@ -47,7 +47,7 @@ jobs:
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test --configuration $env:Configuration --no-restore -p:CollectCoverage=true -p:CoverletOutput=../CoverageResults/ -p:CoverletOutputFormat=opencover -p:MergeWith=”../CoverageResults/coverage.opencover.xml”  --logger GitHubActions -- RunConfiguration.CollectSourceInformation=true
+      run: dotnet test --configuration $env:Configuration --no-restore -p:CollectCoverage=true -p:CoverletOutput=../CoverageResults/$env:Configuration/ -p:CoverletOutputFormat=opencover -p:MergeWith=”../CoverageResults/$env:Configuration/coverage.opencover.xml”  --logger GitHubActions -- RunConfiguration.CollectSourceInformation=true
       env:
         Configuration: ${{ matrix.configuration }}
  
@@ -55,7 +55,7 @@ jobs:
     - name: OpenCover Badge Generator
       uses: danpetitt/open-cover-badge-generator-action@v1.0.9
       with:
-        path-to-opencover-xml: ../CoverageResults/coverage.opencover.xml
+        path-to-opencover-xml: ../CoverageResults/Release/coverage.opencover.xml
         path-to-badges: ./
         minimum-coverage: 75
         commit-badges: false
