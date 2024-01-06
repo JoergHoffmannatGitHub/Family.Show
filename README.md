@@ -1,8 +1,7 @@
 # Family.Show
 
 ![GitHub License](https://img.shields.io/github/license/JoergHoffmannatGitHub/Family.Show)
-![example workflow](https://github.com/JoergHoffmannatGitHub/Family.Show/actions/workflows/dotnet-desktop.yml/badge.svg)
-![example workflow](https://github.com/JoergHoffmannatGitHub/Family.Show/actions/workflows/dotnet-desktop-delivery.yml/badge.svg)
+![example workflow](https://github.com/JoergHoffmannatGitHub/Family.Show/actions/workflows/ci-cd.yml/badge.svg)
 
 <!-- ![Windows badge](misc/badge-windows.svg) -->
 

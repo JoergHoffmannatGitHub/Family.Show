@@ -1,0 +1,64 @@
+name: name: CI/CD
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    runs-on: windows-latest  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+
+    env:
+      Solution_Name: FamilyShow.sln                             # Replace with your solution name, i.e. MyWpfApp.sln.
+      # Test_Project_Path: your-test-project-path                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+      # Wap_Project_Directory: your-wap-project-directory-name    # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
+      # Wap_Project_Path: your-wap-project-path                   # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.1
+
+    # Restore the application to populate the obj folder with RuntimeIdentifiers
+    - name: Restore the application
+      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+      env:
+        Configuration: ${{ matrix.configuration }}
+
+    # Execute all unit tests in the solution
+    - name: Execute unit tests
+      run: dotnet test --configuration $env:Configuration --no-restore
+      env:
+        Configuration: ${{ matrix.configuration }}
+
+    # Archive the package
+    - name: Create archive
+      run: Compress-Archive -Path FamilyShow/bin/Release/* -DestinationPath FamilyShow/bin/Release/Family.Show-${{ github.ref_name }}.zip
+      if: startsWith(github.ref, 'refs/tags/')
+
+    # Release:   https://github.com/softprops/action-gh-release
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: FamilyShow/bin/Release/Family.Show-${{ github.ref_name }}.zip
