@@ -32,11 +32,24 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
+    # Dotnet matcher
+    - name: 🔍 Enable problem matchers
+      run: echo "::add-matcher::.github/matchers/dotnet.json"
+
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.1
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
+    - name: 🦸‍♂️ Restore steriods # this is the caching step, remove if you don't think you need it
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        # Look to see if there is a cache hit for the corresponding requirements file
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget            
+
     - name: Restore the application
       run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
       env:
@@ -44,19 +57,9 @@ jobs:
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: |
-        echo "## ❔ Test results" >> $GITHUB_STEP_SUMMARY
-        dotnet test --configuration $env:Configuration --no-restore --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat=\"json,lcov,cobertura,opencover\";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage' -- RunConfiguration.CollectSourceInformation=true
+      run: dotnet test --configuration $env:Configuration --no-restore --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat=\"json,lcov,cobertura,opencover\";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage' -- RunConfiguration.CollectSourceInformation=true
       env:
         Configuration: ${{ matrix.configuration }}
- 
-    - name: 📝 Code Coverage report
-      run: |
-        dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.1.23
-        reportgenerator -reports:${{github.workspace}}/coverage.cobertura.xml -targetdir:${{github.workspace}}/report -reporttypes:MarkdownSummaryGithub "-filefilters:-*.g.cs" -verbosity:Warning
-        sed -i 's/# Summary/## 📝 Code Coverage/g' ${{github.workspace}}/report/SummaryGithub.md
-        sed -i 's/## Coverage/### Code Coverage details/g' ${{github.workspace}}/report/SummaryGithub.md
-        cat ${{github.workspace}}/report/*.md >> $GITHUB_STEP_SUMMARY          
 
     # Create coverage badges
     - name: OpenCover Badge Generator
@@ -65,7 +68,6 @@ jobs:
         path-to-opencover-xml: ${{github.workspace}}/coverage.opencover.xml
         path-to-badges: ./
         minimum-coverage: 75
-        commit-badges: false
         repo-token: ${{ secrets.GITHUB_TOKEN }}
 
     # Archive the package
