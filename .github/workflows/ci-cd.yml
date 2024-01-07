@@ -55,9 +55,15 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
+    # Building the projects
+    - name: Build code
+      run: dotnet build --configuration $env:Configuration --no-restore
+      env:
+        Configuration: ${{ matrix.configuration }}
+      
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test --configuration $env:Configuration --no-restore --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat=\"json,lcov,cobertura,opencover\";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage' -- RunConfiguration.CollectSourceInformation=true
+      run: dotnet test --configuration $env:Configuration --no-build --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat=\"json,lcov,cobertura,opencover\";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage' -- RunConfiguration.CollectSourceInformation=true
       env:
         Configuration: ${{ matrix.configuration }}
 
