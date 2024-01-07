@@ -6,7 +6,6 @@
     <Copyright>© $([System.DateTime]::Now.ToString('yyyy'))</Copyright>
     <RepositoryUrl>https://github.com/JoergHoffmannatGitHub/Family.Show</RepositoryUrl>
     <PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
-	<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <NoWarn>CA1416</NoWarn>
   </PropertyGroup>
   <!-- Versioning projects -->
