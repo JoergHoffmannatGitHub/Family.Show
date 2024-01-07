@@ -44,26 +44,21 @@ jobs:
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
-    #   run: |
-    #     echo "## ❔ Test results" >> $GITHUB_STEP_SUMMARY
-    #     dotnet test --configuration Release --no-restore --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat="json,lcov,cobertura";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage' tests/Sonos.Base.Tests -- RunConfiguration.CollectSourceInformation=true
-    #     dotnet test --configuration Release            --no-restore --logger GitHubActions -p:CollectCoverage=true -p:CoverletOutputFormat="json,lcov,cobertura,opencover" -p:MergeWith=${{github.workspace}}/coverage.json -p:CoverletOutput=${{github.workspace}}/coverage tests/Sonos.Base.Tests -- RunConfiguration.CollectSourceInformation=true
-      run: dotnet test --configuration $env:Configuration --no-restore --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat=\"json,lcov,cobertura\";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage' -- RunConfiguration.CollectSourceInformation=true
-    #   run: dotnet test --configuration $env:Configuration --no-restore -p:CollectCoverage=true -p:CoverletOutput=../CoverageResults/$env:Configuration/ -p:CoverletOutputFormat=opencover --logger GitHubActions -- RunConfiguration.CollectSourceInformation=true
+      run: |
+        echo "## ❔ Test results" >> $GITHUB_STEP_SUMMARY
+        dotnet test --configuration $env:Configuration --no-restore --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat=\"json,lcov,cobertura,opencover\";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage' -- RunConfiguration.CollectSourceInformation=true
       env:
         Configuration: ${{ matrix.configuration }}
  
     # Create coverage badges
-    # - name: OpenCover Badge Generator
-    #   uses: danpetitt/open-cover-badge-generator-action@v1.0.9
-    #   with:
-    #     path-to-opencover-xml: ../CoverageResults/coverage.opencover.xml
-    #     path-to-badges: ./
-    #     minimum-coverage: 75
-    #     commit-badges: false
-    #     repo-token: ${{ secrets.CI_TOKEN }}
-    #   env:
-    #     Configuration: ${{ matrix.configuration }}
+    - name: OpenCover Badge Generator
+      uses: danpetitt/open-cover-badge-generator-action@v1.0.9
+      with:
+        path-to-opencover-xml: ../coverage.opencover.xml
+        path-to-badges: ./
+        minimum-coverage: 75
+        commit-badges: false
+        repo-token: ${{ secrets.CI_TOKEN }}
 
     # Archive the package
     - name: Create archive
