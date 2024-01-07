@@ -60,7 +60,7 @@ jobs:
 
     # Create coverage badges
     - name: OpenCover Badge Generator
-      uses: danpetitt/open-cover-badge-generator-action@v1.0.9
+      uses: danpetitt/open-cover-badge-generator-action@v1.0.10
       with:
         path-to-opencover-xml: ${{github.workspace}}/coverage.opencover.xml
         path-to-badges: ./
