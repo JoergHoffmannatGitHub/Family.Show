@@ -1,8 +1,16 @@
 # Family.Show
 
+![.NET 8.0](https://img.shields.io/badge/Version-.NET%208.0-informational?style=flat&logo=dotnet)
+&nbsp;
+![example workflow](https://github.com/JoergHoffmannatGitHub/Family.Show/actions/workflows/ci-cd.yml/badge.svg)
+&nbsp;
+[![Line Coverage Status](./coverage-badge-line.svg)](https://github.com/JoergHoffmannatGitHub/Family.Show/)
+&nbsp;
+[![Branch Coverage Status](./coverage-badge-branch.svg)](https://github.com/JoergHoffmannatGitHub/Family.Show/)
+&nbsp;
+[![GitHub release badge](https://badgen.net/github/release/JoergHoffmannatGitHub/Family.Show/stable)](https://github.com/JoergHoffmannatGitHub/Family.Show/releases/latest)
+&nbsp;
 ![GitHub License](https://img.shields.io/github/license/JoergHoffmannatGitHub/Family.Show)
-![example workflow](https://github.com/JoergHoffmannatGitHub/Family.Show/actions/workflows/dotnet-desktop.yml/badge.svg)
-![example workflow](https://github.com/JoergHoffmannatGitHub/Family.Show/actions/workflows/dotnet-desktop-delivery.yml/badge.svg)
 
 <!-- ![Windows badge](misc/badge-windows.svg) -->
 
