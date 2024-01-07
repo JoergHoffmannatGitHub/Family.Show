@@ -48,11 +48,10 @@ jobs:
     #     echo "## ❔ Test results" >> $GITHUB_STEP_SUMMARY
     #     dotnet test --configuration Release --no-restore --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat="json,lcov,cobertura";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage' tests/Sonos.Base.Tests -- RunConfiguration.CollectSourceInformation=true
     #     dotnet test --configuration Release            --no-restore --logger GitHubActions -p:CollectCoverage=true -p:CoverletOutputFormat="json,lcov,cobertura,opencover" -p:MergeWith=${{github.workspace}}/coverage.json -p:CoverletOutput=${{github.workspace}}/coverage tests/Sonos.Base.Tests -- RunConfiguration.CollectSourceInformation=true
-      run: dotnet test --configuration $env:Configuration --no-restore --logger GitHubActions -p::CollectCoverage=true -p:CoverletOutputFormat="json,lcov,cobertura,opencover" -p:MergeWith=${{github.workspace}}/coverage.json -p:CoverletOutput=${{github.workspace}}/coverage -- RunConfiguration.CollectSourceInformation=true
+      run: dotnet test --configuration $env:Configuration --no-restore --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat="json,opencover";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage' -- RunConfiguration.CollectSourceInformation=true
     #   run: dotnet test --configuration $env:Configuration --no-restore -p:CollectCoverage=true -p:CoverletOutput=../CoverageResults/$env:Configuration/ -p:CoverletOutputFormat=opencover --logger GitHubActions -- RunConfiguration.CollectSourceInformation=true
       env:
         Configuration: ${{ matrix.configuration }}
-        $env:GITHUB_STEP_SUMMARY="./test-summary.md"
  
     # Create coverage badges
     - name: OpenCover Badge Generator
