@@ -33,7 +33,7 @@ jobs:
         dotnet-version: 8.0.x
 
     # Dotnet matcher
-    - name: 🔍 Enable problem matchers
+    - name: Enable problem matchers
       run: echo "::add-matcher::.github/matchers/dotnet.json"
 
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
@@ -41,29 +41,14 @@ jobs:
       uses: microsoft/setup-msbuild@v1.1
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
-    - name: 🦸‍♂️ Restore steriods # this is the caching step, remove if you don't think you need it
-      uses: actions/cache@v3
-      with:
-        path: ~/.nuget/packages
-        # Look to see if there is a cache hit for the corresponding requirements file
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget            
-
     - name: Restore the application
       run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
-
-    # Building the projects
-    - name: Build code
-      run: dotnet build --configuration $env:Configuration --no-restore
       env:
         Configuration: ${{ matrix.configuration }}
       
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test --configuration $env:Configuration --no-build --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat=\"json,lcov,cobertura,opencover\";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage' -- RunConfiguration.CollectSourceInformation=true
+      run: dotnet test --configuration $env:Configuration --no-restore --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat=\"json,lcov,cobertura,opencover\";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage' -- RunConfiguration.CollectSourceInformation=true
       env:
         Configuration: ${{ matrix.configuration }}
 
