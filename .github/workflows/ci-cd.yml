@@ -28,10 +28,11 @@ jobs:
 
     # Install the .NET Core workload
     - name: Install .NET Core
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.x
         cache: true
+        cache-dependency-path: '**/package-lock.json'
 
     # Dotnet matcher
     - name: Enable problem matchers
