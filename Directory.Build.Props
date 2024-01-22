@@ -11,13 +11,14 @@
   <!-- Versioning projects -->
   <PropertyGroup>
     <TargetFrameworkVersion>net8.0</TargetFrameworkVersion>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <MicrosoftWindowsAPICodePackShellVersion>1.1.5</MicrosoftWindowsAPICodePackShellVersion>
     <!-- Tests -->
     <CoverletCollectorVerion>6.0.0</CoverletCollectorVerion>
     <CoverletMsbuildrVerion>6.0.0</CoverletMsbuildrVerion>
     <GitHubActionsTestLoggerVersion>2.3.3</GitHubActionsTestLoggerVersion>
     <MicrosoftNETTestSdkVerion>17.8.0</MicrosoftNETTestSdkVerion>
-    <XunitVerion>2.6.5</XunitVerion>
+    <XunitVerion>2.6.6</XunitVerion>
     <XunitRunnerVisualstudioVerion>2.5.6</XunitRunnerVisualstudioVerion>
   </PropertyGroup>
 </Project>

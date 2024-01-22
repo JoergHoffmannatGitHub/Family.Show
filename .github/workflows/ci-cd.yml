@@ -30,25 +30,26 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 8.x
+        cache: true
 
     # Dotnet matcher
     - name: Enable problem matchers
       run: echo "::add-matcher::.github/matchers/dotnet.json"
 
-    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.1
-
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+      run: dotnet restore $env:Solution_Name --locked-mode
+
+    # Build the application
+    - name: Build the application
+      run: dotnet build $env:Solution_Name --configuration $env:Configuration --no-restore
       env:
         Configuration: ${{ matrix.configuration }}
       
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test --configuration $env:Configuration --no-restore --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat=\"json,lcov,cobertura,opencover\";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage' -- RunConfiguration.CollectSourceInformation=true
+      run: dotnet test --configuration $env:Configuration --no-build --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat=\"json,lcov,cobertura,opencover\";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage' -- RunConfiguration.CollectSourceInformation=true
       env:
         Configuration: ${{ matrix.configuration }}
 
