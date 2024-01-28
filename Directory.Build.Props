@@ -19,5 +19,6 @@
     <MicrosoftNETTestSdkVerion>17.8.0</MicrosoftNETTestSdkVerion>
     <XunitVerion>2.6.6</XunitVerion>
     <XunitRunnerVisualstudioVerion>2.5.6</XunitRunnerVisualstudioVerion>
+    <XunitStaFactVerion>1.1.11</XunitStaFactVerion>
   </PropertyGroup>
 </Project>

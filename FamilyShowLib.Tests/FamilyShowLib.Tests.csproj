@@ -12,6 +12,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\FamilyShow\Sample Files\Kennedy.ged" Link="Sample Files\Kennedy.ged">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="$(CoverletCollectorVerion)">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -30,6 +36,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Xunit.StaFact" Version="$(XunitStaFactVerion)" />
   </ItemGroup>
 
   <ItemGroup>
