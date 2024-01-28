@@ -38,7 +38,7 @@ jobs:
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
-      run: dotnet restore $env:Solution_Name --locked-mode
+      run: dotnet restore $env:Solution_Name
 
     # Build the application
     - name: Build the application
@@ -57,9 +57,8 @@ jobs:
       uses: danpetitt/open-cover-badge-generator-action@v1.0.10
       with:
         path-to-opencover-xml: ${{github.workspace}}/coverage.opencover.xml
-        path-to-badges: ./badges
+        path-to-badges: ./
         minimum-coverage: 75
-        commit-branch-name: gh-pages
         repo-token: ${{ secrets.GITHUB_TOKEN }}
 
     # Archive the package
