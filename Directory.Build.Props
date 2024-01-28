@@ -11,7 +11,6 @@
   <!-- Versioning projects -->
   <PropertyGroup>
     <TargetFrameworkVersion>net8.0</TargetFrameworkVersion>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <MicrosoftWindowsAPICodePackShellVersion>1.1.5</MicrosoftWindowsAPICodePackShellVersion>
     <!-- Tests -->
     <CoverletCollectorVerion>6.0.0</CoverletCollectorVerion>
