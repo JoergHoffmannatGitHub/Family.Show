@@ -2,12 +2,11 @@
 
 ![.NET 8.0](https://img.shields.io/badge/Version-.NET%208.0-informational?style=flat&logo=dotnet)
 &nbsp;
-![example workflow](https://github.com/JoergHoffmannatGitHub/Family.Show/actions/workflows/ci-cd.yml/badge.svg)
+[![CI/CD](https://github.com/JoergHoffmannatGitHub/Family.Show/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/JoergHoffmannatGitHub/Family.Show/actions/workflows/ci-cd.yml)
 &nbsp;
 [![GitHub release badge](https://badgen.net/github/release/JoergHoffmannatGitHub/Family.Show/stable)](https://github.com/JoergHoffmannatGitHub/Family.Show/releases/latest)
 &nbsp;
 ![GitHub License](https://img.shields.io/github/license/JoergHoffmannatGitHub/Family.Show)
-
 <!-- ![Windows badge](misc/badge-windows.svg) -->
 
 This C# project is intend to continue [Family.Show](https://github.com/JoergHoffmannatGitHub/CodePlex_FamilyShow) originally hosted on [http://familyshow.codeplex.com/](http://web.archive.org/web/20170504160027/http://familyshow.codeplex.com/) by Vertigo.

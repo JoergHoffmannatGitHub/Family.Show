@@ -48,7 +48,7 @@ jobs:
 
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test --configuration $env:Configuration --no-build --logger GitHubActions '/p:CollectCoverage=true;CoverletOutputFormat=\"json,lcov,cobertura,opencover\";MergeWith=${{github.workspace}}/coverage.json;CoverletOutput=${{github.workspace}}/coverage' -- RunConfiguration.CollectSourceInformation=true
+      run: dotnet test --configuration $env:Configuration --no-build --logger GitHubActions  /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
       env:
         Configuration: ${{ matrix.configuration }}
 

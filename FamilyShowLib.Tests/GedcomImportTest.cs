@@ -9,9 +9,7 @@ public class GedcomImportTest
     PeopleCollection family = [];
     SourceCollection source = [];
     RepositoryCollection repository = [];
-    string location = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)!;
-    string fileName = Path.Combine(location, "Sample Files", "Kennedy.ged");
-    bool loaded = sut.Import(family, source, repository, fileName, true);
+    bool loaded = sut.Import(family, source, repository, Sample.FullName("Kennedy.ged"), true);
 
     Assert.NotNull(sut);
     Assert.True(loaded);

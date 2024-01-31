@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -849,10 +850,10 @@ public class People
         Version = pc.Version;
         PeopleCollection.IsDirty = false;
 
-        double majorVersion = double.Parse(Version);
+        double majorVersion = double.Parse(Version, CultureInfo.InvariantCulture);
         Version assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
         // Prompt if old file major version has been opened.
-        if (string.IsNullOrEmpty(Version) || majorVersion < assemblyVersion.Major)
+        if (string.IsNullOrEmpty(Version) || majorVersion < Math.Min(assemblyVersion.Major, 4))
         {
           MessageBox.Show(Properties.Resources.CompatabilityMessage, Properties.Resources.Compatability, MessageBoxButton.OK, MessageBoxImage.Information);
         }

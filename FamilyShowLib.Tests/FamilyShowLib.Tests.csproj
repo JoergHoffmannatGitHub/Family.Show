@@ -15,6 +15,9 @@
     <None Include="..\FamilyShow\Sample Files\Kennedy.ged" Link="Sample Files\Kennedy.ged">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="..\FamilyShow\Sample Files\Windsor.familyx" Link="Sample Files\Windsor.familyx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +44,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FamilyShowLib\FamilyShowLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Sample Files\Windsor.family">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
