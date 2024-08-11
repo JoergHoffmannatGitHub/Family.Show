@@ -1111,6 +1111,11 @@ public class GedcomImport
     return string.Empty;
   }
 
+  internal static DateTime? GetValueDateWrapper(XmlNode node, string xpath)
+  {
+    return GetValueDate(node, xpath);
+  }
+
   /// <summary>
   /// Method to try and extract approximate dates from the wide variety of non standard date notations in use.
   /// Could be extended to work with more scenarios.
@@ -1196,7 +1201,7 @@ public class GedcomImport
     catch
     {
       // The date is invalid, ignore and continue processing.
-      // inform the developper
+      // inform the developer
       Debug.Assert(false);
     }
 
