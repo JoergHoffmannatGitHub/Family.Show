@@ -1,10 +1,10 @@
-name: CI/CD
+name: Deploy
 
 on:
   push:
-    branches: [ "*" ]
-  pull_request:
     branches: [ "master" ]
+    tags:
+      - 'v*'
 
 jobs:
 
@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Release]
 
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
@@ -51,3 +51,18 @@ jobs:
       run: dotnet test --configuration $env:Configuration --no-build --logger GitHubActions  /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
       env:
         Configuration: ${{ matrix.configuration }}
+
+    # Archive the package
+    - name: Create archive
+      run: Compress-Archive -Path FamilyShow/bin/Release/* -DestinationPath FamilyShow/bin/Release/Family.Show-${{ github.ref_name }}.zip
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        Configuration: Release
+
+    # Release:   https://github.com/softprops/action-gh-release
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: FamilyShow/bin/Release/Family.Show-${{ github.ref_name }}.zip
+        Configuration: Release
