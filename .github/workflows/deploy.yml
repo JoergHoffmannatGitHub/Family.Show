@@ -56,8 +56,6 @@ jobs:
     - name: Create archive
       run: Compress-Archive -Path FamilyShow/bin/Release/* -DestinationPath FamilyShow/bin/Release/Family.Show-${{ github.ref_name }}.zip
       if: startsWith(github.ref, 'refs/tags/')
-      with:
-        Configuration: Release
 
     # Release:   https://github.com/softprops/action-gh-release
     - name: Release
@@ -65,4 +63,3 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: FamilyShow/bin/Release/Family.Show-${{ github.ref_name }}.zip
-        Configuration: Release
