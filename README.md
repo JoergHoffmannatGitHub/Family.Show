@@ -9,9 +9,9 @@
 ![GitHub License](https://img.shields.io/github/license/JoergHoffmannatGitHub/Family.Show)
 <!-- ![Windows badge](misc/badge-windows.svg) -->
 
-This C# project is intend to continue [Family.Show](https://github.com/JoergHoffmannatGitHub/CodePlex_FamilyShow) originally hosted on [http://familyshow.codeplex.com/](http://web.archive.org/web/20170504160027/http://familyshow.codeplex.com/) by Vertigo.
+This C# project is intended to continue [Family.Show](https://github.com/JoergHoffmannatGitHub/CodePlex_FamilyShow) originally hosted on [http://familyshow.codeplex.com/](http://web.archive.org/web/20170504160027/http://familyshow.codeplex.com/) by Vertigo.
 
-This project is contiued as [My Family Tree](https://chronoplexsoftware.com/myfamilytree/) from Chronoplex Software.
+This project is continued as [My Family Tree](https://chronoplexsoftware.com/myfamilytree/) from Chronoplex Software.
 
 The starting point is the latest version [4.5](https://github.com/JoergHoffmannatGitHub/CodePlex_FamilyShow/tree/main/4.0).
 
@@ -25,11 +25,11 @@ Family.Show is a Windows Presentation Foundation (WPF) reference application. Ve
 
 A detailed discussion [Family.Show - A WPF Reference Application](https://github.com/JoergHoffmannatGitHub/CodePlex_FamilyShow/blob/main/Family.Show%20-%20A%20WPF%20Reference%20Application.pdf)
 
-The aim of this project is the enhancment with actual technologies:
+The aim of this project is the enhancement with actual technologies:
 
 - Unit tests
 - CI/CD
-- NuGet pakages
+- NuGet packages
 - Installer
 - Domain model architecture
 - Performance
