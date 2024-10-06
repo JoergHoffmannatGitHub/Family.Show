@@ -17,7 +17,7 @@
     <CoverletMsbuildrVerion>6.0.2</CoverletMsbuildrVerion>
     <GitHubActionsTestLoggerVersion>2.4.1</GitHubActionsTestLoggerVersion>
     <MicrosoftNETTestSdkVerion>17.11.1</MicrosoftNETTestSdkVerion>
-    <XunitVerion>2.9.0</XunitVerion>
+    <XunitVerion>2.9.2</XunitVerion>
     <XunitRunnerVisualstudioVerion>2.8.2</XunitRunnerVisualstudioVerion>
     <XunitStaFactVerion>1.1.11</XunitStaFactVerion>
   </PropertyGroup>
