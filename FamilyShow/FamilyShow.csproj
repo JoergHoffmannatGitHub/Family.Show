@@ -128,9 +128,7 @@
     <ProjectReference Include="..\FamilyShowLib\FamilyShowLib.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell">
-      <Version>$(MicrosoftWindowsAPICodePackShellVersion)</Version>
-    </PackageReference>
+    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Themes\Silver\SilverResources.xaml">

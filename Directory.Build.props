@@ -1,7 +1,6 @@
 <Project>
   <PropertyGroup>
-    <VersionPrefix>5.0.0</VersionPrefix>
-    <VersionSuffix>alpha</VersionSuffix>
+    <VersionPrefix>5.0.1</VersionPrefix>
     <Product>Family.Show</Product>
     <Copyright>© $([System.DateTime]::Now.ToString('yyyy'))</Copyright>
     <RepositoryUrl>https://github.com/JoergHoffmannatGitHub/Family.Show</RepositoryUrl>
