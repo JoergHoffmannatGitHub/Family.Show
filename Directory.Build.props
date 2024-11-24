@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <VersionPrefix>5.0.1</VersionPrefix>
+    <VersionPrefix>5.1.0</VersionPrefix>
     <Product>Family.Show</Product>
     <Copyright>© $([System.DateTime]::Now.ToString('yyyy'))</Copyright>
     <RepositoryUrl>https://github.com/JoergHoffmannatGitHub/Family.Show</RepositoryUrl>
@@ -10,14 +10,5 @@
   <!-- Versioning projects -->
   <PropertyGroup>
     <TargetFrameworkVersion>net8.0</TargetFrameworkVersion>
-    <MicrosoftWindowsAPICodePackShellVersion>1.1.5</MicrosoftWindowsAPICodePackShellVersion>
-    <!-- Tests -->
-    <CoverletCollectorVerion>6.0.2</CoverletCollectorVerion>
-    <CoverletMsbuildrVerion>6.0.2</CoverletMsbuildrVerion>
-    <GitHubActionsTestLoggerVersion>2.4.1</GitHubActionsTestLoggerVersion>
-    <MicrosoftNETTestSdkVerion>17.11.1</MicrosoftNETTestSdkVerion>
-    <XunitVerion>2.9.2</XunitVerion>
-    <XunitRunnerVisualstudioVerion>2.8.2</XunitRunnerVisualstudioVerion>
-    <XunitStaFactVerion>1.1.11</XunitStaFactVerion>
   </PropertyGroup>
 </Project>
