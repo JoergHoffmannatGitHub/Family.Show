@@ -126,8 +126,8 @@
   <data name="Export" xml:space="preserve">
     <value>Esportazione</value>
   </data>
-  <data name="FamilyFiles" xml:space="preserve">
-    <value>Family.Show File 2.0 (*. family)</value>
+  <data name="FamilyxFiles" xml:space="preserve">
+    <value>Family.Show Files 4.0 (*. familyx)</value>
   </data>
   <data name="GedcomFailed" xml:space="preserve">
     <value>Importazione non riuscita</value>
@@ -366,9 +366,6 @@
   <data name="Help" xml:space="preserve">
     <value>Aiuto</value>
   </data>
-  <data name="Media" xml:space="preserve">
-    <value>Strumenti</value>
-  </data>
   <data name="PhotosMenu" xml:space="preserve">
     <value>Foto</value>
   </data>
@@ -603,6 +600,9 @@
   <data name="AboutMenu" xml:space="preserve">
     <value>Circa Family.Show</value>
   </data>
+  <data name="Time" xml:space="preserve">
+    <value>	 Tempo</value>
+  </data>
   <data name="TagsColon" xml:space="preserve">
     <value>Tags:</value>
   </data>
@@ -653,9 +653,6 @@
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Modifica</value>
-  </data>
-  <data name="EnableUTF8" xml:space="preserve">
-    <value>Attiva supporto UTF-8</value>
   </data>
   <data name="ExportHtml" xml:space="preserve">
     <value>Esportazione HTML</value>
@@ -1020,26 +1017,26 @@
   <data name="PrivateRecord" xml:space="preserve">
     <value>Privati Record</value>
   </data>
+  <data name="DateCalculator" xml:space="preserve">
+    <value>Date Calcolatrice</value>
+  </data>
+  <data name="DateCalculatorMessage" xml:space="preserve">
+    <value>Utilizzare questo strumento per aiutare a calcolare le date da elementi di prova che avete raccolto.</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>anno</value>
+  </data>
   <data name="AddOrSubtract" xml:space="preserve">
     <value>Aggiungere o sottrarre</value>
   </data>
   <data name="AgeBirthDeath" xml:space="preserve">
     <value>Età, Nascite</value>
   </data>
-  <data name="Black" xml:space="preserve">
-    <value>Nero</value>
-  </data>
   <data name="Calculate" xml:space="preserve">
     <value>Calcola</value>
   </data>
-  <data name="DateCalculator" xml:space="preserve">
-    <value>Date Calcolatrice</value>
-  </data>
   <data name="DateCalculatorMenu" xml:space="preserve">
     <value>Date Calcolatrice</value>
-  </data>
-  <data name="DateCalculatorMessage" xml:space="preserve">
-    <value>Utilizzare questo strumento per aiutare a calcolare le date da elementi di prova che avete raccolto.</value>
   </data>
   <data name="DateTo" xml:space="preserve">
     <value>a</value>
@@ -1050,20 +1047,23 @@
   <data name="months" xml:space="preserve">
     <value>mese</value>
   </data>
-  <data name="Silver" xml:space="preserve">
-    <value>Argento</value>
-  </data>
   <data name="Subtract" xml:space="preserve">
     <value>Sottrarre</value>
   </data>
   <data name="years" xml:space="preserve">
-    <value>anno</value>
+    <value>anni</value>
   </data>
-  <data name="Links" xml:space="preserve">
-    <value>Collegamenti</value>
+  <data name="Black" xml:space="preserve">
+    <value>Nero</value>
+  </data>
+  <data name="Silver" xml:space="preserve">
+    <value>Argento</value>
   </data>
   <data name="StartANewFamilyTree" xml:space="preserve">
     <value>Avviare una nuova struttura di famiglia...</value>
+  </data>
+  <data name="Links" xml:space="preserve">
+    <value>Collegamenti</value>
   </data>
   <data name="HideControls" xml:space="preserve">
     <value>Nascondi i controlli diagramma</value>
@@ -1074,20 +1074,20 @@
   <data name="DropPhotosHere" xml:space="preserve">
     <value>Trascina le foto qui.</value>
   </data>
-  <data name="Homepage" xml:space="preserve">
-    <value>Sito web del progetto</value>
-  </data>
   <data name="NoExistingPhotos" xml:space="preserve">
     <value>Non ci sono foto già esistenti.</value>
+  </data>
+  <data name="Homepage" xml:space="preserve">
+    <value>Sito web del progetto</value>
   </data>
   <data name="People" xml:space="preserve">
     <value>Persone</value>
   </data>
-  <data name="Year" xml:space="preserve">
-    <value>anno</value>
+  <data name="ChooseWhatToExtractColon" xml:space="preserve">
+    <value>Scegliere cosa estrarre:</value>
   </data>
-  <data name="Time" xml:space="preserve">
-    <value>	 Tempo</value>
+  <data name="CurrentPersonOnly" xml:space="preserve">
+    <value>Corrente persona sola</value>
   </data>
   <data name="ExtractHeader" xml:space="preserve">
     <value>Estrarre il contenuto</value>
@@ -1098,12 +1098,6 @@
   <data name="ExtractingStatus" xml:space="preserve">
     <value>(Estrazione)</value>
   </data>
-  <data name="CurrentPersonOnly" xml:space="preserve">
-    <value>Corrente persona sola</value>
-  </data>
-  <data name="ChooseWhatToExtractColon" xml:space="preserve">
-    <value>Scegliere cosa estrarre:</value>
-  </data>
   <data name="ExtractFilesMenu" xml:space="preserve">
     <value>Estrarre il contenuto...</value>
   </data>
@@ -1113,14 +1107,23 @@
   <data name="HideFiltered" xml:space="preserve">
     <value>Nascondi filtrata</value>
   </data>
-  <data name="ExportPlaces" xml:space="preserve">
-    <value>Esportazione Luoghi</value>
+  <data name="Events" xml:space="preserve">
+    <value>Eventi</value>
+  </data>
+  <data name="Tiebreak" xml:space="preserve">
+    <value>* Denota un tie break.</value>
   </data>
   <data name="DoYouWantToHideLivingPeople" xml:space="preserve">
     <value>Vuoi nascondere persone viventi?</value>
   </data>
-  <data name="Events" xml:space="preserve">
-    <value>Eventi</value>
+  <data name="ExportPlaces" xml:space="preserve">
+    <value>Esportazione Luoghi</value>
+  </data>
+  <data name="ChooseWhatToExportColon" xml:space="preserve">
+    <value>Scegliere cosa esportare:</value>
+  </data>
+  <data name="EnableUTF8" xml:space="preserve">
+    <value>Attiva supporto UTF-8</value>
   </data>
   <data name="AlignCenter" xml:space="preserve">
     <value>Centro  (Ctrl+E)</value>
@@ -1139,9 +1142,6 @@
   </data>
   <data name="Burials" xml:space="preserve">
     <value>Sepolture</value>
-  </data>
-  <data name="ChooseWhatToExportColon" xml:space="preserve">
-    <value>Scegliere cosa esportare:</value>
   </data>
   <data name="Cremations" xml:space="preserve">
     <value>Cremazioni</value>
@@ -1176,28 +1176,28 @@
   <data name="ShrinkFont" xml:space="preserve">
     <value>Riduci Carattere (Ctrl+&lt;)</value>
   </data>
-  <data name="Tiebreak" xml:space="preserve">
-    <value>* Denota un tie break.</value>
-  </data>
   <data name="Underline" xml:space="preserve">
     <value>Sottolineato (Ctrl+U)</value>
   </data>
   <data name="ClearFilterText" xml:space="preserve">
     <value>Testo cancella filtro.</value>
   </data>
-  <data name="OldVersionMessage" xml:space="preserve">
-    <value>Questo file è stato creato con una versione precedente di Family.Show. Verrà salvato in un nuovo formato per l'utilizzo con questa versione. Il nome del nuovo file finirà con. Familyx e tutti i bundle le tue foto di famiglia, storie e albero in questo singolo file.</value>
-  </data>
   <data name="Compatability" xml:space="preserve">
     <value>Compatibilità</value>
   </data>
-  <data name="FamilyxFiles" xml:space="preserve">
-    <value>Family.Show Files 4.0 (*. familyx)</value>
+  <data name="FamilyFiles" xml:space="preserve">
+    <value>Family.Show File 2.0 (*. family)</value>
   </data>
   <data name="FamilyShowFiles" xml:space="preserve">
     <value>Family.Show Files (*. familyx)</value>
   </data>
+  <data name="OldVersionMessage" xml:space="preserve">
+    <value>Questo file è stato creato con una versione precedente di Family.Show. Verrà salvato in un nuovo formato per l'utilizzo con questa versione. Il nome del nuovo file finirà con. Familyx e tutti i bundle le tue foto di famiglia, storie e albero in questo singolo file.</value>
+  </data>
   <data name="FamilyxFilesAll" xml:space="preserve">
     <value>Family.Show Files 3.0 - 4.0 (*. familyx)</value>
+  </data>
+  <data name="Media" xml:space="preserve">
+    <value>Strumenti</value>
   </data>
 </root>

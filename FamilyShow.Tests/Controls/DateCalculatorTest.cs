@@ -9,7 +9,7 @@ public class DateCalculatorTest
     {
       { "en-US", "22 JUL 1890", "22 JAN 1995", string.Empty, "7/22/1890", "1/22/1995", "105 years" },
       { "en-GB", "22 JUL 1890", string.Empty, "105", "22/07/1890", "22/07/1995", "105 years" },
-      { "de-DE", string.Empty, "22 JAN 1995", "105", "22.01.1890", "22.01.1995", "105 years" },
+      { "de-DE", string.Empty, "22 JAN 1995", "105", "22.01.1890", "22.01.1995", "105 Jahre" },
       { "en-US", string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty },
       { "en-US", string.Empty, string.Empty, "105", string.Empty, string.Empty, string.Empty },
       { "en-US", string.Empty, "22 JAN 1995", string.Empty, string.Empty, string.Empty, string.Empty },
@@ -29,6 +29,7 @@ public class DateCalculatorTest
   {
     // Arrange
     CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(culture);
+    CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(culture);
     DateCalculator calculator = new();
     calculator.Date1TextBox.Text = date1;
     calculator.Date2TextBox.Text = date2;
