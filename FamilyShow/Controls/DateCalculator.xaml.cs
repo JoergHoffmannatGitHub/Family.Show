@@ -36,7 +36,7 @@ public partial class DateCalculator : UserControl
   /// </summary>
   /// <param name="sender"></param>
   /// <param name="e"></param>
-  private void CalculateButton_Click(object sender, RoutedEventArgs e)
+  internal void CalculateButton_Click(object sender, RoutedEventArgs e)
   {
     // Reset the results
     DeathResult.Content = string.Empty;
@@ -48,22 +48,29 @@ public partial class DateCalculator : UserControl
 
     try
     {
-
       // Get any input dates
       DateTime s1 = App.StringToDate(Date1TextBox.Text);
       DateTime s2 = App.StringToDate(Date2TextBox.Text);
 
-      if (!string.IsNullOrEmpty(Date1TextBox.Text))
+      if (!string.IsNullOrEmpty(Date1TextBox.Text) && s1 != DateTime.MinValue)
       {
         Date1TextBox.Text = s1.ToShortDateString();
       }
+      else
+      {
+        Date1TextBox.Text = string.Empty;
+      }
 
-      if (!string.IsNullOrEmpty(Date2TextBox.Text))
+      if (!string.IsNullOrEmpty(Date2TextBox.Text) && s2 != DateTime.MinValue)
       {
         Date2TextBox.Text = s2.ToShortDateString();
       }
+      else
+      {
+        Date2TextBox.Text = string.Empty;
+      }
 
-      int age = 0;
+      int age = -1;
 
       // Get any input age
       if (!string.IsNullOrEmpty(AgeTextBox.Text))
@@ -72,23 +79,23 @@ public partial class DateCalculator : UserControl
       }
 
       // If a birth date and death date are specified, calculate an age
-      if (!string.IsNullOrEmpty(Date1TextBox.Text) && !string.IsNullOrEmpty(Date2TextBox.Text))
+      if (!string.IsNullOrEmpty(Date1TextBox.Text) && !string.IsNullOrEmpty(Date2TextBox.Text) && age < 0)
       {
         AgeTextBox.Text = string.Empty;
-        age = -1;
 
         TimeSpan span = s2.Subtract(s1);
 
-        DeathResult.Content = s2.ToShortDateString();
-        BirthResult.Content = s1.ToShortDateString();
-        AgeResult.Content = Math.Round(span.Days / 365.25, 0, MidpointRounding.AwayFromZero) + " " + Properties.Resources.years;
-
+        if (span >= TimeSpan.Zero)
+        {
+          DeathResult.Content = s2.ToShortDateString();
+          BirthResult.Content = s1.ToShortDateString();
+          AgeResult.Content = Math.Round(span.Days / 365.25, 0, MidpointRounding.AwayFromZero) + " " + Properties.Resources.years;
+        }
       }
 
       // If death data and age are specified, calculate a birth date
-      if (string.IsNullOrEmpty(Date1TextBox.Text) && !string.IsNullOrEmpty(Date2TextBox.Text) && age != -1)
+      if (string.IsNullOrEmpty(Date1TextBox.Text) && !string.IsNullOrEmpty(Date2TextBox.Text) && age >= 0)
       {
-
         int year = s2.Year;
         int day = s2.Day;
         int month = s2.Month;
@@ -102,9 +109,8 @@ public partial class DateCalculator : UserControl
       }
 
       // If birth data and age are specified, calculate a death date
-      if (!string.IsNullOrEmpty(Date1TextBox.Text) && string.IsNullOrEmpty(Date2TextBox.Text) && age != -1)
+      if (!string.IsNullOrEmpty(Date1TextBox.Text) && string.IsNullOrEmpty(Date2TextBox.Text) && age >= 0)
       {
-
         int year = s1.Year;
         int month = s1.Month;
         int day = s1.Day;
@@ -114,7 +120,6 @@ public partial class DateCalculator : UserControl
         BirthResult.Content = s1.ToShortDateString();
         DeathResult.Content = new DateTime(year, month, day).ToShortDateString();
         AgeResult.Content = age + " " + Properties.Resources.years;
-
       }
     }
     catch
@@ -126,7 +131,6 @@ public partial class DateCalculator : UserControl
       AgeResult.Content = string.Empty;
       ShowErrors123();
     }
-
   }
 
   /// <summary>
@@ -134,7 +138,7 @@ public partial class DateCalculator : UserControl
   /// </summary>
   /// <param name="sender"></param>
   /// <param name="e"></param>
-  private void Calculate2Button_Click(object sender, RoutedEventArgs e)
+  internal void Calculate2Button_Click(object sender, RoutedEventArgs e)
   {
     // Reset the results
     Result2.Content = "";
@@ -142,13 +146,17 @@ public partial class DateCalculator : UserControl
     // Hide errors if showing
     HideErrors4();
 
-    if (!string.IsNullOrEmpty(ToBox.Text.ToString()))
+    if (!string.IsNullOrEmpty(ToBox.Text))
     {
       //Get the date input and try to add/subtract the specified number of days, months and years.
       DateTime s = App.StringToDate(ToBox.Text);
-      if (!string.IsNullOrEmpty(ToBox.Text))
+      if (!string.IsNullOrEmpty(ToBox.Text) && s != DateTime.MinValue)
       {
         ToBox.Text = s.ToShortDateString();
+      }
+      else
+      {
+        return;
       }
 
       int i = 1;
@@ -183,7 +191,9 @@ public partial class DateCalculator : UserControl
         s = s.AddYears(years * i);
         Result2.Content = s.ToShortDateString();
       }
-      catch { ShowErrors4(); }
+      catch {
+        ShowErrors4();
+      }
     }
   }
 
