@@ -16,7 +16,6 @@ namespace FamilyShow
   /// <summary>
   /// Interaction logic for Details.xaml
   /// </summary>
-
   public partial class Details : UserControl
   {
     #region fields
@@ -66,7 +65,6 @@ namespace FamilyShow
       _family.CurrentChanged += new EventHandler(Family_CurrentChanged);
 
       ExistingPeopleListBox.ItemsSource = _family;
-
     }
 
     #region routed events
@@ -106,12 +104,12 @@ namespace FamilyShow
       add { AddHandler(FamilyDataClickEvent, value); }
       remove { RemoveHandler(FamilyDataClickEvent, value); }
     }
+
     #endregion
 
     #region event handlers
 
     #region Attachments event handlers
-
     private void DeleteAttachmentsButton_Click(object sender, RoutedEventArgs e)
     {
       Person person = (Person)DataContext;
@@ -316,7 +314,6 @@ namespace FamilyShow
       person.OnPropertyChanged("HasAttachments");
       // Mark the event as handled, so the control's native Drop handler is not called.
       e.Handled = true;
-
     }
 
     #endregion
@@ -326,7 +323,7 @@ namespace FamilyShow
     /// <summary>
     /// Handles the Family Member Add Button click event
     /// </summary>
-    private void FamilyMemberAddButton_Click(object sender, RoutedEventArgs e)
+    internal void FamilyMemberAddButton_Click(object sender, RoutedEventArgs e)
     {
       if (!(FamilyMemberAddButton.CommandParameter == null))
       {
@@ -335,7 +332,6 @@ namespace FamilyShow
         FamilyMemberComboBox.SelectedItem =
             (FamilyMemberComboBoxValue)(FamilyMemberAddButton.CommandParameter);
       }
-
     }
 
     /// <summary>
@@ -414,12 +410,10 @@ namespace FamilyShow
     /// <summary>
     /// Handles adding new people
     /// </summary>
-    private void AddButton_Click(object sender, RoutedEventArgs e)
+    internal void AddButton_Click(object sender, RoutedEventArgs e)
     {
-
       if (FamilyMemberComboBox.SelectedItem != null)  //prevents program crashing when user presses enter more than one before add is completed.
       {
-
         // To make it a little more user friendly, set the next action for the family member button to be the same as the current relationship being added.
         SetNextFamilyMemberAction((FamilyMemberComboBoxValue)FamilyMemberComboBox.SelectedValue);
         // The new person to be added
@@ -616,13 +610,11 @@ namespace FamilyShow
 
         _family.OnContentChanged(newPerson);
         _family.OnContentChanged(_family.Current);
-
       }
     }
 
     private void AddExistingButton_Click(object sender, RoutedEventArgs e)
     {
-
       if (ExistingFamilyMemberComboBox.SelectedItem != null)  //prevents program crashing when user presses enter more than one before add is completed.
       {
         Person existingPerson = (Person)ExistingPeopleListBox.SelectedItem;
@@ -703,7 +695,6 @@ namespace FamilyShow
           MessageBox.Show(Properties.Resources.SelectPersonFirstMessage, Properties.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-
         if (PersonAdded == true)
         {
           _family.OnContentChanged();
@@ -716,7 +707,6 @@ namespace FamilyShow
           _family.OnContentChanged(_family.Current);
           _family.OnContentChanged(existingPerson);
         }
-
       }
     }
 
@@ -743,7 +733,6 @@ namespace FamilyShow
 
     private void ExistingFamilyMemberComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-
       if (ExistingFamilyMemberComboBox.SelectedIndex != -1)
       {
         _ignoreGender = false;
@@ -1027,7 +1016,6 @@ namespace FamilyShow
           }
         }
         catch { }
-
       }
     }
 
@@ -1525,7 +1513,6 @@ namespace FamilyShow
             break;
         }
         _family.OnContentChanged();
-
       }
     }
 
@@ -1605,8 +1592,6 @@ namespace FamilyShow
       //This must be called to ensure that if a person's restriction changes
       //the appropriate fields in the relationship citations panel become readonly/editable.
       UpdateRCitationsComboBox();
-
-
     }
 
     #endregion
@@ -1914,7 +1899,6 @@ namespace FamilyShow
                   }
 
                   break;
-
               }
             }
           }
@@ -1944,13 +1928,11 @@ namespace FamilyShow
             break;
         }
         _family.OnContentChanged();
-
       }
     }
 
     private void RCitationDetailsEditTextBox_LostFocus(object sender, RoutedEventArgs e)
     {
-
       if (_family.Current == null)
       {
         return;
@@ -1970,9 +1952,7 @@ namespace FamilyShow
             break;
         }
         _family.OnContentChanged();
-
       }
-
     }
 
     private void RCitationActualTextEditTextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -2056,6 +2036,7 @@ namespace FamilyShow
             RelationshipHelper.UpdateDivorceSource(_family.Current, (Person)SpousesCombobox.SelectedItem, Source);
             break;
         }
+
         _family.OnContentChanged();
       }
     }
@@ -2168,9 +2149,7 @@ namespace FamilyShow
         _family.Current.OnPropertyChanged("IsDeletable");
 
         _family.OnContentChanged();
-
       }
-
     }
 
     private void RemoveSiblingsButton_Click(object sender, RoutedEventArgs e)
@@ -2202,7 +2181,6 @@ namespace FamilyShow
         _family.Current.OnPropertyChanged("IsDeletable");
         _family.OnContentChanged();
       }
-
     }
 
     private void FromEditTextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -2529,8 +2507,6 @@ namespace FamilyShow
         Person nextPerson;
         if (_family.Count > 0)
         {
-
-
           if (_family.Current.HasSpouse)
           {
             nextPerson = _family.Current.Spouses[0];
@@ -2553,7 +2529,6 @@ namespace FamilyShow
           nextPerson = null;
         }
 
-
         // Deleting a person requires deleting that person from their relations with other people
         // Call the relationship helper to handle delete.
         RelationshipHelper.DeletePerson(_family, _family.Current);
@@ -2561,7 +2536,6 @@ namespace FamilyShow
         if (_family.Count > 0)
         {
           // Current person is deleted, choose someone else as the current person
-
           if (nextPerson != null)
           {
             _family.Current = nextPerson;
@@ -2729,7 +2703,6 @@ namespace FamilyShow
 
       //set default add action as spouse as this is most common
       ExistingFamilyMemberComboBox.SelectedItem = ExistingFamilyMemberComboBoxValue.Spouse;
-
     }
 
     /// <summary>
@@ -2737,7 +2710,6 @@ namespace FamilyShow
     /// </summary>
     private void CollapseAddExisting_StoryboardCompleted(object sender, EventArgs e)
     {
-
       _existingFilter = false;  //stop filtering on gender and relatives
       _resetFilter = true;      //allow quick filter reset
 
@@ -2894,7 +2866,7 @@ namespace FamilyShow
     /// <summary>
     /// Sets the next action for the Add Family Member Button
     /// </summary>
-    private void SetNextFamilyMemberAction(FamilyMemberComboBoxValue value)
+    internal void SetNextFamilyMemberAction(FamilyMemberComboBoxValue value)
     {
       FamilyMemberAddButton.CommandParameter = value;
 
@@ -2923,8 +2895,6 @@ namespace FamilyShow
         case "Spouse":
           Relationship = Properties.Resources.Spouse;
           break;
-
-
       }
 
       FamilyMemberAddButton.Content = Properties.Resources.Add + " " + Relationship;
@@ -3072,7 +3042,6 @@ namespace FamilyShow
     /// <param name="e"></param>
     private void ToolTip_All(object sender, ToolTipEventArgs e)
     {
-
       UpdateToolTip(BirthDateEditTextBox, _family.Current.BirthSource, _family.Current.BirthCitation);
       UpdateToolTip(BirthPlaceEditTextBox, _family.Current.BirthSource, _family.Current.BirthCitation);
 
@@ -3088,7 +3057,6 @@ namespace FamilyShow
       UpdateToolTip(EducationEditTextBox, _family.Current.EducationSource, _family.Current.EducationCitation);
       UpdateToolTip(OccupationEditTextBox, _family.Current.EducationSource, _family.Current.EducationCitation);
       UpdateToolTip(ReligionEditTextBox, _family.Current.EducationSource, _family.Current.EducationCitation);
-
     }
 
     #endregion
@@ -3114,7 +3082,6 @@ namespace FamilyShow
       Label s = (Label)sender;
       s.Foreground = System.Windows.Media.Brushes.White;
     }
-
   }
 
   /// <summary>
