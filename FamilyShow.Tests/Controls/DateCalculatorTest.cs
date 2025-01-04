@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace FamilyShow.Tests.Controls;
+﻿namespace FamilyShow.Tests.Controls;
 
 public class DateCalculatorTest
 {
@@ -32,19 +30,20 @@ public class DateCalculatorTest
   [StaTheory, MemberData(nameof(CalculateButtonCases))]
   public void CalculateButton_ClickTest(string culture, string date1, string date2, string age, string birthResult, string deathResult, string ageResult)
   {
-    // Arrange
-    CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(culture);
-    CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(culture);
-    DateCalculator calculator = new();
-    calculator.Date1TextBox.Text = date1;
-    calculator.Date2TextBox.Text = date2;
-    calculator.AgeTextBox.Text = age;
-    // Act
-    calculator.CalculateButton_Click(null, null);
-    // Assert
-    Assert.Equal(birthResult, calculator.BirthResult.Content);
-    Assert.Equal(deathResult, calculator.DeathResult.Content);
-    Assert.Equal(ageResult, calculator.AgeResult.Content);
+    using (new AnotherCulture(culture))
+    {
+      // Arrange
+      DateCalculator calculator = new();
+      calculator.Date1TextBox.Text = date1;
+      calculator.Date2TextBox.Text = date2;
+      calculator.AgeTextBox.Text = age;
+      // Act
+      calculator.CalculateButton_Click(null, null);
+      // Assert
+      Assert.Equal(birthResult, calculator.BirthResult.Content);
+      Assert.Equal(deathResult, calculator.DeathResult.Content);
+      Assert.Equal(ageResult, calculator.AgeResult.Content);
+    }
   }
 
   public static readonly TheoryData<string, string, bool, string, string, string, string> Calculate2ButtonCases =
@@ -69,17 +68,19 @@ public class DateCalculatorTest
   [StaTheory, MemberData(nameof(Calculate2ButtonCases))]
   public void Calculate2Button_ClickTest(string culture, string date, bool add, string days, string months, string years, string result)
   {
-    // Arrange
-    CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(culture);
-    DateCalculator calculator = new();
-    calculator.ToBox.Text = date;
-    calculator.DayBox.Text = days;
-    calculator.MonthBox.Text = months;
-    calculator.YearBox.Text = years;
-    calculator.AddSubtractComboBox.SelectedIndex = add ? 0 : 1;
-    // Act
-    calculator.Calculate2Button_Click(null, null);
-    // Assert
-    Assert.Equal(result, calculator.Result2.Content);
+    using (new AnotherCulture(culture))
+    {
+      // Arrange
+      DateCalculator calculator = new();
+      calculator.ToBox.Text = date;
+      calculator.DayBox.Text = days;
+      calculator.MonthBox.Text = months;
+      calculator.YearBox.Text = years;
+      calculator.AddSubtractComboBox.SelectedIndex = add ? 0 : 1;
+      // Act
+      calculator.Calculate2Button_Click(null, null);
+      // Assert
+      Assert.Equal(result, calculator.Result2.Content);
+    }
   }
 }
