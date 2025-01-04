@@ -8,6 +8,11 @@ public class DateCalculatorTest
     new()
     {
       { "en-US", "22 JUL 1890", "22 JAN 1995", string.Empty, "7/22/1890", "1/22/1995", "105 years" },
+      { "de-DE", "22 JUL 1890", "22 JAN 1995", string.Empty, "22.07.1890", "22.01.1995", "105 Jahre" },
+      { "en-GB", "22 JUL 1890", "22 JAN 1995", string.Empty, "22/07/1890", "22/01/1995", "105 years" },
+      { "es-ES", "22 JUL 1890", "22 JAN 1995", string.Empty, "22/7/1890", "22/1/1995", "105 años" },
+      { "fr-FR", "22 JUL 1890", "22 JAN 1995", string.Empty, "22/07/1890", "22/01/1995", "105 années" },
+      { "it-IT", "22 JUL 1890", "22 JAN 1995", string.Empty, "22/07/1890", "22/01/1995", "105 anni" },
       { "en-GB", "22 JUL 1890", string.Empty, "105", "22/07/1890", "22/07/1995", "105 years" },
       { "de-DE", string.Empty, "22 JAN 1995", "105", "22.01.1890", "22.01.1995", "105 Jahre" },
       { "en-US", string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty },
