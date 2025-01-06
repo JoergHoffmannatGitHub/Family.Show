@@ -47,12 +47,13 @@ public class DetailsTest
     family.Add(firstPerson);
     family.OnContentChanged();
 
-    Person newPerson = new("unrelated", "person");
-    sut.ExistingPeopleFilter(newPerson);
     sut.SetNextFamilyMemberAction(FamilyMemberComboBoxValue.Unrelated);
     sut.FamilyMemberAddButton_Click(null, null);
-    // Act
+
+    sut.NamesInputTextBox.Text = "unrelated";
+    sut.SurnameInputTextBox.Text = "person";
     sut.BirthDateInputTextBox.Text = birthDate;
+    // Act
     sut.AddButton_Click(null, null);
     // Assert
     Assert.Equal(expected, family.Current.BirthDate);
