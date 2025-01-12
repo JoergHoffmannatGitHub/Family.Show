@@ -112,24 +112,24 @@ internal partial class App : Application
   {
     string systemFolder = Environment.GetFolderPath(Environment.SpecialFolder.System);
     string applicationFilePath = Assembly.GetExecutingAssembly().Location;
-    _ = TaskBar.Create(window, Settings.Default.AppId, new JumpListLink[]
-    {
-      new(applicationFilePath, FamilyShow.Properties.Resources.StartANewFamilyTree)
-      {
-        Arguments = "/n",
-        IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 0),
-      },
-      new(applicationFilePath, FamilyShow.Properties.Resources.OpenMenu)
-      {
-        Arguments = "/o",
-        IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 4),
-      },
-      new(applicationFilePath, FamilyShow.Properties.Resources.GedcomMenu)
-      {
-        Arguments = "/i",
-        IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 4),
-      }
-    });
+    _ = TaskBar.Create(window, Settings.Default.AppId,
+      [
+        new JumpListLink(applicationFilePath, FamilyShow.Properties.Resources.StartANewFamilyTree)
+        {
+          Arguments = "/n",
+          IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 0),
+        },
+        new JumpListLink(applicationFilePath, FamilyShow.Properties.Resources.OpenMenu)
+        {
+          Arguments = "/o",
+          IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 4),
+        },
+        new JumpListLink(applicationFilePath, FamilyShow.Properties.Resources.GedcomMenu)
+        {
+          Arguments = "/i",
+          IconReference = new IconReference(Path.Combine(systemFolder, "shell32.dll"), 4),
+        }
+      ]);
   }
 
   protected override void OnExit(ExitEventArgs e)
@@ -364,42 +364,6 @@ internal partial class App : Application
     using (BinaryWriter writer = new(File.Open(path, FileMode.Create)))
     {
       writer.Write(fileContent);
-    }
-  }
-
-  /// <summary>
-  /// Converts string to date time object using DateTime.TryParse.  
-  /// Also accepts just the year for dates. 1977 = 1/1/1977.
-  /// </summary>
-  internal static DateTime StringToDate(string dateString)
-  {
-
-    //Append first month and day if just the year was entered.
-    if (dateString.Length == 4)
-    {
-      dateString = "1/1/" + dateString;
-    }
-
-    _ = DateTime.TryParse(dateString, out DateTime date);
-
-    return date;
-  }
-
-  /// <summary>
-  /// Converts a DateTime to a short string.  If DateTime is null, returns an empty string.
-  /// </summary>
-  /// <param name="date"></param>
-  /// <returns></returns>
-  internal static string DateToString(DateTime? date)
-  {
-
-    if (date == null)
-    {
-      return string.Empty;
-    }
-    else
-    {
-      return date.Value.ToShortDateString();
     }
   }
 

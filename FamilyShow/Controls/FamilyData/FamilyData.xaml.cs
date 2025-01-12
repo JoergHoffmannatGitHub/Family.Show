@@ -372,8 +372,8 @@ public partial class FamilyData : UserControl
 
     if (e.OriginalSource is DateTime date)
     {
-      _birthdateFilter = date.ToShortDateString();
-      UpdateFilter(date.ToShortDateString());
+      _birthdateFilter = date.ToShortString();
+      UpdateFilter(date.ToShortString());
     }
   }
 

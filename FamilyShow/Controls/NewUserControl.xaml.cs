@@ -53,11 +53,7 @@ public partial class NewUserControl : UserControl
       IsLiving = true
     };
 
-    DateTime birthdate = App.StringToDate(BirthDateInputTextBox.Text);
-    if (birthdate != DateTime.MinValue)
-    {
-      newPerson.BirthDate = birthdate;
-    }
+    newPerson.SetBirthDate(BirthDateInputTextBox.Text);
 
     _family.Current = newPerson;
     _family.Add(newPerson);

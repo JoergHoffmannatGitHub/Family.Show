@@ -1,7 +1,3 @@
-using Genealogy;
-
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
 namespace Genealogy.Tests;
 
 public class DateTest

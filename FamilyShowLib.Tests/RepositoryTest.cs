@@ -10,7 +10,7 @@ public class RepositoryTest
     Repository nullRepository = null!;
 
     Assert.False(s_sut.Equals(null));
-    Assert.True(nullRepository == null);
+    Assert.Null(nullRepository);
   }
 
   [Fact]

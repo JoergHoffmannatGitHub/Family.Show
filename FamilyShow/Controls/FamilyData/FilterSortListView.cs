@@ -8,7 +8,11 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Threading;
 
+using FamilyShowLib;
+
+#pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace FamilyShow;
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 
 /// <summary>
 /// Class that parses the filter text.
@@ -59,7 +63,7 @@ public class Filter
   /// </summary>
   public bool Matches(DateTime? date)
   {
-    return (date != null && date.Value.ToShortDateString().Contains(_filterText));
+    return (date.ToShortString().Contains(_filterText));
   }
 
   /// <summary>

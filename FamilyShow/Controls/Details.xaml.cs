@@ -422,11 +422,7 @@ namespace FamilyShow
           IsLiving = (IsLivingInputCheckbox.IsChecked == null) || (bool)IsLivingInputCheckbox.IsChecked
         };
 
-        DateTime birthdate = App.StringToDate(BirthDateInputTextBox.Text);
-        if (birthdate != DateTime.MinValue)
-        {
-          newPerson.BirthDate = birthdate;
-        }
+        newPerson.SetBirthDate(BirthDateInputTextBox.Text);
 
         newPerson.BirthPlace = BirthPlaceInputTextBox.Text;
 
@@ -572,11 +568,7 @@ namespace FamilyShow
           IsLiving = (IsLivingInputCheckbox.IsChecked == null) || (bool)IsLivingInputCheckbox.IsChecked
         };
 
-        DateTime birthdate = App.StringToDate(BirthDateInputTextBox.Text);
-        if (birthdate != DateTime.MinValue)
-        {
-          newPerson.BirthDate = birthdate;
-        }
+        newPerson.SetBirthDate(BirthDateInputTextBox.Text);
 
         newPerson.BirthPlace = BirthPlaceInputTextBox.Text;
 
@@ -843,7 +835,7 @@ namespace FamilyShow
           religionLink = "[<a href=\"" + p.ReligionLink + "\">Link</a>]";
         }
 
-        _tw.WriteLine("<tr><td>Birth</td><td>" + p.BirthDateDescriptor + " " + dateformat(p.BirthDate) + " " + p.BirthPlace + "</td><td>" + p.BirthCitation + "</td><td>" + p.BirthCitationActualText + "</td><td>" + p.BirthCitationNote + "</td><td>" + birthLink + "</td><td>" + p.BirthSource + "</td></tr>");
+        _tw.WriteLine("<tr><td>Birth</td><td>" + p.BirthDateDescriptor + " " + p.BirthDate.Format() + " " + p.BirthPlace + "</td><td>" + p.BirthCitation + "</td><td>" + p.BirthCitationActualText + "</td><td>" + p.BirthCitationNote + "</td><td>" + birthLink + "</td><td>" + p.BirthSource + "</td></tr>");
         _tw.WriteLine("<tr><td>Occupation</td><td>" + p.Occupation + "</td><td>" + p.OccupationCitation + "</td><td>" + p.OccupationCitationActualText + "</td><td>" + p.OccupationCitationNote + "</td><td>" + occupationLink + "</td><td>" + p.OccupationSource + "</td></tr>");
         _tw.WriteLine("<tr><td>Education</td><td>" + p.Education + "</td><td>" + p.EducationCitation + "</td><td>" + p.EducationCitationActualText + "</td><td>" + p.EducationCitationNote + "</td><td>" + educationLink + "</td><td>" + p.EducationSource + "</td></tr>");
         _tw.WriteLine("<tr><td>Religion</td><td>" + p.Religion + "</td><td>" + p.ReligionCitation + "</td><td>" + p.ReligionCitationActualText + "</td><td>" + p.ReligionCitationNote + "</td><td>" + religionLink + "</td><td>" + p.ReligionSource + "</td></tr>");
@@ -868,7 +860,7 @@ namespace FamilyShow
 
             if (!string.IsNullOrEmpty(((SpouseRelationship)rel).MarriageDate.ToString()))
             {
-              m2 = dateformat(((SpouseRelationship)rel).MarriageDate);
+              m2 = ((SpouseRelationship)rel).MarriageDate.Format();
             }
 
             if (!string.IsNullOrEmpty(((SpouseRelationship)rel).MarriagePlace))
@@ -921,7 +913,7 @@ namespace FamilyShow
 
               if (!string.IsNullOrEmpty(((SpouseRelationship)rel).DivorceDate.ToString()))
               {
-                d2 = dateformat(((SpouseRelationship)rel).DivorceDate);
+                d2 = ((SpouseRelationship)rel).DivorceDate.Format();
               }
 
               if (!string.IsNullOrEmpty(((SpouseRelationship)rel).DivorceCitation))
@@ -980,9 +972,9 @@ namespace FamilyShow
             cremationLink = "[<a href=\"" + p.CremationLink + "\">Link</a>]";
           }
 
-          _tw.WriteLine("<tr><td>Death</td><td>" + p.DeathDateDescriptor + " " + dateformat(p.DeathDate) + " " + p.DeathPlace + "</td><td>" + p.DeathCitation + "</td><td>" + p.DeathCitationActualText + "</td><td>" + p.DeathCitationNote + "</td><td>" + deathLink + "</td><td>" + p.DeathSource + "</td></tr>");
-          _tw.WriteLine("<tr><td>Burial</td><td>" + p.BurialDateDescriptor + " " + dateformat(p.BurialDate) + " " + p.BurialPlace + "</td><td>" + p.BurialCitation + "</td><td>" + p.BurialCitationActualText + "</td><td>" + p.BurialCitationNote + "</td><td>" + burialLink + "</td><td>" + p.BurialSource + "</td></tr>");
-          _tw.WriteLine("<tr><td>Cremation</td><td>" + p.CremationDateDescriptor + " " + dateformat(p.CremationDate) + " " + p.CremationPlace + "</td><td>" + p.CremationCitation + "</td><td>" + p.CremationCitationActualText + "</td><td>" + p.CremationCitationNote + "</td><td>" + cremationLink + "</td><td>" + p.CremationSource + "</td></tr>");
+          _tw.WriteLine("<tr><td>Death</td><td>" + p.DeathDateDescriptor + " " + p.DeathDate.Format() + " " + p.DeathPlace + "</td><td>" + p.DeathCitation + "</td><td>" + p.DeathCitationActualText + "</td><td>" + p.DeathCitationNote + "</td><td>" + deathLink + "</td><td>" + p.DeathSource + "</td></tr>");
+          _tw.WriteLine("<tr><td>Burial</td><td>" + p.BurialDateDescriptor + " " + p.BurialDate.Format() + " " + p.BurialPlace + "</td><td>" + p.BurialCitation + "</td><td>" + p.BurialCitationActualText + "</td><td>" + p.BurialCitationNote + "</td><td>" + burialLink + "</td><td>" + p.BurialSource + "</td></tr>");
+          _tw.WriteLine("<tr><td>Cremation</td><td>" + p.CremationDateDescriptor + " " + p.CremationDate.Format() + " " + p.CremationPlace + "</td><td>" + p.CremationCitation + "</td><td>" + p.CremationCitationActualText + "</td><td>" + p.CremationCitationNote + "</td><td>" + cremationLink + "</td><td>" + p.CremationSource + "</td></tr>");
         }
         #endregion
 
@@ -1107,22 +1099,6 @@ namespace FamilyShow
       string versionlabel = string.Format(CultureInfo.CurrentCulture, "{0}.{1}.{2}", version.Major, version.Minor, version.Build);
       string date = DateTime.Now.ToString();
       return "</table><br/><p><i>Generated by Family.Show Version " + versionlabel + " on " + date + "</i></p></body></html>";
-    }
-
-    /// <summary>
-    /// Get a date in dd/mm/yyyy format from a full DateTime?
-    /// </summary>
-    private static string dateformat(DateTime? dates)
-    {
-      string date = string.Empty;
-      if (dates != null)  //don't try if date is null!
-      {
-        int month = dates.Value.Month;
-        int day = dates.Value.Day;
-        int year = dates.Value.Year;
-        date = day + "/" + month + "/" + year;
-      }
-      return date;
     }
 
     private void DoneEditCitationsButton_Click(object sender, RoutedEventArgs e)
@@ -1728,15 +1704,9 @@ namespace FamilyShow
             ToDescriptor.Content = string.Empty;
             FromDescriptor.Content = string.Empty;
 
-            if (spouseRel.MarriageDate.HasValue)
-            {
-              FromEditTextBox.Text = ((DateTime)spouseRel.MarriageDate).ToShortDateString();
-            }
+            FromEditTextBox.Text = spouseRel.MarriageDate.ToShortString();
 
-            if (spouseRel.DivorceDate.HasValue)
-            {
-              ToEditTextBox.Text = ((DateTime)spouseRel.DivorceDate).ToShortDateString();
-            }
+            ToEditTextBox.Text = spouseRel.DivorceDate.ToShortString();
 
             if (spouseRel.MarriagePlace != null)
             {
@@ -2190,17 +2160,7 @@ namespace FamilyShow
       {
         #region Perform the businless logic for updating the marriage date
 
-        DateTime marriageDate = App.StringToDate(FromEditTextBox.Text);
-
-        if (marriageDate == DateTime.MinValue)
-        {
-          // Clear the marriage date
-          RelationshipHelper.UpdateMarriageDate(_family.Current, (Person)SpousesCombobox.SelectedItem, null);
-        }
-        else
-        {
-          RelationshipHelper.UpdateMarriageDate(_family.Current, (Person)SpousesCombobox.SelectedItem, marriageDate);
-        }
+        RelationshipHelper.UpdateMarriageDate(_family.Current, (Person)SpousesCombobox.SelectedItem, FromEditTextBox.Text.ToDate());
 
         // Let the collection know that it has been updated
         _family.OnContentChanged();
@@ -2216,17 +2176,7 @@ namespace FamilyShow
       {
         #region Perform the businless logic for updating the divorce date
 
-        DateTime divorceDate = App.StringToDate(ToEditTextBox.Text);
-
-        if (divorceDate == DateTime.MinValue)
-        {
-          // Clear the divorce date
-          RelationshipHelper.UpdateDivorceDate(_family.Current, (Person)SpousesCombobox.SelectedItem, null);
-        }
-        else
-        {
-          RelationshipHelper.UpdateDivorceDate(_family.Current, (Person)SpousesCombobox.SelectedItem, divorceDate);
-        }
+        RelationshipHelper.UpdateDivorceDate(_family.Current, (Person)SpousesCombobox.SelectedItem, ToEditTextBox.Text.ToDate());
 
         // Let the collection know that it has been updated
         _family.OnContentChanged();
@@ -2872,28 +2822,30 @@ namespace FamilyShow
 
       string Relationship = string.Empty;
 
-      switch (value.ToString())
+      switch (value)
       {
-        case "Father":
+        case FamilyMemberComboBoxValue.Father:
           Relationship = Properties.Resources.Father;
           break;
-        case "Mother":
+        case FamilyMemberComboBoxValue.Mother:
           Relationship = Properties.Resources.Mother;
           break;
-        case "Brother":
+        case FamilyMemberComboBoxValue.Brother:
           Relationship = Properties.Resources.Brother;
           break;
-        case "Sister":
+        case FamilyMemberComboBoxValue.Sister:
           Relationship = Properties.Resources.Sister;
           break;
-        case "Son":
+        case FamilyMemberComboBoxValue.Son:
           Relationship = Properties.Resources.Son;
           break;
-        case "Daughter":
+        case FamilyMemberComboBoxValue.Daughter:
           Relationship = Properties.Resources.Daughter;
           break;
-        case "Spouse":
+        case FamilyMemberComboBoxValue.Spouse:
           Relationship = Properties.Resources.Spouse;
+          break;
+        default:
           break;
       }
 

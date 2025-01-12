@@ -10,7 +10,9 @@ using System.Windows;
 
 using FamilyShowLib;
 
+#pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace FamilyShow;
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 
 internal class DiagramLogic
 {
@@ -81,42 +83,22 @@ internal class DiagramLogic
       // Init to current year.
       double minimumYear = DateTime.Now.Year;
 
-      // Check birth years.
       foreach (DiagramConnectorNode connectorNode in PersonLookup.Values)
       {
-        DateTime? date = connectorNode.Node.Person.BirthDate;
-        if (date != null)
-        {
-          minimumYear = Math.Min(minimumYear, date.Value.Year);
-        }
+        // Check birth years.
+        minimumYear = DiagramLogic.GetMinimumYearFromDate(minimumYear, connectorNode.Node.Person.BirthDate);
+
+        // Check death years.
+        minimumYear = DiagramLogic.GetMinimumYearFromDate(minimumYear, connectorNode.Node.Person.DeathDate);
       }
 
-      // Check death years.
-      foreach (DiagramConnectorNode connectorNode in PersonLookup.Values)
-      {
-        DateTime? date = connectorNode.Node.Person.DeathDate;
-        if (date != null)
-        {
-          minimumYear = Math.Min(minimumYear, date.Value.Year);
-        }
-      }
-
-      // Check marriage years.
       foreach (DiagramConnector connector in Connections)
       {
         // Marriage date.
-        DateTime? date = connector.MarriedDate;
-        if (date != null)
-        {
-          minimumYear = Math.Min(minimumYear, date.Value.Year);
-        }
+        minimumYear = DiagramLogic.GetMinimumYearFromDate(minimumYear, connector.MarriedDate);
 
-        // Previous marriage date.
-        date = connector.PreviousMarriedDate;
-        if (date != null)
-        {
-          minimumYear = Math.Min(minimumYear, date.Value.Year);
-        }
+        // Previous marriage (divorve) date.
+        minimumYear = DiagramLogic.GetMinimumYearFromDate(minimumYear, connector.PreviousMarriedDate);
       }
 
       return minimumYear;
@@ -124,6 +106,16 @@ internal class DiagramLogic
   }
 
   #endregion
+
+  internal static double GetMinimumYearFromDate(double minimumYear, DateTime? date)
+  {
+    if (date != null)
+    {
+      minimumYear = Math.Min(minimumYear, date.Value.Year);
+    }
+
+    return minimumYear;
+  }
 
   public DiagramLogic(DpiScale dpiScale)
   {

@@ -356,14 +356,14 @@ public partial class Merge : UserControl
     OldBirthPlace.Content = existingPerson.BirthPlace;
     NewBirthPlace.Content = newPerson.BirthPlace;
 
-    OldBirthDate.Content = existingPerson.BirthDateDescriptor + DateToString(existingPerson.BirthDate);
-    NewBirthDate.Content = newPerson.BirthDateDescriptor + DateToString(newPerson.BirthDate);
+    OldBirthDate.Content = existingPerson.BirthDateDescriptor + existingPerson.BirthDate.ToShortString();
+    NewBirthDate.Content = newPerson.BirthDateDescriptor + newPerson.BirthDate.ToShortString();
 
     OldDeathPlace.Content = existingPerson.DeathPlace;
     NewDeathPlace.Content = newPerson.DeathPlace;
 
-    OldDeathDate.Content = existingPerson.DeathDateDescriptor + DateToString(existingPerson.DeathDate);
-    NewDeathDate.Content = newPerson.DeathDateDescriptor + DateToString(newPerson.DeathDate);
+    OldDeathDate.Content = existingPerson.DeathDateDescriptor + existingPerson.DeathDate.ToShortString();
+    NewDeathDate.Content = newPerson.DeathDateDescriptor + newPerson.DeathDate.ToShortString();
 
     OldEducation.Content = existingPerson.Education;
     NewEducation.Content = newPerson.Education;
@@ -377,11 +377,11 @@ public partial class Merge : UserControl
     OldBurialPlace.Content = existingPerson.BurialPlace;
     NewBurialPlace.Content = newPerson.BurialPlace;
 
-    OldBurialDate.Content = existingPerson.BurialDateDescriptor + DateToString(existingPerson.BurialDate);
-    NewBurialDate.Content = newPerson.BurialDateDescriptor + DateToString(newPerson.BurialDate);
+    OldBurialDate.Content = existingPerson.BurialDateDescriptor + existingPerson.BurialDate.ToShortString();
+    NewBurialDate.Content = newPerson.BurialDateDescriptor + newPerson.BurialDate.ToShortString();
 
-    OldCremationDate.Content = existingPerson.CremationDateDescriptor + DateToString(existingPerson.CremationDate);
-    NewCremationDate.Content = newPerson.CremationDateDescriptor + DateToString(newPerson.CremationDate);
+    OldCremationDate.Content = existingPerson.CremationDateDescriptor + existingPerson.CremationDate.ToShortString();
+    NewCremationDate.Content = newPerson.CremationDateDescriptor + newPerson.CremationDate.ToShortString();
 
     OldCremationPlace.Content = existingPerson.CremationPlace;
     NewCremationPlace.Content = newPerson.CremationPlace;
@@ -777,16 +777,6 @@ public partial class Merge : UserControl
     _count = 0;
     _i = 0;
 
-  }
-
-  /// <summary>
-  /// Converts a DateTime to a short string.  If DateTime is null, returns an empty string.
-  /// </summary>
-  /// <param name="date"></param>
-  /// <returns></returns>
-  private static string DateToString(DateTime? date)
-  {
-    return App.DateToString(date);
   }
 
   #endregion

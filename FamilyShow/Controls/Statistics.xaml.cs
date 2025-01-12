@@ -767,52 +767,34 @@ public partial class Statistics : UserControl
   {
     List<DateTime?> dates = [];
 
-    if (marriageDate != null)
+    if (!marriageDate.IsNullOrEmpty())
     {
-      if (marriageDate.Value > DateTime.MinValue)
-      {
-        dates.Add(marriageDate);
-      }
+      dates.Add(marriageDate);
     }
 
-    if (divorceDate != null)
+    if (!divorceDate.IsNullOrEmpty())
     {
-      if (divorceDate.Value > DateTime.MinValue)
-      {
-        dates.Add(divorceDate);
-      }
+      dates.Add(divorceDate);
     }
 
-    if (birthDate != null)
+    if (!birthDate.IsNullOrEmpty())
     {
-      if (birthDate.Value > DateTime.MinValue)
-      {
-        dates.Add(birthDate);
-      }
+      dates.Add(birthDate);
     }
 
-    if (deathDate != null)
+    if (!deathDate.IsNullOrEmpty())
     {
-      if (deathDate.Value > DateTime.MinValue)
-      {
-        dates.Add(deathDate);
-      }
+      dates.Add(deathDate);
     }
 
-    if (cremationDate != null)
+    if (!cremationDate.IsNullOrEmpty())
     {
-      if (burialDate.Value > DateTime.MinValue)
-      {
-        dates.Add(cremationDate);
-      }
+      dates.Add(cremationDate);
     }
 
-    if (burialDate != null)
+    if (!burialDate.IsNullOrEmpty())
     {
-      if (burialDate.Value > DateTime.MinValue)
-      {
-        dates.Add(burialDate);
-      }
+      dates.Add(burialDate);
     }
 
     if (sort == "min")

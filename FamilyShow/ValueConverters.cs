@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
+using FamilyShowLib;
+
 namespace FamilyShow;
 
 /// <summary>
@@ -18,34 +20,12 @@ public class DateFormattingConverter : IValueConverter
 
   public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
   {
-
-    if (value != null)
-    {
-      return ((DateTime)value).ToShortDateString();
-    }
-
-    return string.Empty;
+    return ((DateTime?)value).ToShortString();
   }
 
   public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
   {
-
-    if (string.IsNullOrEmpty((string)value))
-    {
-      return null;
-    }
-
-    string dateString = (string)value;
-
-    // Append first month and day if just the year was entered
-    if (dateString.Length == 4)
-    {
-      dateString = "1/1/" + dateString;
-    }
-
-    _ = DateTime.TryParse(dateString, out DateTime date);
-
-    return date;
+    return ((string)value).ToDate();
   }
 
   #endregion
