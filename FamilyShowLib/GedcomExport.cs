@@ -34,14 +34,26 @@ public class GedcomExport
   #region fields
 
   // Writes the text (GEDCOM) file.
-  private StreamWriter _writer;
+  internal StreamWriter _writer;
+
+  internal TimeProvider _timeProvider = TimeProvider.System;
+
+  internal readonly Dictionary<string, string> _culturLanguageIdMap = new()
+  {
+    { "en-US", "English" },
+    { "en-GB", "Anglo-Saxon" },
+    { "it-IT", "Italian" },
+    { "es-ES", "Spanish" },
+    { "fr-FR", "French" },
+    { "de-DE", "German" },
+  };
 
   // Maps GUID IDs (which are too long for GEDCOM) to smaller IDs.
   private readonly GedcomIdMap _idMap = new();
 
   // The people collection that is being exported.
   private PeopleCollection _people;
-  private SourceCollection _sources;
+  internal SourceCollection _sources;
   private RepositoryCollection _repositories;
 
   // Family group counter.
@@ -73,7 +85,7 @@ public class GedcomExport
   /// <summary>
   /// Export summary to GEDCOM file.
   /// </summary>
-  private void ExportSummary(string gedcomFilePath, string familyxFilePath, string language)
+  internal void ExportSummary(string gedcomFilePath, string familyxFilePath, string language)
   {
     WriteLine(1, "SOUR", "");
 
@@ -88,9 +100,10 @@ public class GedcomExport
       WriteLine(2, "DATA", Path.GetFileName(familyxFilePath));
     }
 
-    string Date = ExportDate(DateTime.Now);  //GEDCOM dates must be of the form 01 JAN 2009
+    DateTime now = _timeProvider.GetLocalNow().DateTime;
+    string Date = ExportDate(now);  //GEDCOM dates must be of the form 01 JAN 2009
+    string Time = now.ToLongTimeString();
     string filename = Path.GetFileName(gedcomFilePath);
-    string Time = DateTime.Now.ToLongTimeString();
 
     WriteLine(1, "DATE", Date);
     WriteLine(2, "TIME", Time);
@@ -100,31 +113,7 @@ public class GedcomExport
     WriteLine(2, "FORM", "LINEAGE-LINKED");
     WriteLine(1, "CHAR", "UTF-8");
 
-    switch (language)
-    {
-      case "en-US":
-        WriteLine(1, "LANG", "English");
-        break;
-      case "en-GB":
-        WriteLine(1, "LANG", "Anglo-Saxon");
-        break;
-      case "it-IT":
-        WriteLine(1, "LANG", "Italian");
-        break;
-      case "es-ES":
-        WriteLine(1, "LANG", "Spanish");
-        break;
-      case "fr-FR":
-        WriteLine(1, "LANG", "French");
-        break;
-      case "de-DE":
-        WriteLine(1, "LANG", "German");
-        break;
-      default:
-        WriteLine(1, "LANG", "English");
-        break;
-    }
-
+    WriteLine(1, "LANG", _culturLanguageIdMap.GetValueOrDefault(language, "English"));
   }
 
   /// <summary>
@@ -650,7 +639,7 @@ public class GedcomExport
     }
   }
 
-  private void ExportEvent(string tag, string tagDescription, string descriptor, DateTime? date, string place, string citation, string citationNote, string citationActualText, string link, string source)
+  internal void ExportEvent(string tag, string tagDescription, string descriptor, DateTime? date, string place, string citation, string citationNote, string citationActualText, string link, string source)
   {
     // Return right away if don't have a date or place to export.
     if (date == null && string.IsNullOrEmpty(place))
@@ -658,16 +647,10 @@ public class GedcomExport
       return;
     }
 
-    string Date = null;
-
     // Start the new event tag.
     WriteLine(1, tag, tagDescription);
 
-    if (date != null)
-    {
-      Date = ExportDate(date);
-    }
-
+    string Date = ExportDate(date);
     if (!string.IsNullOrEmpty(Date))
     {
       WriteLine(2, "DATE", descriptor + Date);
@@ -716,12 +699,7 @@ public class GedcomExport
 
   }
 
-  internal static string ExportDateWrapper(DateTime? date)
-  {
-    return ExportDate(date);
-  }
-
-  private static string ExportDate(DateTime? date)
+  internal static string ExportDate(DateTime? date)
   {
     if (date == null)
     {
