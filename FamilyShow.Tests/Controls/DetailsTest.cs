@@ -6,7 +6,6 @@ namespace FamilyShow.Tests.Controls;
 public class DetailsTest
 {
   [StaTheory]
-  [UseCulture("en-US")]
   [InlineData(FamilyMemberComboBoxValue.Father, "Add Father")]
   [InlineData(FamilyMemberComboBoxValue.Mother, "Add Mother")]
   [InlineData(FamilyMemberComboBoxValue.Brother, "Add Brother")]
@@ -18,12 +17,15 @@ public class DetailsTest
   [InlineData(FamilyMemberComboBoxValue.Existing, "Add ")]
   public void SetNextFamilyMemberActionTest(FamilyMemberComboBoxValue familyMemberComboBoxValue, string expected)
   {
-    // Arrange
-    Details sut = new();
-    // Act
-    sut.SetNextFamilyMemberAction(familyMemberComboBoxValue);
-    // Assert
-    Assert.Equal(expected, sut.FamilyMemberAddButton.Content);
+    using (new AnotherCulture("en-US"))
+    {
+      // Arrange
+      Details sut = new();
+      // Act
+      sut.SetNextFamilyMemberAction(familyMemberComboBoxValue);
+      // Assert
+      Assert.Equal(expected, sut.FamilyMemberAddButton.Content);
+    }
   }
 
   public static readonly TheoryData<string, DateTime?> StringDateCases =

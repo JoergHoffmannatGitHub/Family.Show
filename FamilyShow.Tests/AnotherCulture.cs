@@ -36,6 +36,9 @@ internal sealed class AnotherCulture : IDisposable
     // These properties are only available as of .NET 4.5.
     CultureInfo.DefaultThreadCurrentCulture = otherCulture;
     CultureInfo.DefaultThreadCurrentUICulture = otherCulture;
+
+    CultureInfo.CurrentCulture.ClearCachedData();
+    CultureInfo.CurrentUICulture.ClearCachedData();
   }
 
   #region - IDisposable Implementation -
@@ -65,6 +68,9 @@ internal sealed class AnotherCulture : IDisposable
         Thread.CurrentThread.CurrentUICulture = _originalCurrentUICulture;
         CultureInfo.DefaultThreadCurrentCulture = _originalDefaultThreadCurrentCulture;
         CultureInfo.DefaultThreadCurrentUICulture = _originalDefaultThreadCurrentUICulture;
+
+        CultureInfo.CurrentCulture.ClearCachedData();
+        CultureInfo.CurrentUICulture.ClearCachedData();
       }
 
       // Clean up unmanaged resources here.
