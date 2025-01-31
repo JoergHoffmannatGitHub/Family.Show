@@ -642,7 +642,7 @@ public class GedcomExport
   internal void ExportEvent(string tag, string tagDescription, string descriptor, DateTime? date, string place, string citation, string citationNote, string citationActualText, string link, string source)
   {
     // Return right away if don't have a date or place to export.
-    if (date == null && string.IsNullOrEmpty(place))
+    if (date.IsNullOrEmpty() && string.IsNullOrEmpty(place))
     {
       return;
     }
@@ -701,38 +701,8 @@ public class GedcomExport
 
   internal static string ExportDate(DateTime? date)
   {
-    if (date == null)
-    {
-      return string.Empty;
-    }
-    else
-    {
-
-      string day = date.Value.Day.ToString();
-      string year = date.Value.Year.ToString();
-      int month = date.Value.Month;
-      string monthString = GetMMM(month);
-      return day + " " + monthString + " " + year;
-    }
+    return date.ToGedcom();
   }
-
-  //converts month number to 3 letter month abbreviation as used in GEDCOM
-  private static string GetMMM(int month) => month switch
-  {
-    1 => "JAN",
-    2 => "FEB",
-    3 => "MAR",
-    4 => "APR",
-    5 => "MAY",
-    6 => "JUN",
-    7 => "JUL",
-    8 => "AUG",
-    9 => "SEP",
-    10 => "OCT",
-    11 => "NOV",
-    12 => "DEC",
-    _ => throw new NotImplementedException()
-  };
 
   private void ExportGender(Person person)
   {

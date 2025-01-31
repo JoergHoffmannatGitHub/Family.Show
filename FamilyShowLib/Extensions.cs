@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Windows.Forms;
 
 namespace FamilyShowLib;
 
@@ -46,6 +47,51 @@ public static class Extensions
 
     return date;
   }
+
+  /// <summary>
+  /// Converts a date into a GEDCOM-formatted string.
+  /// </summary>
+  /// <returns>GEDCOM date or string.Empty, if Date? is null.</returns>
+  public static string ToGedcom(this DateTime? date)
+  {
+    if (date == null)
+    {
+      return string.Empty;
+    }
+    else
+    {
+      string result = string.Empty;
+      if (date.Value.Day > 0)
+      {
+        result += date.Value.Day + " ";
+      }
+
+      if (date.Value.Month > 0)
+      {
+        result += GetMMM(date.Value.Month) + " ";
+      }
+
+      return result + date.Value.Year;
+    }
+  }
+
+  //converts month number to 3 letter month abbreviation as used in GEDCOM
+  private static string GetMMM(int month) => month switch
+  {
+    1 => "JAN",
+    2 => "FEB",
+    3 => "MAR",
+    4 => "APR",
+    5 => "MAY",
+    6 => "JUN",
+    7 => "JUL",
+    8 => "AUG",
+    9 => "SEP",
+    10 => "OCT",
+    11 => "NOV",
+    12 => "DEC",
+    _ => throw new NotImplementedException()
+  };
 
   /// <summary>
   /// Indicates whether the specified <see cref="DateTime"/> is <see langword="null"/> or an empty <see cref="DateTime"/> (<see cref="DateTime.MinValue"/>).
