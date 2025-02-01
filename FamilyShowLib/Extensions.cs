@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Windows.Forms;
 
 namespace FamilyShowLib;
 
@@ -34,6 +33,8 @@ public static class Extensions
   /// <summary>
   /// Get a date in dd/mm/yyyy format from a full DateTime?
   /// </summary>
+  /// <param name="dates">The nullable DateTime to format.</param>
+  /// <returns>A string representing the date in dd/mm/yyyy format.</returns>
   public static string Format(this DateTime? dates)
   {
     string date = string.Empty;
@@ -54,7 +55,7 @@ public static class Extensions
   /// <returns>GEDCOM date or string.Empty, if Date? is null.</returns>
   public static string ToGedcom(this DateTime? date)
   {
-    if (date == null)
+    if (date == null)  //don't try if date is null!
     {
       return string.Empty;
     }
@@ -75,7 +76,11 @@ public static class Extensions
     }
   }
 
-  //converts month number to 3 letter month abbreviation as used in GEDCOM
+  /// <summary>
+  /// Converts month number to 3 letter month abbreviation as used in GEDCOM.
+  /// </summary>
+  /// <param name="month">The month number to convert.</param>
+  /// <returns>The 3 letter month abbreviation.</returns>
   private static string GetMMM(int month) => month switch
   {
     1 => "JAN",
@@ -94,10 +99,13 @@ public static class Extensions
   };
 
   /// <summary>
-  /// Indicates whether the specified <see cref="DateTime"/> is <see langword="null"/> or an empty <see cref="DateTime"/> (<see cref="DateTime.MinValue"/>).
+  /// Indicates whether the specified <see cref="DateTime"/> is <see langword="null"/>
+  /// or an empty <see cref="DateTime"/> (<see cref="DateTime.MinValue"/>).
   /// </summary>
-  /// <param name="date">The date to convert.</param>
-  /// <returns><see langword="true"/> if the <paramref name="date"/> parameter is <see langword="null"/> or an empty <see cref="DateTime"/> (DateTime.MinValue); otherwise, <see langword="false"/>.</returns>
+  /// <param name="date">The date to check.</param>
+  /// <returns><see langword="true"/> if the <paramref name="date"/> parameter is
+  /// <see langword="null"/> or an empty <see cref="DateTime"/> (DateTime.MinValue);
+  /// otherwise, <see langword="false"/>.</returns>
   public static bool IsNullOrEmpty([NotNullWhen(false)] this DateTime? date)
   {
     return date == null || date == DateTime.MinValue || date == DateTime.MaxValue;
@@ -112,10 +120,12 @@ public static class Extensions
   /// Also accepts just the year for dates. 1977 = 1/1/1977.
   /// </summary>
   /// <param name="dateString">The string to convert.</param>
-  /// <returns><see langword="null"/> if the <paramref name="dateString"/> parameter is <see langword="null"/> or an empty <see cref="DateTime"/> (DateTime.MinValue); otherwise, <see cref="DateTime"/>.</returns>
+  /// <returns><see langword="null"/> if the <paramref name="dateString"/>
+  /// parameter is <see langword="null"/> or an empty <see cref="DateTime"/>
+  /// (DateTime.MinValue); otherwise, <see langword="false"/>.</returns>
   public static DateTime? ToDate(this string dateString)
   {
-    //Append first month and day if just the year was entered.
+    // Append first month and day if just the year was entered.
     if (dateString.Length == 4)
     {
       dateString = "1/1/" + dateString;
@@ -136,8 +146,8 @@ public static class Extensions
   /// <summary>
   /// Converts string to date and set the person's birth date.
   /// </summary>
-  /// <param name="person"></param>
-  /// <param name="dateString"></param>
+  /// <param name="person">The person to set the birth date for.</param>
+  /// <param name="dateString">The string to convert to a date.</param>
   public static void SetBirthDate(this Person person, string dateString)
   {
     DateTime? birthdate = dateString.ToDate();

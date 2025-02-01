@@ -865,7 +865,7 @@ public class People
     {
       // Could not load the file. Handle all exceptions
       // the same, ignore and continue.
-      // inform the developper
+      // inform the developer
       Debug.Assert(false);
       FullyQualifiedFilename = string.Empty;
       // Warn user of problem with file.
@@ -1062,7 +1062,7 @@ public class People
     {
       // Could not load the file. Handle all exceptions
       // the same, ignore and continue.
-      // inform the developper
+      // inform the developer
       Debug.Assert(false);
       FullyQualifiedFilename = string.Empty;
       // Warn user of problem with file.

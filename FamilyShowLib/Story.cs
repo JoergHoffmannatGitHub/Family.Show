@@ -117,7 +117,7 @@ public class Story : INotifyPropertyChanged
     {
       // Could not save the story. Handle all exceptions
       // the same, ignore and continue.
-      // inform the developper
+      // inform the developer
       Debug.Assert(false);
     }
   }
@@ -147,7 +147,7 @@ public class Story : INotifyPropertyChanged
       {
         // Could not load the story. Handle all exceptions
         // the same, ignore and continue.
-        // inform the developper
+        // inform the developer
         Debug.Assert(false);
       }
     }
@@ -182,7 +182,7 @@ public class Story : INotifyPropertyChanged
       {
         // Could not delete the file. Handle all exceptions
         // the same, ignore and continue.
-        // inform the developper
+        // inform the developer
         Debug.Assert(false);
       }
     }

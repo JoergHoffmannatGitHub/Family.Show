@@ -172,7 +172,7 @@ public class Photo : INotifyPropertyChanged
     {
       // Could not copy the photo. Handle all exceptions 
       // the same, ignore and continue.
-      // inform the developper
+      // inform the developer
       Debug.Assert(false);
     }
 

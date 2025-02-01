@@ -498,7 +498,11 @@ public class GedcomImport
   /// <summary>
   /// Update the marriage / divorce information for the two people.
   /// </summary>
-  private static void ImportMarriage(Person husband, Person wife, XmlNode node, XmlDocument doc)
+  /// <param name="husband">The husband person object.</param>
+  /// <param name="wife">The wife person object.</param>
+  /// <param name="node">The XML node containing marriage/divorce information.</param>
+  /// <param name="doc">The XML document.</param>
+  internal static void ImportMarriage(Person husband, Person wife, XmlNode node, XmlDocument doc)
   {
     // Return right away if there are not two people.
     if (husband == null || wife == null)
@@ -576,7 +580,6 @@ public class GedcomImport
         };
 
         husband.Relationships.Add(husbandMarriage);
-
       }
 
       // Add info to wife.
@@ -656,7 +659,7 @@ public class GedcomImport
     {
       // There was an error importing a photo, ignore 
       // and continue processing the GEDCOM XML file.
-      // inform the developper
+      // inform the developer
       Debug.Assert(false);
     }
   }
@@ -679,7 +682,7 @@ public class GedcomImport
     {
       // There was an error importing the note, ignore
       // and continue processing the GEDCOM XML file.
-      // inform the developper
+      // inform the developer
       Debug.Assert(false);
     }
   }
@@ -1111,16 +1114,14 @@ public class GedcomImport
     return string.Empty;
   }
 
-  internal static DateTime? GetValueDateWrapper(XmlNode node, string xpath)
-  {
-    return GetValueDate(node, xpath);
-  }
-
   /// <summary>
-  /// Method to try and extract approximate dates from the wide variety of non standard date notations in use.
+  /// Method to try and extract approximate dates from the wide variety of non-standard date notations in use.
   /// Could be extended to work with more scenarios.
   /// </summary>
-  private static DateTime? GetValueDate(XmlNode node, string xpath)
+  /// <param name="node">The XML node containing the date information.</param>
+  /// <param name="xpath">The XPath query to select the date node.</param>
+  /// <returns>A nullable DateTime object representing the extracted date, or null if the date is invalid.</returns>
+  internal static DateTime? GetValueDate(XmlNode node, string xpath)
   {
     DateTime? result = null;
 
@@ -1208,7 +1209,14 @@ public class GedcomImport
     return result;
   }
 
-  private static string GetValueDateDescriptor(XmlNode node, string xpath)
+  /// <summary>
+  /// Gets a descriptor for a date value from the GEDCOM XML file.
+  /// The descriptor can be "ABT" (about), "AFT" (after), or "BEF" (before) based on the date value.
+  /// </summary>
+  /// <param name="node">The XML node containing the date information.</param>
+  /// <param name="xpath">The XPath query to select the date node.</param>
+  /// <returns>A string representing the date descriptor, or an empty string if no descriptor is found.</returns>
+  internal static string GetValueDateDescriptor(XmlNode node, string xpath)
   {
     try
     {
@@ -1273,7 +1281,7 @@ public class GedcomImport
     catch
     {
       // The date is invalid, ignore and continue processing.
-      // inform the developper
+      // inform the developer
       Debug.Assert(false);
     }
 
@@ -1292,7 +1300,7 @@ public class GedcomImport
     catch
     {
       // Invalid line, keep processing the file.
-      // inform the developper
+      // inform the developer
       Debug.Assert(false);
     }
     return string.Empty;
@@ -1311,7 +1319,7 @@ public class GedcomImport
     catch
     {
       // Invalid line, keep processing the file.
-      // inform the developper
+      // inform the developer
       Debug.Assert(false);
     }
     return string.Empty;
@@ -1331,7 +1339,7 @@ public class GedcomImport
     catch
     {
       //Invalid line, keep processing the file.
-      // inform the developper
+      // inform the developer
       Debug.Assert(false);
     }
     return string.Empty;
