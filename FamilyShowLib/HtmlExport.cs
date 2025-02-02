@@ -1003,17 +1003,15 @@ public class HtmlExport
     _tw.WriteLine("<div class=\"timeline\">");
 
     // Ensure we use actual decades and not just 10 year periods
-    do
+    while (!startYear.ToString().EndsWith('0'))
     {
       startYear--;
     }
-    while (!startYear.ToString().EndsWith('0'));
 
-    do
+    while (!endYear.ToString().EndsWith('0'))
     {
       endYear++;
     }
-    while (!endYear.ToString().EndsWith('0'));
 
     for (int i = startYear; i <= endYear; i += 10)
     {
