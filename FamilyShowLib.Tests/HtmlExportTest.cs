@@ -11,14 +11,12 @@ public class HtmlExportTest
             new Person("John", "Doe") { BirthDate = new DateTime(1890, 7, 22), DeathDate = new DateTime(1995, 1, 22) },
             new Person("Jane", "Doe") { BirthDate = new DateTime(1900, 5, 15), DeathDate = new DateTime(1980, 3, 10) }
         };
-    var sourceCollection = new SourceCollection();
-    var repositoryCollection = new RepositoryCollection();
     var htmlExport = new HtmlExport();
     string htmlFilePath = Path.GetTempFileName();
     string familyxFileName = "FamilyTree";
 
     // Act
-    htmlExport.ExportEventsByDecade(peopleCollection, sourceCollection, repositoryCollection, htmlFilePath, familyxFileName, false, 1880, 2000);
+    htmlExport.ExportEventsByDecade(peopleCollection, htmlFilePath, familyxFileName, false, 1880, 2000);
 
     // Assert
     string htmlContent = File.ReadAllText(Path.GetFileName(htmlFilePath));
@@ -38,14 +36,12 @@ public class HtmlExportTest
             new Person("John", "Doe") { BirthDate = new DateTime(1890, 7, 22), DeathDate = new DateTime(1995, 1, 22), IsLiving = false },
             new Person("Jane", "Doe") { BirthDate = new DateTime(1900, 5, 15), IsLiving = true }
         };
-    var sourceCollection = new SourceCollection();
-    var repositoryCollection = new RepositoryCollection();
     var htmlExport = new HtmlExport();
     string htmlFilePath = Path.GetTempFileName();
     string familyxFileName = "FamilyTree";
 
     // Act
-    htmlExport.ExportEventsByDecade(peopleCollection, sourceCollection, repositoryCollection, htmlFilePath, familyxFileName, true, 1880, 2000);
+    htmlExport.ExportEventsByDecade(peopleCollection, htmlFilePath, familyxFileName, true, 1880, 2000);
 
     // Assert
     string htmlContent = File.ReadAllText(Path.GetFileName(htmlFilePath));
@@ -58,14 +54,12 @@ public class HtmlExportTest
   {
     // Arrange
     var peopleCollection = new PeopleCollection();
-    var sourceCollection = new SourceCollection();
-    var repositoryCollection = new RepositoryCollection();
     var htmlExport = new HtmlExport();
     string htmlFilePath = Path.GetTempFileName();
     string familyxFileName = "FamilyTree";
 
     // Act
-    htmlExport.ExportEventsByDecade(peopleCollection, sourceCollection, repositoryCollection, htmlFilePath, familyxFileName, false, 1880, 2000);
+    htmlExport.ExportEventsByDecade(peopleCollection, htmlFilePath, familyxFileName, false, 1880, 2000);
 
     // Assert
     string htmlContent = File.ReadAllText(Path.GetFileName(htmlFilePath));
@@ -83,19 +77,41 @@ public class HtmlExportTest
             new Person("John", "Doe") { BirthDate = new DateTime(1890, 7, 22), DeathDate = new DateTime(1995, 1, 22) },
             new Person("Jane", "Doe") { BirthDate = new DateTime(1900, 5, 15), DeathDate = new DateTime(1980, 3, 10) }
         };
-    var sourceCollection = new SourceCollection();
-    var repositoryCollection = new RepositoryCollection();
     var htmlExport = new HtmlExport();
     string htmlFilePath = Path.GetTempFileName();
     string familyxFileName = "FamilyTree";
 
     // Act
-    htmlExport.ExportEventsByDecade(peopleCollection, sourceCollection, repositoryCollection, htmlFilePath, familyxFileName, false, 2000, 2100);
+    htmlExport.ExportEventsByDecade(peopleCollection, htmlFilePath, familyxFileName, false, 2000, 2100);
 
     // Assert
     string htmlContent = File.ReadAllText(Path.GetFileName(htmlFilePath));
     Assert.Contains("Family.Show", htmlContent);
     Assert.DoesNotContain("John Doe", htmlContent);
     Assert.DoesNotContain("Jane Doe", htmlContent);
+  }
+
+  [Fact]
+  public void Dateformat_WithNullDate_ShouldReturnEmptyString()
+  {
+    // Act
+    string result = HtmlExport.dateformat(null);
+
+    // Assert
+    Assert.Equal(string.Empty, result);
+  }
+
+
+  [Fact]
+  public void Dateformat_WithValidDate_ShouldReturnFormattedDate()
+  {
+    // Arrange
+    DateTime date = new(2023, 10, 5);
+
+    // Act
+    string result = HtmlExport.dateformat(date);
+
+    // Assert
+    Assert.Equal("5/10/2023", result);
   }
 }

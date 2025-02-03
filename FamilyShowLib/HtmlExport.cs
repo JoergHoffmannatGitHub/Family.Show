@@ -981,7 +981,7 @@ public class HtmlExport
   /// <summary>
   /// Export events by year to html file.
   /// </summary>
-  public void ExportEventsByDecade(PeopleCollection peopleCollection, SourceCollection sourceCollection, RepositoryCollection repositoryCollection, string htmlFilePath, string familyxFileName, bool privacy, int startYear, int endYear)
+  public void ExportEventsByDecade(PeopleCollection peopleCollection, string htmlFilePath, string familyxFileName, bool privacy, int startYear, int endYear)
   {
     PeopleCollection pc = [];
     string filename = Path.GetFileName(htmlFilePath);
@@ -1651,7 +1651,7 @@ public class HtmlExport
   /// <summary>
   /// Get a date in dd/mm/yyyy format from a full DateTime?
   /// </summary>
-  private static string dateformat(DateTime? dates)
+  internal static string dateformat(DateTime? dates)
   {
     string date = string.Empty;
     if (dates != null)  //don't try if date is null!

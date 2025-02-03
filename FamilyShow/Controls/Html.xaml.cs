@@ -251,7 +251,7 @@ public partial class Html : UserControl
 
           if (Options() == "6")
           {
-            html.ExportEventsByDecade(_family, _source, _repository, dialog.FileName, Path.GetFileName(_familyCollection.FullyQualifiedFilename), Privacy(), start, end);
+            html.ExportEventsByDecade(_family, dialog.FileName, Path.GetFileName(_familyCollection.FullyQualifiedFilename), Privacy(), start, end);
           }
 
           MessageBoxResult result = MessageBox.Show(Properties.Resources.SourcesExportMessage, Properties.Resources.ExportResult, MessageBoxButton.YesNo, MessageBoxImage.Question);
