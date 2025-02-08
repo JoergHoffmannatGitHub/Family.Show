@@ -1945,9 +1945,12 @@ public class People
       }
 
       //give focus to the person who was selected before the merge
-      CurrentPersonId = reselectAfterMerge.Id;
-      CurrentPersonName = reselectAfterMerge.Name;
-      PeopleCollection.Current = reselectAfterMerge;
+      if (reselectAfterMerge != null)
+      {
+        CurrentPersonId = reselectAfterMerge.Id;
+        CurrentPersonName = reselectAfterMerge.Name;
+        PeopleCollection.Current = reselectAfterMerge;
+      }
 
       PeopleCollection.IsDirty = false;
     }
