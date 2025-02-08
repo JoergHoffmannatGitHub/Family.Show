@@ -283,7 +283,6 @@ namespace FamilyShowLib
     /// <summary>
     /// The age of the person.
     /// </summary>
-
     public int? Age
     {
       get
@@ -293,7 +292,7 @@ namespace FamilyShowLib
           return null;
         }
 
-        //Do not show  age  of dead person if no death date is entered.
+        // Do not show  age  of dead person if no death date is entered.
         if (!_isLiving && DeathDate == null)
         {
           return null;
@@ -313,7 +312,6 @@ namespace FamilyShowLib
 
         return Math.Max(0, age);
       }
-
     }
 
     /// <summary>
@@ -413,7 +411,7 @@ namespace FamilyShowLib
     #region birth details
 
     /// <summary>
-    /// Gets or sets the person's birth date.  This property can be null.
+    /// Gets or sets the person's birth date. This property can be null.
     /// </summary>
 
     public DateTime? BirthDate
