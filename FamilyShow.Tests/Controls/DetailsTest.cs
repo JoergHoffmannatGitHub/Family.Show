@@ -17,7 +17,7 @@ public class DetailsTest
   [InlineData(FamilyMemberComboBoxValue.Existing, "Add ")]
   public void SetNextFamilyMemberActionTest(FamilyMemberComboBoxValue familyMemberComboBoxValue, string expected)
   {
-    using (new AnotherCulture("en-US"))
+    using (AnotherCulture.UnitedStates())
     {
       // Arrange
       Details sut = new();

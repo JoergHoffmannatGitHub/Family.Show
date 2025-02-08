@@ -13,36 +13,41 @@ public class GedcomExportTest
     [CombinatorialValues("Kennedy.familyx", "")] string nameOfSourceDate,
     [CombinatorialValues("en-US", "en-GB", "it-IT", "es-ES", "fr-FR", "de-DE", "somthing else")] string languageOfText)
   {
-    // Arrange
-    string gedcomFilePath = @"C:\SomePath\" + filename;
-    string familyxFilePath = string.IsNullOrEmpty(nameOfSourceDate) ? string.Empty : @"C:\SomePath\" + nameOfSourceDate;
-    var fakeTimeProvider = new FakeTimeProvider();
-    fakeTimeProvider.SetUtcNow(new DateTime(2025, 1, 18, 16, 08, 35));
-    fakeTimeProvider.SetLocalTimeZone(TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time"));
-    GedcomExport gedcomExport = new();
-    using MemoryStream memoryStream = new();
-    gedcomExport._writer = new(memoryStream);
-    gedcomExport._timeProvider = fakeTimeProvider;
-    // Act
-    gedcomExport.ExportSummary(gedcomFilePath, familyxFilePath, languageOfText);
-    // Assert
-    gedcomExport._writer.Flush();
-    string actual = Encoding.UTF8.GetString(memoryStream.ToArray());
-    Assert.NotEmpty(actual);
-    Assert.Contains(FormatLine(1, "SOUR", string.Empty), actual);
-    // Don't ccheck the versionnumber
-    Assert.Contains("2 VERS", actual);
-    Assert.Contains(FormatLine(2, "NAME", "Family.Show"), actual);
-    Assert.Contains(FormatLine(2, "CORP", "Microsoft"), actual);
-    Assert.Equal(!string.IsNullOrEmpty(nameOfSourceDate), actual.Contains(FormatLine(2, "DATA", nameOfSourceDate)));
-    Assert.Contains(FormatLine(1, "DATE", "18 JAN 2025"), actual);
-    Assert.Contains(FormatLine(2, "TIME", "17:08:35"), actual);
-    Assert.Contains(FormatLine(1, "FILE", filename), actual);
-    Assert.Contains(FormatLine(1, "GEDC", string.Empty), actual);
-    Assert.Contains(FormatLine(2, "VERS", "5.5"), actual);
-    Assert.Contains(FormatLine(2, "FORM", "LINEAGE-LINKED"), actual);
-    Assert.Contains(FormatLine(1, "CHAR", "UTF-8"), actual);
-    Assert.Contains(FormatLine(1, "LANG", gedcomExport._culturLanguageIdMap.GetValueOrDefault(languageOfText, "English")), actual);
+    using (AnotherCulture.UnitedStates())
+    {
+      // Arrange
+      string gedcomFilePath = @"C:\SomePath\" + filename;
+      string familyxFilePath = string.IsNullOrEmpty(nameOfSourceDate) ? string.Empty : @"C:\SomePath\" + nameOfSourceDate;
+      var fakeTimeProvider = new FakeTimeProvider();
+      fakeTimeProvider.SetUtcNow(new DateTime(2025, 1, 18, 16, 08, 35));
+      fakeTimeProvider.SetLocalTimeZone(TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time"));
+      GedcomExport gedcomExport = new();
+      using MemoryStream memoryStream = new();
+      gedcomExport._writer = new(memoryStream);
+      gedcomExport._timeProvider = fakeTimeProvider;
+
+      // Act
+      gedcomExport.ExportSummary(gedcomFilePath, familyxFilePath, languageOfText);
+
+      // Assert
+      gedcomExport._writer.Flush();
+      string actual = Encoding.UTF8.GetString(memoryStream.ToArray());
+      Assert.NotEmpty(actual);
+      Assert.Contains(FormatLine(1, "SOUR", string.Empty), actual);
+      // Don't ccheck the versionnumber
+      Assert.Contains("2 VERS", actual);
+      Assert.Contains(FormatLine(2, "NAME", "Family.Show"), actual);
+      Assert.Contains(FormatLine(2, "CORP", "Microsoft"), actual);
+      Assert.Equal(!string.IsNullOrEmpty(nameOfSourceDate), actual.Contains(FormatLine(2, "DATA", nameOfSourceDate)));
+      Assert.Contains(FormatLine(1, "DATE", "18 JAN 2025"), actual);
+      Assert.Contains(FormatLine(2, "TIME", "5:08:35 PM"), actual);
+      Assert.Contains(FormatLine(1, "FILE", filename), actual);
+      Assert.Contains(FormatLine(1, "GEDC", string.Empty), actual);
+      Assert.Contains(FormatLine(2, "VERS", "5.5"), actual);
+      Assert.Contains(FormatLine(2, "FORM", "LINEAGE-LINKED"), actual);
+      Assert.Contains(FormatLine(1, "CHAR", "UTF-8"), actual);
+      Assert.Contains(FormatLine(1, "LANG", gedcomExport._culturLanguageIdMap.GetValueOrDefault(languageOfText, "English")), actual);
+    }
   }
 
   private static string FormatLine(int level, string tag, string value) =>

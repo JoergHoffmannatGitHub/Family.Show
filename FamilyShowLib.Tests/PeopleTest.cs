@@ -1,7 +1,4 @@
-﻿using System.Globalization;
-using System.Xml.Serialization;
-
-namespace FamilyShowLib.Tests;
+﻿namespace FamilyShowLib.Tests;
 
 // These tests will run infinite on GitHub
 public class PeopleTest
@@ -49,40 +46,46 @@ public class PeopleTest
   [Fact]
   public void MergeOPC_WithValidFile_ShouldMergeSuccessfully()
   {
-    // Arrange
-    People sut = new();
-    string fileName = Sample.FullName("Windsor.familyx");
+    using (AnotherCulture.UnitedStates())
+    {
+      // Arrange
+      People sut = new();
+      string fileName = Sample.FullName("Windsor.familyx");
 
-    // Act
-    string[,] result = sut.MergeOPC(fileName);
+      // Act
+      string[,] result = sut.MergeOPC(fileName);
 
-    // Assert
-    Assert.NotNull(result);
-    Assert.Equal("All 81 people imported.", result[0, 0]);
-    Assert.Equal("\n\nNo sources to import.", result[1, 0]);
-    Assert.Equal("\n\nNo repositories to import.", result[2, 0]);
+      // Assert
+      Assert.NotNull(result);
+      Assert.Equal("All 81 people imported.", result[0, 0]);
+      Assert.Equal("\n\nNo sources to import.", result[1, 0]);
+      Assert.Equal("\n\nNo repositories to import.", result[2, 0]);
+    }
   }
 
   [Fact]
   public void MergeOPC_WithDuplicateFile_ShouldHandleDuplicates()
   {
-    // Arrange
-    People sut = new()
+    using (AnotherCulture.UnitedStates())
     {
-      FullyQualifiedFilename = Sample.FullName("Windsor.familyx")
-    };
-    bool loaded = sut.LoadOPC();
-    Assert.True(loaded);
-    string fileName = Sample.FullName("Windsor.familyx");
+      // Arrange
+      People sut = new()
+      {
+        FullyQualifiedFilename = Sample.FullName("Windsor.familyx")
+      };
+      bool loaded = sut.LoadOPC();
+      Assert.True(loaded);
+      string fileName = Sample.FullName("Windsor.familyx");
 
-    // Act
-    string[,] result = sut.MergeOPC(fileName);
+      // Act
+      string[,] result = sut.MergeOPC(fileName);
 
-    // Assert
-    Assert.NotNull(result);
-    Assert.Contains("Imported people: 0\nDuplicate people: 81", result[0, 0]);
-    Assert.Contains("\n\nNo sources to import.", result[1, 0]);
-    Assert.Contains("\n\nNo repositories to import.", result[2, 0]);
+      // Assert
+      Assert.NotNull(result);
+      Assert.Contains("Imported people: 0\nDuplicate people: 81", result[0, 0]);
+      Assert.Contains("\n\nNo sources to import.", result[1, 0]);
+      Assert.Contains("\n\nNo repositories to import.", result[2, 0]);
+    }
   }
 
   [Fact]

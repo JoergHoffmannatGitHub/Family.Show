@@ -40,12 +40,15 @@ public class ExtensionsTest
   [Theory, MemberData(nameof(NullableDateToStringCases))]
   public void NullableDateToShortStringTest(DateTime? date, string cultureInfo, string expected)
   {
-    // Arrange
-    CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(cultureInfo);
-    // Act
-    string result = date.ToShortString();
-    // Assert
-    Assert.Equal(expected, result);
+    using (new AnotherCulture(cultureInfo))
+    {
+      // Arrange
+      CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(cultureInfo);
+      // Act
+      string result = date.ToShortString();
+      // Assert
+      Assert.Equal(expected, result);
+    }
   }
 
   public static readonly TheoryData<DateTime?, string> DateFormatCases =
