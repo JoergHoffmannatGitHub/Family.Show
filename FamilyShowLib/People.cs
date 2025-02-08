@@ -1802,7 +1802,7 @@ public class People
 
             }
             //Compare surname and birth date with relationships
-            if (person.LastName == oldperson.LastName && person.BirthDate > DateTime.MinValue && oldperson.BirthDate > DateTime.MinValue && duplicated == false && oldperson.Gender == person.Gender)
+            if (person.LastName == oldperson.LastName && !person.BirthDate.IsNullOrEmpty() && !oldperson.BirthDate.IsNullOrEmpty() && !duplicated && oldperson.Gender == person.Gender)
             {
               if (person.BirthDate == oldperson.BirthDate)
               {
@@ -1840,7 +1840,7 @@ public class People
             }
 
             //Compare surname and death date with relationships
-            if (person.LastName == oldperson.LastName && person.DeathDate > DateTime.MinValue && oldperson.DeathDate > DateTime.MinValue && duplicated == false && oldperson.Gender == person.Gender)
+            if (person.LastName == oldperson.LastName && !person.DeathDate.IsNullOrEmpty() && !oldperson.DeathDate.IsNullOrEmpty() && !duplicated && oldperson.Gender == person.Gender)
             {
               if (person.DeathDate == oldperson.DeathDate)
               {
