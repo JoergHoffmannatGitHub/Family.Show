@@ -393,10 +393,11 @@ public class PersonTest
   public void BirthMonthAndDay_SetNullBirthDate_ReturnsNull()
   {
     // Arrange
-    Person person = new();
-
-    // Act
-    person.BirthDate = null;
+    Person person = new()
+    {
+      // Act
+      BirthDate = null
+    };
 
     // Assert
     Assert.Null(person.BirthMonthAndDay);
@@ -456,11 +457,12 @@ public class PersonTest
   public void BirthDateAndPlace_SetNullBirthDateAndPlace_ReturnsNull()
   {
     // Arrange
-    Person person = new();
-
-    // Act
-    person.BirthDate = null;
-    person.BirthPlace = null;
+    Person person = new()
+    {
+      // Act
+      BirthDate = null,
+      BirthPlace = null
+    };
 
     // Assert
     Assert.Null(person.BirthDateAndPlace);
@@ -570,7 +572,7 @@ public class PersonTest
   {
     // Arrange
     Person person = new();
-    string deathDateDescriptor = null;
+    string? deathDateDescriptor = null;
 
     // Act
     person.DeathDateDescriptor = deathDateDescriptor;
@@ -766,7 +768,7 @@ public class PersonTest
   {
     // Arrange
     Person person = new();
-    string burialDateDescriptor = null;
+    string? burialDateDescriptor = null;
 
     // Act
     person.BurialDateDescriptor = burialDateDescriptor;
