@@ -218,17 +218,17 @@ public partial class Places : UserControl
 
           if (Options() == "1")
           {
-            summary = PlacesExport.ExportPlaces(_family, filename, Privacy(), false, false, true, Burials(), Deaths(), Cremations(), Births(), Marriages());
+            summary = PlacesExport.ExportPlaces(_family, filename, Privacy(), ExportPlacesType.Places, Burials(), Deaths(), Cremations(), Births(), Marriages());
           }
 
           if (Options() == "2")
           {
-            summary = PlacesExport.ExportPlaces(_family, filename, Privacy(), true, false, false, Burials(), Deaths(), Cremations(), Births(), Marriages());
+            summary = PlacesExport.ExportPlaces(_family, filename, Privacy(), ExportPlacesType.Times, Burials(), Deaths(), Cremations(), Births(), Marriages());
           }
 
           if (Options() == "3")
           {
-            summary = PlacesExport.ExportPlaces(_family, filename, Privacy(), false, true, false, Burials(), Deaths(), Cremations(), Births(), Marriages());
+            summary = PlacesExport.ExportPlaces(_family, filename, Privacy(), ExportPlacesType.Lifespans, Burials(), Deaths(), Cremations(), Births(), Marriages());
           }
 
           if (summary[1] == "No file")

@@ -17,20 +17,36 @@
 * Places export supports restrictions and quick filter for living people.
 */
 
-//burials
-
-//cremations
-
 using System.IO;
 
 namespace FamilyShowLib;
 
+/// <summary>
+/// Specifies the types of places to export.
+/// </summary>
+public enum ExportPlacesType
+{
+  /// <summary>
+  /// Export places with no time information.
+  /// </summary>
+  Places,
+
+  /// <summary>
+  /// Export times with time information.
+  /// </summary>
+  Times,
+
+  /// <summary>
+  /// Export lifespans only.
+  /// </summary>
+  Lifespans
+}
+
 public class PlacesExport
 {
-
   #region export methods
 
-  public static string[] ExportPlaces(PeopleCollection peopleCollection, string fileName, bool hideliving, bool times, bool lifespans, bool places, bool burials, bool deaths, bool cremations, bool births, bool marriages)
+  public static string[] ExportPlaces(PeopleCollection peopleCollection, string fileName, bool hideliving, ExportPlacesType exportPlacesType, bool burials, bool deaths, bool cremations, bool births, bool marriages)
   {
     string PlacesFileName = Path.GetFileNameWithoutExtension(fileName);
 
@@ -121,7 +137,7 @@ public class PlacesExport
 
     int i = 0;  // Counter for all the places exported.
 
-    if (places)
+    if (exportPlacesType == ExportPlacesType.Places)
     {
       #region places with no time information
 
@@ -160,7 +176,6 @@ public class PlacesExport
               i++;
             }
           }
-
         }
 
         tw.WriteLine("</Folder>");
@@ -178,7 +193,6 @@ public class PlacesExport
           {
             if (!string.IsNullOrEmpty(p.DeathPlace) && p.Restriction != Restriction.Private)
             {
-
               tw.WriteLine("<Placemark>\n" +
                            "<name>" + p.FullName + "</name>\n" +
                            "<address>" + p.DeathPlace + "</address>\n" +
@@ -270,12 +284,10 @@ public class PlacesExport
         }
 
         tw.WriteLine("</Folder>");
-
       }
 
       if (marriages)
       {
-
         tw.WriteLine("<Folder>\n" +
                      "<name>" + Properties.Resources.Marriages + "</name>\n" +
                      "<open>0</open>");
@@ -288,10 +300,8 @@ public class PlacesExport
             {
               foreach (Relationship rel in p.Relationships)
               {
-
                 if (rel.RelationshipType == RelationshipType.Spouse)
                 {
-
                   SpouseRelationship spouseRel = ((SpouseRelationship)rel);
 
                   if (!string.IsNullOrEmpty(spouseRel.MarriagePlace))
@@ -300,7 +310,6 @@ public class PlacesExport
                                  "<name>" + p.FullName + "</name>\n" +
                                  "<address>" + spouseRel.MarriagePlace + "</address>\n" +
                                  "<description>" + spouseRel.MarriagePlace + "</description>");
-
 
                     if (p.Gender == Gender.Male)
                     {
@@ -324,7 +333,7 @@ public class PlacesExport
 
       #endregion
     }
-    else if (times)
+    else if (exportPlacesType == ExportPlacesType.Times)
     {
       #region place with time information
 
@@ -334,7 +343,6 @@ public class PlacesExport
 
       if (births)
       {
-
         tw.WriteLine("<Folder>\n" +
                      "<name>" + Properties.Resources.Births + "</name>\n" +
                      "<open>0</open>");
@@ -343,10 +351,8 @@ public class PlacesExport
         {
           if (!(hideliving && p.IsLiving))
           {
-
             if (!string.IsNullOrEmpty(p.BirthPlace) && p.Restriction != Restriction.Private)
             {
-
               tw.WriteLine("<Placemark>\n" +
                           "	<name>" + p.FullName + "</name>\n" +
                           "	<address>" + p.BirthPlace + "</address>\n" +
@@ -365,7 +371,6 @@ public class PlacesExport
               i++;
             }
           }
-
         }
 
         tw.WriteLine("</Folder>");
@@ -373,7 +378,6 @@ public class PlacesExport
 
       if (deaths)
       {
-
         tw.WriteLine("<Folder>\n" +
                      "<name>" + Properties.Resources.Deaths + "</name>\n" +
                      "<open>0</open>");
@@ -384,7 +388,6 @@ public class PlacesExport
           {
             if (!string.IsNullOrEmpty(p.DeathPlace) && p.Restriction != Restriction.Private)
             {
-
               tw.WriteLine("<Placemark>\n" +
                            "<name>" + p.FullName + "</name>\n" +
                            "<address>" + p.DeathPlace + "</address>\n" +
@@ -406,12 +409,10 @@ public class PlacesExport
         }
 
         tw.WriteLine("</Folder>");
-
       }
 
-      if (deaths)
+      if (burials)
       {
-
         tw.WriteLine("<Folder>\n" +
                      "<name>" + Properties.Resources.Burials + "</name>\n" +
                      "<open>0</open>");
@@ -429,7 +430,6 @@ public class PlacesExport
 
             if (!string.IsNullOrEmpty(p.BurialPlace) && p.Restriction != Restriction.Private && !string.IsNullOrEmpty(year))
             {
-
               tw.WriteLine("<Placemark>\n" +
                            "<name>" + p.FullName + "</name>\n" +
                            "<address>" + p.BurialPlace + "</address>\n" +
@@ -451,12 +451,10 @@ public class PlacesExport
         }
 
         tw.WriteLine("</Folder>");
-
       }
 
       if (cremations)
       {
-
         tw.WriteLine("<Folder>\n" +
                      "<name>" + Properties.Resources.Cremations + "</name>\n" +
                      "<open>0</open>");
@@ -474,7 +472,6 @@ public class PlacesExport
 
             if (!string.IsNullOrEmpty(p.CremationPlace) && p.Restriction != Restriction.Private && !string.IsNullOrEmpty(year))
             {
-
               tw.WriteLine("<Placemark>\n" +
                            "<name>" + p.FullName + "</name>\n" +
                            "<address>" + p.CremationPlace + "</address>\n" +
@@ -496,12 +493,10 @@ public class PlacesExport
         }
 
         tw.WriteLine("</Folder>");
-
       }
 
       if (marriages)
       {
-
         tw.WriteLine("<Folder>\n" +
                      "<name>" + Properties.Resources.Marriages + "</name>\n" +
                      "<open>0</open>");
@@ -514,10 +509,8 @@ public class PlacesExport
             {
               foreach (Relationship rel in p.Relationships)
               {
-
                 if (rel.RelationshipType == RelationshipType.Spouse)
                 {
-
                   SpouseRelationship spouseRel = ((SpouseRelationship)rel);
 
                   if (!string.IsNullOrEmpty(spouseRel.MarriagePlace))
@@ -534,7 +527,6 @@ public class PlacesExport
                                  "<address>" + spouseRel.MarriagePlace + "</address>\n" +
                                  "<description>" + spouseRel.MarriagePlace + "</description>\n" +
                                  "<TimeStamp>\n<when>" + date + "</when>\n</TimeStamp>");
-
 
                     if (p.Gender == Gender.Male)
                     {
@@ -555,9 +547,10 @@ public class PlacesExport
 
         tw.WriteLine("</Folder>");
       }
+
       #endregion
     }
-    else if (lifespans)
+    else if (exportPlacesType == ExportPlacesType.Lifespans)
     {
       #region lifespans
 
@@ -588,12 +581,13 @@ public class PlacesExport
                          "<address>" + place + "</address>\n" +
                          "<description>" + place + "</description>\n" +
                          "<TimeSpan>");
+
             if (!string.IsNullOrEmpty(p.YearOfBirth))
             {
               tw.WriteLine("<begin>" + p.YearOfBirth + "</begin>");
             }
 
-            if (!string.IsNullOrEmpty(p.YearOfBirth))
+            if (!string.IsNullOrEmpty(p.YearOfDeath))
             {
               tw.WriteLine("<end>" + p.YearOfDeath + "</end>");
             }
@@ -612,7 +606,6 @@ public class PlacesExport
             i++;
           }
         }
-
       }
 
       #endregion
@@ -640,6 +633,5 @@ public class PlacesExport
   }
 
   #endregion
-
 }
 
