@@ -801,14 +801,17 @@ public class PersonTest
   [Fact]
   public void Indexer_InvalidBirthDate_ReturnsError()
   {
-    // Arrange
-    Person person = new() { BirthDate = DateTime.MinValue };
+    using (AnotherCulture.UnitedStates())
+    {
+      // Arrange
+      Person person = new() { BirthDate = DateTime.MinValue };
 
-    // Act
-    string error = person["BirthDate"];
+      // Act
+      string error = person["BirthDate"];
 
-    // Assert
-    Assert.Equal(Properties.Resources.InvalidDate, error);
+      // Assert
+      Assert.Equal(Properties.Resources.InvalidDate, error);
+    }
   }
 
   [Fact]
@@ -827,14 +830,17 @@ public class PersonTest
   [Fact]
   public void Indexer_InvalidDeathDate_ReturnsError()
   {
-    // Arrange
-    Person person = new() { DeathDate = DateTime.MinValue };
+    using (AnotherCulture.UnitedStates())
+    {
+      // Arrange
+      Person person = new() { DeathDate = DateTime.MinValue };
 
-    // Act
-    string error = person["DeathDate"];
+      // Act
+      string error = person["DeathDate"];
 
-    // Assert
-    Assert.Equal(Properties.Resources.InvalidDate, error);
+      // Assert
+      Assert.Equal(Properties.Resources.InvalidDate, error);
+    }
   }
 
   [Fact]
@@ -853,14 +859,17 @@ public class PersonTest
   [Fact]
   public void Indexer_InvalidCremationDate_ReturnsError()
   {
-    // Arrange
-    Person person = new() { CremationDate = DateTime.MinValue };
+    using (AnotherCulture.UnitedStates())
+    {
+      // Arrange
+      Person person = new() { CremationDate = DateTime.MinValue };
 
-    // Act
-    string error = person["CremationDate"];
+      // Act
+      string error = person["CremationDate"];
 
-    // Assert
-    Assert.Equal(Properties.Resources.InvalidDate, error);
+      // Assert
+      Assert.Equal(Properties.Resources.InvalidDate, error);
+    }
   }
 
   [Fact]
@@ -879,14 +888,17 @@ public class PersonTest
   [Fact]
   public void Indexer_InvalidBurialDate_ReturnsError()
   {
-    // Arrange
-    Person person = new() { BurialDate = DateTime.MinValue };
+    using (AnotherCulture.UnitedStates())
+    {
+      // Arrange
+      Person person = new() { BurialDate = DateTime.MinValue };
 
-    // Act
-    string error = person["BurialDate"];
+      // Act
+      string error = person["BurialDate"];
 
-    // Assert
-    Assert.Equal(Properties.Resources.InvalidDate, error);
+      // Assert
+      Assert.Equal(Properties.Resources.InvalidDate, error);
+    }
   }
 
   [Fact]
