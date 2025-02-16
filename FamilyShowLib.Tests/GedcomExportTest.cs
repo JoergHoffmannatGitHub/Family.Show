@@ -411,15 +411,18 @@ public class GedcomExportTest
   [InlineData(1982, 1, 9, "9 JAN 1982")]
   public void ExportDateTest(int year, int month, int day, string expected)
   {
-    // Arrange
-    DateTime date = new(year, month, day);
+    using (AnotherCulture.UnitedStates())
+    {
+      // Arrange
+      DateTime date = new(year, month, day);
 
-    // Act
-    string result = GedcomExport.ExportDate(date);
+      // Act
+      string result = GedcomExport.ExportDate(date);
 
-    // Assert
-    Assert.Equal(expected, result);
-    Assert.Equal(date, DateTime.Parse(result, CultureInfo.InvariantCulture));
+      // Assert
+      Assert.Equal(expected, result);
+      Assert.Equal(date, DateTime.Parse(result, CultureInfo.InvariantCulture));
+    }
   }
 }
 

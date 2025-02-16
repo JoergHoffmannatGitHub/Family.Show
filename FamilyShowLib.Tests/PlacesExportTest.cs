@@ -174,45 +174,48 @@ public class PlacesExportTest
     [CombinatorialValues(ExportPlacesType.Places, ExportPlacesType.Times, ExportPlacesType.Lifespans)] ExportPlacesType exportPlacesType
     )
   {
-    // Arrange
-    PeopleCollection peopleCollection = [];
-    Person person = new("John", "Doe")
+    using (AnotherCulture.UnitedStates())
     {
-      BirthPlace = "New York",
-      BirthDate = new DateTime(2000, 1, 1),
-      Gender = Gender.Male
-    };
-    peopleCollection.Add(person);
-    person = new("Jane", "Doe")
-    {
-      BirthPlace = "Los Angeles",
-      BirthDate = new DateTime(2000, 1, 1),
-      Gender = Gender.Female
-    };
-    peopleCollection.Add(person);
-    person = new("John", "Smith")
-    {
-      BirthPlace = "Chicago",
-      BirthDate = new DateTime(1980, 1, 1),
-      DeathPlace = "San Francisco",
-      DeathDate = new DateTime(2020, 1, 1),
-      Gender = Gender.Male,
-      IsLiving = false
-    };
-    peopleCollection.Add(person);
-    string fileName = "test_exportPlacesTypes.kml";
+      // Arrange
+      PeopleCollection peopleCollection = [];
+      Person person = new("John", "Doe")
+      {
+        BirthPlace = "New York",
+        BirthDate = new DateTime(2000, 1, 1),
+        Gender = Gender.Male
+      };
+      peopleCollection.Add(person);
+      person = new("Jane", "Doe")
+      {
+        BirthPlace = "Los Angeles",
+        BirthDate = new DateTime(2000, 1, 1),
+        Gender = Gender.Female
+      };
+      peopleCollection.Add(person);
+      person = new("John", "Smith")
+      {
+        BirthPlace = "Chicago",
+        BirthDate = new DateTime(1980, 1, 1),
+        DeathPlace = "San Francisco",
+        DeathDate = new DateTime(2020, 1, 1),
+        Gender = Gender.Male,
+        IsLiving = false
+      };
+      peopleCollection.Add(person);
+      string fileName = "test_exportPlacesTypes.kml";
 
-    // Act
-    string[] result = PlacesExport.ExportPlaces(
-      peopleCollection, fileName, false,
-      exportPlacesType,
-      false, false, false, true, false);
+      // Act
+      string[] result = PlacesExport.ExportPlaces(
+        peopleCollection, fileName, false,
+        exportPlacesType,
+        false, false, false, true, false);
 
-    // Assert
-    Assert.Contains("3 " + Properties.Resources.PlacesExported, result[0]);
-    Assert.Equal(fileName, result[1]);
-    Assert.True(File.Exists(fileName));
-    File.Delete(fileName);
+      // Assert
+      Assert.Contains("3 " + Properties.Resources.PlacesExported, result[0]);
+      Assert.Equal(fileName, result[1]);
+      Assert.True(File.Exists(fileName));
+      File.Delete(fileName);
+    }
   }
 
   [Theory, CombinatorialData]

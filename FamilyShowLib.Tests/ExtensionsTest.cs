@@ -18,12 +18,16 @@ public class ExtensionsTest
   [Theory, MemberData(nameof(DateToShortStringCases))]
   public void ToShortStringTest(DateTime date, string cultureInfo, string expected)
   {
-    // Arrange
-    CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(cultureInfo);
-    // Act
-    string result = date.ToShortString();
-    // Assert
-    Assert.Equal(expected, result);
+    using (new AnotherCulture(cultureInfo))
+    {
+      // Arrange
+
+      // Act
+      string result = date.ToShortString();
+
+      // Assert
+      Assert.Equal(expected, result);
+    }
   }
 
   public static readonly TheoryData<DateTime?, string, string> NullableDateToStringCases =
@@ -44,8 +48,10 @@ public class ExtensionsTest
     {
       // Arrange
       CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(cultureInfo);
+
       // Act
       string result = date.ToShortString();
+
       // Assert
       Assert.Equal(expected, result);
     }
@@ -62,8 +68,10 @@ public class ExtensionsTest
   public void DateFormatTest(DateTime? date, string expected)
   {
     // Arrange
+
     // Act
     string result = date.Format();
+
     // Assert
     Assert.Equal(expected, result);
   }
@@ -85,12 +93,16 @@ public class ExtensionsTest
   [Theory, MemberData(nameof(ToDateCases))]
   public void ToDateTest(string source, string cultureInfo, DateTime? expected)
   {
-    // Arrange
-    CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(cultureInfo);
-    // Act
-    DateTime? result = source.ToDate();
-    // Assert
-    Assert.Equal(expected, result);
+    using (new AnotherCulture(cultureInfo))
+    {
+      // Arrange
+
+      // Act
+      DateTime? result = source.ToDate();
+
+      // Assert
+      Assert.Equal(expected, result);
+    }
   }
 
   public static readonly TheoryData<string, DateTime?> StringDateCases =
@@ -111,9 +123,11 @@ public class ExtensionsTest
     {
       IsLiving = false
     };
+
     // Act
     newPerson.SetBirthDate(birthDate);
     // Assert
+
     Assert.Equal(expected, newPerson.BirthDate);
   }
 
@@ -125,8 +139,10 @@ public class ExtensionsTest
     {
       IsLiving = false
     };
+
     // Act
     newPerson.SetBirthDate(birthDate);
+
     // Assert
     Assert.Equal(expected == null, newPerson.BirthDate.IsNullOrEmpty());
   }

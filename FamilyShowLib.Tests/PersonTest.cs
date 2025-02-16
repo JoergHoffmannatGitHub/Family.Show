@@ -378,15 +378,18 @@ public class PersonTest
   [Fact]
   public void BirthMonthAndDay_SetBirthDate_UpdatesProperty()
   {
-    // Arrange
-    Person person = new();
-    DateTime birthDate = new(2000, 1, 1);
+    using (AnotherCulture.UnitedStates())
+    {
+      // Arrange
+      Person person = new();
+      DateTime birthDate = new(2000, 1, 1);
 
-    // Act
-    person.BirthDate = birthDate;
+      // Act
+      person.BirthDate = birthDate;
 
-    // Assert
-    Assert.Equal(birthDate.ToString(DateTimeFormatInfo.CurrentInfo.MonthDayPattern, CultureInfo.CurrentCulture), person.BirthMonthAndDay);
+      // Assert
+      Assert.Equal(birthDate.ToString(DateTimeFormatInfo.CurrentInfo.MonthDayPattern, CultureInfo.CurrentCulture), person.BirthMonthAndDay);
+    }
   }
 
   [Fact]
