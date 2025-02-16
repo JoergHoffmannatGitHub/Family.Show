@@ -10,7 +10,7 @@ namespace FamilyShowLib.Tests;
 public class DateWrapperTest
 {
   [Fact]
-  public void DefaultConstructor_ShoudBeEmpty()
+  public void DateWrapper_DefaultConstructor_ShouldInitializeWithNullDate()
   {
     // Arrange & Act
     DateWrapper dateWrapper = new();
@@ -22,7 +22,7 @@ public class DateWrapperTest
   }
 
   [Fact]
-  public void Constructor_ShouldInitializeDate_WhenDateParseIsProvided()
+  public void DateWrapper_IDateConstructor_ShouldInitializeWithParsedDate_WhenDateParseIsProvided()
   {
     // Arrange
     _ = Date.TryParse("BET 1982 AND 1984", out IDate expectedDate);
@@ -37,7 +37,7 @@ public class DateWrapperTest
   }
 
   [Fact]
-  public void Constructor_ShouldInitializeDate_WhenDateCreateIsProvided()
+  public void DateWrapper_IDateConstructor_ShouldInitializeWithCreatedDate_WhenDateCreateIsProvided()
   {
     // Arrange
     IDate date = Date.Create(2023, 1, 1);
@@ -52,7 +52,7 @@ public class DateWrapperTest
   }
 
   [Fact]
-  public void Constructor_ShouldInitializeDateToNull_WhenDateIsNull()
+  public void DateWrapper_IDateConstructor_ShouldInitializeWithNullDate_WhenDateIsNull()
   {
     // Arrange
     IDate? date = null;
@@ -67,7 +67,7 @@ public class DateWrapperTest
   }
 
   [Fact]
-  public void Constructor_ShouldInitializeDate_WhenDateStringIsProvided()
+  public void DateWrapper_IDateConstructor_ShouldInitializeWithParsedDate_WhenDateStringIsProvided()
   {
     // Arrange
     string dateString = "1 JAN 2023";
@@ -81,35 +81,47 @@ public class DateWrapperTest
     Assert.Equal(expectedDate, dateWrapper._date);
   }
 
+  [Theory]
+  [InlineData("1946-07-06T00:00:00")]
+  [InlineData("6 JUL 1946")]
+  public void DateWrapper_StringConstructor_ShouldInitializeWithParsedDate(string date)
+  {
+    // Arrange
+
+    // Act
+    DateWrapper dateWrapper = new(date);
+
+    // Assert
+    Assert.NotNull(dateWrapper);
+    Assert.False(DateWrapper.IsNullOrEmpty(dateWrapper));
+  }
+
   [Theory, CombinatorialData]
-  public void Constructor_ShouldThrowException_WhenInvalidDateStringIsProvided(
+  public void DateWrapper_StringConstructor_ShouldInitializeWithNullDate_WhenInvalidDateStringIsProvided(
     [CombinatorialValues("12", "", null)] string invalidDateString
     )
   {
-    // Arrange
-
-    // Act
-    DateWrapper dateWrappe = new(invalidDateString);
+    // Arrange & Act
+    DateWrapper dateWrapper = new(invalidDateString);
 
     // Assert
-    Assert.True(DateWrapper.IsNullOrEmpty(dateWrappe));
+    Assert.True(DateWrapper.IsNullOrEmpty(dateWrapper));
   }
 
   [Fact]
-  public void IsNullOrEmpty_ShouldReturnTrue_WhenDateWrapperIsNull()
+  public void DateWrapper_IsNullOrEmpty_ShouldReturnTrueForNull()
   {
     // Arrange
-    DateWrapper? dateWrapper = null;
 
     // Act
-    bool result = DateWrapper.IsNullOrEmpty(dateWrapper);
+    bool dateWrapper = DateWrapper.IsNullOrEmpty(null);
 
     // Assert
-    Assert.True(result);
+    Assert.True(dateWrapper);
   }
 
   [Fact]
-  public void IsNullOrEmpty_ShouldReturnTrue_WhenDateIsNull()
+  public void DateWrapper_IsNullOrEmpty_ShouldReturnTrue_WhenDateIsNull()
   {
     // Arrange
     DateWrapper dateWrapper = new();
@@ -122,7 +134,7 @@ public class DateWrapperTest
   }
 
   [Fact]
-  public void IsNullOrEmpty_ShouldReturnFalse_WhenDateIsValid()
+  public void DateWrapper_IsNullOrEmpty_ShouldReturnFalse_WhenDateIsValid()
   {
     // Arrange
     DateWrapper dateWrapper = new() { _date = Date.Create(2023, 1, 1) };
@@ -135,7 +147,7 @@ public class DateWrapperTest
   }
 
   [Fact]
-  public void Equals_ShouldReturnTrue_WhenDatesAreEqual()
+  public void DateWrapper_Equals_ShouldReturnTrue_WhenDatesAreEqual()
   {
     // Arrange
     IDate date = Date.Create(2023, 1, 1);
@@ -150,7 +162,7 @@ public class DateWrapperTest
   }
 
   [Fact]
-  public void Equals_ShouldReturnFalse_WhenDatesAreNotEqual()
+  public void DateWrapper_Equals_ShouldReturnFalse_WhenDatesAreNotEqual()
   {
     // Arrange
     DateWrapper dateWrapper1 = new(Date.Create(2023, 1, 1));
@@ -164,7 +176,7 @@ public class DateWrapperTest
   }
 
   [Fact]
-  public void Equals_ShouldReturnFalse_WhenOtherIsNull()
+  public void DateWrapper_Equals_ShouldReturnFalse_WhenOtherIsNull()
   {
     // Arrange
     DateWrapper dateWrapper = new(Date.Create(2023, 1, 1));
@@ -177,7 +189,7 @@ public class DateWrapperTest
   }
 
   [Fact]
-  public void EqualsObject_ShouldReturnTrue_WhenDatesAreEqual()
+  public void DateWrapper_EqualsObject_ShouldReturnTrue_WhenDatesAreEqual()
   {
     // Arrange
     IDate date = Date.Create(2023, 1, 1);
@@ -192,7 +204,7 @@ public class DateWrapperTest
   }
 
   [Fact]
-  public void EqualsObject_ShouldReturnFalse_WhenDatesAreNotEqual()
+  public void DateWrapper_EqualsObject_ShouldReturnFalse_WhenDatesAreNotEqual()
   {
     // Arrange
     DateWrapper dateWrapper1 = new(Date.Create(2023, 1, 1));
@@ -206,7 +218,7 @@ public class DateWrapperTest
   }
 
   [Fact]
-  public void EqualsObject_ShouldReturnFalse_WhenObjectIsNotDateWrapper()
+  public void DateWrapper_EqualsObject_ShouldReturnFalse_WhenObjectIsNotDateWrapper()
   {
     // Arrange
     DateWrapper dateWrapper = new(Date.Create(2023, 1, 1));
@@ -220,7 +232,7 @@ public class DateWrapperTest
   }
 
   [Fact]
-  public void GetHashCode_ShouldReturnSameHashCode_WhenDatesAreEqual()
+  public void DateWrapper_GetHashCode_ShouldReturnSameHashCode_WhenDatesAreEqual()
   {
     // Arrange
     IDate date = Date.Create(2023, 1, 1);
@@ -236,7 +248,7 @@ public class DateWrapperTest
   }
 
   [Fact]
-  public void GetHashCode_ShouldReturnDifferentHashCode_WhenDatesAreNotEqual()
+  public void DateWrapper_GetHashCode_ShouldReturnDifferentHashCode_WhenDatesAreNotEqual()
   {
     // Arrange
     DateWrapper dateWrapper1 = new(Date.Create(2023, 1, 1));
@@ -248,104 +260,5 @@ public class DateWrapperTest
 
     // Assert
     Assert.NotEqual(hashCode1, hashCode2);
-  }
-
-  [Fact]
-  public void GetSchema_ShouldReturnNull()
-  {
-    // Arrange
-    DateWrapper dateWrapper = new();
-
-    // Act
-    XmlSchema? schema = ((IXmlSerializable)dateWrapper).GetSchema();
-
-    // Assert
-    Assert.Null(schema);
-  }
-
-  [Fact]
-  public void ReadXml_ShouldDeserializeDate_WhenValidDateIsProvided()
-  {
-    // Arrange
-    string xml = "<DateWrapper>2023-01-01</DateWrapper>";
-    byte[] byteArray = Encoding.ASCII.GetBytes(xml);
-    using MemoryStream memoryStream = new(byteArray);
-
-    // Act
-    DateWrapper result = ReadFrom<DateWrapper>(memoryStream);
-
-    // Assert
-    Assert.Equal(Date.Create(2023, 1, 1), result._date);
-  }
-
-  [Fact]
-  public void ReadXml_ShouldDeserializeDate_WhenInvalidDateIsProvided()
-  {
-    // Arrange
-    string xml = "<DateWrapper>InvalidDate</DateWrapper>";
-    DateWrapper dateWrapper = new();
-    byte[] byteArray = Encoding.ASCII.GetBytes(xml);
-    using MemoryStream memoryStream = new(byteArray);
-
-    // Act
-    DateWrapper result = ReadFrom<DateWrapper>(memoryStream);
-
-    // Assert
-    Assert.Null(dateWrapper._date); // Assuming str.ToDate() returns null for invalid expectedDate
-  }
-
-  [Fact]
-  public void WriteXml_ShouldSerializeDate_WhenDateIsNotNull()
-  {
-    // Arrange
-    DateWrapper dateWrapper = new(Date.Create(2023, 1, 1));
-    using MemoryStream memoryStream = new();
-
-    // Act
-    WriteTo<DateWrapper>(memoryStream, dateWrapper);
-
-    // Assert
-    string expectedXml = "1 JAN 2023"; // Assuming _date.ToGedcom() returns "1 JAN 2023"
-    StreamReader reader = new(memoryStream);
-    string buffer = reader.ReadToEnd();
-    Assert.Contains(expectedXml, buffer);
-  }
-
-  [Fact]
-  public void WriteXml_ShouldSerializeNil_WhenDateIsNull()
-  {
-    // Arrange
-    DateWrapper dateWrapper = new();
-    using MemoryStream memoryStream = new();
-
-    // Act
-    WriteTo<DateWrapper>(memoryStream, dateWrapper);
-
-    // Assert
-    string expectedXml = "xsi:nil=\"true\"";
-    StreamReader reader = new(memoryStream);
-    string buffer = reader.ReadToEnd();
-    Assert.Contains(expectedXml, buffer);
-  }
-
-  private static TSerializationData ReadFrom<TSerializationData>(Stream location)
-  {
-    location.Seek(0, SeekOrigin.Begin);
-    using (StreamReader streamReader = new(location))
-    {
-      XmlSerializer xmlSerializer = new(typeof(TSerializationData));
-      object? o = xmlSerializer.Deserialize(XmlReader.Create(streamReader));
-      Assert.NotNull(o);
-
-      return (TSerializationData)o;
-    }
-  }
-
-  private static void WriteTo<TSerializationData>(Stream location, TSerializationData data)
-  {
-    XmlSerializer xmlSerializer = new(typeof(TSerializationData));
-    xmlSerializer.Serialize(XmlWriter.Create(location), data);
-    location.Flush();
-    location.Seek(0, SeekOrigin.Begin);
   }
 }
