@@ -13,7 +13,7 @@ namespace FamilyShowLib;
 /// </summary>
 public class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
 {
-  internal IDate Date { get; private set; }
+  public IDate Date {  get; private set; }
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DateWrapper"/> class.
