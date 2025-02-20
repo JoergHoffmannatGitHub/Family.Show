@@ -17,8 +17,9 @@ public class DateWrapperTest
 
     // Assert
     Assert.NotNull(dateWrapper);
-    Assert.Null(dateWrapper._date);
+    Assert.Null(dateWrapper.Date);
     Assert.True(DateWrapper.IsNullOrEmpty(dateWrapper));
+    Assert.False(dateWrapper.Date is IDateExact);
   }
 
   [Fact]
@@ -32,8 +33,9 @@ public class DateWrapperTest
 
     // Assert
     Assert.NotNull(dateWrapper);
-    Assert.Equal(expectedDate, dateWrapper._date);
+    Assert.Equal(expectedDate, dateWrapper.Date);
     Assert.False(DateWrapper.IsNullOrEmpty(dateWrapper));
+    Assert.False(dateWrapper.Date is IDateExact);
   }
 
   [Fact]
@@ -47,8 +49,9 @@ public class DateWrapperTest
 
     // Assert
     Assert.NotNull(dateWrapper);
-    Assert.Equal(date, dateWrapper._date);
+    Assert.Equal(date, dateWrapper.Date);
     Assert.False(DateWrapper.IsNullOrEmpty(dateWrapper));
+    Assert.True(dateWrapper.Date is IDateExact);
   }
 
   [Fact]
@@ -62,8 +65,9 @@ public class DateWrapperTest
 
     // Assert
     Assert.NotNull(dateWrapper);
-    Assert.Null(dateWrapper._date);
+    Assert.Null(dateWrapper.Date);
     Assert.True(DateWrapper.IsNullOrEmpty(dateWrapper));
+    Assert.False(dateWrapper is IDateExact);
   }
 
   [Fact]
@@ -78,7 +82,8 @@ public class DateWrapperTest
 
     // Assert
     Assert.NotNull(dateWrapper);
-    Assert.Equal(expectedDate, dateWrapper._date);
+    Assert.Equal(expectedDate, dateWrapper.Date);
+    Assert.True(dateWrapper.Date is IDateExact);
   }
 
   [Theory]
@@ -94,6 +99,7 @@ public class DateWrapperTest
     // Assert
     Assert.NotNull(dateWrapper);
     Assert.False(DateWrapper.IsNullOrEmpty(dateWrapper));
+    Assert.True(dateWrapper.Date is IDateExact);
   }
 
   [Theory, CombinatorialData]
@@ -106,6 +112,7 @@ public class DateWrapperTest
 
     // Assert
     Assert.True(DateWrapper.IsNullOrEmpty(dateWrapper));
+    Assert.False(dateWrapper.Date is IDateExact);
   }
 
   [Fact]
@@ -137,7 +144,7 @@ public class DateWrapperTest
   public void DateWrapper_IsNullOrEmpty_ShouldReturnFalse_WhenDateIsValid()
   {
     // Arrange
-    DateWrapper dateWrapper = new() { _date = Date.Create(2023, 1, 1) };
+    DateWrapper dateWrapper = new(Date.Create(2023, 1, 1));
 
     // Act
     bool result = DateWrapper.IsNullOrEmpty(dateWrapper);

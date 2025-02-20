@@ -13,7 +13,7 @@ namespace FamilyShowLib;
 /// </summary>
 public class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
 {
-  internal IDate _date;
+  internal IDate Date { get; private set; }
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DateWrapper"/> class.
@@ -26,7 +26,7 @@ public class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   /// Initializes a new instance of the <see cref="DateWrapper"/> class with the specified date.
   /// </summary>
   /// <param name="date">The date to wrap.</param>
-  public DateWrapper(IDate date) => _date = date;
+  public DateWrapper(IDate date) => Date = date;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DateWrapper"/> class with the specified date string.
@@ -34,13 +34,13 @@ public class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   /// <param name="date">The date string to parse and wrap.</param>
   public DateWrapper(string dateString)
   {
-    if (Date.TryParse(dateString, out IDate date))
+    if (Genealogy.Date.TryParse(dateString, out IDate date))
     {
-      _date = date;
+      Date = date;
     }
     else
     {
-      _date = null;
+      Date = null;
     }
   }
 
@@ -49,7 +49,7 @@ public class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   /// </summary>
   /// <param name="value">The <see cref="DateWrapper"/> to test.</param>
   /// <returns>True if the <see cref="DateWrapper"/> is null or empty; otherwise, false.</returns>
-  public static bool IsNullOrEmpty([NotNullWhen(false)] DateWrapper value) => value == null || value._date == null;
+  public static bool IsNullOrEmpty([NotNullWhen(false)] DateWrapper value) => value == null || value.Date == null;
 
   #region IEquatable<DateWrapper>
 
@@ -58,7 +58,7 @@ public class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   /// </summary>
   /// <param name="other">An object to compare with this object.</param>
   /// <returns>True if the current object is equal to the other parameter; otherwise, false.</returns>
-  public bool Equals(DateWrapper other) => other != null && _date == other._date;
+  public bool Equals(DateWrapper other) => other != null && Date == other.Date;
 
   /// <summary>
   /// Determines whether the specified object is equal to the current object.
@@ -71,7 +71,7 @@ public class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   /// Serves as the default hash function.
   /// </summary>
   /// <returns>A hash code for the current object.</returns>
-  public override int GetHashCode() => _date.GetHashCode();
+  public override int GetHashCode() => Date.GetHashCode();
 
   /// <summary>
   /// Determines whether two specified instances of <see cref="DateWrapper"/> are equal.
@@ -117,12 +117,12 @@ public class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
       string[] sa = str.Split(' ');
       if (DateTime.TryParse(sa[0], out DateTime date))
       {
-        _date = Date.Create(date.Year, date.Month, date.Day);
+        Date = Genealogy.Date.Create(date.Year, date.Month, date.Day);
       }
       else
       {
-        _ = Date.TryParse(str, out IDate iDate);
-        _date = iDate;
+        _ = Genealogy.Date.TryParse(str, out IDate iDate);
+        Date = iDate;
       }
 
       reader.ReadEndElement();
@@ -135,9 +135,9 @@ public class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   /// <param name="writer">The XmlWriter stream to which the object is serialized.</param>
   void IXmlSerializable.WriteXml(XmlWriter writer)
   {
-    if (_date != null)
+    if (Date != null)
     {
-      writer.WriteString(_date.ToGedcom());
+      writer.WriteString(Date.ToGedcom());
     }
     else
     {

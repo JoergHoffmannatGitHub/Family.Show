@@ -64,7 +64,7 @@ public class DateWrapperSerializableTest
     DateWrapper result = ReadFrom<DateWrapper>(memoryStream);
 
     // Assert
-    Assert.Equal(Date.Create(2023, 1, 1), result._date);
+    Assert.Equal(Date.Create(2023, 1, 1), result.Date);
   }
 
   [Fact]
@@ -80,7 +80,7 @@ public class DateWrapperSerializableTest
     DateWrapper result = ReadFrom<DateWrapper>(memoryStream);
 
     // Assert
-    Assert.Null(dateWrapper._date); // Assuming str.ToDate() returns null for invalid date
+    Assert.Null(dateWrapper.Date); // Assuming str.ToDate() returns null for invalid date
   }
 
   [Theory]
@@ -116,7 +116,7 @@ public class DateWrapperSerializableTest
       // Assert
       Assert.Equal(FullName, person.FullName);
       Assert.False(DateWrapper.IsNullOrEmpty(person.BirthDate));
-      Assert.Equal(BirthGenealogyDate, person.BirthDate._date!.ToGedcom());
+      Assert.Equal(BirthGenealogyDate, person.BirthDate.Date!.ToGedcom());
     }
   }
 
