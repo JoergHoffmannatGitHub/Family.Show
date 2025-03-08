@@ -5,6 +5,8 @@ using System.Globalization;
 using System.Text;
 using System.Xml.Serialization;
 
+using Genealogy;
+
 #pragma warning disable IDE0161 // Convert to file-scoped namespace - class diagram does not work without
 namespace FamilyShowLib
 #pragma warning restore IDE0161 // Convert to file-scoped namespace
@@ -50,7 +52,7 @@ namespace FamilyShowLib
     private string _religionCitationNote;
     private string _religionCitationActualText;
 
-    private DateTime? _birthDate;
+    private DateWrapper _birthDate;
     private string _birthDateDescriptor;
     private string _birthPlace;
     private string _birthCitation;
@@ -59,7 +61,7 @@ namespace FamilyShowLib
     private string _birthCitationNote;
     private string _birthCitationActualText;
 
-    private DateTime? _deathDate;
+    private DateWrapper _deathDate;
     private string _deathDateDescriptor;
     private string _deathPlace;
     private string _deathCitation;
@@ -69,7 +71,7 @@ namespace FamilyShowLib
     private string _deathCitationActualText;
 
     private string _cremationPlace;
-    private DateTime? _cremationDate;
+    private DateWrapper _cremationDate;
     private string _cremationDateDescriptor;
     private string _cremationCitation;
     private string _cremationSource;
@@ -78,7 +80,7 @@ namespace FamilyShowLib
     private string _cremationCitationActualText;
 
     private string _burialPlace;
-    private DateTime? _burialDate;
+    private DateWrapper _burialDate;
     private string _burialDateDescriptor;
     private string _burialCitation;
     private string _burialSource;
@@ -287,20 +289,20 @@ namespace FamilyShowLib
     {
       get
       {
-        if (BirthDate == null)
+        if (!DateWrapper.IsDateExact(BirthDate, out IDateExact birthDate))
         {
           return null;
         }
 
-        // Do not show  age  of dead person if no death date is entered.
-        if (!_isLiving && DeathDate == null)
+        // Do not show age of dead person if no death birthDate is entered.
+        if (!DateWrapper.IsDateExact(DeathDate, out IDateExact deathDate) && !_isLiving)
         {
           return null;
         }
 
         // Determine the age of the person based on just the year.
-        DateTime startDate = BirthDate.Value;
-        DateTime endDate = (IsLiving || DeathDate == null) ? DateTime.Now : DeathDate.Value;
+        DateTime startDate = DateExactAsDateTime(birthDate);
+        DateTime endDate = IsLiving ? DateTime.Now : DateExactAsDateTime(deathDate);
         int age = endDate.Year - startDate.Year;
 
         // Compensate for the month and day of month (if they have not had a birthday this year).
@@ -313,6 +315,8 @@ namespace FamilyShowLib
         return Math.Max(0, age);
       }
     }
+
+    internal static DateTime DateExactAsDateTime(IDateExact date) => new(date.Year, Math.Max(date.Month, 1), Math.Max(date.Day, 1));
 
     /// <summary>
     /// The age of the person.
@@ -357,9 +361,9 @@ namespace FamilyShowLib
     {
       get
       {
-        if (_birthDate.HasValue)
+        if (DateWrapper.IsDateExact(_birthDate, out IDateExact birthDate))
         {
-          return _birthDate.Value.Year.ToString(CultureInfo.CurrentCulture);
+          return birthDate.Year.ToString(CultureInfo.CurrentCulture);
         }
         else
         {
@@ -376,9 +380,9 @@ namespace FamilyShowLib
     {
       get
       {
-        if (_deathDate.HasValue && !_isLiving)
+        if (DateWrapper.IsDateExact(_deathDate, out IDateExact deathDate) && !_isLiving)
         {
-          return _deathDate.Value.Year.ToString(CultureInfo.CurrentCulture);
+          return deathDate.Year.ToString(CultureInfo.CurrentCulture);
         }
         else
         {
@@ -411,10 +415,10 @@ namespace FamilyShowLib
     #region birth details
 
     /// <summary>
-    /// Gets or sets the person's birth date. This property can be null.
+    /// Gets or sets the person's birth birthDate. This property can be null.
     /// </summary>
 
-    public DateTime? BirthDate
+    public DateWrapper BirthDate
     {
       get { return _birthDate; }
       set
@@ -433,7 +437,7 @@ namespace FamilyShowLib
     }
 
     /// <summary>
-    /// Gets or sets the person's birth date descriptor
+    /// Gets or sets the person's birth birthDate descriptor
     /// </summary>
     public string BirthDateDescriptor
     {
@@ -556,16 +560,11 @@ namespace FamilyShowLib
     {
       get
       {
-        if (_birthDate == null)
-        {
-          return null;
-        }
-        else
-        {
-          return _birthDate.Value.ToString(
+        return DateWrapper.IsDateExact(BirthDate, out IDateExact birthdate)
+          ? DateExactAsDateTime(birthdate).ToString(
               DateTimeFormatInfo.CurrentInfo.MonthDayPattern,
-              CultureInfo.CurrentCulture);
-        }
+              CultureInfo.CurrentCulture)
+          : null;
       }
     }
 
@@ -577,16 +576,12 @@ namespace FamilyShowLib
     {
       get
       {
-        if (_birthDate == null)
-        {
-          return null;
-        }
-        else
+        if (DateWrapper.IsDateExact(BirthDate, out IDateExact birthdate))
         {
           StringBuilder returnValue = new();
           returnValue.Append("Born ");
           returnValue.Append(
-              _birthDate.Value.ToString(
+              DateExactAsDateTime(birthdate).ToString(
                   DateTimeFormatInfo.CurrentInfo.ShortDatePattern,
                   CultureInfo.CurrentCulture));
 
@@ -598,6 +593,10 @@ namespace FamilyShowLib
 
           return returnValue.ToString();
         }
+        else
+        {
+          return null;
+        }
       }
     }
 
@@ -608,7 +607,7 @@ namespace FamilyShowLib
     /// <summary>
     /// Gets or sets the person's death of death.  This property can be null.
     /// </summary>
-    public DateTime? DeathDate
+    public DateWrapper DeathDate
     {
       get { return _deathDate; }
       set
@@ -624,7 +623,7 @@ namespace FamilyShowLib
     }
 
     /// <summary>
-    /// Gets or sets the person's death date descriptor
+    /// Gets or sets the person's death birthDate descriptor
     /// </summary>
     public string DeathDateDescriptor
     {
@@ -759,9 +758,9 @@ namespace FamilyShowLib
     }
 
     /// <summary>
-    /// Gets or sets cremation date
+    /// Gets or sets cremation birthDate
     /// </summary>
-    public DateTime? CremationDate
+    public DateWrapper CremationDate
     {
       get { return _cremationDate; }
       set
@@ -775,7 +774,7 @@ namespace FamilyShowLib
     }
 
     /// <summary>
-    /// Gets or sets the person's cremation date descriptor
+    /// Gets or sets the person's cremation birthDate descriptor
     /// </summary>
     public string CremationDateDescriptor
     {
@@ -944,9 +943,9 @@ namespace FamilyShowLib
     }
 
     /// <summary>
-    /// Gets or sets burial date
+    /// Gets or sets burial birthDate
     /// </summary>
-    public DateTime? BurialDate
+    public DateWrapper BurialDate
     {
       get { return _burialDate; }
       set
@@ -960,7 +959,7 @@ namespace FamilyShowLib
     }
 
     /// <summary>
-    /// Gets or sets the person's burial date descriptor
+    /// Gets or sets the person's burial birthDate descriptor
     /// </summary>
     public string BurialDateDescriptor
     {
@@ -2536,7 +2535,7 @@ namespace FamilyShowLib
 
         if (columnName == "BirthDate")
         {
-          if (BirthDate == DateTime.MinValue)
+          if (DateWrapper.IsNullOrEmpty(BirthDate))
           {
             result = Properties.Resources.InvalidDate;
           }
@@ -2544,7 +2543,7 @@ namespace FamilyShowLib
 
         if (columnName == "DeathDate")
         {
-          if (DeathDate == DateTime.MinValue)
+          if (DateWrapper.IsNullOrEmpty(DeathDate))
           {
             result = Properties.Resources.InvalidDate;
           }
@@ -2552,7 +2551,7 @@ namespace FamilyShowLib
 
         if (columnName == "CremationDate")
         {
-          if (CremationDate == DateTime.MinValue)
+          if (DateWrapper.IsNullOrEmpty(CremationDate))
           {
             result = Properties.Resources.InvalidDate;
           }
@@ -2560,7 +2559,7 @@ namespace FamilyShowLib
 
         if (columnName == "BurialDate")
         {
-          if (BurialDate == DateTime.MinValue)
+          if (DateWrapper.IsNullOrEmpty(BurialDate))
           {
             result = Properties.Resources.InvalidDate;
           }

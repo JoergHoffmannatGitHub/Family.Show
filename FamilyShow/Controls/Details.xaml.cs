@@ -2160,7 +2160,7 @@ namespace FamilyShow
       {
         #region Perform the businless logic for updating the marriage date
 
-        RelationshipHelper.UpdateMarriageDate(_family.Current, (Person)SpousesCombobox.SelectedItem, FromEditTextBox.Text.ToDate());
+        RelationshipHelper.UpdateMarriageDate(_family.Current, (Person)SpousesCombobox.SelectedItem, new DateWrapper(FromEditTextBox.Text));
 
         // Let the collection know that it has been updated
         _family.OnContentChanged();
@@ -2176,7 +2176,7 @@ namespace FamilyShow
       {
         #region Perform the businless logic for updating the divorce date
 
-        RelationshipHelper.UpdateDivorceDate(_family.Current, (Person)SpousesCombobox.SelectedItem, ToEditTextBox.Text.ToDate());
+        RelationshipHelper.UpdateDivorceDate(_family.Current, (Person)SpousesCombobox.SelectedItem, new DateWrapper(ToEditTextBox.Text));
 
         // Let the collection know that it has been updated
         _family.OnContentChanged();

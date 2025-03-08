@@ -370,7 +370,7 @@ public partial class FamilyData : UserControl
   private void BirthdaysControl_SelectionChanged(object sender, RoutedEventArgs e)
   {
 
-    if (e.OriginalSource is DateTime date)
+    if (e.OriginalSource is DateWrapper date)
     {
       _birthdateFilter = date.ToShortString();
       UpdateFilter(date.ToShortString());

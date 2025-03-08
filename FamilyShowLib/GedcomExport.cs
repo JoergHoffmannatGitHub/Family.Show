@@ -24,6 +24,8 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 
+using Genealogy;
+
 namespace FamilyShowLib;
 
 /// <summary>
@@ -101,7 +103,7 @@ public class GedcomExport
     }
 
     DateTime now = _timeProvider.GetLocalNow().DateTime;
-    string Date = ExportDate(now);  //GEDCOM dates must be of the form 01 JAN 2009
+    string Date = ExportToday(now);  //GEDCOM dates must be of the form 01 JAN 2009
     string Time = now.ToLongTimeString();
     string filename = Path.GetFileName(gedcomFilePath);
 
@@ -639,10 +641,10 @@ public class GedcomExport
     }
   }
 
-  internal void ExportEvent(string tag, string tagDescription, string descriptor, DateTime? date, string place, string citation, string citationNote, string citationActualText, string link, string source)
+  internal void ExportEvent(string tag, string tagDescription, string descriptor, DateWrapper date, string place, string citation, string citationNote, string citationActualText, string link, string source)
   {
     // Return right away if don't have a date or place to export.
-    if (date.IsNullOrEmpty() && string.IsNullOrEmpty(place))
+    if (DateWrapper.IsNullOrEmpty(date) && string.IsNullOrEmpty(place))
     {
       return;
     }
@@ -699,9 +701,20 @@ public class GedcomExport
 
   }
 
-  internal static string ExportDate(DateTime? date)
+  internal static string ExportDate(DateWrapper date)
   {
-    return date.ToGedcom();
+    if (!DateWrapper.IsNullOrEmpty(date))
+    {
+      return date.ToGedcom();
+    }
+
+    return string.Empty;
+  }
+
+  private static string ExportToday(DateTime today)
+  {
+    var date = new DateWrapper(Date.Create(today.Year, today.Month, today.Day));
+    return ExportDate(date);
   }
 
   private void ExportGender(Person person)

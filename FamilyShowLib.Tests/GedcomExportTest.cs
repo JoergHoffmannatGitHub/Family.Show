@@ -61,7 +61,7 @@ public class GedcomExportTest
     string tag, string tagDescription, string descriptor, string dateString, string place, string citation, string citationNote, string citationActualText, string link, string source)
   {
     // Arrange
-    DateTime? date = DateTime.Parse(dateString);
+    DateWrapper date = new(dateString);
     GedcomExport gedcomExport = new()
     {
       _sources = []
@@ -97,7 +97,7 @@ public class GedcomExportTest
     string tag = "BURI";
     string tagDescription = "Burial";
     string descriptor = "About";
-    DateTime? date = DateTime.Parse("2015-07-30"); ;
+    DateWrapper date = new("2015-07-30"); ;
     string place = string.Empty;
     string citation = "Citation1";
     string citationNote = "Note1";
@@ -139,7 +139,7 @@ public class GedcomExportTest
     string tag = "BURI";
     string tagDescription = "Burial";
     string descriptor = "About";
-    DateTime? date = DateTime.Parse("2015-07-30"); ;
+    DateWrapper date = new("2015-07-30"); ;
     string place = "New York";
     string citation = "Citation1";
     string citationNote = "Note1";
@@ -177,7 +177,7 @@ public class GedcomExportTest
     string tag = "BURI";
     string tagDescription = "Burial";
     string descriptor = "About";
-    DateTime? date = DateTime.Parse("2015-07-30"); ;
+    DateWrapper date = new("2015-07-30"); ;
     string place = "New York";
     string citation = string.Empty;
     string citationNote = "Note1";
@@ -219,7 +219,7 @@ public class GedcomExportTest
     string tag = "BURI";
     string tagDescription = "Burial";
     string descriptor = "About";
-    DateTime? date = DateTime.Parse("2015-07-30"); ;
+    DateWrapper date = new("2015-07-30"); ;
     string place = "New York";
     string citation = "Citation1";
     string citationNote = "Note1";
@@ -261,7 +261,7 @@ public class GedcomExportTest
     string tag = "BURI";
     string tagDescription = "Burial";
     string descriptor = "About";
-    DateTime? date = DateTime.Parse("2015-07-30"); ;
+    DateWrapper date = new("2015-07-30"); ;
     string place = "New York";
     string citation = "Citation1";
     string citationNote = "Note1";
@@ -303,7 +303,7 @@ public class GedcomExportTest
     string tag = "BURI";
     string tagDescription = "Burial";
     string descriptor = "About";
-    DateTime? date = DateTime.Parse("2015-07-30"); ;
+    DateWrapper date = new("2015-07-30"); ;
     string place = "New York";
     string citation = "Citation1";
     string citationNote = string.Empty;
@@ -345,7 +345,7 @@ public class GedcomExportTest
     string tag = "BURI";
     string tagDescription = "Burial";
     string descriptor = "About";
-    DateTime? date = null;
+    DateWrapper? date = null;
     string place = "New York";
     string citation = "Citation1";
     string citationNote = "Note1";
@@ -386,7 +386,7 @@ public class GedcomExportTest
     string tag = "BIRT";
     string tagDescription = "Birth";
     string descriptor = "About";
-    DateTime? date = null;
+    DateWrapper? date = null;
     string place = string.Empty;
     string citation = "Citation1";
     string citationNote = "Note1";
@@ -414,14 +414,14 @@ public class GedcomExportTest
     using (AnotherCulture.UnitedStates())
     {
       // Arrange
-      DateTime date = new(year, month, day);
+      DateWrapper date = new(year, month, day);
 
       // Act
       string result = GedcomExport.ExportDate(date);
 
       // Assert
       Assert.Equal(expected, result);
-      Assert.Equal(date, DateTime.Parse(result, CultureInfo.InvariantCulture));
+      Assert.Equal(date, new(result));
     }
   }
 }

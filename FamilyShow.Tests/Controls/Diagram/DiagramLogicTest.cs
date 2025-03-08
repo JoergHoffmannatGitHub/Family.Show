@@ -1,4 +1,6 @@
-﻿namespace FamilyShow.Tests.Controls.Diagram;
+﻿using FamilyShowLib;
+
+namespace FamilyShow.Tests.Controls.Diagram;
 
 public class DiagramLogicTest
 {
@@ -11,15 +13,15 @@ public class DiagramLogicTest
   // Windsor.familyx	1841
   // Kennedy.ged		  1821
 
-  public static readonly TheoryData<DateTime?, double> DateMinimumYearCases =
+  public static readonly TheoryData<DateWrapper?, double> DateMinimumYearCases =
     new()
     {
       { null, double.MaxValue },
-      { new DateTime(1950, 5, 8), 1950 },
+      { new(1950, 5, 8), 1950 },
     };
 
   [Theory, MemberData(nameof(DateMinimumYearCases))]
-  public void GetMinimumYearFromDateTest(DateTime? date, double expected)
+  public void GetMinimumYearFromDateTest(DateWrapper? date, double expected)
   {
     // Arrange
     double minimumYear = double.MaxValue;

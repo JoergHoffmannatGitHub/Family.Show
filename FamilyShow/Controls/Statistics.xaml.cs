@@ -1,13 +1,15 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 
 using FamilyShowLib;
+
+using Genealogy;
 
 namespace FamilyShow;
 
@@ -53,12 +55,7 @@ public partial class Statistics : UserControl
   {
     #region fields
 
-    // Media
-    double photos = 0;
     double notes = 0;
-    double attachments = 0;
-    double sourcesCount = 0;
-    double repositoriesCount = 0;
     double citations = 0;
     double relationshipCitations = 0;
 
@@ -81,21 +78,18 @@ public partial class Statistics : UserControl
     double deceasedFacts = 4 + livingFacts; // Normally a person either has cremation or burial date and place so this counts a 2 events plus death place and death date events plus the normal 7 events.
     double marriageFacts = 2;
     double divorceFacts = 1;
-
-    double totalEvents = 0;
-
     double living = 0;
     double deceased = 0;
 
-    decimal minimumYear = DateTime.Now.Year;
-    decimal maximumYear = DateTime.MinValue.Year;
+    int minimumYear = DateTime.Now.Year;
+    int maximumYear = DateTime.MinValue.Year;
 
-    DateTime? marriageDate = DateTime.MaxValue;
-    DateTime? divorceDate = DateTime.MaxValue;
-    DateTime? birthDate = DateTime.MaxValue;
-    DateTime? deathDate = DateTime.MaxValue;
-    DateTime? cremationDate = DateTime.MaxValue;
-    DateTime? burialDate = DateTime.MaxValue;
+    int marriageDate = int.MaxValue;
+    int divorceDate = int.MaxValue;
+    int birthDate = int.MaxValue;
+    int deathDate = int.MaxValue;
+    int cremationDate = int.MaxValue;
+    int burialDate = int.MaxValue;
 
     // Top names
     string[] maleNames = new string[people.Count];
@@ -199,7 +193,7 @@ public partial class Statistics : UserControl
         citations++;
       }
 
-      if ((!string.IsNullOrEmpty(p.CremationSource)) && (!string.IsNullOrEmpty(p.CremationCitation)) && (!string.IsNullOrEmpty(p.CremationPlace) || p.CremationDate > DateTime.MinValue))
+      if ((!string.IsNullOrEmpty(p.CremationSource)) && (!string.IsNullOrEmpty(p.CremationCitation)) && (!string.IsNullOrEmpty(p.CremationPlace) || DateWrapper.IsNullOrEmpty(p.CremationDate)))
       {
         citations++;
       }
@@ -214,17 +208,17 @@ public partial class Statistics : UserControl
         citations++;
       }
 
-      if ((!string.IsNullOrEmpty(p.BirthSource)) && (!string.IsNullOrEmpty(p.BirthCitation)) && ((!string.IsNullOrEmpty(p.BirthPlace)) || p.BirthDate > DateTime.MinValue))
+      if ((!string.IsNullOrEmpty(p.BirthSource)) && (!string.IsNullOrEmpty(p.BirthCitation)) && ((!string.IsNullOrEmpty(p.BirthPlace)) || DateWrapper.IsNullOrEmpty(p.BirthDate)))
       {
         citations++;
       }
 
-      if ((!string.IsNullOrEmpty(p.DeathSource)) && (!string.IsNullOrEmpty(p.DeathCitation)) && ((!string.IsNullOrEmpty(p.DeathPlace)) || p.DeathDate > DateTime.MinValue))
+      if ((!string.IsNullOrEmpty(p.DeathSource)) && (!string.IsNullOrEmpty(p.DeathCitation)) && ((!string.IsNullOrEmpty(p.DeathPlace)) || DateWrapper.IsNullOrEmpty(p.DeathDate)))
       {
         citations++;
       }
 
-      if ((!string.IsNullOrEmpty(p.BurialSource)) && (!string.IsNullOrEmpty(p.BurialCitation)) && ((!string.IsNullOrEmpty(p.BurialPlace)) || p.BurialDate > DateTime.MinValue))
+      if ((!string.IsNullOrEmpty(p.BurialSource)) && (!string.IsNullOrEmpty(p.BurialCitation)) && ((!string.IsNullOrEmpty(p.BurialPlace)) || DateWrapper.IsNullOrEmpty(p.BurialDate)))
       {
         citations++;
       }
@@ -239,7 +233,7 @@ public partial class Statistics : UserControl
 
           marriages++;
 
-          if (!string.IsNullOrEmpty(spouseRel.MarriageCitation) && !string.IsNullOrEmpty(spouseRel.MarriageSource) && (!string.IsNullOrEmpty(spouseRel.MarriagePlace) || spouseRel.MarriageDate > DateTime.MinValue))
+          if (!string.IsNullOrEmpty(spouseRel.MarriageCitation) && !string.IsNullOrEmpty(spouseRel.MarriageSource) && (!string.IsNullOrEmpty(spouseRel.MarriagePlace) || DateWrapper.IsNullOrEmpty(spouseRel.MarriageDate)))
           {
             relationshipCitations++;
           }
@@ -249,29 +243,24 @@ public partial class Statistics : UserControl
             progress++;
           }
 
-          if (spouseRel.MarriageDate != null)
+          if (DateWrapper.IsDateExact(spouseRel.MarriageDate, out IDateExact exactMarriageDate))
           {
-            if (spouseRel.MarriageDate > DateTime.MinValue)
-            {
-              marriageDate = spouseRel.MarriageDate;
-              progress++;
-            }
+            marriageDate = exactMarriageDate.Year;
+            progress++;
           }
 
           if (spouseRel.SpouseModifier == SpouseModifier.Former)
           {
             divorces++;
 
-            if (spouseRel.DivorceDate != null)
-            {
-              if (spouseRel.DivorceDate > DateTime.MinValue)
+            if (DateWrapper.IsDateExact(spouseRel.DivorceDate, out IDateExact exactDivorceDate))
+              if (spouseRel.DivorceDate != null)
               {
-                divorceDate = spouseRel.DivorceDate;
+                divorceDate = exactDivorceDate.Year;
                 progress++;
               }
-            }
 
-            if (!string.IsNullOrEmpty(spouseRel.DivorceCitation) && !string.IsNullOrEmpty(spouseRel.DivorceSource) && spouseRel.DivorceDate > DateTime.MinValue)
+            if (!string.IsNullOrEmpty(spouseRel.DivorceCitation) && !string.IsNullOrEmpty(spouseRel.DivorceSource) && !DateWrapper.IsNullOrEmpty(spouseRel.DivorceDate))
             {
               relationshipCitations++;
             }
@@ -294,22 +283,22 @@ public partial class Statistics : UserControl
         occupations++;
       }
 
-      if (p.BurialDate > DateTime.MinValue || !string.IsNullOrEmpty(p.BurialPlace))
+      if (!DateWrapper.IsNullOrEmpty(p.BurialDate) || !string.IsNullOrEmpty(p.BurialPlace))
       {
         burials++;
       }
 
-      if (p.CremationDate > DateTime.MinValue || !string.IsNullOrEmpty(p.CremationPlace))
+      if (!DateWrapper.IsNullOrEmpty(p.CremationDate) || !string.IsNullOrEmpty(p.CremationPlace))
       {
         cremations++;
       }
 
-      if (p.DeathDate > DateTime.MinValue || !string.IsNullOrEmpty(p.DeathPlace))
+      if (!DateWrapper.IsNullOrEmpty(p.DeathDate) || !string.IsNullOrEmpty(p.DeathPlace))
       {
         deaths++;
       }
 
-      if (p.BirthDate > DateTime.MinValue || !string.IsNullOrEmpty(p.BirthPlace))
+      if (!DateWrapper.IsNullOrEmpty(p.BirthDate) || !string.IsNullOrEmpty(p.BirthPlace))
       {
         births++;
       }
@@ -318,37 +307,38 @@ public partial class Statistics : UserControl
 
       #region min/max dates
 
-      if (p.BirthDate != null)
+      if (DateWrapper.IsDateExact(p.BirthDate, out IDateExact exactBirthDate))
       {
-        birthDate = p.BirthDate;
+        birthDate = exactBirthDate.Year;
       }
 
-      if (p.DeathDate != null)
+      if (DateWrapper.IsDateExact(p.DeathDate, out IDateExact exactDeathDate))
       {
-        deathDate = p.DeathDate;
+        deathDate = exactDeathDate.Year;
       }
 
-      if (p.CremationDate != null)
+      if (DateWrapper.IsDateExact(p.CremationDate, out IDateExact exactCremationDate))
       {
-        cremationDate = p.CremationDate;
+        cremationDate = exactCremationDate.Year;
       }
 
-      if (p.BurialDate != null)
+      if (DateWrapper.IsDateExact(p.BurialDate, out IDateExact exactBurialDate))
       {
-        burialDate = p.BurialDate;
+        burialDate = exactBurialDate.Year;
       }
 
-      DateTime? yearmin = year(marriageDate, divorceDate, birthDate, deathDate, cremationDate, burialDate, "min");
-      DateTime? yearmax = year(marriageDate, divorceDate, birthDate, deathDate, cremationDate, burialDate, "max");
+      int[] list = [marriageDate, divorceDate, birthDate, deathDate, cremationDate, burialDate];
+      int yearmin = list.Min();
+      int yearmax = list.Max();
 
-      if (minimumYear > yearmin.Value.Year)
+      if (minimumYear > yearmin)
       {
-        minimumYear = yearmin.Value.Year;
+        minimumYear = yearmin;
       }
 
-      if (maximumYear < yearmax.Value.Year && yearmax.Value.Year <= DateTime.Now.Year)
+      if (maximumYear < yearmax && yearmax <= DateTime.Now.Year)
       {
-        maximumYear = yearmax.Value.Year;
+        maximumYear = yearmax;
       }
 
       #endregion
@@ -372,7 +362,7 @@ public partial class Statistics : UserControl
         progress++;
       }
 
-      if (p.BirthDate > DateTime.MinValue)
+      if (!DateWrapper.IsNullOrEmpty(p.BirthDate))
       {
         progress++;
       }
@@ -397,9 +387,9 @@ public partial class Statistics : UserControl
         deceased++;
 
         // Only add progress for one cremation or burial not both
-        if (p.CremationDate > DateTime.MinValue || !string.IsNullOrEmpty(p.CremationPlace))
+        if (!DateWrapper.IsNullOrEmpty(p.CremationDate) || !string.IsNullOrEmpty(p.CremationPlace))
         {
-          if (p.CremationDate > DateTime.MinValue)
+          if (!DateWrapper.IsNullOrEmpty(p.CremationDate))
           {
             progress++;
           }
@@ -411,7 +401,7 @@ public partial class Statistics : UserControl
         }
         else
         {
-          if (p.BurialDate > DateTime.MinValue)
+          if (!DateWrapper.IsNullOrEmpty(p.BurialDate))
           {
             progress++;
           }
@@ -422,7 +412,7 @@ public partial class Statistics : UserControl
           }
         }
 
-        if (p.DeathDate > DateTime.MinValue)
+        if (!DateWrapper.IsNullOrEmpty(p.DeathDate))
         {
           progress++;
         }
@@ -450,11 +440,12 @@ public partial class Statistics : UserControl
     relationshipCitations /= 2;
     citations += relationshipCitations;
 
+    // Media
     // Media data
-    photos = allPhotos.Count;
-    attachments = allAttachments.Count;
-    sourcesCount = sources.Count;
-    repositoriesCount = repositories.Count;
+    double photos = allPhotos.Count;
+    double attachments = allAttachments.Count;
+    double sourcesCount = sources.Count;
+    double repositoriesCount = repositories.Count;
 
     Photos.Text = Properties.Resources.Photos + ": " + photos;
     Notes.Text = Properties.Resources.Notes + ": " + notes;
@@ -464,8 +455,7 @@ public partial class Statistics : UserControl
     Repositories.Text = Properties.Resources.Repositories + ": " + repositoriesCount;
 
     // Relationship and event data
-    totalEvents = births + deaths + marriages + divorces + cremations + burials + educations + occupations + religions;
-
+    double totalEvents = births + deaths + marriages + divorces + cremations + burials + educations + occupations + religions;
     Marriages.Text = Properties.Resources.Marriages + ": " + marriages;
     Divorces.Text = Properties.Resources.Divorces + ": " + divorces;
 
@@ -763,67 +753,67 @@ public partial class Statistics : UserControl
   /// <param name="burialDate"></param>
   /// <param name="sort"></param>
   /// <returns></returns>
-  private static DateTime? year(DateTime? marriageDate, DateTime? divorceDate, DateTime? birthDate, DateTime? deathDate, DateTime? cremationDate, DateTime? burialDate, string sort)
-  {
-    List<DateTime?> dates = [];
+  //private static DateTime? year(DateTime? marriageDate, DateTime? divorceDate, DateTime? birthDate, DateTime? deathDate, DateTime? cremationDate, DateTime? burialDate, string sort)
+  //{
+  //  List<DateTime?> dates = [];
 
-    if (!marriageDate.IsNullOrEmpty())
-    {
-      dates.Add(marriageDate);
-    }
+  //  if (!marriageDate.IsNullOrEmpty())
+  //  {
+  //    dates.Add(marriageDate);
+  //  }
 
-    if (!divorceDate.IsNullOrEmpty())
-    {
-      dates.Add(divorceDate);
-    }
+  //  if (!divorceDate.IsNullOrEmpty())
+  //  {
+  //    dates.Add(divorceDate);
+  //  }
 
-    if (!birthDate.IsNullOrEmpty())
-    {
-      dates.Add(birthDate);
-    }
+  //  if (!birthDate.IsNullOrEmpty())
+  //  {
+  //    dates.Add(birthDate);
+  //  }
 
-    if (!deathDate.IsNullOrEmpty())
-    {
-      dates.Add(deathDate);
-    }
+  //  if (!deathDate.IsNullOrEmpty())
+  //  {
+  //    dates.Add(deathDate);
+  //  }
 
-    if (!cremationDate.IsNullOrEmpty())
-    {
-      dates.Add(cremationDate);
-    }
+  //  if (!cremationDate.IsNullOrEmpty())
+  //  {
+  //    dates.Add(cremationDate);
+  //  }
 
-    if (!burialDate.IsNullOrEmpty())
-    {
-      dates.Add(burialDate);
-    }
+  //  if (!burialDate.IsNullOrEmpty())
+  //  {
+  //    dates.Add(burialDate);
+  //  }
 
-    if (sort == "min")
-    {
-      if (dates.Count > 0)
-      {
-        dates.Sort();
-        return dates[0];
-      }
-      else
-      {
-        return DateTime.MaxValue;
-      }
-    }
-    else
-    {
-      if (dates.Count > 0)
-      {
-        dates.Sort();
-        return dates[dates.Count - 1];
-      }
-      else
-      {
-        return DateTime.MinValue;
-      }
-    }
+  //  if (sort == "min")
+  //  {
+  //    if (dates.Count > 0)
+  //    {
+  //      dates.Sort();
+  //      return dates[0];
+  //    }
+  //    else
+  //    {
+  //      return DateTime.MaxValue;
+  //    }
+  //  }
+  //  else
+  //  {
+  //    if (dates.Count > 0)
+  //    {
+  //      dates.Sort();
+  //      return dates[dates.Count - 1];
+  //    }
+  //    else
+  //    {
+  //      return DateTime.MinValue;
+  //    }
+  //  }
 
 
-  }
+  //}
 
   /// <summary>
   /// Returns the 3 most common strings in an array of strings.
