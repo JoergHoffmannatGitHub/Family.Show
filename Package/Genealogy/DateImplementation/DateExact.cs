@@ -6,7 +6,7 @@ namespace Genealogy.DateImplementation
   /// <summary>
   /// Represents an exact date with year, month, and day components.
   /// </summary>
-  internal class DateExact : IDateExact, IEquatable<DateExact>
+  internal class DateExact : IDateExact, IEquatable<IDate>
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="DateExact"/> class with the specified date string.
@@ -72,7 +72,7 @@ namespace Genealogy.DateImplementation
     /// </summary>
     /// <param name="other">An object to compare with this object.</param>
     /// <returns>True if the current object is equal to the other parameter; otherwise, false.</returns>
-    public bool Equals(DateExact other) => other != null && Year == other.Year && Month == other.Month && Day == other.Day;
+    public bool Equals(IDate obj) => obj != null && obj is DateExact other && Year == other.Year && Month == other.Month && Day == other.Day;
 
     /// <summary>
     /// Determines whether the specified object is equal to the current object.
@@ -87,14 +87,11 @@ namespace Genealogy.DateImplementation
     /// <returns>A hash code for the current object.</returns>
     public override int GetHashCode()
     {
-      unchecked // Overflow is fine, just wrap
-      {
-        int hash = 17;
-        hash = hash * 37 + Year.GetHashCode();
-        hash = hash * 37 + Month.GetHashCode();
-        hash = hash * 37 + Day.GetHashCode();
-        return hash;
-      }
+      int hashCode = 592158470;
+      hashCode = hashCode * -1521134295 + Year.GetHashCode();
+      hashCode = hashCode * -1521134295 + Month.GetHashCode();
+      hashCode = hashCode * -1521134295 + Day.GetHashCode();
+      return hashCode;
     }
 
     #endregion
@@ -112,7 +109,7 @@ namespace Genealogy.DateImplementation
         throw new GenealogyException("Invalid Date: Must have at least YYYY");
       }
 
-      if (DateTime.TryParseExact(date, new string[] { "d MMM yyyy", "yyyy-MM-ddThh:mm:ss" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateValue))
+      if (DateTime.TryParseExact(date, new string[] { "d MMM yyyy", "yyyy-MM-dd", "yyyy-MM-ddThh:mm:ss" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateValue))
       {
         // year, month and day are given
         Year = dateValue.Year;
@@ -172,7 +169,7 @@ namespace Genealogy.DateImplementation
         case 12:
           return "DEC";
         default:
-          throw new NotImplementedException();
+          throw new GenealogyException("Not a valid month in date.");
       };
     }
   }

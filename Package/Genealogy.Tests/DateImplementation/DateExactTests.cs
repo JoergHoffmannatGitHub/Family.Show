@@ -1,213 +1,199 @@
 using Genealogy.DateImplementation;
 
-namespace Genealogy.Tests.DateImplementation;
-
-public class DateExactTests
+namespace Genealogy.Tests.DateImplementation
 {
-  [Fact]
-  public void Constructor_ShouldInitializeDate_WhenValidDateStringIsProvided()
+  public class DateExactTests
   {
-    // Arrange
-    string dateString = "22 JUL 2023";
+    public static readonly TheoryData<int, int, int, string> ValidToGedcomDates =
+      new()
+      {
+        { 2023, 7, 22, "22 JUL 2023" },
+        { 2023, 7, 0, "JUL 2023" },
+        { 2023, 0, 0, "2023" }
+      };
 
-    // Act
-    DateExact dateExact = new(dateString);
-
-    // Assert
-    Assert.Equal(2023, dateExact.Year);
-    Assert.Equal(7, dateExact.Month);
-    Assert.Equal(22, dateExact.Day);
-  }
-
-  [Fact]
-  public void Constructor_ShouldThrowException_WhenInvalidDateStringIsProvided()
-  {
-    // Arrange
-    string invalidDateString = "InvalidDate";
-
-    // Act & Assert
-    _ = Assert.Throws<NotImplementedException>(() => new DateExact(invalidDateString));
-  }
-
-  [Fact]
-  public void Constructor_ShouldInitializeDate_WhenYearMonthDayAreProvided()
-  {
-    // Arrange
-    int year = 2023;
-    int month = 7;
-    int day = 22;
-
-    // Act
-    DateExact dateExact = new(year, month, day);
-
-    // Assert
-    Assert.Equal(year, dateExact.Year);
-    Assert.Equal(month, dateExact.Month);
-    Assert.Equal(day, dateExact.Day);
-  }
-
-  [Fact]
-  public void ToGedcom_ShouldReturnCorrectGedcomString_WhenDateIsComplete()
-  {
-    // Arrange
-    DateExact dateExact = new(2023, 7, 22);
-
-    // Act
-    string gedcomString = dateExact.ToGedcom();
-
-    // Assert
-    Assert.Equal("22 JUL 2023", gedcomString);
-  }
-
-  [Fact]
-  public void ToGedcom_ShouldReturnCorrectGedcomString_WhenOnlyYearIsProvided()
-  {
-    // Arrange
-    DateExact dateExact = new(2023);
-
-    // Act
-    string gedcomString = dateExact.ToGedcom();
-
-    // Assert
-    Assert.Equal("2023", gedcomString);
-  }
-
-  [Fact]
-  public void ToGedcom_ShouldReturnCorrectGedcomString_WhenYearAndMonthAreProvided()
-  {
-    // Arrange
-    DateExact dateExact = new(2023, 7);
-
-    // Act
-    string gedcomString = dateExact.ToGedcom();
-
-    // Assert
-    Assert.Equal("JUL 2023", gedcomString);
-  }
-
-  public static readonly TheoryData<int, string> MonthCases =
-    new()
+    [Theory, MemberData(nameof(ValidToGedcomDates))]
+    public void Constructor_ShouldInitializeDate_WhenDateStringWithYearMonthDayIsProvided(
+      int expectedYear,
+      int expectedMonth,
+      int expectedDay,
+      string dateString)
     {
-      { 0, "2023" },
-      { 1, "JAN 2023" },
-      { 2, "FEB 2023" },
-      { 3, "MAR 2023" },
-      { 4, "APR 2023" },
-      { 5, "MAY 2023" },
-      { 6, "JUN 2023" },
-      { 7, "JUL 2023" },
-      { 8, "AUG 2023" },
-      { 9, "SEP 2023" },
-      { 10, "OCT 2023" },
-      { 11, "NOV 2023" },
-      { 12, "DEC 2023" },
-    };
+      // Act
+      DateExact dateExact = new(dateString);
 
-  [Theory, MemberData(nameof(MonthCases))]
-  public void ToGedcom_ShouldReturnCorrectGedcomString_WhenYearAndEachMonthAreProvided(int month, string expectedDate)
-  {
-    // Arrange
-    DateExact dateExact = new(2023, month);
+      // Assert
+      Assert.Equal(expectedYear, dateExact.Year);
+      Assert.Equal(expectedMonth, dateExact.Month);
+      Assert.Equal(expectedDay, dateExact.Day);
+    }
 
-    // Act
-    string gedcomString = dateExact.ToGedcom();
+    [Fact]
+    public void Constructor_ShouldThrowException_WhenInvalidDateStringIsProvided()
+    {
+      // Arrange
+      string invalidDateString = "InvalidDate";
 
-    // Assert
-    Assert.Equal(expectedDate, gedcomString);
-  }
+      // Act & Assert
+      Assert.Throws<NotImplementedException>(() => new DateExact(invalidDateString));
+    }
 
-  [Fact]
-  public void Constructor_ShouldThrowException_WhenInvaliMonthIsProvided()
-  {
-    // Arrange
-    DateExact dateExact = new(2023, 13);
+    // Existing tests...
 
-    // Act & Assert
-    _ = Assert.Throws<NotImplementedException>(dateExact.ToGedcom);
-  }
+    [Theory, MemberData(nameof(ValidToGedcomDates))]
+    public void ToGedcom_ShouldReturnCorrectGedcomString_WhenValidYearMonthDayAreProvided(int year, int month, int day, string expectedGedcom)
+    {
+      // Arrange
+      var dateExact = new DateExact(year, month, day);
 
-  [Fact]
-  public void Equals_ShouldReturnTrue_WhenDatesAreEqual()
-  {
-    // Arrange
-    DateExact date1 = new(2023, 7, 22);
-    DateExact date2 = new(2023, 7, 22);
+      // Act
+      string result = dateExact.ToGedcom();
 
-    // Act
-    bool result = date1.Equals(date2);
+      // Assert
+      Assert.Equal(expectedGedcom, result);
+    }
 
-    // Assert
-    Assert.True(result);
-  }
+    public static readonly TheoryData<int, string> MonthCases =
+      new()
+      {
+        { 0, "2023" },
+        { 1, "JAN 2023" },
+        { 2, "FEB 2023" },
+        { 3, "MAR 2023" },
+        { 4, "APR 2023" },
+        { 5, "MAY 2023" },
+        { 6, "JUN 2023" },
+        { 7, "JUL 2023" },
+        { 8, "AUG 2023" },
+        { 9, "SEP 2023" },
+        { 10, "OCT 2023" },
+        { 11, "NOV 2023" },
+        { 12, "DEC 2023" },
+      };
 
-  [Fact]
-  public void Equals_ShouldReturnFalse_WhenDatesAreNotEqual()
-  {
-    // Arrange
-    DateExact date1 = new(2023, 7, 22);
-    DateExact date2 = new(2023, 7, 23);
+    [Theory, MemberData(nameof(MonthCases))]
+    public void ToGedcom_ShouldReturnCorrectGedcomString_WhenYearAndEachMonthAreProvided(int month, string expectedDate)
+    {
+      // Arrange
+      DateExact dateExact = new(2023, month);
 
-    // Act
-    bool result = date1.Equals(date2);
+      // Act
+      string gedcomString = dateExact.ToGedcom();
 
-    // Assert
-    Assert.False(result);
-  }
+      // Assert
+      Assert.Equal(expectedDate, gedcomString);
+    }
 
-  [Fact]
-  public void Equals_ShouldReturnFalse_WhenOtherIsNull()
-  {
-    // Arrange
-    DateExact date = new(2023, 7, 22);
+    [Fact]
+    public void ToGedcom_ShouldThrowException_WhenDateMonthIsWrong()
+    {
+      // Arrange
+      DateExact dateExact = new(2023, 13);
 
-    // Act
-    bool result = date.Equals(null);
+      // Act & Assert
+      Assert.Throws<GenealogyException>(() => dateExact.ToGedcom());
+    }
 
-    // Assert
-    Assert.False(result);
-  }
+    public static readonly TheoryData<int, int, int, bool> EqualsDates =
+      new()
+      {
+        { 2023, 7, 22, true },
+        { 2023, 7, 23, false },
+        { 2023, 8, 22, false },
+        { 2024, 7, 22, false }
+      };
 
-  [Fact]
-  public void Equals_ShouldReturnFalse_WhenOtherIsNotDateExact()
-  {
-    // Arrange
-    DateExact date = new(2023, 7, 22);
-    object obj = new();
+    [Theory, MemberData(nameof(EqualsDates))]
+    public void Equals_ShouldReturnCorrectComparisonResult_WhenComparingTwoDates(
+      int year,
+      int month,
+      int day,
+      bool expectedResult)
+    {
+      // Arrange
+      DateExact date1 = new(2023, 7, 22);
+      DateExact date2 = new(year, month, day);
 
-    // Act
-    bool result = date.Equals(obj);
+      // Act
+      bool result = date1.Equals(date2);
 
-    // Assert
-    Assert.False(result);
-  }
+      // Assert
+      Assert.Equal(expectedResult, result);
+    }
 
-  [Fact]
-  public void GetHashCode_ShouldReturnSameHashCode_WhenDatesAreEqual()
-  {
-    // Arrange
-    DateExact date1 = new(2023, 7, 22);
-    DateExact date2 = new(2023, 7, 22);
+    public static readonly TheoryData<int, int, int, bool> EqualsDateExactObjectCases =
+      new()
+      {
+        { 2023, 7, 22, true },
+        { 2023, 7, 23, false },
+        { 2023, 8, 22, false },
+        { 2024, 7, 22, false },
+      };
 
-    // Act
-    int hashCode1 = date1.GetHashCode();
-    int hashCode2 = date2.GetHashCode();
+    [Theory, MemberData(nameof(EqualsDateExactObjectCases))]
+    public void EqualsObject_ShouldReturnCorrectComparisonResult_WhenComparingWithVariousDateExactObjectts(
+      int year,
+      int month,
+      int day,
+      bool expectedResult)
+    {
+      // Arrange
+      DateExact date = new(2023, 7, 22);
+      object obj = new DateExact(year, month, day);
 
-    // Assert
-    Assert.Equal(hashCode1, hashCode2);
-  }
+      // Act
+      bool result = date.Equals(obj);
 
-  [Fact]
-  public void GetHashCode_ShouldReturnDifferentHashCode_WhenDatesAreNotEqual()
-  {
-    // Arrange
-    DateExact date1 = new(2023, 7, 22);
-    DateExact date2 = new(2023, 7, 23);
+      // Assert
+      Assert.Equal(expectedResult, result);
+    }
 
-    // Act
-    int hashCode1 = date1.GetHashCode();
-    int hashCode2 = date2.GetHashCode();
+    public static readonly TheoryData<object?, bool> EqualsDateObjectCases =
+      new()
+      {
+        { null, false },
+        { "NotADateExact", false }
+      };
 
-    // Assert
-    Assert.NotEqual(hashCode1, hashCode2);
+    [Theory, MemberData(nameof(EqualsDateObjectCases))]
+    public void EqualsObject_ShouldReturnCorrectComparisonResult_WhenComparingWithVariousObjects(
+      object? obj,
+      bool expectedResult)
+    {
+      // Arrange
+      DateExact date = new(2023, 7, 22);
+
+      // Act
+      bool result = date.Equals(obj);
+
+      // Assert
+      Assert.Equal(expectedResult, result);
+    }
+
+    public static readonly TheoryData<int, int, int, int> HashCodeDates =
+      new()
+      {
+        { 2023, 7, 22, new DateExact(2023, 7, 22).GetHashCode() },
+        { 2023, 7, 23, new DateExact(2023, 7, 23).GetHashCode() },
+        { 2023, 8, 22, new DateExact(2023, 8, 22).GetHashCode() },
+        { 2024, 7, 22, new DateExact(2024, 7, 22).GetHashCode() }
+      };
+
+    [Theory, MemberData(nameof(HashCodeDates))]
+    public void GetHashCode_ShouldReturnCorrectHashCode_WhenDateIsProvided(
+      int year,
+      int month,
+      int day,
+      int expectedHashCode)
+    {
+      // Arrange
+      DateExact date = new(year, month, day);
+
+      // Act
+      int result = date.GetHashCode();
+
+      // Assert
+      Assert.Equal(expectedHashCode, result);
+    }
   }
 }

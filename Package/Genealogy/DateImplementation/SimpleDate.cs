@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 
 namespace Genealogy.DateImplementation
 {
   /// <summary>
   /// Represents a simple date implementation of the <see cref="IDate"/> interface.
   /// </summary>
-  internal class SimpleDate : IDate, IEquatable<SimpleDate>
+  internal class SimpleDate : IDate, IEquatable<IDate>
   {
     private string _date;
 
@@ -39,7 +40,11 @@ namespace Genealogy.DateImplementation
     /// </summary>
     /// <param name="other">An object to compare with this object.</param>
     /// <returns>True if the current object is equal to the other parameter; otherwise, false.</returns>
-    public bool Equals(SimpleDate other) => other != null && _date == other._date;
+    public bool Equals(IDate obj)
+    {
+      return obj is SimpleDate other
+        && _date == other._date;
+    }
 
     /// <summary>
     /// Determines whether the specified object is equal to the current object.
@@ -52,7 +57,7 @@ namespace Genealogy.DateImplementation
     /// Serves as the default hash function.
     /// </summary>
     /// <returns>A hash code for the current object.</returns>
-    public override int GetHashCode() => _date.GetHashCode();
+    public override int GetHashCode() => 1163315530 + EqualityComparer<string>.Default.GetHashCode(_date);
 
     #endregion
 
@@ -64,7 +69,7 @@ namespace Genealogy.DateImplementation
     private void ParseDate(string date)
     {
       // There is a minimum length of 4 characters
-      if (date.Length < 4)
+      if (date == null || date.Length < 4)
       {
         throw new GenealogyException("Invalid Date: Must have at least YYYY");
       }

@@ -1,4 +1,3 @@
-using Genealogy;
 using Genealogy.DateImplementation;
 
 namespace Genealogy.Tests;
@@ -8,27 +7,25 @@ public class DateTest
   public static readonly TheoryData<string, Type> ValidGedcomDates =
     new()
     {
-      { "22 JUL 2023", typeof(DateExact) },
-      { "JUL 2023", typeof(DateExact) },
-      { "2023", typeof(DateExact) },
-      { "6 MAY 2001", typeof(DateExact) },
-      { "1977", typeof(DateExact) },
-      { "CAL SEP 1888", typeof(SimpleDate) }, // DateEstimate
-      { "BET 1982 AND 1984", typeof(SimpleDate) }, // DateRange
-      { "EST 1752", typeof(SimpleDate) }, // DateEstimate
-      { "ABT JAN 1781", typeof(SimpleDate) }, // DateApproximate
-      { "AFT JAN 1781", typeof(SimpleDate) }, // DateApproximate
-      { "BEF JAN 1781", typeof(SimpleDate) }, // DateApproximate
-      { "FROM 1670 TO 1800", typeof(SimpleDate) }, // DateRange
-      { "FROM 1670 TO JULIAN 1800", typeof(SimpleDate) }, // DateRange
-      { "FROM JULIAN 1670 TO 1800", typeof(SimpleDate) } // DateRange
+        { "22 JUL 2023", typeof(DateExact) },
+        { "JUL 2023", typeof(DateExact) },
+        { "2023", typeof(DateExact) },
+        { "6 MAY 2001", typeof(DateExact) },
+        { "1977", typeof(DateExact) },
+        { "CAL SEP 1888", typeof(SimpleDate) }, // DateEstimate
+        { "BET 1982 AND 1984", typeof(SimpleDate) }, // DateRange
+        { "EST 1752", typeof(SimpleDate) }, // DateEstimate
+        { "ABT JAN 1781", typeof(SimpleDate) }, // DateApproximate
+        { "AFT JAN 1781", typeof(SimpleDate) }, // DateApproximate
+        { "BEF JAN 1781", typeof(SimpleDate) }, // DateApproximate
+        { "FROM 1670 TO 1800", typeof(SimpleDate) }, // DateRange
+        { "FROM 1670 TO JULIAN 1800", typeof(SimpleDate) }, // DateRange
+        { "FROM JULIAN 1670 TO 1800", typeof(SimpleDate) } // DateRange
     };
 
   [Theory, MemberData(nameof(ValidGedcomDates))]
-  public void Parse_ShouldReturnDateType_WhenValidDateStringIsProvided(string inputDate, Type type)
+  public void TryParse_ShouldReturnTrueAndDateType_WhenValidDateStringIsProvided(string inputDate, Type type)
   {
-    // Arrange
-
     // Act
     bool result = Date.TryParse(inputDate, out IDate dateResult);
 
@@ -39,17 +36,15 @@ public class DateTest
   }
 
   public static readonly TheoryData<string> InvalidGedcomDates =
-  [
-    null,
-    string.Empty,
-    "123",
-  ];
+    [
+      null,
+      string.Empty,
+      "123",
+    ];
 
   [Theory, MemberData(nameof(InvalidGedcomDates))]
-  public void ParseThrowsGenealogyException(string date)
+  public void TryParse_ShouldReturnFalse_WhenInvalidDateStringIsProvided(string date)
   {
-    // Arrange
-
     // Act & Assert
     Assert.False(Date.TryParse(date, out _));
   }
@@ -63,10 +58,8 @@ public class DateTest
     };
 
   [Theory, MemberData(nameof(ValidCreateDates))]
-  public void CreateTest(int year, int month, int day, string expectedGedcom)
+  public void Create_ShouldReturnCorrectDate_WhenValidYearMonthDayAreProvided(int year, int month, int day, string expectedGedcom)
   {
-    // Arrange
-
     // Act
     IDate result = Date.Create(year, month, day);
 

@@ -11,9 +11,12 @@ namespace FamilyShowLib;
 /// <summary>
 /// Represents a wrapper for a <see cref="DateTime"/> object.
 /// </summary>
-public class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
+public sealed class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
 {
-  public IDate Date {  get; private set; }
+  /// <summary>
+  /// Gets the wrapped date.
+  /// </summary>
+  internal IDate Date { get; private set; }
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DateWrapper"/> class.
@@ -31,18 +34,19 @@ public class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   /// <summary>
   /// Initializes a new instance of the <see cref="DateWrapper"/> class with the specified date string.
   /// </summary>
-  /// <param name="date">The date string to parse and wrap.</param>
+  /// <param name="dateString">The date string to parse and wrap.</param>
   public DateWrapper(string dateString)
   {
-    if (Genealogy.Date.TryParse(dateString, out IDate date))
-    {
-      Date = date;
-    }
-    else
-    {
-      Date = null;
-    }
+    Date = Genealogy.Date.TryParse(dateString, out IDate date) ? date : null;
   }
+
+  /// <summary>
+  /// Initializes a new instance of the <see cref="DateWrapper"/> class with the specified year, month, and day.
+  /// </summary>
+  /// <param name="year">The year component of the date.</param>
+  /// <param name="month">The month component of the date.</param>
+  /// <param name="day">The day component of the date.</param>
+  public DateWrapper(int year, int month = 0, int day = 0) => Date = Genealogy.Date.Create(year, month, day);
 
   /// <summary>
   /// Indicates whether the specified <see cref="DateWrapper"/> is null or an empty <see cref="DateWrapper"/>.
@@ -51,6 +55,51 @@ public class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   /// <returns>True if the <see cref="DateWrapper"/> is null or empty; otherwise, false.</returns>
   public static bool IsNullOrEmpty([NotNullWhen(false)] DateWrapper value) => value == null || value.Date == null;
 
+  /// <summary>
+  /// Indicates whether the specified <see cref="DateWrapper"/> contains an exact date.
+  /// </summary>
+  /// <param name="value">The <see cref="DateWrapper"/> to test.</param>
+  /// <param name="dateExact">When this method returns, contains the exact date if the <see cref="DateWrapper"/> contains an exact date; otherwise, null.</param>
+  /// <returns>True if the <see cref="DateWrapper"/> contains an exact date; otherwise, false.</returns>
+  public static bool IsDateExact([NotNullWhen(true)] DateWrapper value, out IDateExact dateExact)
+  {
+    return (dateExact = IsNullOrEmpty(value) ? null : value.Date as IDateExact) != null;
+  }
+
+  /// <summary>
+  /// Converts the wrapped date to its GEDCOM representation.
+  /// </summary>
+  /// <returns>A string representing the date in GEDCOM format.</returns>
+  public string ToGedcom() => IsNullOrEmpty(this) ? string.Empty : Date.ToGedcom();
+
+  /// <summary>
+  /// Converts the wrapped date to a short date string.
+  /// </summary>
+  /// <returns>A short date string representing the wrapped date.</returns>
+  public string ToShortString()
+  {
+    return IsDateExact(this, out IDateExact date)
+      ? new DateTime(date.Year, date.Month, date.Day).ToShortDateString()
+      : string.Empty;
+  }
+
+  /// <summary>
+  /// Formats the wrapped date as a string in the format "day/month/year".
+  /// </summary>
+  /// <returns>A string representing the formatted date.</returns>
+  public string Format()
+  {
+    if (IsDateExact(this, out IDateExact date))
+    {
+      int day = date.Day;
+      int month = date.Month;
+      int year = date.Year;
+      return day + "/" + month + "/" + year;
+    }
+
+    return string.Empty;
+  }
+
   #region IEquatable<DateWrapper>
 
   /// <summary>
@@ -58,7 +107,7 @@ public class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   /// </summary>
   /// <param name="other">An object to compare with this object.</param>
   /// <returns>True if the current object is equal to the other parameter; otherwise, false.</returns>
-  public bool Equals(DateWrapper other) => other != null && Date == other.Date;
+  public bool Equals(DateWrapper other) => other != null && Date != null && Date.Equals(other.Date);
 
   /// <summary>
   /// Determines whether the specified object is equal to the current object.
