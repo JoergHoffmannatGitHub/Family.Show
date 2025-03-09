@@ -23,15 +23,33 @@ public class RelationshipHelperTests
   }
 
   [Fact]
+  public void UpdateMarriageDate_ShouldNotUpdateMarriageDateForBothPersons()
+  {
+    // Arrange
+    Person father = new("John", "Doe", Gender.Male);
+    Person mother = new("Jane", "Doe", Gender.Female);
+
+    ParentRelationship parentRelationship = new(mother, ParentChildModifier.Natural);
+    father.Relationships.Add(parentRelationship);
+    mother.Relationships.Add(new ParentRelationship(father, ParentChildModifier.Natural));
+
+    // Act
+    RelationshipHelper.UpdateMarriageDate(father, mother, new(2020, 1, 1));
+
+    // Assert
+    Assert.Null(father.GetSpouseRelationship(mother));
+    Assert.Null(mother.GetSpouseRelationship(father));
+  }
+
+  [Fact]
   public void UpdateMarriageDate_ShouldNotUpdateIfNoSpouseRelationshipExists()
   {
     // Arrange
     Person person = new("John", "Doe", Gender.Male);
     Person spouse = new("Jane", "Doe", Gender.Female);
-    DateTime marriageDate = new(2020, 1, 1);
 
     // Act
-    RelationshipHelper.UpdateMarriageDate(person, spouse, marriageDate);
+    RelationshipHelper.UpdateMarriageDate(person, spouse, new(2020, 1, 1));
 
     // Assert
     Assert.Null(person.GetSpouseRelationship(spouse));
@@ -44,14 +62,13 @@ public class RelationshipHelperTests
     // Arrange
     Person person = new("John", "Doe", Gender.Male);
     Person spouse = new("Jane", "Doe", Gender.Female);
-    DateTime? marriageDate = null;
 
     SpouseRelationship spouseRelationship = new(spouse, SpouseModifier.Current);
     person.Relationships.Add(spouseRelationship);
     spouse.Relationships.Add(new SpouseRelationship(person, SpouseModifier.Current));
 
     // Act
-    RelationshipHelper.UpdateMarriageDate(person, spouse, marriageDate);
+    RelationshipHelper.UpdateMarriageDate(person, spouse, null);
 
     // Assert
     Assert.Null(person.GetSpouseRelationship(spouse).MarriageDate);
@@ -76,6 +93,25 @@ public class RelationshipHelperTests
     // Assert
     Assert.Equal(marriageDateDescriptor, person.GetSpouseRelationship(spouse).MarriageDateDescriptor);
     Assert.Equal(marriageDateDescriptor, spouse.GetSpouseRelationship(person).MarriageDateDescriptor);
+  }
+
+  [Fact]
+  public void UpdateMarriageDateDescriptor_ShouldNotUpdateMarriageDateDescriptorForBothPersons()
+  {
+    // Arrange
+    Person father = new("John", "Doe", Gender.Male);
+    Person mother = new("Jane", "Doe", Gender.Female);
+
+    ParentRelationship parentRelationship = new(mother, ParentChildModifier.Natural);
+    father.Relationships.Add(parentRelationship);
+    mother.Relationships.Add(new ParentRelationship(father, ParentChildModifier.Natural));
+
+    // Act
+    RelationshipHelper.UpdateMarriageDateDescriptor(father, mother, "Spring 2020");
+
+    // Assert
+    Assert.Null(father.GetSpouseRelationship(mother));
+    Assert.Null(mother.GetSpouseRelationship(father));
   }
 
   [Fact]
@@ -135,15 +171,33 @@ public class RelationshipHelperTests
   }
 
   [Fact]
+  public void UpdateDivorceDate_ShouldNotUpdateMarriageDateForBothPersons()
+  {
+    // Arrange
+    Person father = new("John", "Doe", Gender.Male);
+    Person mother = new("Jane", "Doe", Gender.Female);
+
+    ParentRelationship spouseRelationship = new(mother, ParentChildModifier.Natural);
+    father.Relationships.Add(spouseRelationship);
+    mother.Relationships.Add(new ParentRelationship(father, ParentChildModifier.Natural));
+
+    // Act
+    RelationshipHelper.UpdateDivorceDate(father, mother, new(2020, 1, 1));
+
+    // Assert
+    Assert.Null(father.GetSpouseRelationship(mother));
+    Assert.Null(mother.GetSpouseRelationship(father));
+  }
+
+  [Fact]
   public void UpdateDivorceDate_ShouldNotUpdateIfNoSpouseRelationshipExists()
   {
     // Arrange
     Person person = new("John", "Doe", Gender.Male);
     Person spouse = new("Jane", "Doe", Gender.Female);
-    DateTime divorceDate = new(2021, 1, 1);
 
     // Act
-    RelationshipHelper.UpdateDivorceDate(person, spouse, divorceDate);
+    RelationshipHelper.UpdateDivorceDate(person, spouse, new(2020, 1, 1));
 
     // Assert
     Assert.Null(person.GetSpouseRelationship(spouse));
@@ -156,14 +210,13 @@ public class RelationshipHelperTests
     // Arrange
     Person person = new("John", "Doe", Gender.Male);
     Person spouse = new("Jane", "Doe", Gender.Female);
-    DateTime? divorceDate = null;
 
     SpouseRelationship spouseRelationship = new(spouse, SpouseModifier.Current);
     person.Relationships.Add(spouseRelationship);
     spouse.Relationships.Add(new SpouseRelationship(person, SpouseModifier.Current));
 
     // Act
-    RelationshipHelper.UpdateDivorceDate(person, spouse, divorceDate);
+    RelationshipHelper.UpdateDivorceDate(person, spouse, null);
 
     // Assert
     Assert.Null(person.GetSpouseRelationship(spouse).DivorceDate);
@@ -188,6 +241,25 @@ public class RelationshipHelperTests
     // Assert
     Assert.Equal(divorceDateDescriptor, person.GetSpouseRelationship(spouse).DivorceDateDescriptor);
     Assert.Equal(divorceDateDescriptor, spouse.GetSpouseRelationship(person).DivorceDateDescriptor);
+  }
+
+  [Fact]
+  public void UpdateDivorceDateDescriptor_ShouldNotUpdateDivorceDateDescriptorForBothPersons()
+  {
+    // Arrange
+    Person father = new("John", "Doe", Gender.Male);
+    Person mother = new("Jane", "Doe", Gender.Female);
+
+    ParentRelationship parentRelationship = new(mother, ParentChildModifier.Natural);
+    father.Relationships.Add(parentRelationship);
+    mother.Relationships.Add(new ParentRelationship(father, ParentChildModifier.Natural));
+
+    // Act
+    RelationshipHelper.UpdateDivorceDateDescriptor(father, mother, "Winter 2021");
+
+    // Assert
+    Assert.Null(father.GetSpouseRelationship(mother));
+    Assert.Null(mother.GetSpouseRelationship(father));
   }
 
   [Fact]
