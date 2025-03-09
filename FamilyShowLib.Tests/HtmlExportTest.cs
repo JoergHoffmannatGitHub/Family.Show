@@ -7,10 +7,10 @@ public class HtmlExportTest
   {
     // Arrange
     var peopleCollection = new PeopleCollection
-    {
-        new Person("John", "Doe") { BirthDate = new(1890, 7, 22), DeathDate = new(1995, 1, 22) },
-        new Person("Jane", "Doe") { BirthDate = new(1900, 5, 15), DeathDate = new(1980, 3, 10) }
-    };
+        {
+            new Person("John", "Doe") { BirthDate = new DateTime(1890, 7, 22), DeathDate = new DateTime(1995, 1, 22) },
+            new Person("Jane", "Doe") { BirthDate = new DateTime(1900, 5, 15), DeathDate = new DateTime(1980, 3, 10) }
+        };
     var htmlExport = new HtmlExport();
     string htmlFilePath = Path.GetTempFileName();
     string familyxFileName = "FamilyTree";
@@ -32,10 +32,10 @@ public class HtmlExportTest
   {
     // Arrange
     var peopleCollection = new PeopleCollection
-    {
-        new Person("John", "Doe") { BirthDate = new(1890, 7, 22), DeathDate = new(1995, 1, 22), IsLiving = false },
-        new Person("Jane", "Doe") { BirthDate = new(1900, 5, 15), IsLiving = true }
-    };
+        {
+            new Person("John", "Doe") { BirthDate = new DateTime(1890, 7, 22), DeathDate = new DateTime(1995, 1, 22), IsLiving = false },
+            new Person("Jane", "Doe") { BirthDate = new DateTime(1900, 5, 15), IsLiving = true }
+        };
     var htmlExport = new HtmlExport();
     string htmlFilePath = Path.GetTempFileName();
     string familyxFileName = "FamilyTree";
@@ -73,10 +73,10 @@ public class HtmlExportTest
   {
     // Arrange
     var peopleCollection = new PeopleCollection
-    {
-        new Person("John", "Doe") { BirthDate = new(1890, 7, 22), DeathDate = new(1995, 1, 22) },
-        new Person("Jane", "Doe") { BirthDate = new(1900, 5, 15), DeathDate = new(1980, 3, 10) }
-    };
+        {
+            new Person("John", "Doe") { BirthDate = new DateTime(1890, 7, 22), DeathDate = new DateTime(1995, 1, 22) },
+            new Person("Jane", "Doe") { BirthDate = new DateTime(1900, 5, 15), DeathDate = new DateTime(1980, 3, 10) }
+        };
     var htmlExport = new HtmlExport();
     string htmlFilePath = Path.GetTempFileName();
     string familyxFileName = "FamilyTree";
@@ -89,5 +89,29 @@ public class HtmlExportTest
     Assert.Contains("Family.Show", htmlContent);
     Assert.DoesNotContain("John Doe", htmlContent);
     Assert.DoesNotContain("Jane Doe", htmlContent);
+  }
+
+  [Fact]
+  public void Dateformat_WithNullDate_ShouldReturnEmptyString()
+  {
+    // Act
+    string result = HtmlExport.dateformat(null);
+
+    // Assert
+    Assert.Equal(string.Empty, result);
+  }
+
+
+  [Fact]
+  public void Dateformat_WithValidDate_ShouldReturnFormattedDate()
+  {
+    // Arrange
+    DateTime date = new(2023, 10, 5);
+
+    // Act
+    string result = HtmlExport.dateformat(date);
+
+    // Assert
+    Assert.Equal("5/10/2023", result);
   }
 }

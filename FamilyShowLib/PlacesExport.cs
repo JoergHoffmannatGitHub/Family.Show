@@ -19,8 +19,6 @@
 
 using System.IO;
 
-using Genealogy;
-
 namespace FamilyShowLib;
 
 /// <summary>
@@ -425,9 +423,9 @@ public class PlacesExport
           {
             string year = string.Empty;
 
-            if (DateWrapper.IsDateExact(p.BurialDate, out IDateExact burialDate))
+            if (p.BurialDate != null)
             {
-              year = burialDate.Year.ToString();
+              year = p.BurialDate.Value.Year.ToString();
             }
 
             if (!string.IsNullOrEmpty(p.BurialPlace) && p.Restriction != Restriction.Private && !string.IsNullOrEmpty(year))
@@ -467,9 +465,9 @@ public class PlacesExport
           {
             string year = string.Empty;
 
-            if (DateWrapper.IsDateExact(p.CremationDate, out IDateExact cremationDate))
+            if (p.CremationDate != null)
             {
-              year = cremationDate.Year.ToString();
+              year = p.CremationDate.Value.Year.ToString();
             }
 
             if (!string.IsNullOrEmpty(p.CremationPlace) && p.Restriction != Restriction.Private && !string.IsNullOrEmpty(year))
@@ -519,9 +517,9 @@ public class PlacesExport
                   {
                     string date = string.Empty;
 
-                    if (DateWrapper.IsDateExact(spouseRel.MarriageDate, out IDateExact marriageDate))
+                    if (spouseRel.MarriageDate != null)
                     {
-                      date = marriageDate.Year.ToString();
+                      date = spouseRel.MarriageDate.Value.Year.ToString();
                     }
 
                     tw.WriteLine("<Placemark>\n" +

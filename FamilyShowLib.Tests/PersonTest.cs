@@ -91,7 +91,7 @@ public class PersonTest
     // Arrange
     Person person = new()
     {
-      BirthDate = new(2000, 1, 1),
+      BirthDate = new DateTime(2000, 1, 1),
     };
 
     // Act
@@ -107,7 +107,7 @@ public class PersonTest
     // Arrange
     Person person = new()
     {
-      BirthDate = new(2000, 1, 1),
+      BirthDate = new DateTime(2000, 1, 1),
       IsLiving = false
     };
 
@@ -124,7 +124,7 @@ public class PersonTest
     // Arrange
     Person person = new()
     {
-      BirthDate = new(2000, DateTime.Now.Month + 1, 1),
+      BirthDate = new DateTime(2000, DateTime.Now.Month + 1, 1),
     };
 
     // Act
@@ -140,7 +140,7 @@ public class PersonTest
     // Arrange
     Person person = new()
     {
-      BirthDate = new(2000, DateTime.Now.Month - 1, 1),
+      BirthDate = new DateTime(2000, DateTime.Now.Month - 1, 1),
     };
 
     // Act
@@ -169,7 +169,7 @@ public class PersonTest
     // Arrange
     Person person = new()
     {
-      BirthDate = new(2000, 1, 1)
+      BirthDate = new DateTime(2000, 1, 1)
     };
 
     // Act
@@ -198,7 +198,7 @@ public class PersonTest
     // Arrange
     Person person = new()
     {
-      DeathDate = new(2000, 1, 1),
+      DeathDate = new DateTime(2000, 1, 1),
       IsLiving = false
     };
 
@@ -214,7 +214,7 @@ public class PersonTest
   {
     // Arrange
     Person person = new();
-    DateWrapper birthDate = new(2000, 1, 1);
+    DateTime birthDate = new(2000, 1, 1);
 
     // Act
     person.BirthDate = birthDate;
@@ -228,7 +228,7 @@ public class PersonTest
   {
     // Arrange
     Person person = new();
-    DateWrapper? birthDate = null;
+    DateTime? birthDate = null;
 
     // Act
     person.BirthDate = birthDate;
@@ -292,7 +292,7 @@ public class PersonTest
     };
 
     // Act
-    person.BirthDate = new(2000, 1, 1);
+    person.BirthDate = new DateTime(2000, 1, 1);
 
     // Assert
     Assert.True(propertyBirthDateChangedTriggered);
@@ -313,14 +313,13 @@ public class PersonTest
       // Arrange
       Person person = new();
       DateTime birthDate = new(2000, 1, 1);
-      DateWrapper birthDateWrapper = new(birthDate.Year, birthDate.Month, birthDate.Day);
 
       // Act
-      person.BirthDate = birthDateWrapper;
+      person.BirthDate = birthDate;
 
       // Assert
-      Assert.Equal(birthDateWrapper, person.BirthDate);
-      Assert.Equal(DateTime.Now.Year - birthDate.Year, person.Age);
+      Assert.Equal(birthDate, person.BirthDate);
+      Assert.Equal(DateTime.Now.Year - 2000, person.Age);
       Assert.Equal("2000", person.YearOfBirth);
       Assert.Equal(birthDate.ToString(DateTimeFormatInfo.CurrentInfo.MonthDayPattern, CultureInfo.CurrentCulture), person.BirthMonthAndDay);
       Assert.Equal($"Born {birthDate.ToString(DateTimeFormatInfo.CurrentInfo.ShortDatePattern, CultureInfo.CurrentCulture)}", person.BirthDateAndPlace);
@@ -384,10 +383,9 @@ public class PersonTest
       // Arrange
       Person person = new();
       DateTime birthDate = new(2000, 1, 1);
-      DateWrapper birthDateWrapper = new(birthDate.Year, birthDate.Month, birthDate.Day);
 
       // Act
-      person.BirthDate = birthDateWrapper;
+      person.BirthDate = birthDate;
 
       // Assert
       Assert.Equal(birthDate.ToString(DateTimeFormatInfo.CurrentInfo.MonthDayPattern, CultureInfo.CurrentCulture), person.BirthMonthAndDay);
@@ -416,11 +414,10 @@ public class PersonTest
       // Arrange
       Person person = new();
       DateTime birthDate = new(2000, 1, 1);
-      DateWrapper birthDateWrapper = new(birthDate.Year, birthDate.Month, birthDate.Day);
       string birthPlace = "New York";
 
       // Act
-      person.BirthDate = birthDateWrapper;
+      person.BirthDate = birthDate;
       person.BirthPlace = birthPlace;
 
       // Assert
@@ -436,10 +433,9 @@ public class PersonTest
       // Arrange
       Person person = new();
       DateTime birthDate = new(2000, 1, 1);
-      DateWrapper birthDateWrapper = new(birthDate.Year, birthDate.Month, birthDate.Day);
 
       // Act
-      person.BirthDate = birthDateWrapper;
+      person.BirthDate = birthDate;
 
       // Assert
       Assert.Equal($"Born {birthDate.ToString(DateTimeFormatInfo.CurrentInfo.ShortDatePattern, CultureInfo.CurrentCulture)}", person.BirthDateAndPlace);
@@ -480,7 +476,7 @@ public class PersonTest
   {
     // Arrange
     Person person = new();
-    DateWrapper deathDate = new(2000, 1, 1);
+    DateTime deathDate = new(2000, 1, 1);
 
     // Act
     person.DeathDate = deathDate;
@@ -494,7 +490,7 @@ public class PersonTest
   {
     // Arrange
     Person person = new();
-    DateWrapper? deathDate = null;
+    DateTime? deathDate = null;
 
     // Act
     person.DeathDate = deathDate;
@@ -534,7 +530,7 @@ public class PersonTest
     };
 
     // Act
-    person.DeathDate = new(2000, 1, 1);
+    person.DeathDate = new DateTime(2000, 1, 1);
 
     // Assert
     Assert.True(propertyDeathDateChangedTriggered);
@@ -550,7 +546,7 @@ public class PersonTest
     {
       IsLiving = false
     };
-    DateWrapper deathDate = new(2000, 1, 1);
+    DateTime deathDate = new(2000, 1, 1);
 
     // Act
     person.DeathDate = deathDate;
@@ -614,7 +610,7 @@ public class PersonTest
   {
     // Arrange
     Person person = new();
-    DateWrapper cremationDate = new(2000, 1, 1);
+    DateTime cremationDate = new(2000, 1, 1);
 
     // Act
     person.CremationDate = cremationDate;
@@ -628,7 +624,7 @@ public class PersonTest
   {
     // Arrange
     Person person = new();
-    DateWrapper? cremationDate = null;
+    DateTime? cremationDate = null;
 
     // Act
     person.CremationDate = cremationDate;
@@ -652,7 +648,7 @@ public class PersonTest
     };
 
     // Act
-    person.CremationDate = new(2000, 1, 1);
+    person.CremationDate = new DateTime(2000, 1, 1);
 
     // Assert
     Assert.True(propertyChangedTriggered);
@@ -712,7 +708,7 @@ public class PersonTest
   {
     // Arrange
     Person person = new();
-    DateWrapper burialDate = new(2000, 1, 1);
+    DateTime burialDate = new(2000, 1, 1);
 
     // Act
     person.BurialDate = burialDate;
@@ -726,7 +722,7 @@ public class PersonTest
   {
     // Arrange
     Person person = new();
-    DateWrapper? burialDate = null;
+    DateTime? burialDate = null;
 
     // Act
     person.BurialDate = burialDate;
@@ -750,7 +746,7 @@ public class PersonTest
     };
 
     // Act
-    person.BurialDate = new(2000, 1, 1);
+    person.BurialDate = new DateTime(2000, 1, 1);
 
     // Assert
     Assert.True(propertyChangedTriggered);
@@ -811,7 +807,7 @@ public class PersonTest
     using (AnotherCulture.UnitedStates())
     {
       // Arrange
-      Person person = new() { BirthDate = null };
+      Person person = new() { BirthDate = DateTime.MinValue };
 
       // Act
       string error = person["BirthDate"];
@@ -825,7 +821,7 @@ public class PersonTest
   public void Indexer_ValidBirthDate_ReturnsNull()
   {
     // Arrange
-    Person person = new() { BirthDate = new(2000, 1, 1) };
+    Person person = new() { BirthDate = new DateTime(2000, 1, 1) };
 
     // Act
     string error = person["BirthDate"];
@@ -840,7 +836,7 @@ public class PersonTest
     using (AnotherCulture.UnitedStates())
     {
       // Arrange
-      Person person = new() { DeathDate = null };
+      Person person = new() { DeathDate = DateTime.MinValue };
 
       // Act
       string error = person["DeathDate"];
@@ -854,7 +850,7 @@ public class PersonTest
   public void Indexer_ValidDeathDate_ReturnsNull()
   {
     // Arrange
-    Person person = new() { DeathDate = new(2000, 1, 1) };
+    Person person = new() { DeathDate = new DateTime(2000, 1, 1) };
 
     // Act
     string error = person["DeathDate"];
@@ -869,7 +865,7 @@ public class PersonTest
     using (AnotherCulture.UnitedStates())
     {
       // Arrange
-      Person person = new() { CremationDate = null };
+      Person person = new() { CremationDate = DateTime.MinValue };
 
       // Act
       string error = person["CremationDate"];
@@ -883,7 +879,7 @@ public class PersonTest
   public void Indexer_ValidCremationDate_ReturnsNull()
   {
     // Arrange
-    Person person = new() { CremationDate = new(2000, 1, 1) };
+    Person person = new() { CremationDate = new DateTime(2000, 1, 1) };
 
     // Act
     string error = person["CremationDate"];
@@ -898,7 +894,7 @@ public class PersonTest
     using (AnotherCulture.UnitedStates())
     {
       // Arrange
-      Person person = new() { BurialDate = null };
+      Person person = new() { BurialDate = DateTime.MinValue };
 
       // Act
       string error = person["BurialDate"];
@@ -912,7 +908,7 @@ public class PersonTest
   public void Indexer_ValidBurialDate_ReturnsNull()
   {
     // Arrange
-    Person person = new() { BurialDate = new(2000, 1, 1) };
+    Person person = new() { BurialDate = new DateTime(2000, 1, 1) };
 
     // Act
     string error = person["BurialDate"];

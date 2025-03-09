@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace FamilyShowLib;
@@ -407,7 +408,7 @@ public static class RelationshipHelper
   /// <summary>
   /// Performs the business logic for updating the marriage date
   /// </summary>
-  public static void UpdateMarriageDate(Person person, Person spouse, DateWrapper dateTime)
+  public static void UpdateMarriageDate(Person person, Person spouse, DateTime? dateTime)
   {
     foreach (Relationship relationship in person.Relationships)
     {
@@ -623,7 +624,7 @@ public static class RelationshipHelper
   /// <summary>
   /// Performs the business logic for updating the divorce date
   /// </summary>
-  public static void UpdateDivorceDate(Person person, Person spouse, DateWrapper dateTime)
+  public static void UpdateDivorceDate(Person person, Person spouse, DateTime? dateTime)
   {
     foreach (Relationship relationship in person.Relationships)
     {

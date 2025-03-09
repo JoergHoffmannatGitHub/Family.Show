@@ -28,16 +28,16 @@ public class DetailsTest
     }
   }
 
-  public static readonly TheoryData<string, DateWrapper?> StringDateCases =
+  public static readonly TheoryData<string, DateTime?> StringDateCases =
     new()
     {
       { "", null },
       { "invalid", null },
-      { "6 SEP 1888", new(1888, 9, 6) },
+      { "6 SEP 1888", new DateTime(1888, 9, 6) },
     };
 
   [StaTheory, MemberData(nameof(StringDateCases))]
-  public void AddButton_ClickTest(string birthDate, DateWrapper? expected)
+  public void AddButton_ClickTest(string birthDate, DateTime? expected)
   {
     // Arrange
     InitAppCollections();

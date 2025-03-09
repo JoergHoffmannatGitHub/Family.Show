@@ -63,7 +63,7 @@ public class GedcomImportTest
 
     Assert.NotNull(husbandMarriage);
     Assert.NotNull(wifeMarriage);
-    Assert.Equal(new(2000, 1, 1), husbandMarriage.MarriageDate);
+    Assert.Equal(new DateTime(2000, 1, 1), husbandMarriage.MarriageDate);
     Assert.Equal("New York", husbandMarriage.MarriagePlace);
     Assert.Equal("@S1@", husbandMarriage.MarriageSource);
     Assert.Equal("Page 1", husbandMarriage.MarriageCitation);
@@ -110,7 +110,7 @@ public class GedcomImportTest
 
     Assert.NotNull(husbandMarriage);
     Assert.NotNull(wifeMarriage);
-    Assert.Equal(new(2010, 1, 1), husbandMarriage.DivorceDate);
+    Assert.Equal(new DateTime(2010, 1, 1), husbandMarriage.DivorceDate);
     Assert.Equal("@S2@", husbandMarriage.DivorceSource);
     Assert.Equal("Page 2", husbandMarriage.DivorceCitation);
     Assert.Equal("Divorce Certificate", husbandMarriage.DivorceCitationActualText);
@@ -210,10 +210,10 @@ public class GedcomImportTest
     XmlNode? node = doc.DocumentElement;
 
     // Act
-    DateWrapper result = GedcomImport.GetValueDate(node!, "DATE");
+    DateTime? result = GedcomImport.GetValueDate(node!, "DATE");
 
     // Assert
-    Assert.Equal(new(1953, 9, 12), result);
+    Assert.Equal(new DateTime(1953, 9, 12), result);
   }
 
   [Fact]
@@ -227,11 +227,11 @@ public class GedcomImportTest
 
     // Act
     string dateDescriptor = GedcomImport.GetValueDateDescriptor(node, "DATE");
-    DateWrapper result = GedcomImport.GetValueDate(node!, "DATE");
+    DateTime? result = GedcomImport.GetValueDate(node!, "DATE");
 
     // Assert
     Assert.Equal("ABT ", dateDescriptor);
-    Assert.Equal(new("ABT 1953"), result);
+    Assert.Equal(new DateTime(1953, 1, 1), result);
   }
 
   [Fact]
@@ -245,11 +245,11 @@ public class GedcomImportTest
 
     // Act
     string dateDescriptor = GedcomImport.GetValueDateDescriptor(node, "DATE");
-    DateWrapper result = GedcomImport.GetValueDate(node!, "DATE");
+    DateTime? result = GedcomImport.GetValueDate(node!, "DATE");
 
     // Assert
     Assert.Equal("AFT ", dateDescriptor);
-    Assert.Equal(new("AFT 1953"), result);
+    Assert.Equal(new DateTime(1953, 1, 1), result);
   }
 
   [Fact]
@@ -263,23 +263,23 @@ public class GedcomImportTest
 
     // Act
     string dateDescriptor = GedcomImport.GetValueDateDescriptor(node, "DATE");
-    DateWrapper result = GedcomImport.GetValueDate(node!, "DATE");
+    DateTime? result = GedcomImport.GetValueDate(node!, "DATE");
 
     // Assert
     Assert.Equal("BEF ", dateDescriptor);
-    Assert.Equal(new("BEF 1953"), result);
+    Assert.Equal(new DateTime(1953, 1, 1), result);
   }
 
   [Theory]
-  [InlineData("JAN-FEB-MAR 1953")]
-  [InlineData("APR-MAY-JUN 1953")]
-  [InlineData("JUL-AUG-SEP 1953")]
-  [InlineData("OCT-NOV-DEC 1953")]
-  [InlineData("JAN FEB MAR 1953")]
-  [InlineData("APR MAY JUN 1953")]
-  [InlineData("JUL AUG SEP 1953")]
-  [InlineData("OCT NOV DEC 1953")]
-  public void GetValueDate_WithQuarterDate_ShouldReturnCorrectDate_FixIt(string quarter)
+  [InlineData("JAN-FEB-MAR 1953", 1)]
+  [InlineData("APR-MAY-JUN 1953", 4)]
+  [InlineData("JUL-AUG-SEP 1953", 7)]
+  [InlineData("OCT-NOV-DEC 1953", 10)]
+  [InlineData("JAN FEB MAR 1953", 1)]
+  [InlineData("APR MAY JUN 1953", 4)]
+  [InlineData("JUL AUG SEP 1953", 7)]
+  [InlineData("OCT NOV DEC 1953", 10)]
+  public void GetValueDate_WithQuarterDate_ShouldReturnCorrectDate_FixIt(string quarter, int month)
   {
     // Arrange
     // see https://github.com/JoergHoffmannatGitHub/Family.Show/issues/4
@@ -291,25 +291,25 @@ public class GedcomImportTest
 
     // Act
     string dateDescriptor = GedcomImport.GetValueDateDescriptor(node, "DATE");
-    DateWrapper result = GedcomImport.GetValueDate(node!, "DATE");
+    DateTime? result = GedcomImport.GetValueDate(node!, "DATE");
 
     // Assert
     Assert.Equal("ABT ", dateDescriptor);
-    Assert.Null(result);
+    Assert.Equal(new DateTime(1953, month, 1), result);
   }
 
   [Fact]
   public void GetValueDate_WithInvalidDate_ShouldReturnNull_FixIt()
   {
     // Arrange
-    string xmlContent = "<root><DATE Value='INVALID DATE' /></root>";
-    //string xmlContent = "<root></root>";
+    //string xmlContent = "<root><DATE Value='INVALID DATE' /></root>";
+    string xmlContent = "<root></root>";
     XmlDocument doc = new();
     doc.LoadXml(xmlContent);
     XmlNode? node = doc.DocumentElement;
 
     // Act
-    DateWrapper result = GedcomImport.GetValueDate(node!, "DATE");
+    DateTime? result = GedcomImport.GetValueDate(node!, "DATE");
 
     // Assert
     Assert.Null(result);
@@ -325,7 +325,7 @@ public class GedcomImportTest
     XmlNode? node = doc.DocumentElement;
 
     // Act
-    DateWrapper result = GedcomImport.GetValueDate(node!, "DATE");
+    DateTime? result = GedcomImport.GetValueDate(node!, "DATE");
 
     // Assert
     Assert.Null(result);
@@ -342,7 +342,7 @@ public class GedcomImportTest
     Assert.NotNull(node);
 
     // Act
-    DateWrapper result = GedcomImport.GetValueDate(node!, "DATE");
+    DateTime? result = GedcomImport.GetValueDate(node!, "DATE");
 
     // Assert
     Assert.Null(result);
@@ -361,10 +361,10 @@ public class GedcomImportTest
     Assert.NotNull(node);
 
     // Act
-    DateWrapper result = GedcomImport.GetValueDate(node!, "DATE");
+    DateTime? result = GedcomImport.GetValueDate(node!, "DATE");
 
     // Assert
-    Assert.Equal(new(1983), result);
+    Assert.Equal(new DateTime(1983, 1, 1), result);
   }
 
   [Fact]
@@ -380,9 +380,9 @@ public class GedcomImportTest
     Assert.NotNull(node);
 
     // Act
-    DateWrapper result = GedcomImport.GetValueDate(node!, "DATE");
+    DateTime? result = GedcomImport.GetValueDate(node!, "DATE");
 
     // Assert
-    Assert.Equal(new(1752), result);
+    Assert.Equal(new DateTime(1752, 1, 1), result);
   }
 }

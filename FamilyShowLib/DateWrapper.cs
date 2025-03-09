@@ -120,7 +120,7 @@ public sealed class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   /// Serves as the default hash function.
   /// </summary>
   /// <returns>A hash code for the current object.</returns>
-  public override int GetHashCode() => HashCode.Combine(Date);
+  public override int GetHashCode() => Date.GetHashCode();
 
   /// <summary>
   /// Determines whether two specified instances of <see cref="DateWrapper"/> are equal.

@@ -122,7 +122,7 @@ namespace FamilyShowLib
   {
     private SpouseModifier _spouseModifier;
 
-    private DateWrapper _marriageDate;
+    private DateTime? _marriageDate;
     private string _marriageDateDescriptor;
     private string _marriagePlace;
 
@@ -132,7 +132,7 @@ namespace FamilyShowLib
     private string _marriageCitationActualText;
     private string _marriageCitationNote;
 
-    private DateWrapper _divorceDate;
+    private DateTime? _divorceDate;
     private string _divorceDateDescriptor;
 
     private string _divorceCitation;
@@ -149,7 +149,7 @@ namespace FamilyShowLib
 
     #region marriage get set methods
 
-    public DateWrapper MarriageDate
+    public DateTime? MarriageDate
     {
       get { return _marriageDate; }
       set { _marriageDate = value; }
@@ -201,7 +201,7 @@ namespace FamilyShowLib
 
     #region divorce get set methods
 
-    public DateWrapper DivorceDate
+    public DateTime? DivorceDate
     {
       get { return _divorceDate; }
       set { _divorceDate = value; }

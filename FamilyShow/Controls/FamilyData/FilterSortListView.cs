@@ -10,8 +10,6 @@ using System.Windows.Threading;
 
 using FamilyShowLib;
 
-using Genealogy;
-
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace FamilyShow;
 #pragma warning restore IDE0130 // Namespace does not match folder structure
@@ -63,7 +61,7 @@ public class Filter
   /// <summary>
   /// Return true if the filter contains the specified date.
   /// </summary>
-  public bool Matches(DateWrapper date)
+  public bool Matches(DateTime? date)
   {
     return (date.ToShortString().Contains(_filterText));
   }
@@ -71,9 +69,9 @@ public class Filter
   /// <summary>
   /// Return true if the filter contains the year in the specified date.
   /// </summary>
-  public bool MatchesYear(DateWrapper date)
+  public bool MatchesYear(DateTime? date)
   {
-    return (DateWrapper.IsDateExact(date, out IDateExact exactDate) && exactDate.Year.ToString(CultureInfo.CurrentCulture).Contains(_filterText));
+    return (date != null && date.Value.Year.ToString(CultureInfo.CurrentCulture).Contains(_filterText));
   }
 
   public bool MatchesPhotos(bool photo)
@@ -194,19 +192,19 @@ public class Filter
   /// <summary>
   /// Return true if the filter contains the month in the specified date.
   /// </summary>
-  public bool MatchesMonth(DateWrapper date)
+  public bool MatchesMonth(DateTime? date)
   {
-    return DateWrapper.IsDateExact(date, out IDateExact exact) && _filterDate != null &&
-        exact.Month == _filterDate.Value.Month;
+    return (date != null && _filterDate != null &&
+        date.Value.Month == _filterDate.Value.Month);
   }
 
   /// <summary>
   /// Return true if the filter contains the day in the specified date.
   /// </summary>
-  public bool MatchesDay(DateWrapper date)
+  public bool MatchesDay(DateTime? date)
   {
-    return DateWrapper.IsDateExact(date, out IDateExact exact) && _filterDate != null &&
-        exact.Day == _filterDate.Value.Day;
+    return (date != null && _filterDate != null &&
+        date.Value.Day == _filterDate.Value.Day);
   }
 
   /// <summary>

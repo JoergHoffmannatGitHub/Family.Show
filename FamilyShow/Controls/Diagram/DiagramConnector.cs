@@ -4,14 +4,13 @@
  * filtered. An animation is applied to the brush when the filtered state changes.
 */
 
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 using FamilyShowLib;
-
-using Genealogy;
 
 namespace FamilyShow;
 
@@ -131,7 +130,7 @@ public abstract class DiagramConnector
   /// <summary>
   /// Gets the married date for the connector. Can be null.
   /// </summary>
-  public virtual DateWrapper MarriedDate
+  public virtual DateTime? MarriedDate
   {
     get { return null; }
   }
@@ -139,7 +138,10 @@ public abstract class DiagramConnector
   /// <summary>
   /// Get the previous married date for the connector. Can be null.
   /// </summary>
-  public virtual DateWrapper PreviousMarriedDate => null;
+  public virtual DateTime? PreviousMarriedDate
+  {
+    get { return null; }
+  }
 
   /// <summary>
   /// Get the starting node.
@@ -376,7 +378,7 @@ public class MarriedDiagramConnector : DiagramConnector
   /// <summary>
   /// Gets the married date for the connector. Can be null.
   /// </summary>
-  public override DateWrapper MarriedDate
+  public override DateTime? MarriedDate
   {
     get
     {
@@ -395,7 +397,7 @@ public class MarriedDiagramConnector : DiagramConnector
   /// <summary>
   /// Get the previous married date for the connector. Can be null.
   /// </summary>
-  public override DateWrapper PreviousMarriedDate
+  public override DateTime? PreviousMarriedDate
   {
     get
     {
@@ -407,7 +409,6 @@ public class MarriedDiagramConnector : DiagramConnector
           return rel.DivorceDate;
         }
       }
-
       return null;
     }
   }
@@ -429,15 +430,15 @@ public class MarriedDiagramConnector : DiagramConnector
 
       // Check the married date for current and former spouses.
       SpouseRelationship rel = StartNode.Node.Person.GetSpouseRelationship(EndNode.Node.Person);
-      if (rel != null && DateWrapper.IsDateExact(rel.MarriageDate, out IDateExact marriageDate) &&
-          (StartNode.Node.DisplayYear < marriageDate.Year))
+      if (rel != null && rel.MarriageDate != null &&
+          (StartNode.Node.DisplayYear < rel.MarriageDate.Value.Year))
       {
         return true;
       }
 
       // Check the divorce date for former spouses.
-      if (!_married && rel != null && DateWrapper.IsDateExact(rel.DivorceDate, out IDateExact divorceDate) &&
-          (StartNode.Node.DisplayYear < divorceDate.Year))
+      if (!_married && rel != null && rel.DivorceDate != null &&
+          (StartNode.Node.DisplayYear < rel.DivorceDate.Value.Year))
       {
         return true;
       }
@@ -514,9 +515,9 @@ public class MarriedDiagramConnector : DiagramConnector
     if (rel != null)
     {
       // Marriage date.
-      if (DateWrapper.IsDateExact(rel.MarriageDate, out IDateExact marriageDate) && ShowDate == true)
+      if (rel.MarriageDate != null && ShowDate == true)
       {
-        string text = rel.MarriageDateDescriptor + marriageDate.Year.ToString(CultureInfo.CurrentCulture);
+        string text = rel.MarriageDateDescriptor + rel.MarriageDate.Value.Year.ToString(CultureInfo.CurrentCulture);
 
         FormattedText format = new(text,
             CultureInfo.CurrentUICulture,
@@ -531,9 +532,9 @@ public class MarriedDiagramConnector : DiagramConnector
       }
 
       // Previous marriage date.
-      if (!_married && DateWrapper.IsDateExact(rel.DivorceDate, out IDateExact divorceDate) && ShowDate == true)
+      if (!_married && rel.DivorceDate != null && ShowDate == true)
       {
-        string text = rel.DivorceDateDescriptor + divorceDate.Year.ToString(CultureInfo.CurrentCulture);
+        string text = rel.DivorceDateDescriptor + rel.DivorceDate.Value.Year.ToString(CultureInfo.CurrentCulture);
 
         FormattedText format = new(text,
             CultureInfo.CurrentUICulture,
