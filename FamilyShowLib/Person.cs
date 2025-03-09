@@ -419,7 +419,7 @@ namespace FamilyShowLib
       get { return _birthDate; }
       set
       {
-        if (_birthDate == null || _birthDate != value)
+        if (_birthDate != value)
         {
           _birthDate = value;
           OnPropertyChanged(nameof(BirthDate));
@@ -440,7 +440,7 @@ namespace FamilyShowLib
       get { return _birthDateDescriptor; }
       set
       {
-        if (_birthDateDescriptor == null || _birthDateDescriptor != value)
+        if (_birthDateDescriptor != value)
         {
           _birthDateDescriptor = value;
           OnPropertyChanged(nameof(BirthDateDescriptor));
@@ -631,7 +631,7 @@ namespace FamilyShowLib
       get { return _deathDateDescriptor; }
       set
       {
-        if (_deathDateDescriptor == null || _deathDateDescriptor != value)
+        if (_deathDateDescriptor != value)
         {
           _deathDateDescriptor = value;
           OnPropertyChanged(nameof(DeathDateDescriptor));
@@ -766,7 +766,7 @@ namespace FamilyShowLib
       get { return _cremationDate; }
       set
       {
-        if (_cremationDate == null || _cremationDate != value)
+        if (_cremationDate != value)
         {
           _cremationDate = value;
           OnPropertyChanged(nameof(CremationDate));
@@ -782,7 +782,7 @@ namespace FamilyShowLib
       get { return _cremationDateDescriptor; }
       set
       {
-        if (_cremationDateDescriptor == null || _cremationDateDescriptor != value)
+        if (_cremationDateDescriptor != value)
         {
           _cremationDateDescriptor = value;
           OnPropertyChanged(nameof(CremationDateDescriptor));
@@ -951,7 +951,7 @@ namespace FamilyShowLib
       get { return _burialDate; }
       set
       {
-        if (_burialDate == null || _burialDate != value)
+        if (_burialDate != value)
         {
           _burialDate = value;
           OnPropertyChanged(nameof(BurialDate));
@@ -967,7 +967,7 @@ namespace FamilyShowLib
       get { return _burialDateDescriptor; }
       set
       {
-        if (_burialDateDescriptor == null || _burialDateDescriptor != value)
+        if (_burialDateDescriptor != value)
         {
           _burialDateDescriptor = value;
           OnPropertyChanged(nameof(BurialDateDescriptor));
@@ -2534,36 +2534,24 @@ namespace FamilyShowLib
       {
         string result = null;
 
-        if (columnName == "BirthDate")
+        if (columnName == "BirthDate" && BirthDate == DateTime.MinValue)
         {
-          if (BirthDate == DateTime.MinValue)
-          {
-            result = Properties.Resources.InvalidDate;
-          }
+          result = Properties.Resources.InvalidDate;
         }
 
-        if (columnName == "DeathDate")
+        if (columnName == "DeathDate" && DeathDate == DateTime.MinValue)
         {
-          if (DeathDate == DateTime.MinValue)
-          {
-            result = Properties.Resources.InvalidDate;
-          }
+          result = Properties.Resources.InvalidDate;
         }
 
-        if (columnName == "CremationDate")
+        if (columnName == "CremationDate" && CremationDate == DateTime.MinValue)
         {
-          if (CremationDate == DateTime.MinValue)
-          {
-            result = Properties.Resources.InvalidDate;
-          }
+          result = Properties.Resources.InvalidDate;
         }
 
-        if (columnName == "BurialDate")
+        if (columnName == "BurialDate" && BurialDate == DateTime.MinValue)
         {
-          if (BurialDate == DateTime.MinValue)
-          {
-            result = Properties.Resources.InvalidDate;
-          }
+          result = Properties.Resources.InvalidDate;
         }
 
         return result;

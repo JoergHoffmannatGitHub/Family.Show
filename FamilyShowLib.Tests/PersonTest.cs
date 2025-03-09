@@ -102,6 +102,24 @@ public class PersonTest
   }
 
   [Fact]
+  public void Age_DeceasedPersonWithDeathDate_ReturnsCorrectAge()
+  {
+    // Arrange
+    Person person = new()
+    {
+      BirthDate = new DateTime(2000, 1, 1),
+      DeathDate = new DateTime(2001, 1, 1),
+      IsLiving = false
+    };
+
+    // Act
+    int? age = person.Age;
+
+    // Assert
+    Assert.Equal(1, age);
+  }
+
+  [Fact]
   public void Age_DeceasedPersonWithoutDeathDate_ReturnsNull()
   {
     // Arrange
@@ -217,6 +235,21 @@ public class PersonTest
     DateTime birthDate = new(2000, 1, 1);
 
     // Act
+    person.BirthDate = birthDate;
+
+    // Assert
+    Assert.Equal(birthDate, person.BirthDate);
+  }
+
+  [Fact]
+  public void BirthDate_SetBirthDateTwice_UpdatesProperty()
+  {
+    // Arrange
+    Person person = new();
+    DateTime birthDate = new(2000, 1, 1);
+
+    // Act
+    person.BirthDate = birthDate;
     person.BirthDate = birthDate;
 
     // Assert
@@ -486,6 +519,21 @@ public class PersonTest
   }
 
   [Fact]
+  public void DeathDate_SetDeathDateTwice_UpdatesProperty()
+  {
+    // Arrange
+    Person person = new();
+    DateTime deathDate = new(2000, 1, 1);
+
+    // Act
+    person.DeathDate = deathDate;
+    person.DeathDate = deathDate;
+
+    // Assert
+    Assert.Equal(deathDate, person.DeathDate);
+  }
+
+  [Fact]
   public void DeathDate_SetNullDeathDate_UpdatesProperty()
   {
     // Arrange
@@ -620,6 +668,21 @@ public class PersonTest
   }
 
   [Fact]
+  public void CremationDate_SetCremationDateTwice_UpdatesProperty()
+  {
+    // Arrange
+    Person person = new();
+    DateTime cremationDate = new(2000, 1, 1);
+
+    // Act
+    person.CremationDate = cremationDate;
+    person.CremationDate = cremationDate;
+
+    // Assert
+    Assert.Equal(cremationDate, person.CremationDate);
+  }
+
+  [Fact]
   public void CremationDate_SetNullCremationDate_UpdatesProperty()
   {
     // Arrange
@@ -711,6 +774,21 @@ public class PersonTest
     DateTime burialDate = new(2000, 1, 1);
 
     // Act
+    person.BurialDate = burialDate;
+
+    // Assert
+    Assert.Equal(burialDate, person.BurialDate);
+  }
+
+  [Fact]
+  public void BurialDate_SetBurialDateTwice_UpdatesProperty()
+  {
+    // Arrange
+    Person person = new();
+    DateTime burialDate = new(2000, 1, 1);
+
+    // Act
+    person.BurialDate = burialDate;
     person.BurialDate = burialDate;
 
     // Assert
@@ -831,6 +909,19 @@ public class PersonTest
   }
 
   [Fact]
+  public void Indexer_WithoutBirthDate_ReturnsNull()
+  {
+    // Arrange
+    Person person = new();
+
+    // Act
+    string error = person["BirthDate"];
+
+    // Assert
+    Assert.Null(error);
+  }
+
+  [Fact]
   public void Indexer_InvalidDeathDate_ReturnsError()
   {
     using (AnotherCulture.UnitedStates())
@@ -851,6 +942,19 @@ public class PersonTest
   {
     // Arrange
     Person person = new() { DeathDate = new DateTime(2000, 1, 1) };
+
+    // Act
+    string error = person["DeathDate"];
+
+    // Assert
+    Assert.Null(error);
+  }
+
+  [Fact]
+  public void Indexer_WithoutDeathDate_ReturnsNull()
+  {
+    // Arrange
+    Person person = new();
 
     // Act
     string error = person["DeathDate"];
@@ -889,6 +993,19 @@ public class PersonTest
   }
 
   [Fact]
+  public void Indexer_WithoutCremationDate_ReturnsNull()
+  {
+    // Arrange
+    Person person = new();
+
+    // Act
+    string error = person["CremationDate"];
+
+    // Assert
+    Assert.Null(error);
+  }
+
+  [Fact]
   public void Indexer_InvalidBurialDate_ReturnsError()
   {
     using (AnotherCulture.UnitedStates())
@@ -909,6 +1026,19 @@ public class PersonTest
   {
     // Arrange
     Person person = new() { BurialDate = new DateTime(2000, 1, 1) };
+
+    // Act
+    string error = person["BurialDate"];
+
+    // Assert
+    Assert.Null(error);
+  }
+
+  [Fact]
+  public void Indexer_WithoutBurialDate_ReturnsNull()
+  {
+    // Arrange
+    Person person = new();
 
     // Act
     string error = person["BurialDate"];
