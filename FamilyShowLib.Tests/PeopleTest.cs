@@ -101,6 +101,158 @@ public class PeopleTest
     // Assert
     Assert.Null(result);
   }
+
+  [Fact]
+  public void CompareGenderAndName_ShouldReturnTrue_WhenGenderAndNameAreEqual()
+  {
+    // Arrange
+    Person person1 = new() { Gender = Gender.Male, FirstName = "John", LastName = "Doe" };
+    Person person2 = new() { Gender = Gender.Male, FirstName = "John", LastName = "Doe" };
+
+    // Act
+    bool result = People.CompareGenderAndName(person1, person2);
+
+    // Assert
+    Assert.True(result);
+  }
+
+  [Fact]
+  public void CompareGenderAndName_ShouldReturnFalse_WhenGenderIsNotEqual()
+  {
+    // Arrange
+    Person person1 = new() { Gender = Gender.Male, FirstName = "John", LastName = "Doe" };
+    Person person2 = new() { Gender = Gender.Female, FirstName = "John", LastName = "Doe" };
+
+    // Act
+    bool result = People.CompareGenderAndName(person1, person2);
+
+    // Assert
+    Assert.False(result);
+  }
+
+  [Fact]
+  public void CompareGenderAndName_ShouldReturnFalse_WhenNameIsNotEqual()
+  {
+    // Arrange
+    Person person1 = new() { Gender = Gender.Male, FirstName = "John", LastName = "Doe" };
+    Person person2 = new() { Gender = Gender.Male, FirstName = "Jane", LastName = "Doe" };
+
+    // Act
+    bool result = People.CompareGenderAndName(person1, person2);
+
+    // Assert
+    Assert.False(result);
+  }
+  [Fact]
+  public void CompareGenderLastNameAndBirthDate_ShouldReturnTrue_WhenGenderLastNameAndBirthDateAreEqual()
+  {
+    // Arrange
+    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateTime(1990, 1, 1) };
+    Person person2 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateTime(1990, 1, 1) };
+
+    // Act
+    bool result = People.CompareGenderLastNameAndBirthDate(person1, person2);
+
+    // Assert
+    Assert.True(result);
+  }
+
+  [Fact]
+  public void CompareGenderLastNameAndBirthDate_ShouldReturnFalse_WhenGenderIsNotEqual()
+  {
+    // Arrange
+    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateTime(1990, 1, 1) };
+    Person person2 = new() { Gender = Gender.Female, LastName = "Doe", BirthDate = new DateTime(1990, 1, 1) };
+
+    // Act
+    bool result = People.CompareGenderLastNameAndBirthDate(person1, person2);
+
+    // Assert
+    Assert.False(result);
+  }
+
+  [Fact]
+  public void CompareGenderLastNameAndBirthDate_ShouldReturnFalse_WhenLastNameIsNotEqual()
+  {
+    // Arrange
+    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateTime(1990, 1, 1) };
+    Person person2 = new() { Gender = Gender.Male, LastName = "Smith", BirthDate = new DateTime(1990, 1, 1) };
+
+    // Act
+    bool result = People.CompareGenderLastNameAndBirthDate(person1, person2);
+
+    // Assert
+    Assert.False(result);
+  }
+
+  [Fact]
+  public void CompareGenderLastNameAndBirthDate_ShouldReturnFalse_WhenBirthDateIsNotEqual()
+  {
+    // Arrange
+    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateTime(1990, 1, 1) };
+    Person person2 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateTime(1991, 1, 1) };
+
+    // Act
+    bool result = People.CompareGenderLastNameAndBirthDate(person1, person2);
+
+    // Assert
+    Assert.False(result);
+  }
+  [Fact]
+  public void CompareGenderLastNameAndDeathDate_ShouldReturnTrue_WhenGenderLastNameAndDeathDateAreEqual()
+  {
+    // Arrange
+    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateTime(2020, 1, 1) };
+    Person person2 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateTime(2020, 1, 1) };
+
+    // Act
+    bool result = People.CompareGenderLastNameAndDeathDate(person1, person2);
+
+    // Assert
+    Assert.True(result);
+  }
+
+  [Fact]
+  public void CompareGenderLastNameAndDeathDate_ShouldReturnFalse_WhenGenderIsNotEqual()
+  {
+    // Arrange
+    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateTime(2020, 1, 1) };
+    Person person2 = new() { Gender = Gender.Female, LastName = "Doe", DeathDate = new DateTime(2020, 1, 1) };
+
+    // Act
+    bool result = People.CompareGenderLastNameAndDeathDate(person1, person2);
+
+    // Assert
+    Assert.False(result);
+  }
+
+  [Fact]
+  public void CompareGenderLastNameAndDeathDate_ShouldReturnFalse_WhenLastNameIsNotEqual()
+  {
+    // Arrange
+    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateTime(2020, 1, 1) };
+    Person person2 = new() { Gender = Gender.Male, LastName = "Smith", DeathDate = new DateTime(2020, 1, 1) };
+
+    // Act
+    bool result = People.CompareGenderLastNameAndDeathDate(person1, person2);
+
+    // Assert
+    Assert.False(result);
+  }
+
+  [Fact]
+  public void CompareGenderLastNameAndDeathDate_ShouldReturnFalse_WhenDeathDateIsNotEqual()
+  {
+    // Arrange
+    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateTime(2020, 1, 1) };
+    Person person2 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateTime(2021, 1, 1) };
+
+    // Act
+    bool result = People.CompareGenderLastNameAndDeathDate(person1, person2);
+
+    // Assert
+    Assert.False(result);
+  }
 }
 
 public class ContentChangedEventArgsTest

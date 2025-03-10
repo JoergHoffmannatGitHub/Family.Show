@@ -199,7 +199,7 @@ public class People
       return;
     }
 
-    if (privacy == true)
+    if (privacy)
     {
       foreach (Person p in PeopleCollection)
       {
@@ -274,7 +274,7 @@ public class People
 
           #endregion
 
-          if (p.HasSpouse == true)
+          if (p.HasSpouse)
           {
             foreach (Relationship rel in p.Relationships)
             {
@@ -313,7 +313,7 @@ public class People
 
           p.Avatar = string.Empty;
 
-          if (p.HasPhoto == true)
+          if (p.HasPhoto)
           {
             for (int i = 0; i < p.Photos.Count; i++)
             {
@@ -323,7 +323,7 @@ public class People
             p.OnPropertyChanged("HasPhoto");
           }
 
-          if (p.HasAttachments == true)
+          if (p.HasAttachments)
           {
             for (int i = 0; i < p.Attachments.Count; i++)
             {
@@ -1614,7 +1614,7 @@ public class People
           {
             if (s.SourceRepository == repositoriesDuplicates[0, z])
             {
-              if (repositoriesDuplicates[1, z] != null && replaced == false)
+              if (repositoriesDuplicates[1, z] != null && !replaced)
               {
                 s.SourceRepository = repositoriesDuplicates[1, z];
                 replaced = true;
@@ -1633,7 +1633,7 @@ public class People
           {
             if (s.SourceRepository == repositoriesDuplicateIds[0, z])
             {
-              if (repositoriesDuplicateIds[1, z] != null && replaced == false)
+              if (repositoriesDuplicateIds[1, z] != null && !replaced)
               {
                 s.SourceRepository = repositoriesDuplicateIds[1, z];
                 replaced = true;
@@ -1675,13 +1675,13 @@ public class People
           foreach (Person oldperson in PeopleCollection)
           {
 
-            if (duplicated == false && oldperson.Gender == person.Gender)
+            if (!duplicated && oldperson.Gender == person.Gender)
             {
 
               string oldPersonName = RemovedMiddleNames(oldperson);
 
               //don't add people if they have the same Id.  Ids must be unique.
-              if (duplicated == false && person.Id == oldperson.Id)
+              if (!duplicated && person.Id == oldperson.Id)
               {
                 duplicated = true;
                 DuplicatePeopleCollection.Add(person);
@@ -1692,7 +1692,7 @@ public class People
               //Don't add people if they have the same name and DeathDate. 
               //It is unlikely for people to have same name and DeathDate.  
               //Method will not handle twins in the case where the twins names' are "Unknown".
-              if (duplicated == false && person.FullName != null && oldperson.FullName != null && person.DeathDate != null && oldperson.DeathDate != null)
+              if (!duplicated && person.FullName != null && oldperson.FullName != null && person.DeathDate != null && oldperson.DeathDate != null)
               {
                 if (person.FullName == oldperson.FullName && person.DeathDate == oldperson.DeathDate)
                 {
@@ -1706,7 +1706,7 @@ public class People
               //It is unlikely for people to have same name and DeathDate.  
               //Ignore middle names for this comparison, we have checked for full name matches.
               //Method will not handle twins in the case where the twins names' are "Unknown".
-              if (duplicated == false && personName != null && oldPersonName != null && person.DeathDate != null && oldperson.DeathDate != null)
+              if (!duplicated && personName != null && oldPersonName != null && person.DeathDate != null && oldperson.DeathDate != null)
               {
                 if (personName == oldPersonName && person.DeathDate == oldperson.DeathDate)
                 {
@@ -1720,7 +1720,7 @@ public class People
               //It is unlikely for people to have same name and Birthdate.  
               //Don't ignore middle names for this comparison.
               //Method will not handle twins in the case where the twins names' are "Unknown".
-              if (duplicated == false && person.FullName != null && oldperson.FullName != null && person.BirthDate != null && oldperson.BirthDate != null)
+              if (!duplicated && person.FullName != null && oldperson.FullName != null && person.BirthDate != null && oldperson.BirthDate != null)
               {
                 if (person.FullName == oldperson.FullName && person.BirthDate == oldperson.BirthDate)
                 {
@@ -1734,7 +1734,7 @@ public class People
               //It is unlikely for people to have same name and Birthdate.  
               //Ignore middle names for this comparison, we have checked for full name matches.
               //Method will not handle twins in the case where the twins names' are "Unknown".
-              if (duplicated == false && personName != null && oldPersonName != null && person.BirthDate != null && oldperson.BirthDate != null)
+              if (!duplicated && personName != null && oldPersonName != null && person.BirthDate != null && oldperson.BirthDate != null)
               {
                 if (personName == oldPersonName && person.BirthDate == oldperson.BirthDate)
                 {
@@ -1746,7 +1746,7 @@ public class People
 
               //If person does not have a birth date...
               //Don't add a person with with no relatives if an existing person with the same name exists with no relatives.
-              if (duplicated == false && person.BirthDate == null && oldperson.BirthDate == null)
+              if (!duplicated && person.BirthDate == null && oldperson.BirthDate == null)
               {
 
                 if (person.FullName == oldperson.FullName && person.Relationships.Count == 0 && oldperson.Relationships.Count == 0)
@@ -1768,9 +1768,9 @@ public class People
           foreach (Person oldperson in PeopleCollection)
           {
             //Compare full name with relationships
-            if (person.Name == oldperson.Name && duplicated == false && oldperson.Gender == person.Gender)
+            if (!duplicated && CompareGenderAndName(person, oldperson))
             {
-              if (duplicated == false && person.Siblings.Count > 0 && oldperson.Siblings.Count > 0 && person.Siblings.Count == oldperson.Siblings.Count)
+              if (!duplicated && person.Siblings.Count > 0 && oldperson.Siblings.Count > 0 && person.Siblings.Count == oldperson.Siblings.Count)
               {
                 if (CompareStrings(oldperson.SiblingsText, person.SiblingsText) && CompareStrings(oldperson.ParentsText, person.ParentsText))
                 {
@@ -1778,7 +1778,7 @@ public class People
                 }
               }
 
-              if (duplicated == false && person.Siblings.Count == 0 && oldperson.Siblings.Count == 0 && person.Siblings.Count == oldperson.Siblings.Count)
+              if (!duplicated && person.Siblings.Count == 0 && oldperson.Siblings.Count == 0 && person.Siblings.Count == oldperson.Siblings.Count)
               {
                 if (CompareStrings(oldperson.ParentsText, person.ParentsText))
                 {
@@ -1786,7 +1786,7 @@ public class People
                 }
               }
 
-              if (duplicated == false && person.Spouses.Count > 0 && oldperson.Spouses.Count > 0 && person.Spouses.Count == oldperson.Spouses.Count)
+              if (!duplicated && person.Spouses.Count > 0 && oldperson.Spouses.Count > 0 && person.Spouses.Count == oldperson.Spouses.Count)
               {
                 if (CompareStrings(oldperson.SpousesText, person.SpousesText))
                 {
@@ -1794,86 +1794,79 @@ public class People
                 }
               }
 
-              if (duplicated == true && !DuplicatePeopleCollection.Contains(person) && !ExistingPeopleCollection.Contains(oldperson))
+              if (duplicated && !DuplicatePeopleCollection.Contains(person) && !ExistingPeopleCollection.Contains(oldperson))
               {
                 ExistingPeopleCollection.Add(oldperson);
                 DuplicatePeopleCollection.Add(person);
               }
 
             }
+
             //Compare surname and birth date with relationships
-            if (person.LastName == oldperson.LastName && !person.BirthDate.IsNullOrEmpty() && !oldperson.BirthDate.IsNullOrEmpty() && !duplicated && oldperson.Gender == person.Gender)
+            if (!duplicated && CompareGenderLastNameAndBirthDate(person, oldperson))
             {
-              if (person.BirthDate == oldperson.BirthDate)
+              if (!duplicated && person.Siblings.Count > 0 && oldperson.Siblings.Count > 0 && person.Siblings.Count == oldperson.Siblings.Count)
               {
-
-                if (duplicated == false && person.Siblings.Count > 0 && oldperson.Siblings.Count > 0 && person.Siblings.Count == oldperson.Siblings.Count)
+                if (CompareStrings(oldperson.SiblingsText, person.SiblingsText) && CompareStrings(oldperson.ParentsText, person.ParentsText))
                 {
-                  if (CompareStrings(oldperson.SiblingsText, person.SiblingsText) && CompareStrings(oldperson.ParentsText, person.ParentsText))
-                  {
-                    duplicated = true;
-                  }
+                  duplicated = true;
                 }
+              }
 
-                if (duplicated == false && person.Siblings.Count == 0 && oldperson.Siblings.Count == 0 && person.Siblings.Count == oldperson.Siblings.Count)
+              if (!duplicated && person.Siblings.Count == 0 && oldperson.Siblings.Count == 0 && person.Siblings.Count == oldperson.Siblings.Count)
+              {
+                if (CompareStrings(oldperson.ParentsText, person.ParentsText))
                 {
-                  if (CompareStrings(oldperson.ParentsText, person.ParentsText))
-                  {
-                    duplicated = true;
-                  }
+                  duplicated = true;
                 }
+              }
 
-                if (duplicated == false && person.Spouses.Count > 0 && oldperson.Spouses.Count > 0 && person.Spouses.Count == oldperson.Spouses.Count)
+              if (!duplicated && person.Spouses.Count > 0 && oldperson.Spouses.Count > 0 && person.Spouses.Count == oldperson.Spouses.Count)
+              {
+                if (CompareStrings(oldperson.SpousesText, person.SpousesText))
                 {
-                  if (CompareStrings(oldperson.SpousesText, person.SpousesText))
-                  {
-                    duplicated = true;
-                  }
+                  duplicated = true;
                 }
+              }
 
-                if (duplicated == true && !DuplicatePeopleCollection.Contains(person) && !ExistingPeopleCollection.Contains(oldperson))
-                {
-                  ExistingPeopleCollection.Add(oldperson);
-                  DuplicatePeopleCollection.Add(person);
-                }
+              if (duplicated && !DuplicatePeopleCollection.Contains(person) && !ExistingPeopleCollection.Contains(oldperson))
+              {
+                ExistingPeopleCollection.Add(oldperson);
+                DuplicatePeopleCollection.Add(person);
               }
             }
 
             //Compare surname and death date with relationships
-            if (person.LastName == oldperson.LastName && !person.DeathDate.IsNullOrEmpty() && !oldperson.DeathDate.IsNullOrEmpty() && !duplicated && oldperson.Gender == person.Gender)
+            if (!duplicated && CompareGenderLastNameAndDeathDate(person, oldperson))
             {
-              if (person.DeathDate == oldperson.DeathDate)
+              if (!duplicated && person.Siblings.Count > 0 && oldperson.Siblings.Count > 0 && person.Siblings.Count == oldperson.Siblings.Count)
               {
-
-                if (duplicated == false && person.Siblings.Count > 0 && oldperson.Siblings.Count > 0 && person.Siblings.Count == oldperson.Siblings.Count)
+                if (CompareStrings(oldperson.SiblingsText, person.SiblingsText) && CompareStrings(oldperson.ParentsText, person.ParentsText))
                 {
-                  if (CompareStrings(oldperson.SiblingsText, person.SiblingsText) && CompareStrings(oldperson.ParentsText, person.ParentsText))
-                  {
-                    duplicated = true;
-                  }
+                  duplicated = true;
                 }
+              }
 
-                if (duplicated == false && person.Siblings.Count == 0 && oldperson.Siblings.Count == 0 && person.Siblings.Count == oldperson.Siblings.Count)
+              if (!duplicated && person.Siblings.Count == 0 && oldperson.Siblings.Count == 0 && person.Siblings.Count == oldperson.Siblings.Count)
+              {
+                if (CompareStrings(oldperson.ParentsText, person.ParentsText))
                 {
-                  if (CompareStrings(oldperson.ParentsText, person.ParentsText))
-                  {
-                    duplicated = true;
-                  }
+                  duplicated = true;
                 }
+              }
 
-                if (duplicated == false && person.Spouses.Count > 0 && oldperson.Spouses.Count > 0 && person.Spouses.Count == oldperson.Spouses.Count)
+              if (!duplicated && person.Spouses.Count > 0 && oldperson.Spouses.Count > 0 && person.Spouses.Count == oldperson.Spouses.Count)
+              {
+                if (CompareStrings(oldperson.SpousesText, person.SpousesText))
                 {
-                  if (CompareStrings(oldperson.SpousesText, person.SpousesText))
-                  {
-                    duplicated = true;
-                  }
+                  duplicated = true;
                 }
+              }
 
-                if (duplicated == true && !DuplicatePeopleCollection.Contains(person) && !ExistingPeopleCollection.Contains(oldperson))
-                {
-                  ExistingPeopleCollection.Add(oldperson);
-                  DuplicatePeopleCollection.Add(person);
-                }
+              if (duplicated && !DuplicatePeopleCollection.Contains(person) && !ExistingPeopleCollection.Contains(oldperson))
+              {
+                ExistingPeopleCollection.Add(oldperson);
+                DuplicatePeopleCollection.Add(person);
               }
             }
 
@@ -1881,7 +1874,7 @@ public class People
 
           #endregion
 
-          if (duplicated == false)
+          if (!duplicated)
           {
             imports.PeopleCollection.Add(person);
             NewPeopleCollection.Add(person);
@@ -1892,7 +1885,6 @@ public class People
             duplicates.PeopleCollection.Add(person);
           }
         }
-
 
         if (duplicates.PeopleCollection.Count > 0)
         {
@@ -1961,6 +1953,57 @@ public class People
 
     }
     return summary;
+  }
+
+  /// <summary>
+  /// Compares the gender and name of two persons.
+  /// </summary>
+  /// <param name="person">The first person to compare.</param>
+  /// <param name="oldperson">The second person to compare.</param>
+  /// <returns>True if the gender and name of both persons are equal; otherwise, false.</returns>
+  internal static bool CompareGenderAndName(Person person, Person oldperson)
+  {
+    return person.Gender == oldperson.Gender &&
+      person.Name == oldperson.Name;
+  }
+
+  /// <summary>
+  /// Compares the gender, last name, and birth date of two persons.
+  /// </summary>
+  /// <param name="person">The first person to compare.</param>
+  /// <param name="oldperson">The second person to compare.</param>
+  /// <returns>True if the gender, last name, and birth date of both persons are equal; otherwise, false.</returns>
+  internal static bool CompareGenderLastNameAndBirthDate(Person person, Person oldperson)
+  {
+    return CompareGenderLastNameAndDate(person, oldperson, person.BirthDate, oldperson.BirthDate);
+  }
+
+  /// <summary>
+  /// Compares the gender, last name, and death date of two persons.
+  /// </summary>
+  /// <param name="person">The first person to compare.</param>
+  /// <param name="oldperson">The second person to compare.</param>
+  /// <returns>True if the gender, last name, and death date of both persons are equal; otherwise, false.</returns>
+  internal static bool CompareGenderLastNameAndDeathDate(Person person, Person oldperson)
+  {
+    return CompareGenderLastNameAndDate(person, oldperson, person.DeathDate, oldperson.DeathDate);
+  }
+
+  /// <summary>
+  /// Compares the gender, last name, and a specified date of two persons.
+  /// </summary>
+  /// <param name="person">The first person to compare.</param>
+  /// <param name="oldperson">The second person to compare.</param>
+  /// <param name="date">The date of the first person to compare.</param>
+  /// <param name="oldDate">The date of the second person to compare.</param>
+  /// <returns>True if the gender, last name, and specified date of both persons are equal; otherwise, false.</returns>
+  private static bool CompareGenderLastNameAndDate(Person person, Person oldperson, DateTime? date, DateTime? oldDate)
+  {
+    return person.Gender == oldperson.Gender &&
+      person.LastName == oldperson.LastName &&
+      !date.IsNullOrEmpty() &&
+      !oldDate.IsNullOrEmpty() &&
+      date == oldDate;
   }
 
   #endregion
