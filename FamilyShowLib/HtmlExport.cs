@@ -23,6 +23,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace FamilyShowLib;
 
@@ -224,7 +225,6 @@ public class HtmlExport
         if (rel.RelationTo == p)
         {
           string relationship = string.Empty;
-          string relstring = string.Empty;
           string relstringmodifier = string.Empty;
 
           //for parent relationships, also specify if natural or adopted parent
@@ -232,7 +232,7 @@ public class HtmlExport
           {
             ParentRelationship parentRel = ((ParentRelationship)rel);
 
-            relstring = Properties.Resources.Parent;
+            string relstring = Properties.Resources.Parent;
 
             if (parentRel.ParentChildModifier == ParentChildModifier.Natural)
             {
@@ -277,39 +277,11 @@ public class HtmlExport
           {
             if (p.Note != null)
             {
-              _tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"personhighlight\"><td>" + relationship + "</td><td>" + p.FirstName + "</td><td>"
-                  + p.LastName + "</td><td>" + p.Age + "</td><td>"
-                  + p.BirthDateDescriptor + " " + dateformat(p.BirthDate) + sourceArray[0, 0] + "</td><td>"
-                  + p.BirthPlace + sourceArray[0, 0] + "</td><td>"
-                  + p.DeathDateDescriptor + " " + dateformat(p.DeathDate) + sourceArray[0, 1] + "</td><td>"
-                  + p.DeathPlace + sourceArray[0, 1] + "</td><td>"
-                  + p.Occupation + sourceArray[0, 2] + "</td><td>"
-                  + p.Education + sourceArray[0, 3] + "</td><td>"
-                  + p.Religion + sourceArray[0, 4] + "</td><td>"
-                  + p.BurialPlace + sourceArray[0, 5] + "</td><td>"
-                  + p.BurialDateDescriptor + " " + dateformat(p.BurialDate) + sourceArray[0, 5] + "</td><td>"
-                  + p.CremationPlace + sourceArray[0, 6] + "</td><td>"
-                  + p.CremationDateDescriptor + " " + dateformat(p.CremationDate) + sourceArray[0, 6] + "</td>"
-                  + "</td><td><p class=\"notelink\">[<a href=\"javascript:showhide('id_" + p.Id + "')\">Note</a>]</p></td></tr>");
-
-              _tw.WriteLine("<tr id=\"note_id_" + p.Id + "\" class=\"noteshown\"><td colspan=\"16\"><b>" + Properties.Resources.Note + "</b>: <pre>" + p.Note + "</pre></td></tr>");
-
+              _tw.WriteLine(dataWithNote(p, sourceArray, relationship));
             }
             else
             {
-              _tw.WriteLine("<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + relationship + "</td><td>" + p.FirstName + "</td><td>"
-              + p.LastName + "</td><td>" + p.Age + "</td><td>"
-              + p.BirthDateDescriptor + " " + dateformat(p.BirthDate) + sourceArray[0, 0] + "</td><td>"
-              + p.BirthPlace + sourceArray[0, 0] + "</td><td>"
-              + p.DeathDateDescriptor + " " + dateformat(p.DeathDate) + sourceArray[0, 1] + "</td><td>"
-              + p.DeathPlace + sourceArray[0, 1] + "</td><td>"
-              + p.Occupation + sourceArray[0, 2] + "</td><td>"
-              + p.Education + sourceArray[0, 3] + "</td><td>"
-              + p.Religion + sourceArray[0, 4] + "</td><td>"
-              + p.BurialPlace + sourceArray[0, 5] + "</td><td>"
-              + p.BurialDateDescriptor + " " + dateformat(p.BurialDate) + sourceArray[0, 5] + "</td><td>"
-              + p.CremationPlace + sourceArray[0, 6] + "</td><td>"
-              + p.CremationDateDescriptor + " " + dateformat(p.CremationDate) + sourceArray[0, 6] + "</td><td></td></tr>");
+              _tw.WriteLine(dataWithoutNote(p, sourceArray, relationship));
             }
           }
         }
@@ -983,7 +955,6 @@ public class HtmlExport
   /// </summary>
   public void ExportEventsByDecade(PeopleCollection peopleCollection, string htmlFilePath, string familyxFileName, bool privacy, int startYear, int endYear)
   {
-    PeopleCollection pc = [];
     string filename = Path.GetFileName(htmlFilePath);
     _tw = new StreamWriter(filename);
 
@@ -1034,11 +1005,8 @@ public class HtmlExport
               year = p.BirthDate.Value.Year;
             }
 
-            string place = p.BirthPlace;
-
             if (year >= i && year <= ii)
             {
-
               if (!string.IsNullOrEmpty(p.BirthPlace))
               {
                 _tw.WriteLine("<p class=\"event\"><b>" + p.FullName + "</b> " + Properties.Resources.WasBornOn + " " + dateformat(p.BirthDate) + " " + Properties.Resources.In + " " + p.BirthPlace + ".</p>");
@@ -1140,45 +1108,47 @@ public class HtmlExport
   /// <summary>
   /// Writes a row in the table for people with a note
   /// </summary>
-  private static string dataWithNote(Person p, string[,] sourceArray)
+  private static string dataWithNote(Person p, string[,] sourceArray, string relationship = null)
   {
-
-    return "<tr id=\"id_" + p.Id + "\" class=\"personhighlight\"><td>" + p.FirstName + "</td><td>"
-                    + p.LastName + "</td><td>" + p.Age + "</td><td>"
-                    + p.BirthDateDescriptor + " " + dateformat(p.BirthDate) + sourceArray[0, 0] + "</td><td>"
-                    + p.BirthPlace + sourceArray[0, 0] + "</td><td>"
-                    + p.DeathDateDescriptor + " " + dateformat(p.DeathDate) + sourceArray[0, 1] + "</td><td>"
-                    + p.DeathPlace + sourceArray[0, 1] + "</td><td>"
-                    + p.Occupation + sourceArray[0, 2] + "</td><td>"
-                    + p.Education + sourceArray[0, 3] + "</td><td>"
-                    + p.Religion + sourceArray[0, 4] + "</td><td>"
-                    + p.BurialPlace + sourceArray[0, 5] + "</td><td>"
-                    + p.BurialDateDescriptor + " " + dateformat(p.BurialDate) + sourceArray[0, 5] + "</td><td>"
-                    + p.CremationPlace + sourceArray[0, 6] + "</td><td>"
-                    + p.CremationDateDescriptor + " " + dateformat(p.CremationDate) + sourceArray[0, 6]
-                    + "</td><td><p class=\"notelink\">[<a href=\"javascript:showhide('id_" + p.Id + "')\">Note</a>]</p></td></tr>"
-                    + "<tr id=\"note_id_" + p.Id + "\" class=\"noteshown\"><td colspan=\"15\"><b>" + Properties.Resources.Note + "</b>: <pre>" + p.Note + "</pre></td></tr>";
+    string relationshipOutput = string.IsNullOrEmpty(relationship) ? string.Empty : "<td>" + relationship + "</td>";
+    string colspan = string.IsNullOrEmpty(relationship) ? "<td colspan=\"15\">" : "<td colspan=\"16\">";
+    return "<tr id=\"id_" + p.Id + "\" class=\"personhighlight\">" + relationshipOutput + "<td>" + p.FirstName + "</td><td>"
+      + p.LastName + "</td><td>" + p.Age + "</td><td>"
+      + p.BirthDateDescriptor + " " + dateformat(p.BirthDate) + sourceArray[0, 0] + "</td><td>"
+      + p.BirthPlace + sourceArray[0, 0] + "</td><td>"
+      + p.DeathDateDescriptor + " " + dateformat(p.DeathDate) + sourceArray[0, 1] + "</td><td>"
+      + p.DeathPlace + sourceArray[0, 1] + "</td><td>"
+      + p.Occupation + sourceArray[0, 2] + "</td><td>"
+      + p.Education + sourceArray[0, 3] + "</td><td>"
+      + p.Religion + sourceArray[0, 4] + "</td><td>"
+      + p.BurialPlace + sourceArray[0, 5] + "</td><td>"
+      + p.BurialDateDescriptor + " " + dateformat(p.BurialDate) + sourceArray[0, 5] + "</td><td>"
+      + p.CremationPlace + sourceArray[0, 6] + "</td><td>"
+      + p.CremationDateDescriptor + " " + dateformat(p.CremationDate) + sourceArray[0, 6]
+      + "</td><td><p class=\"notelink\">[<a href=\"javascript:showhide('id_" + p.Id + "')\">Note</a>]</p></td></tr>"
+      + "<tr id=\"note_id_" + p.Id + "\" class=\"noteshown\">" + colspan + "<b>" + Properties.Resources.Note + "</b>: <pre>" + p.Note + "</pre></td></tr>";
 
   }
 
   /// <summary>
   /// Writes a row in the table for people without a note
   /// </summary>
-  private static string dataWithoutNote(Person p, string[,] sourceArray)
+  private static string dataWithoutNote(Person p, string[,] sourceArray, string relationship = null)
   {
-    return "<tr id=\"id_" + p.Id + "\" class=\"person\"><td>" + p.FirstName + "</td><td>"
-                    + p.LastName + "</td><td>" + p.Age + "</td><td>"
-                    + p.BirthDateDescriptor + " " + dateformat(p.BirthDate) + sourceArray[0, 0] + "</td><td>"
-                    + p.BirthPlace + sourceArray[0, 0] + "</td><td>"
-                    + p.DeathDateDescriptor + " " + dateformat(p.DeathDate) + sourceArray[0, 1] + "</td><td>"
-                    + p.DeathPlace + sourceArray[0, 1] + "</td><td>"
-                    + p.Occupation + sourceArray[0, 2] + "</td><td>"
-                    + p.Education + sourceArray[0, 3] + "</td><td>"
-                    + p.Religion + sourceArray[0, 4] + "</td><td>"
-                    + p.BurialPlace + sourceArray[0, 5] + "</td><td>"
-                    + p.BurialDateDescriptor + " " + dateformat(p.BurialDate) + sourceArray[0, 5] + "</td><td>"
-                    + p.CremationPlace + sourceArray[0, 6] + "</td><td>"
-                    + p.CremationDateDescriptor + " " + dateformat(p.CremationDate) + sourceArray[0, 6] + "</td><td></td></tr>";
+    string relationshipOutput = string.IsNullOrEmpty(relationship) ? string.Empty : "<td>" + relationship + "</td>";
+    return "<tr id=\"id_" + p.Id + "\" class=\"person\">" + relationshipOutput + "<td>" + p.FirstName + "</td><td>"
+      + p.LastName + "</td><td>" + p.Age + "</td><td>"
+      + p.BirthDateDescriptor + " " + dateformat(p.BirthDate) + sourceArray[0, 0] + "</td><td>"
+      + p.BirthPlace + sourceArray[0, 0] + "</td><td>"
+      + p.DeathDateDescriptor + " " + dateformat(p.DeathDate) + sourceArray[0, 1] + "</td><td>"
+      + p.DeathPlace + sourceArray[0, 1] + "</td><td>"
+      + p.Occupation + sourceArray[0, 2] + "</td><td>"
+      + p.Education + sourceArray[0, 3] + "</td><td>"
+      + p.Religion + sourceArray[0, 4] + "</td><td>"
+      + p.BurialPlace + sourceArray[0, 5] + "</td><td>"
+      + p.BurialDateDescriptor + " " + dateformat(p.BurialDate) + sourceArray[0, 5] + "</td><td>"
+      + p.CremationPlace + sourceArray[0, 6] + "</td><td>"
+      + p.CremationDateDescriptor + " " + dateformat(p.CremationDate) + sourceArray[0, 6] + "</td><td></td></tr>";
   }
 
   /// <summary>
