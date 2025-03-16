@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -53,12 +53,7 @@ public partial class Statistics : UserControl
   {
     #region fields
 
-    // Media
-    double photos = 0;
     double notes = 0;
-    double attachments = 0;
-    double sourcesCount = 0;
-    double repositoriesCount = 0;
     double citations = 0;
     double relationshipCitations = 0;
 
@@ -81,21 +76,18 @@ public partial class Statistics : UserControl
     double deceasedFacts = 4 + livingFacts; // Normally a person either has cremation or burial date and place so this counts a 2 events plus death place and death date events plus the normal 7 events.
     double marriageFacts = 2;
     double divorceFacts = 1;
-
-    double totalEvents = 0;
-
     double living = 0;
     double deceased = 0;
 
-    decimal minimumYear = DateTime.Now.Year;
-    decimal maximumYear = DateTime.MinValue.Year;
+    int minimumYear = DateTime.Now.Year;
+    int maximumYear = DateTime.MinValue.Year;
 
-    DateTime? marriageDate = DateTime.MaxValue;
-    DateTime? divorceDate = DateTime.MaxValue;
-    DateTime? birthDate = DateTime.MaxValue;
-    DateTime? deathDate = DateTime.MaxValue;
-    DateTime? cremationDate = DateTime.MaxValue;
-    DateTime? burialDate = DateTime.MaxValue;
+    int marriageDate = int.MaxValue;
+    int divorceDate = int.MaxValue;
+    int birthDate = int.MaxValue;
+    int deathDate = int.MaxValue;
+    int cremationDate = int.MaxValue;
+    int burialDate = int.MaxValue;
 
     // Top names
     string[] maleNames = new string[people.Count];
@@ -253,7 +245,7 @@ public partial class Statistics : UserControl
           {
             if (spouseRel.MarriageDate > DateTime.MinValue)
             {
-              marriageDate = spouseRel.MarriageDate;
+              marriageDate = spouseRel.MarriageDate.Value.Year;
               progress++;
             }
           }
@@ -266,7 +258,7 @@ public partial class Statistics : UserControl
             {
               if (spouseRel.DivorceDate > DateTime.MinValue)
               {
-                divorceDate = spouseRel.DivorceDate;
+                divorceDate = spouseRel.DivorceDate.Value.Year;
                 progress++;
               }
             }
@@ -320,35 +312,36 @@ public partial class Statistics : UserControl
 
       if (p.BirthDate != null)
       {
-        birthDate = p.BirthDate;
+        birthDate = p.BirthDate.Value.Year;
       }
 
       if (p.DeathDate != null)
       {
-        deathDate = p.DeathDate;
+        deathDate = p.DeathDate.Value.Year;
       }
 
       if (p.CremationDate != null)
       {
-        cremationDate = p.CremationDate;
+        cremationDate = p.CremationDate.Value.Year;
       }
 
       if (p.BurialDate != null)
       {
-        burialDate = p.BurialDate;
+        burialDate = p.BurialDate.Value.Year;
       }
 
-      DateTime? yearmin = year(marriageDate, divorceDate, birthDate, deathDate, cremationDate, burialDate, "min");
-      DateTime? yearmax = year(marriageDate, divorceDate, birthDate, deathDate, cremationDate, burialDate, "max");
+      int[] list = [marriageDate, divorceDate, birthDate, deathDate, cremationDate, burialDate];
+      int yearmin = list.Min();
+      int yearmax = list.Max();
 
-      if (minimumYear > yearmin.Value.Year)
+      if (minimumYear > yearmin)
       {
-        minimumYear = yearmin.Value.Year;
+        minimumYear = yearmin;
       }
 
-      if (maximumYear < yearmax.Value.Year && yearmax.Value.Year <= DateTime.Now.Year)
+      if (maximumYear < yearmax && yearmax <= DateTime.Now.Year)
       {
-        maximumYear = yearmax.Value.Year;
+        maximumYear = yearmax;
       }
 
       #endregion
@@ -451,10 +444,10 @@ public partial class Statistics : UserControl
     citations += relationshipCitations;
 
     // Media data
-    photos = allPhotos.Count;
-    attachments = allAttachments.Count;
-    sourcesCount = sources.Count;
-    repositoriesCount = repositories.Count;
+    double photos = allPhotos.Count;
+    double attachments = allAttachments.Count;
+    double sourcesCount = sources.Count;
+    double repositoriesCount = repositories.Count;
 
     Photos.Text = Properties.Resources.Photos + ": " + photos;
     Notes.Text = Properties.Resources.Notes + ": " + notes;
@@ -464,8 +457,7 @@ public partial class Statistics : UserControl
     Repositories.Text = Properties.Resources.Repositories + ": " + repositoriesCount;
 
     // Relationship and event data
-    totalEvents = births + deaths + marriages + divorces + cremations + burials + educations + occupations + religions;
-
+    double totalEvents = births + deaths + marriages + divorces + cremations + burials + educations + occupations + religions;
     Marriages.Text = Properties.Resources.Marriages + ": " + marriages;
     Divorces.Text = Properties.Resources.Divorces + ": " + divorces;
 
@@ -750,79 +742,6 @@ public partial class Statistics : UserControl
     view.GroupDescriptions.Add(groupDescription);
 
     return view;
-  }
-
-  /// <summary>
-  /// Returns the max or min year of a series of dates
-  /// </summary>
-  /// <param name="marriageDate"></param>
-  /// <param name="divorceDate"></param>
-  /// <param name="birthDate"></param>
-  /// <param name="deathDate"></param>
-  /// <param name="cremationDate"></param>
-  /// <param name="burialDate"></param>
-  /// <param name="sort"></param>
-  /// <returns></returns>
-  private static DateTime? year(DateTime? marriageDate, DateTime? divorceDate, DateTime? birthDate, DateTime? deathDate, DateTime? cremationDate, DateTime? burialDate, string sort)
-  {
-    List<DateTime?> dates = [];
-
-    if (!marriageDate.IsNullOrEmpty())
-    {
-      dates.Add(marriageDate);
-    }
-
-    if (!divorceDate.IsNullOrEmpty())
-    {
-      dates.Add(divorceDate);
-    }
-
-    if (!birthDate.IsNullOrEmpty())
-    {
-      dates.Add(birthDate);
-    }
-
-    if (!deathDate.IsNullOrEmpty())
-    {
-      dates.Add(deathDate);
-    }
-
-    if (!cremationDate.IsNullOrEmpty())
-    {
-      dates.Add(cremationDate);
-    }
-
-    if (!burialDate.IsNullOrEmpty())
-    {
-      dates.Add(burialDate);
-    }
-
-    if (sort == "min")
-    {
-      if (dates.Count > 0)
-      {
-        dates.Sort();
-        return dates[0];
-      }
-      else
-      {
-        return DateTime.MaxValue;
-      }
-    }
-    else
-    {
-      if (dates.Count > 0)
-      {
-        dates.Sort();
-        return dates[dates.Count - 1];
-      }
-      else
-      {
-        return DateTime.MinValue;
-      }
-    }
-
-
   }
 
   /// <summary>

@@ -95,7 +95,7 @@ public partial class SharedBirthdays : UserControl
 
   internal static void Refresh()
   {
-    s_lcv.Refresh();
+    s_lcv?.Refresh();
   }
 
   internal void ClearSelection()
