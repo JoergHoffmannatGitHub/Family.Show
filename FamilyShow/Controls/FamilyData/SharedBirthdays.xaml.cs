@@ -15,7 +15,7 @@ namespace FamilyShow;
 
 public partial class SharedBirthdays : UserControl
 {
-  private static ListCollectionView s_lcv;
+  internal static ListCollectionView s_lcv;
 
   #region dependency properties
 
@@ -63,7 +63,7 @@ public partial class SharedBirthdays : UserControl
     return (p.BirthDate != null);
   }
 
-  private static void PeopleCollectionProperty_Changed(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+  internal static void PeopleCollectionProperty_Changed(DependencyObject sender, DependencyPropertyChangedEventArgs args)
   {
     SharedBirthdays sharedBirthdays = ((SharedBirthdays)sender);
 
@@ -83,7 +83,7 @@ public partial class SharedBirthdays : UserControl
     sharedBirthdays.GroupedItemsControl.ItemsSource = s_lcv;
   }
 
-  private void GroupedListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+  internal void GroupedListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
   {
     Person selected = ((ListBox)sender).SelectedItem as Person;
 
