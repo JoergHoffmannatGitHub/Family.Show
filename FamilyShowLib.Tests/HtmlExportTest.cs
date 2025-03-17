@@ -75,51 +75,57 @@ public class HtmlExportTest
   [Fact]
   public void ExportDirect_WithValidData_ShouldGenerateHtml()
   {
-    // Arrange
-    PeopleCollection peopleCollection = CreateMariedPeopleCollection();
-    SourceCollection sourceCollection = [];
-    RepositoryCollection repositoryCollection = [];
-    HtmlExport htmlExport = new();
-    string htmlFilePath = Path.GetTempFileName();
-    string familyxFileName = "FamilyTree";
+    using (AnotherCulture.UnitedStates())
+    {
+      // Arrange
+      PeopleCollection peopleCollection = CreateMariedPeopleCollection();
+      SourceCollection sourceCollection = [];
+      RepositoryCollection repositoryCollection = [];
+      HtmlExport htmlExport = new();
+      string htmlFilePath = Path.GetTempFileName();
+      string familyxFileName = "FamilyTree";
 
-    // Act
-    htmlExport.ExportDirect(peopleCollection, sourceCollection, repositoryCollection, htmlFilePath, familyxFileName, false, false);
+      // Act
+      htmlExport.ExportDirect(peopleCollection, sourceCollection, repositoryCollection, htmlFilePath, familyxFileName, false, false);
 
-    // Assert
-    string htmlContent = GetHtmlContent(htmlFilePath);
-    Assert.Contains("<b>John Doe</b>", htmlContent);
-    Assert.Contains("class=\"person\"><td>", htmlContent);
-    Assert.Contains(Properties.Resources.Spouse, htmlContent);
-    Assert.Contains("<td>Jane</td><td>Doe</td>", htmlContent);
-    Assert.Contains("<td> 15/5/1980</td>", htmlContent);
-    Assert.DoesNotContain("class=\"notelink\"", htmlContent);
+      // Assert
+      string htmlContent = GetHtmlContent(htmlFilePath);
+      Assert.Contains("<b>John Doe</b>", htmlContent);
+      Assert.Contains("class=\"person\"><td>", htmlContent);
+      Assert.Contains(Properties.Resources.Spouse, htmlContent);
+      Assert.Contains("<td>Jane</td><td>Doe</td>", htmlContent);
+      Assert.Contains("<td> 15/5/1980</td>", htmlContent);
+      Assert.DoesNotContain("class=\"notelink\"", htmlContent);
+    }
   }
 
   [Fact]
   public void ExportDirect_WithValidDataWithNote_ShouldGenerateHtml()
   {
-    // Arrange
-    PeopleCollection peopleCollection = CreateMariedPeopleCollection();
-    peopleCollection.Current.Spouses[0].Note = "Jane is married with John!";
-    SourceCollection sourceCollection = [];
-    RepositoryCollection repositoryCollection = [];
-    HtmlExport htmlExport = new();
-    string htmlFilePath = Path.GetTempFileName();
-    string familyxFileName = "FamilyTree";
+    using (AnotherCulture.UnitedStates())
+    {
+      // Arrange
+      PeopleCollection peopleCollection = CreateMariedPeopleCollection();
+      peopleCollection.Current.Spouses[0].Note = "Jane is married with John!";
+      SourceCollection sourceCollection = [];
+      RepositoryCollection repositoryCollection = [];
+      HtmlExport htmlExport = new();
+      string htmlFilePath = Path.GetTempFileName();
+      string familyxFileName = "FamilyTree";
 
-    // Act
-    htmlExport.ExportDirect(peopleCollection, sourceCollection, repositoryCollection, htmlFilePath, familyxFileName, false, false);
+      // Act
+      htmlExport.ExportDirect(peopleCollection, sourceCollection, repositoryCollection, htmlFilePath, familyxFileName, false, false);
 
-    // Assert
-    string htmlContent = GetHtmlContent(htmlFilePath);
-    Assert.Contains("<b>John Doe</b>", htmlContent);
-    Assert.Contains("class=\"personhighlight\"><td>", htmlContent);
-    Assert.Contains(Properties.Resources.Spouse, htmlContent);
-    Assert.Contains("<td>Jane</td><td>Doe</td>", htmlContent);
-    Assert.Contains("<td> 15/5/1980</td>", htmlContent);
-    Assert.Contains("class=\"notelink\"", htmlContent);
-    Assert.Contains("Jane is married with John!", htmlContent);
+      // Assert
+      string htmlContent = GetHtmlContent(htmlFilePath);
+      Assert.Contains("<b>John Doe</b>", htmlContent);
+      Assert.Contains("class=\"personhighlight\"><td>", htmlContent);
+      Assert.Contains(Properties.Resources.Spouse, htmlContent);
+      Assert.Contains("<td>Jane</td><td>Doe</td>", htmlContent);
+      Assert.Contains("<td> 15/5/1980</td>", htmlContent);
+      Assert.Contains("class=\"notelink\"", htmlContent);
+      Assert.Contains("Jane is married with John!", htmlContent);
+    }
   }
 
   [Fact]
@@ -169,7 +175,7 @@ public class HtmlExportTest
   public void ExportEventsByDecade_WithEmptyCollection_ShouldGenerateEmptyHtml()
   {
     // Arrange
-    PeopleCollection peopleCollection = new();
+    PeopleCollection peopleCollection = [];
     HtmlExport htmlExport = new();
     string htmlFilePath = Path.GetTempFileName();
     string familyxFileName = "FamilyTree";
