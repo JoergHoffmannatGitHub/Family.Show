@@ -288,7 +288,7 @@ public class Filter
   /// <summary>
   /// Parse the filter date.
   /// </summary>
-  private void ParseDate()
+  internal void ParseDate()
   {
     if (DateTime.TryParse(_filterText, out DateTime date))
     {
