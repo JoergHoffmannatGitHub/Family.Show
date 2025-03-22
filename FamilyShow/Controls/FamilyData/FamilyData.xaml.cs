@@ -27,7 +27,7 @@ public partial class FamilyData : UserControl
 
   private string _ageFilter;
   private string _surnameFilter;
-  private string _birthdateFilter;
+  internal string _birthdateFilter;
   private string _livingFilter;
   private string _genderFilter;
 
@@ -369,8 +369,12 @@ public partial class FamilyData : UserControl
   /// </summary>
   private void BirthdaysControl_SelectionChanged(object sender, RoutedEventArgs e)
   {
+    UpdateFilterCommand(e.OriginalSource);
+  }
 
-    if (e.OriginalSource is DateTime date)
+  internal void UpdateFilterCommand(object source)
+  {
+    if (source is DateTime date)
     {
       _birthdateFilter = date.ToShortString();
       UpdateFilter(date.ToShortString());
@@ -408,7 +412,7 @@ public partial class FamilyData : UserControl
   /// <summary>
   /// Update the list based on the filter.
   /// </summary>
-  private void UpdateFilter(string filter)
+  internal void UpdateFilter(string filter)
   {
     FilterTextBox.Text = filter;
     UpdateControls(filter);
