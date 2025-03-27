@@ -66,11 +66,14 @@ namespace FamilyShow
     private NodeType _type = NodeType.Related;
 
     // The current display year, this is used for the time filter.
-    private double _displayYear = DateTime.Now.Year;
+    internal double _displayYear = DateTime.Now.Year;
 
     // Flag, true if this node is currently filtered. This means
     // its still displayed but in a dim state.
     private bool _isFiltered;
+
+    // use for testing, as the NodeTemplate is not set in the test environment
+    internal bool _testing = false;
 
     #endregion
 
@@ -142,7 +145,6 @@ namespace FamilyShow
         // Recompuate the bottom label which contains the age,
         // the new age is relative to the new display year
         UpdateBottomLabel();
-
       }
     }
 
@@ -184,7 +186,7 @@ namespace FamilyShow
     /// <summary>
     /// Born, died and age information. 
     /// </summary>
-    private string DateInformation
+    internal string DateInformation
     {
       get
       {
@@ -446,8 +448,11 @@ namespace FamilyShow
           (_type == NodeType.Primary) ? "Primary" : "",
           (_person.Restriction != Restriction.Private && _person.HasAvatar && Diagram.showPhotos) ? "Photo" : "");
 
-      // Assign the node template.                
-      Template = (ControlTemplate)FindResource(template);
+      if (!_testing)
+      {
+        // Assign the node template.                
+        Template = (ControlTemplate)FindResource(template);
+      }
     }
 
     /// <summary>
@@ -526,8 +531,7 @@ namespace FamilyShow
     /// </summary>
     public void UpdateBottomLabel()
     {
-
-      if (_person.Restriction != Restriction.Private)
+      if (_person != null && _person.Restriction != Restriction.Private)
       {
         string label = string.Format(CultureInfo.CurrentCulture, "{0}\r{1}",
             _person.Name, DateInformation);
