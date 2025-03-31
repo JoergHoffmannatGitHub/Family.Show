@@ -84,6 +84,7 @@ public class DiagramConnectorNode(DiagramNode node, DiagramGroup group, DiagramR
   }
 
   #endregion
+
   /// <summary>
   /// Return the point shifted by the row and group location.
   /// </summary>
@@ -243,6 +244,8 @@ public abstract class DiagramConnector
   /// current filtered state. The brush contains an animation if 
   /// the filtered state has changed.
   /// </summary>
+  /// <param name="color">The color of the brush.</param>
+  /// <returns>A SolidColorBrush with the specified color and opacity based on the filtered state.</returns>
   protected SolidColorBrush GetBrush(Color color)
   {
     // Create the brush.
@@ -333,6 +336,8 @@ public class ChildDiagramConnector : DiagramConnector
   /// <summary>
   /// Draw the connection between the two nodes.
   /// </summary>
+  /// <param name="drawingContext">The drawing context.</param>
+  /// <returns>True if the connection should be drawn, otherwise false.</returns>
   public override bool Draw(DrawingContext drawingContext)
   {
     if (!base.Draw(drawingContext))
@@ -390,6 +395,7 @@ public class MarriedDiagramConnector : DiagramConnector
           return rel.MarriageDate;
         }
       }
+
       return null;
     }
   }
@@ -459,16 +465,22 @@ public class MarriedDiagramConnector : DiagramConnector
     _married = isMarried;
 
     // Get resources used to draw text.
-    _connectionTextSize = (double)Application.Current.TryFindResource("ConnectionTextSize");
-    _connectionTextColor = (Color)Application.Current.TryFindResource("ConnectionTextColor");
-    _connectionTextFont = (FontFamily)Application.Current.TryFindResource("ConnectionTextFont");
+    if (!startConnector.Node._testing)
+    {
+      _connectionTextSize = (double)Application.Current.TryFindResource("ConnectionTextSize");
+      _connectionTextColor = (Color)Application.Current.TryFindResource("ConnectionTextColor");
+      _connectionTextFont = (FontFamily)Application.Current.TryFindResource("ConnectionTextFont");
+    }
 
     // Gets the DPI information at which this Visual is measured and rendered.
     _pixelsPerDip = dpiScale.PixelsPerDip;
 
-    // Get resourced used to draw the connection line.
-    ResourcePen = (Pen)Application.Current.TryFindResource(
+    if (!startConnector.Node._testing)
+    {
+      // Get resourced used to draw the connection line.
+      ResourcePen = (Pen)Application.Current.TryFindResource(
         _married ? "MarriedConnectionPen" : "FormerConnectionPen");
+    }
   }
 
   /// <summary>
@@ -515,11 +527,10 @@ public class MarriedDiagramConnector : DiagramConnector
     if (rel != null)
     {
       // Marriage date.
-      if (rel.MarriageDate != null && ShowDate == true)
+      string marriageDate = MarriageDate(rel);
+      if (!string.IsNullOrEmpty(marriageDate))
       {
-        string text = rel.MarriageDateDescriptor + rel.MarriageDate.Value.Year.ToString(CultureInfo.CurrentCulture);
-
-        FormattedText format = new(text,
+        FormattedText format = new(marriageDate,
             CultureInfo.CurrentUICulture,
             FlowDirection.LeftToRight, new Typeface(_connectionTextFont,
             FontStyles.Normal, FontWeights.Normal, FontStretches.Normal,
@@ -532,11 +543,10 @@ public class MarriedDiagramConnector : DiagramConnector
       }
 
       // Previous marriage date.
-      if (!_married && rel.DivorceDate != null && ShowDate == true)
+      string divorceDate = DivorceDate(rel);
+      if (!string.IsNullOrEmpty(divorceDate))
       {
-        string text = rel.DivorceDateDescriptor + rel.DivorceDate.Value.Year.ToString(CultureInfo.CurrentCulture);
-
-        FormattedText format = new(text,
+        FormattedText format = new(divorceDate,
             CultureInfo.CurrentUICulture,
             FlowDirection.LeftToRight, new Typeface(_connectionTextFont,
             FontStyles.Normal, FontWeights.Normal, FontStretches.Normal,
@@ -548,6 +558,36 @@ public class MarriedDiagramConnector : DiagramConnector
             bounds.Top + TextSpace));
       }
     }
+  }
+
+  /// <summary>
+  /// Get the marriage date as a formatted string.
+  /// </summary>
+  /// <param name="rel">The spouse relationship.</param>
+  /// <returns>The formatted marriage date string.</returns>
+  internal string MarriageDate(SpouseRelationship rel)
+  {
+    if (rel.MarriageDate != null && ShowDate == true)
+    {
+      return rel.MarriageDateDescriptor + rel.MarriageDate.Value.Year.ToString(CultureInfo.CurrentCulture);
+    }
+
+    return string.Empty;
+  }
+
+  /// <summary>
+  /// Get the divorce date as a formatted string.
+  /// </summary>
+  /// <param name="rel">The spouse relationship.</param>
+  /// <returns>The formatted divorce date string.</returns>
+  internal string DivorceDate(SpouseRelationship rel)
+  {
+    if (!_married && rel.DivorceDate != null && ShowDate == true)
+    {
+      return rel.DivorceDateDescriptor + rel.DivorceDate.Value.Year.ToString(CultureInfo.CurrentCulture);
+    }
+
+    return string.Empty;
   }
 
   /// <summary>
