@@ -4,7 +4,7 @@ namespace FamilyShow.Tests.Controls;
 
 public class StatisticsTest
 {
-  private static void Marry(Person husband, Person currenWife)
+  private static void Marry(Person husband, Person wife)
   {
     SpouseRelationship currentRelationship = new(husband, SpouseModifier.Current)
     {
@@ -13,8 +13,8 @@ public class StatisticsTest
       MarriagePlace = "Place1",
       MarriageDate = new DateTime(2000, 1, 1)
     };
-    currenWife.Relationships.Add(currentRelationship);
-    currentRelationship = new(currenWife, SpouseModifier.Current)
+    wife.Relationships.Add(currentRelationship);
+    currentRelationship = new(wife, SpouseModifier.Current)
     {
       MarriageCitation = "Citation1",
       MarriageSource = "Source1",
@@ -24,7 +24,7 @@ public class StatisticsTest
     husband.Relationships.Add(currentRelationship);
   }
 
-  private static void Divorce(Person husband, Person formerWife)
+  private static void Divorce(Person husband, Person wife)
   {
     SpouseRelationship formerRelationship = new(husband, SpouseModifier.Former)
     {
@@ -32,8 +32,8 @@ public class StatisticsTest
       DivorceSource = "Source2",
       DivorceDate = new DateTime(2010, 1, 1)
     };
-    formerWife.Relationships.Add(formerRelationship);
-    formerRelationship = new(formerWife, SpouseModifier.Former)
+    wife.Relationships.Add(formerRelationship);
+    formerRelationship = new(wife, SpouseModifier.Former)
     {
       DivorceCitation = "Citation2",
       DivorceSource = "Source2",
