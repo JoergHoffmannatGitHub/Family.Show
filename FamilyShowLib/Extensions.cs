@@ -81,7 +81,7 @@ public static class Extensions
   /// </summary>
   /// <param name="month">The month number to convert.</param>
   /// <returns>The 3 letter month abbreviation.</returns>
-  private static string GetMMM(int month) => month switch
+  internal static string GetMMM(int month) => month switch
   {
     1 => "JAN",
     2 => "FEB",
