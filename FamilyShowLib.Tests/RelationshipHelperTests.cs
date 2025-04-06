@@ -8,7 +8,7 @@ public class RelationshipHelperTests
     // Arrange
     Person person = new("John", "Doe", Gender.Male);
     Person spouse = new("Jane", "Doe", Gender.Female);
-    DateTime marriageDate = new(2020, 1, 1);
+    DateWrapper marriageDate = new(2020, 1, 1);
 
     SpouseRelationship spouseRelationship = new(spouse, SpouseModifier.Current);
     person.Relationships.Add(spouseRelationship);
@@ -156,7 +156,7 @@ public class RelationshipHelperTests
     // Arrange
     Person person = new("John", "Doe", Gender.Male);
     Person spouse = new("Jane", "Doe", Gender.Female);
-    DateTime divorceDate = new(2021, 1, 1);
+    DateWrapper divorceDate = new(2021, 1, 1);
 
     SpouseRelationship spouseRelationship = new(spouse, SpouseModifier.Current);
     person.Relationships.Add(spouseRelationship);

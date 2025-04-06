@@ -28,16 +28,16 @@ public class DetailsTest
     }
   }
 
-  public static readonly TheoryData<string, DateTime?> StringDateCases =
+  public static readonly TheoryData<string, int, int, int> StringDateCases =
     new()
     {
-      { "", null },
-      { "invalid", null },
-      { "6 SEP 1888", new DateTime(1888, 9, 6) },
+      { "", 0, 0, 0 },
+      { "invalid", 0, 0, 0 },
+      { "6 SEP 1888", 1888, 9, 6 },
     };
 
   [StaTheory, MemberData(nameof(StringDateCases))]
-  public void AddButton_ClickTest(string birthDate, DateTime? expected)
+  public void AddButton_ClickTest(string birthDate, int year, int month, int day)
   {
     // Arrange
     InitAppCollections();
@@ -55,6 +55,8 @@ public class DetailsTest
     sut.NamesInputTextBox.Text = "unrelated";
     sut.SurnameInputTextBox.Text = "person";
     sut.BirthDateInputTextBox.Text = birthDate;
+    DateWrapper? expected = (year == 0 ? null : new DateWrapper(year, month, day));
+
     // Act
     sut.AddButton_Click(null, null);
     // Assert

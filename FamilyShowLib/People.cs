@@ -1997,12 +1997,12 @@ public class People
   /// <param name="date">The date of the first person to compare.</param>
   /// <param name="oldDate">The date of the second person to compare.</param>
   /// <returns>True if the gender, last name, and specified date of both persons are equal; otherwise, false.</returns>
-  private static bool CompareGenderLastNameAndDate(Person person, Person oldperson, DateTime? date, DateTime? oldDate)
+  private static bool CompareGenderLastNameAndDate(Person person, Person oldperson, DateWrapper date, DateWrapper oldDate)
   {
     return person.Gender == oldperson.Gender &&
       person.LastName == oldperson.LastName &&
-      !date.IsNullOrEmpty() &&
-      !oldDate.IsNullOrEmpty() &&
+      !DateWrapper.IsNullOrEmpty(date) &&
+      !DateWrapper.IsNullOrEmpty(date) &&
       date == oldDate;
   }
 

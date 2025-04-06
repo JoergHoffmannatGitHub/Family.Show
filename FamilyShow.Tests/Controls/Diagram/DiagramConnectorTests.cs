@@ -13,7 +13,7 @@ public class DiagramConnectorTests
     TestDiagramConnector connector = new();
 
     // Act
-    DateTime? result = connector.MarriedDate;
+    DateWrapper? result = connector.MarriedDate;
 
     // Assert
     Assert.Null(result);
@@ -26,7 +26,7 @@ public class DiagramConnectorTests
     TestDiagramConnector connector = new();
 
     // Act
-    DateTime? result = connector.PreviousMarriedDate;
+    DateWrapper? result = connector.PreviousMarriedDate;
 
     // Assert
     Assert.Null(result);
@@ -48,7 +48,7 @@ public class DiagramConnectorTests
     MarriedDiagramConnector connector = new(true, startNode, endNode, new DpiScale(1, 1));
 
     // Act
-    DateTime? result = connector.MarriedDate;
+    DateWrapper? result = connector.MarriedDate;
 
     // Assert
     Assert.Null(result);
@@ -58,7 +58,7 @@ public class DiagramConnectorTests
   public void MarriedDate_ShouldReturnMarriageDate_WhenMarried()
   {
     // Arrange
-    DateTime expectedResult = new(2000, 1, 1);
+    DateWrapper expectedResult = new(2000, 1, 1);
     Person person = new("John", "Doe");
     Person spouse = new("Jane", "Doe");
     Marry(person, spouse, expectedResult);
@@ -71,7 +71,7 @@ public class DiagramConnectorTests
     MarriedDiagramConnector connector = new(true, startNode, endNode, new DpiScale(1, 1));
 
     // Act
-    DateTime? result = connector.MarriedDate;
+    DateWrapper? result = connector.MarriedDate;
 
     // Assert
     Assert.Equal(expectedResult, result);
@@ -92,7 +92,7 @@ public class DiagramConnectorTests
     MarriedDiagramConnector connector = new(true, startNode, endNode, new DpiScale(1, 1));
 
     // Act
-    DateTime? result = connector.MarriedDate;
+    DateWrapper? result = connector.MarriedDate;
 
     // Assert
     Assert.Null(result);
@@ -114,7 +114,7 @@ public class DiagramConnectorTests
     MarriedDiagramConnector connector = new(false, startNode, endNode, new DpiScale(1, 1));
 
     // Act
-    DateTime? result = connector.MarriedDate;
+    DateWrapper? result = connector.MarriedDate;
 
     // Assert
     Assert.Null(result);
@@ -136,7 +136,7 @@ public class DiagramConnectorTests
     MarriedDiagramConnector connector = new(false, startNode, endNode, new DpiScale(1, 1));
 
     // Act
-    DateTime? result = connector.PreviousMarriedDate;
+    DateWrapper? result = connector.PreviousMarriedDate;
 
     // Assert
     Assert.Null(result);
@@ -146,7 +146,7 @@ public class DiagramConnectorTests
   public void PreviousMarriedDate_ShouldReturnMarriageDate_WhenDivorced()
   {
     // Arrange
-    DateTime expectedResult = new(2000, 1, 1);
+    DateWrapper expectedResult = new(2000, 1, 1);
     Person person = new("John", "Doe");
     Person spouse = new("Jane", "Doe");
     Divorce(person, spouse, expectedResult);
@@ -159,7 +159,7 @@ public class DiagramConnectorTests
     MarriedDiagramConnector connector = new(false, startNode, endNode, new DpiScale(1, 1));
 
     // Act
-    DateTime? result = connector.PreviousMarriedDate;
+    DateWrapper? result = connector.PreviousMarriedDate;
 
     // Assert
     Assert.Equal(expectedResult, result);
@@ -180,7 +180,7 @@ public class DiagramConnectorTests
     MarriedDiagramConnector connector = new(false, startNode, endNode, new DpiScale(1, 1));
 
     // Act
-    DateTime? result = connector.PreviousMarriedDate;
+    DateWrapper? result = connector.PreviousMarriedDate;
 
     // Assert
     Assert.Null(result);
@@ -202,7 +202,7 @@ public class DiagramConnectorTests
     MarriedDiagramConnector connector = new(true, startNode, endNode, new DpiScale(1, 1));
 
     // Act
-    DateTime? result = connector.PreviousMarriedDate;
+    DateWrapper? result = connector.PreviousMarriedDate;
 
     // Assert
     Assert.Null(result);
@@ -214,7 +214,7 @@ public class DiagramConnectorTests
     // Arrange
     Person person = new("John", "Doe");
     Person spouse = new("Jane", "Doe");
-    Marry(person, spouse, new DateTime(2000, 1, 1));
+    Marry(person, spouse, new DateWrapper(2000, 1, 1));
     DiagramConnectorNode startNode = new(new DiagramNode(), new DiagramGroup(), new DiagramRow());
     startNode.Node._testing = true;
     startNode.Node.Person = person;
@@ -237,7 +237,7 @@ public class DiagramConnectorTests
     // Arrange
     Person person = new("John", "Doe");
     Person spouse = new("Jane", "Doe");
-    Marry(person, spouse, new DateTime(2000, 1, 1));
+    Marry(person, spouse, new DateWrapper(2000, 1, 1));
     DiagramConnectorNode startNode = new(new DiagramNode(), new DiagramGroup(), new DiagramRow());
     startNode.Node._testing = true;
     startNode.Node.Person = person;
@@ -260,7 +260,7 @@ public class DiagramConnectorTests
     // Arrange
     Person person = new("John", "Doe");
     Person spouse = new("Jane", "Doe");
-    Marry(person, spouse, new DateTime(2000, 1, 1));
+    Marry(person, spouse, new DateWrapper(2000, 1, 1));
     DiagramConnectorNode startNode = new(new DiagramNode(), new DiagramGroup(), new DiagramRow());
     startNode.Node._testing = true;
     startNode.Node.Person = person;
@@ -283,7 +283,7 @@ public class DiagramConnectorTests
     // Arrange
     Person person = new("John", "Doe");
     Person spouse = new("Jane", "Doe");
-    Divorce(person, spouse, new DateTime(2000, 1, 1));
+    Divorce(person, spouse, new DateWrapper(2000, 1, 1));
     DiagramConnectorNode startNode = new(new DiagramNode(), new DiagramGroup(), new DiagramRow());
     startNode.Node._testing = true;
     startNode.Node.Person = person;
@@ -306,7 +306,7 @@ public class DiagramConnectorTests
     // Arrange
     Person person = new("John", "Doe");
     Person spouse = new("Jane", "Doe");
-    Marry(person, spouse, new DateTime(2000, 1, 1));
+    Marry(person, spouse, new DateWrapper(2000, 1, 1));
     DiagramConnectorNode startNode = new(new DiagramNode(), new DiagramGroup(), new DiagramRow());
     startNode.Node._testing = true;
     startNode.Node.Person = person;
@@ -329,7 +329,7 @@ public class DiagramConnectorTests
     // Arrange
     SpouseRelationship relationship = new()
     {
-      MarriageDate = new DateTime(2000, 1, 1),
+      MarriageDate = new DateWrapper(2000, 1, 1),
       MarriageDateDescriptor = "Married: "
     };
     DiagramConnectorNode startNode = new(new DiagramNode(), new DiagramGroup(), new DiagramRow());
@@ -373,7 +373,7 @@ public class DiagramConnectorTests
     // Arrange
     SpouseRelationship relationship = new()
     {
-      MarriageDate = new DateTime(2000, 1, 1),
+      MarriageDate = new DateWrapper(2000, 1, 1),
       MarriageDateDescriptor = "Married: "
     };
     DiagramConnectorNode startNode = new(new DiagramNode(), new DiagramGroup(), new DiagramRow());
@@ -398,7 +398,7 @@ public class DiagramConnectorTests
     // Arrange
     SpouseRelationship relationship = new()
     {
-      DivorceDate = new DateTime(2000, 1, 1),
+      DivorceDate = new DateWrapper(2000, 1, 1),
       DivorceDateDescriptor = "Divorced: "
     };
     DiagramConnectorNode startNode = new(new DiagramNode(), new DiagramGroup(), new DiagramRow());
@@ -442,7 +442,7 @@ public class DiagramConnectorTests
     // Arrange
     SpouseRelationship relationship = new()
     {
-      DivorceDate = new DateTime(2000, 1, 1),
+      DivorceDate = new DateWrapper(2000, 1, 1),
       DivorceDateDescriptor = "Divorced: "
     };
     DiagramConnectorNode startNode = new(new DiagramNode(), new DiagramGroup(), new DiagramRow());
@@ -461,7 +461,7 @@ public class DiagramConnectorTests
     Assert.Equal(string.Empty, result);
   }
 
-  private static void Marry(Person husband, Person wife, DateTime? date)
+  private static void Marry(Person husband, Person wife, DateWrapper? date)
   {
     SpouseRelationship relationship = new(husband, SpouseModifier.Current)
     {
@@ -482,7 +482,7 @@ public class DiagramConnectorTests
     husband.Relationships.Add(relationship);
   }
 
-  private static void Divorce(Person husband, Person wife, DateTime? date)
+  private static void Divorce(Person husband, Person wife, DateWrapper? date)
   {
     SpouseRelationship formerRelationship = new(husband, SpouseModifier.Former)
     {

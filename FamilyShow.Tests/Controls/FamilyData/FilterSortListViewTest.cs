@@ -1,4 +1,6 @@
-﻿namespace FamilyShow.Tests.Controls.FamilyData;
+﻿using FamilyShowLib;
+
+namespace FamilyShow.Tests.Controls.FamilyData;
 
 public class FilterSortListViewTest
 {
@@ -13,7 +15,7 @@ public class FilterSortListViewTest
       // Arrange
       Filter sut = new();
       sut.Parse(filterText);
-      DateTime? date = string.IsNullOrEmpty(dateText) ? null : DateTime.Parse(dateText);
+      DateWrapper? date = string.IsNullOrEmpty(dateText) ? null : new(dateText);
 
       // Act
       bool result = sut.Matches(date);
@@ -32,7 +34,7 @@ public class FilterSortListViewTest
     // Arrange
     Filter sut = new();
     sut.Parse(filterText);
-    DateTime? date = string.IsNullOrEmpty(dateText) ? null : DateTime.Parse(dateText);
+    DateWrapper? date = string.IsNullOrEmpty(dateText) ? null : new(dateText);
 
     // Act
     bool result = sut.MatchesYear(date);
@@ -52,7 +54,7 @@ public class FilterSortListViewTest
     Filter sut = new();
     sut.Parse(filterText);
     sut.ParseDate();
-    DateTime? date = string.IsNullOrEmpty(dateText) ? null : DateTime.Parse(dateText);
+    DateWrapper? date = string.IsNullOrEmpty(dateText) ? null : new(dateText);
 
     // Act
     bool result = sut.MatchesMonth(date);
@@ -72,7 +74,7 @@ public class FilterSortListViewTest
     Filter sut = new();
     sut.Parse(filterText);
     sut.ParseDate();
-    DateTime? date = string.IsNullOrEmpty(dateText) ? null : DateTime.Parse(dateText);
+    DateWrapper? date = string.IsNullOrEmpty(dateText) ? null : new(dateText);
 
     // Act
     bool result = sut.MatchesDay(date);

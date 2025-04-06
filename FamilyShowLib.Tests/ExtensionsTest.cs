@@ -57,84 +57,6 @@ public class ExtensionsTest
     }
   }
 
-  public static readonly TheoryData<DateTime?, string> FormatCases =
-    new()
-    {
-      { new DateTime(1888, 9, 6), "6/9/1888" },
-      { null, string.Empty },
-    };
-
-  [Theory, MemberData(nameof(FormatCases))]
-  public void Format_ShouldReturnCorrectly(DateTime? date, string expected)
-  {
-    // Arrange
-
-    // Act
-    string result = date.Format();
-
-    // Assert
-    Assert.Equal(expected, result);
-  }
-
-  public static readonly TheoryData<DateTime?, string> ToGedcomCases =
-    new()
-    {
-    { new DateTime(1888, 9, 6), "6 SEP 1888" },
-    { new DateTime(1950, 5, 8), "8 MAY 1950" },
-    { null, string.Empty },
-    };
-
-  [Theory, MemberData(nameof(ToGedcomCases))]
-  public void ToGedcom_ShouldReturnCorrectly(DateTime? date, string expected)
-  {
-    // Arrange
-
-    // Act
-    string result = date.ToGedcom();
-
-    // Assert
-    Assert.Equal(expected, result);
-  }
-
-  public static readonly TheoryData<int, string> GetMMMCases =
-    new()
-    {
-      { 1, "JAN" },
-      { 2, "FEB" },
-      { 3, "MAR" },
-      { 4, "APR" },
-      { 5, "MAY" },
-      { 6, "JUN" },
-      { 7, "JUL" },
-      { 8, "AUG" },
-      { 9, "SEP" },
-      { 10, "OCT" },
-      { 11, "NOV" },
-      { 12, "DEC" },
-    };
-
-  [Theory, MemberData(nameof(GetMMMCases))]
-  public void GetMMM_ShouldReturnCorrectly(int month, string expected)
-  {
-    // Arrange
-
-    // Act
-    string result = Extensions.GetMMM(month);
-
-    // Assert
-    Assert.Equal(expected, result);
-  }
-
-  [Fact]
-  public void GetMMM_ShouldThrowNotImplementedException_ForInvalidMonth()
-  {
-    // Arrange
-    int invalidMonth = 13;
-
-    // Act & Assert
-    Assert.Throws<NotImplementedException>(() => Extensions.GetMMM(invalidMonth));
-  }
-
   public static readonly TheoryData<DateTime?, bool> IsNullOrEmptyCases =
     new()
     {
@@ -186,29 +108,30 @@ public class ExtensionsTest
     }
   }
 
-  public static readonly TheoryData<string, DateTime?> BirthDateCases =
+  public static readonly TheoryData<string, int, int, int> BirthDateCases =
     new()
     {
-      { string.Empty, null },
-      { "invalid", null },
-      { "6 SEP 1888", new DateTime(1888, 9, 6) },
-      { "1 JAN 0001", null },
-      { "31 DEV 9999", null },
+      { string.Empty, 0, 0, 0 },
+      { "invalid", 0, 0, 0 },
+      { "6 SEP 1888", 1888, 9, 6 },
+      { "1 JAN 0001", 1, 1, 1 },
+      { "31 DEC 9999", 9999, 12, 31 },
     };
 
   [Theory, MemberData(nameof(BirthDateCases))]
-  public void SetBirthDate_ShouldReturnCorrectly(string birthDate, DateTime? expected)
+  public void SetBirthDate_ShouldReturnCorrectly(string birthDate, int year, int month, int day)
   {
     // Arrange
     Person newPerson = new("firstNames", "lastName")
     {
       IsLiving = false
     };
+    DateWrapper? expected = (year == 0 ? null : new DateWrapper(year, month, day));
 
     // Act
     newPerson.SetBirthDate(birthDate);
-    // Assert
 
+    // Assert
     Assert.Equal(expected, newPerson.BirthDate);
   }
 }

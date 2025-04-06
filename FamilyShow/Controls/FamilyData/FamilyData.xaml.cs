@@ -374,7 +374,7 @@ public partial class FamilyData : UserControl
 
   internal void UpdateFilterCommand(object source)
   {
-    if (source is DateTime date)
+    if (source is DateWrapper date)
     {
       _birthdateFilter = date.ToShortString();
       UpdateFilter(date.ToShortString());

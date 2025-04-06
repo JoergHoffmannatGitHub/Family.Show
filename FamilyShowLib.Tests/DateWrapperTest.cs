@@ -127,7 +127,7 @@ public class DateWrapperTest
     DateWrapper dateWrapper = new("22 JUL 2023");
 
     // Act
-    string formattedString = dateWrapper.Format();
+    string formattedString = DateWrapper.Format(dateWrapper);
 
     // Assert
     Assert.Equal("22/7/2023", formattedString);
@@ -140,7 +140,7 @@ public class DateWrapperTest
     DateWrapper dateWrapper = new("BEF JUL 2023");
 
     // Act
-    string formattedString = dateWrapper.Format();
+    string formattedString = DateWrapper.Format(dateWrapper);
 
     // Assert
     Assert.Equal(string.Empty, formattedString);

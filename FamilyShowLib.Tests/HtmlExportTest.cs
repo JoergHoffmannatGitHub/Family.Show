@@ -4,55 +4,55 @@ public class HtmlExportTest
 {
   private readonly Person _livingWoman = new("Jane", "Livinig")
   {
-    BirthDate = new DateTime(1900, 5, 15)
+    BirthDate = new DateWrapper(1900, 5, 15)
   };
   private readonly Person _deceasedMan = new("John", "Death")
   {
-    BirthDate = new DateTime(1890, 7, 22),
-    DeathDate = new DateTime(1995, 1, 22),
+    BirthDate = new DateWrapper(1890, 7, 22),
+    DeathDate = new DateWrapper(1995, 1, 22),
     DeathPlace = "Somewhere",
     IsLiving = false
   };
   private readonly Person _deceasedWoman = new("Jane", "Death")
   {
-    BirthDate = new DateTime(1900, 5, 15),
+    BirthDate = new DateWrapper(1900, 5, 15),
     BirthPlace = "Somewhere",
-    DeathDate = new DateTime(1980, 3, 10),
+    DeathDate = new DateWrapper(1980, 3, 10),
     IsLiving = false
   };
   private readonly Person _buriedMan = new("John", "Burial")
   {
-    BirthDate = new DateTime(1890, 7, 22),
-    BurialDate = new DateTime(1995, 1, 22),
+    BirthDate = new DateWrapper(1890, 7, 22),
+    BurialDate = new DateWrapper(1995, 1, 22),
     BurialPlace = "Somewhere",
     IsLiving = false
   };
   private readonly Person _buriedWoman = new("Jane", "Burial")
   {
-    BirthDate = new DateTime(1900, 5, 15),
+    BirthDate = new DateWrapper(1900, 5, 15),
     BirthPlace = "Somewhere",
-    BurialDate = new DateTime(1980, 3, 10),
+    BurialDate = new DateWrapper(1980, 3, 10),
     IsLiving = false
   };
   private readonly Person _crematedMan = new("John", "Cremation")
   {
-    BirthDate = new DateTime(1890, 7, 22),
-    CremationDate = new DateTime(1995, 1, 22),
+    BirthDate = new DateWrapper(1890, 7, 22),
+    CremationDate = new DateWrapper(1995, 1, 22),
     CremationPlace = "Somewhere",
     IsLiving = false
   };
   private readonly Person _crematedWoman = new("Jane", "Cremation")
   {
-    BirthDate = new DateTime(1900, 5, 15),
+    BirthDate = new DateWrapper(1900, 5, 15),
     BirthPlace = "Somewhere",
-    CremationDate = new DateTime(1980, 3, 10),
+    CremationDate = new DateWrapper(1980, 3, 10),
     IsLiving = false
   };
 
   private static PeopleCollection CreateMariedPeopleCollection()
   {
-    Person husband = new("John", "Doe") { BirthDate = new DateTime(1970, 7, 22), Gender = Gender.Male };
-    Person wife = new("Jane", "Doe") { BirthDate = new DateTime(1980, 5, 15), Gender = Gender.Female };
+    Person husband = new("John", "Doe") { BirthDate = new DateWrapper(1970, 7, 22), Gender = Gender.Male };
+    Person wife = new("Jane", "Doe") { BirthDate = new DateWrapper(1980, 5, 15), Gender = Gender.Female };
     PeopleCollection peopleCollection = [husband, wife];
     peopleCollection.Current = husband;
     Marry(husband, wife);
@@ -207,29 +207,5 @@ public class HtmlExportTest
     Assert.Contains("Family.Show", htmlContent);
     Assert.DoesNotContain("John Death", htmlContent);
     Assert.DoesNotContain("Jane Death", htmlContent);
-  }
-
-  [Fact]
-  public void Dateformat_WithNullDate_ShouldReturnEmptyString()
-  {
-    // Act
-    string result = HtmlExport.dateformat(null);
-
-    // Assert
-    Assert.Equal(string.Empty, result);
-  }
-
-
-  [Fact]
-  public void Dateformat_WithValidDate_ShouldReturnFormattedDate()
-  {
-    // Arrange
-    DateTime date = new(2023, 10, 5);
-
-    // Act
-    string result = HtmlExport.dateformat(date);
-
-    // Assert
-    Assert.Equal("5/10/2023", result);
   }
 }

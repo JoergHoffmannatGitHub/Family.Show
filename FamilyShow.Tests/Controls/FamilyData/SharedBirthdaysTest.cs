@@ -12,7 +12,7 @@ public class SharedBirthdaysTest
   public void FilterPerson_ShouldReturnTrueForPersonWithBirthDate()
   {
     // Arrange
-    Person person = new("John", "Doe") { BirthDate = new DateTime(1980, 1, 1) };
+    Person person = new("John", "Doe") { BirthDate = new(1980, 1, 1) };
 
     // Act
     bool result = SharedBirthdays.FilterPerson(person);
@@ -40,8 +40,8 @@ public class SharedBirthdaysTest
     // Arrange
     PeopleCollection peopleCollection =
     [
-      new Person("John", "Doe") { BirthDate = new DateTime(1980, 1, 1) },
-      new Person("Jane", "Doe") { BirthDate = new DateTime(1990, 2, 2) }
+      new Person("John", "Doe") { BirthDate = new(1980, 1, 1) },
+      new Person("Jane", "Doe") { BirthDate = new(1990, 2, 2) }
     ];
     SharedBirthdays sharedBirthdays = new();
 
@@ -52,7 +52,7 @@ public class SharedBirthdaysTest
     ListCollectionView lcv = (ListCollectionView)sharedBirthdays.GroupedItemsControl.ItemsSource;
     Assert.NotNull(lcv);
     Assert.Equal(2, lcv.Count);
-    Assert.True(lcv.Filter(new Person("John", "Doe") { BirthDate = new DateTime(1980, 1, 1) }));
+    Assert.True(lcv.Filter(new Person("John", "Doe") { BirthDate = new(1980, 1, 1) }));
     Assert.False(lcv.Filter(new Person("John", "Doe")));
 
     SharedBirthdays.s_lcv = null;
@@ -64,7 +64,7 @@ public class SharedBirthdaysTest
     // Arrange
     SharedBirthdays sharedBirthdays = new();
     ListBox listBox = new();
-    Person person = new("John", "Doe") { BirthDate = new DateTime(1980, 1, 1) };
+    Person person = new("John", "Doe") { BirthDate = new(1980, 1, 1) };
     listBox.Items.Add(person);
     listBox.SelectedItem = person;
     bool eventRaised = false;
@@ -88,7 +88,7 @@ public class MonthDayComparerTest
   public void Compare_SamePersons_ShouldReturnCorrectly()
   {
     // Arrange
-    Person person = new("John", "Doe") { BirthDate = new DateTime(1980, 1, 1) };
+    Person person = new("John", "Doe") { BirthDate = new(1980, 1, 1) };
     MonthDayComparer monthDayComparer = new();
 
     // Act & Assert
@@ -99,8 +99,8 @@ public class MonthDayComparerTest
   public void Compare_DifferentPersonsDifferenMonth_ShouldReturnCorrectly()
   {
     // Arrange
-    Person john = new("John", "Doe") { BirthDate = new DateTime(1980, 2, 1) };
-    Person jane = new("Jane", "Doe") { BirthDate = new DateTime(1980, 1, 1) };
+    Person john = new("John", "Doe") { BirthDate = new(1980, 2, 1) };
+    Person jane = new("Jane", "Doe") { BirthDate = new(1980, 1, 1) };
     MonthDayComparer monthDayComparer = new();
 
     // Act & Assert
@@ -112,8 +112,8 @@ public class MonthDayComparerTest
   public void Compare_DifferentPersonsDifferenDay_ShouldReturnCorrectly()
   {
     // Arrange
-    Person john = new("John", "Doe") { BirthDate = new DateTime(1980, 1, 2) };
-    Person jane = new("Jane", "Doe") { BirthDate = new DateTime(1980, 1, 1) };
+    Person john = new("John", "Doe") { BirthDate = new(1980, 1, 2) };
+    Person jane = new("Jane", "Doe") { BirthDate = new(1980, 1, 1) };
     MonthDayComparer monthDayComparer = new();
 
     // Act & Assert
@@ -125,8 +125,8 @@ public class MonthDayComparerTest
   public void Compare_DifferentPersonsSameBirthDate_ShouldReturnCorrectly()
   {
     // Arrange
-    Person john = new("John", "Doe") { BirthDate = new DateTime(1980, 1, 1) };
-    Person jane = new("Jane", "Doe") { BirthDate = new DateTime(1980, 1, 1) };
+    Person john = new("John", "Doe") { BirthDate = new(1980, 1, 1) };
+    Person jane = new("Jane", "Doe") { BirthDate = new(1980, 1, 1) };
     MonthDayComparer monthDayComparer = new();
 
     // Act & Assert

@@ -31,74 +31,6 @@ public static class Extensions
   }
 
   /// <summary>
-  /// Get a date in dd/mm/yyyy format from a full DateTime?
-  /// </summary>
-  /// <param name="dates">The nullable DateTime to format.</param>
-  /// <returns>A string representing the date in dd/mm/yyyy format.</returns>
-  public static string Format(this DateTime? dates)
-  {
-    string date = string.Empty;
-    if (dates != null)  //don't try if date is null!
-    {
-      int day = dates.Value.Day;
-      int month = dates.Value.Month;
-      int year = dates.Value.Year;
-      date = day + "/" + month + "/" + year;
-    }
-
-    return date;
-  }
-
-  /// <summary>
-  /// Converts a date into a GEDCOM-formatted string.
-  /// </summary>
-  /// <returns>GEDCOM date or string.Empty, if Date? is null.</returns>
-  public static string ToGedcom(this DateTime? date)
-  {
-    if (date == null)  //don't try if date is null!
-    {
-      return string.Empty;
-    }
-    else
-    {
-      string result = string.Empty;
-      if (date.Value.Day > 0)
-      {
-        result += date.Value.Day + " ";
-      }
-
-      if (date.Value.Month > 0)
-      {
-        result += GetMMM(date.Value.Month) + " ";
-      }
-
-      return result + date.Value.Year;
-    }
-  }
-
-  /// <summary>
-  /// Converts month number to 3 letter month abbreviation as used in GEDCOM.
-  /// </summary>
-  /// <param name="month">The month number to convert.</param>
-  /// <returns>The 3 letter month abbreviation.</returns>
-  internal static string GetMMM(int month) => month switch
-  {
-    1 => "JAN",
-    2 => "FEB",
-    3 => "MAR",
-    4 => "APR",
-    5 => "MAY",
-    6 => "JUN",
-    7 => "JUL",
-    8 => "AUG",
-    9 => "SEP",
-    10 => "OCT",
-    11 => "NOV",
-    12 => "DEC",
-    _ => throw new NotImplementedException()
-  };
-
-  /// <summary>
   /// Indicates whether the specified <see cref="DateTime"/> is <see langword="null"/>
   /// or an empty <see cref="DateTime"/> (<see cref="DateTime.MinValue"/>).
   /// </summary>
@@ -150,8 +82,8 @@ public static class Extensions
   /// <param name="dateString">The string to convert to a date.</param>
   public static void SetBirthDate(this Person person, string dateString)
   {
-    DateTime? birthdate = dateString.ToDate();
-    if (!birthdate.IsNullOrEmpty())
+    DateWrapper birthdate = new(dateString);
+    if (!DateWrapper.IsNullOrEmpty(birthdate))
     {
       person.BirthDate = birthdate;
     }

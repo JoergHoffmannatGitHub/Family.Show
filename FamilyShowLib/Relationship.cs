@@ -6,6 +6,7 @@ using System.Xml.Serialization;
 namespace FamilyShowLib
 #pragma warning restore IDE0161 // Convert to file-scoped namespace
 {
+
   #region Relationship classes
 
   /// <summary>
@@ -122,7 +123,7 @@ namespace FamilyShowLib
   {
     private SpouseModifier _spouseModifier;
 
-    private DateTime? _marriageDate;
+    private DateWrapper _marriageDate;
     private string _marriageDateDescriptor;
     private string _marriagePlace;
 
@@ -132,7 +133,7 @@ namespace FamilyShowLib
     private string _marriageCitationActualText;
     private string _marriageCitationNote;
 
-    private DateTime? _divorceDate;
+    private DateWrapper _divorceDate;
     private string _divorceDateDescriptor;
 
     private string _divorceCitation;
@@ -149,7 +150,7 @@ namespace FamilyShowLib
 
     #region marriage get set methods
 
-    public DateTime? MarriageDate
+    public DateWrapper MarriageDate
     {
       get { return _marriageDate; }
       set { _marriageDate = value; }
@@ -201,7 +202,7 @@ namespace FamilyShowLib
 
     #region divorce get set methods
 
-    public DateTime? DivorceDate
+    public DateWrapper DivorceDate
     {
       get { return _divorceDate; }
       set { _divorceDate = value; }
@@ -311,4 +312,5 @@ namespace FamilyShowLib
   }
 
   #endregion
+
 }

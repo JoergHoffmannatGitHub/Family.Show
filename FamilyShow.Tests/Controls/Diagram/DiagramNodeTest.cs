@@ -1,6 +1,4 @@
-﻿using System.Collections.Specialized;
-
-using FamilyShowLib;
+﻿using FamilyShowLib;
 
 namespace FamilyShow.Tests.Controls.Diagram;
 
@@ -24,7 +22,7 @@ public class DiagramNodeTest
   public void DisplayYear_ShouldUpdateIsFilteredBasedOnBirthDate()
   {
     // Arrange
-    Person person = new("John", "Doe") { BirthDate = new DateTime(2010, 1, 1) };
+    Person person = new("John", "Doe") { BirthDate = new DateWrapper(2010, 1, 1) };
     var diagramNode = new DiagramNode { _testing = true, Person = person };
     double newDisplayYear = 2000;
 
@@ -39,7 +37,7 @@ public class DiagramNodeTest
   public void DisplayYear_ShouldUpdateBottomLabel()
   {
     // Arrange
-    Person person = new("John", "Doe") { BirthDate = new DateTime(1990, 1, 1) };
+    Person person = new("John", "Doe") { BirthDate = new DateWrapper(1990, 1, 1) };
     DiagramNode diagramNode = new() { _testing = true, Person = person };
     double newDisplayYear = 2000;
     string expectedBottomLabel = "John Doe\r1990 | 10";
@@ -51,23 +49,34 @@ public class DiagramNodeTest
     Assert.Equal(expectedBottomLabel, diagramNode.BottomLabel);
   }
 
-  public static readonly TheoryData<Restriction, bool, DateTime?, DateTime?, string> DateInformationCases =
+  public static readonly TheoryData<Restriction, bool, int, int, int, int, int, int, string> DateInformationCases =
     new()
     {
-      { Restriction.Private, true, null, null, string.Empty },
-      { Restriction.None, true, null, null, string.Empty },
-      { Restriction.None, false, null, null, string.Empty },
-      { Restriction.None, true, new DateTime(1910, 3, 3), null, "1910 | 114" },
-      { Restriction.None, false, new DateTime(1910, 3, 3), null, "1910 - ? | ?" },
-      { Restriction.None, false, null, new DateTime(2017, 2, 2), "? - 2017 | ?" },
-      { Restriction.None, false, new DateTime(1910, 3, 3), new DateTime(2017, 2, 2), "1910 - 2017 | 106" },
-      { Restriction.None, false, new DateTime(1920, 3, 3), new DateTime(2025, 2, 2), "1920 - 2025 | 103" },
+      { Restriction.Private, true,     0, 0, 0,    0, 0, 0, string.Empty },
+      { Restriction.None,    true,     0, 0, 0,    0, 0, 0, string.Empty },
+      { Restriction.None,    false,    0, 0, 0,    0, 0, 0, string.Empty },
+      { Restriction.None,    true,  1910, 3, 3,    0, 0, 0, "1910 | 114" },
+      { Restriction.None,    false, 1910, 3, 3,    0, 0, 0, "1910 - ? | ?" },
+      { Restriction.None,    false,    0, 0, 0, 2017, 2, 2, "? - 2017 | ?" },
+      { Restriction.None,    false, 1910, 3, 3, 2017, 2, 2, "1910 - 2017 | 106" },
+      { Restriction.None,    false, 1920, 3, 3, 2025, 2, 2, "1920 - 2025 | 103" },
     };
 
   [StaTheory, MemberData(nameof(DateInformationCases))]
-  public void DateInformation_ShouldCalculateCorrectly(Restriction restriction, bool living, DateTime? birthDate, DateTime? deathDate, string expected)
+  public void DateInformation_ShouldCalculateCorrectly(
+    Restriction restriction,
+    bool living,
+    int birthYear,
+    int birthMonth,
+    int birthDay,
+    int deathYear,
+    int deathMonth,
+    int deathDay,
+    string expected)
   {
     // Arrange
+    DateWrapper? birthDate = (birthYear == 0 ? null : new DateWrapper(birthYear, birthMonth, birthDay));
+    DateWrapper? deathDate = (deathYear == 0 ? null : new DateWrapper(deathYear, deathMonth, deathDay));
     Person person = new("John", "Doe") { Restriction = restriction, IsLiving = living, BirthDate = birthDate, DeathDate = deathDate };
     var diagramNode = new DiagramNode { _testing = true, _displayYear = 2024, Person = person };
 

@@ -7,11 +7,11 @@ public class SpouseRelationshipTests
   {
     // Arrange
     var spouseRelationship = new SpouseRelationship();
-    DateTime? expectedDate = new DateTime(2020, 5, 15);
+    DateWrapper expectedDate = new(2020, 5, 15);
 
     // Act
     spouseRelationship.MarriageDate = expectedDate;
-    DateTime? actualDate = spouseRelationship.MarriageDate;
+    DateWrapper actualDate = spouseRelationship.MarriageDate;
 
     // Assert
     Assert.Equal(expectedDate, actualDate);
@@ -27,7 +27,7 @@ public class SpouseRelationshipTests
       MarriageDate = null
     };
 
-    DateTime? actualDate = spouseRelationship.MarriageDate;
+    DateWrapper? actualDate = spouseRelationship.MarriageDate;
 
     // Assert
     Assert.Null(actualDate);
@@ -38,13 +38,13 @@ public class SpouseRelationshipTests
   {
     // Arrange
     var spouseRelationship = new SpouseRelationship();
-    DateTime? firstDate = new DateTime(2018, 3, 10);
-    DateTime? secondDate = new DateTime(2021, 7, 20);
+    DateWrapper firstDate = new(2018, 3, 10);
+    DateWrapper secondDate = new(2021, 7, 20);
 
     // Act
     spouseRelationship.MarriageDate = firstDate;
     spouseRelationship.MarriageDate = secondDate;
-    DateTime? actualDate = spouseRelationship.MarriageDate;
+    DateWrapper actualDate = spouseRelationship.MarriageDate;
 
     // Assert
     Assert.Equal(secondDate, actualDate);
@@ -104,11 +104,11 @@ public class SpouseRelationshipTests
   {
     // Arrange
     var spouseRelationship = new SpouseRelationship();
-    DateTime? expectedDate = new DateTime(2022, 8, 25);
+    DateWrapper expectedDate = new(2022, 8, 25);
 
     // Act
     spouseRelationship.DivorceDate = expectedDate;
-    DateTime? actualDate = spouseRelationship.DivorceDate;
+    DateWrapper actualDate = spouseRelationship.DivorceDate;
 
     // Assert
     Assert.Equal(expectedDate, actualDate);
@@ -123,7 +123,7 @@ public class SpouseRelationshipTests
       // Act
       DivorceDate = null
     };
-    DateTime? actualDate = spouseRelationship.DivorceDate;
+    DateWrapper? actualDate = spouseRelationship.DivorceDate;
 
     // Assert
     Assert.Null(actualDate);
@@ -134,13 +134,13 @@ public class SpouseRelationshipTests
   {
     // Arrange
     var spouseRelationship = new SpouseRelationship();
-    DateTime? firstDate = new DateTime(2019, 4, 10);
-    DateTime? secondDate = new DateTime(2023, 11, 15);
+    DateWrapper firstDate = new(2019, 4, 10);
+    DateWrapper secondDate = new(2023, 11, 15);
 
     // Act
     spouseRelationship.DivorceDate = firstDate;
     spouseRelationship.DivorceDate = secondDate;
-    DateTime? actualDate = spouseRelationship.DivorceDate;
+    DateWrapper actualDate = spouseRelationship.DivorceDate;
 
     // Assert
     Assert.Equal(secondDate, actualDate);

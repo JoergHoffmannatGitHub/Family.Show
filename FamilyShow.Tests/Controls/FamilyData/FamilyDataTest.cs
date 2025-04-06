@@ -14,7 +14,7 @@ public class FamilyDataTest
   {
     // Arrange
     FamilyShow.FamilyData familyData = new();
-    DateTime date = new(1980, 1, 1);
+    DateWrapper date = new(1980, 1, 1);
 
     // Act
     familyData.UpdateFilterCommand(date);

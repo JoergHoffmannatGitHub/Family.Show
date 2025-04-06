@@ -11,7 +11,7 @@ public class StatisticsTest
       MarriageCitation = "Citation1",
       MarriageSource = "Source1",
       MarriagePlace = "Place1",
-      MarriageDate = new DateTime(2000, 1, 1)
+      MarriageDate = new DateWrapper(2000, 1, 1)
     };
     wife.Relationships.Add(currentRelationship);
     currentRelationship = new(wife, SpouseModifier.Current)
@@ -19,7 +19,7 @@ public class StatisticsTest
       MarriageCitation = "Citation1",
       MarriageSource = "Source1",
       MarriagePlace = "Place1",
-      MarriageDate = new DateTime(2000, 1, 1)
+      MarriageDate = new DateWrapper(2000, 1, 1)
     };
     husband.Relationships.Add(currentRelationship);
   }
@@ -30,14 +30,14 @@ public class StatisticsTest
     {
       DivorceCitation = "Citation2",
       DivorceSource = "Source2",
-      DivorceDate = new DateTime(2010, 1, 1)
+      DivorceDate = new DateWrapper(2010, 1, 1)
     };
     wife.Relationships.Add(formerRelationship);
     formerRelationship = new(wife, SpouseModifier.Former)
     {
       DivorceCitation = "Citation2",
       DivorceSource = "Source2",
-      DivorceDate = new DateTime(2010, 1, 1)
+      DivorceDate = new DateWrapper(2010, 1, 1)
     };
     husband.Relationships.Add(formerRelationship);
   }
@@ -53,12 +53,12 @@ public class StatisticsTest
         new Person("John", "Doe")
         {
           ReligionSource = "Source1", ReligionCitation = "Citation1", Religion = "Christianity",
-          CremationSource = "Source2", CremationCitation = "Citation2", CremationPlace = "Place1", CremationDate = new DateTime(2000, 1, 1),
+          CremationSource = "Source2", CremationCitation = "Citation2", CremationPlace = "Place1", CremationDate = new DateWrapper(2000, 1, 1),
           OccupationSource = "Source3", OccupationCitation = "Citation3", Occupation = "Engineer",
           EducationSource = "Source4", EducationCitation = "Citation4", Education = "College",
-          BirthSource = "Source5", BirthCitation = "Citation5", BirthPlace = "Place2", BirthDate = new DateTime(1980, 1, 1),
-          DeathSource = "Source6", DeathCitation = "Citation6", DeathPlace = "Place3", DeathDate = new DateTime(2020, 1, 1),
-          BurialSource = "Source7", BurialCitation = "Citation7", BurialPlace = "Place4", BurialDate = new DateTime(2020, 1, 2)
+          BirthSource = "Source5", BirthCitation = "Citation5", BirthPlace = "Place2", BirthDate = new DateWrapper(1980, 1, 1),
+          DeathSource = "Source6", DeathCitation = "Citation6", DeathPlace = "Place3", DeathDate = new DateWrapper(2020, 1, 1),
+          BurialSource = "Source7", BurialCitation = "Citation7", BurialPlace = "Place4", BurialDate = new DateWrapper(2020, 1, 2)
         }
       };
       var sourceCollection = new SourceCollection();
@@ -111,10 +111,10 @@ public class StatisticsTest
           Religion = "Christianity",
           Education = "College",
           Occupation = "Engineer",
-          BurialDate = new DateTime(2020, 1, 2), BurialPlace = "Place4",
-          CremationDate = new DateTime(2000, 1, 1), CremationPlace = "Place1",
-          DeathDate = new DateTime(2020, 1, 1), DeathPlace = "Place3",
-          BirthDate = new DateTime(1980, 1, 1), BirthPlace = "Place2"
+          BurialDate = new DateWrapper(2020, 1, 2), BurialPlace = "Place4",
+          CremationDate = new DateWrapper(2000, 1, 1), CremationPlace = "Place1",
+          DeathDate = new DateWrapper(2020, 1, 1), DeathPlace = "Place3",
+          BirthDate = new DateWrapper(1980, 1, 1), BirthPlace = "Place2"
         }
       };
       var sourceCollection = new SourceCollection();

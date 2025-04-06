@@ -56,6 +56,13 @@ public sealed class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   public static bool IsNullOrEmpty([NotNullWhen(false)] DateWrapper value) => value == null || value.Date == null;
 
   /// <summary>
+  /// Indicates whether the specified <see cref="DateWrapper"/> is empty.
+  /// </summary>
+  /// <param name="value">The <see cref="DateWrapper"/> to test.</param>
+  /// <returns>True if the <see cref="DateWrapper"/> is empty; otherwise, false.</returns>
+  public static bool IsDateEmpty(DateWrapper value) => value != null && value.Date == null;
+
+  /// <summary>
   /// Indicates whether the specified <see cref="DateWrapper"/> contains an exact date.
   /// </summary>
   /// <param name="value">The <see cref="DateWrapper"/> to test.</param>
@@ -87,9 +94,9 @@ public sealed class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   /// Formats the wrapped date as a string in the format "day/month/year".
   /// </summary>
   /// <returns>A string representing the formatted date.</returns>
-  public string Format()
+  public static string Format(DateWrapper value)
   {
-    if (IsDateExact(this, out IDateExact date))
+    if (IsDateExact(value, out IDateExact date))
     {
       int day = date.Day;
       int month = date.Month;
@@ -120,7 +127,7 @@ public sealed class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   /// Serves as the default hash function.
   /// </summary>
   /// <returns>A hash code for the current object.</returns>
-  public override int GetHashCode() => Date.GetHashCode();
+  public override int GetHashCode() => HashCode.Combine(Date);
 
   /// <summary>
   /// Determines whether two specified instances of <see cref="DateWrapper"/> are equal.

@@ -7,6 +7,8 @@ using System.Windows.Data;
 
 using FamilyShowLib;
 
+using Genealogy;
+
 namespace FamilyShow;
 
 /// <summary>
@@ -121,23 +123,37 @@ public class MonthDayComparer : IComparer
       return 0;
     }
 
+    DateWrapper.IsDateExact(p1.BirthDate, out IDateExact p1Birthdate);
+    DateWrapper.IsDateExact(p2.BirthDate, out IDateExact p2Birthdate);
+
+    if (p1Birthdate == null || p2Birthdate == null)
+    {
+      if (p1.BirthDate == p2.BirthDate)
+      {
+        // The days are the same so check the first name
+        return (string.Compare(p1.FirstName, p2.FirstName, true, CultureInfo.CurrentCulture));
+      }
+
+      return (string.Compare(p1.BirthDate.ToGedcom(), p2.BirthDate.ToGedcom(), true, CultureInfo.CurrentCulture));
+    }
+
     // Check the month first
-    if (p1.BirthDate.Value.Month < p2.BirthDate.Value.Month)
+    if (p1Birthdate.Month < p2Birthdate.Month)
     {
       return -1;
     }
-    else if (p1.BirthDate.Value.Month > p2.BirthDate.Value.Month)
+    else if (p1Birthdate.Month > p2Birthdate.Month)
     {
       return 1;
     }
     else
     {
       // Since the months were the same, now check the day
-      if (p1.BirthDate.Value.Day < p2.BirthDate.Value.Day)
+      if (p1Birthdate.Day < p2Birthdate.Day)
       {
         return -1;
       }
-      else if (p1.BirthDate.Value.Day > p2.BirthDate.Value.Day)
+      else if (p1Birthdate.Day > p2Birthdate.Day)
       {
         return 1;
       }
@@ -147,6 +163,7 @@ public class MonthDayComparer : IComparer
         return (string.Compare(p1.FirstName, p2.FirstName, true, CultureInfo.CurrentCulture));
       }
     }
+
   }
 
   #endregion

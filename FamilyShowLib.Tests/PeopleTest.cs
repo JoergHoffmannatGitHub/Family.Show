@@ -147,8 +147,8 @@ public class PeopleTest
   public void CompareGenderLastNameAndBirthDate_ShouldReturnTrue_WhenGenderLastNameAndBirthDateAreEqual()
   {
     // Arrange
-    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateTime(1990, 1, 1) };
-    Person person2 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateTime(1990, 1, 1) };
+    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateWrapper(1990, 1, 1) };
+    Person person2 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateWrapper(1990, 1, 1) };
 
     // Act
     bool result = People.CompareGenderLastNameAndBirthDate(person1, person2);
@@ -161,8 +161,8 @@ public class PeopleTest
   public void CompareGenderLastNameAndBirthDate_ShouldReturnFalse_WhenGenderIsNotEqual()
   {
     // Arrange
-    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateTime(1990, 1, 1) };
-    Person person2 = new() { Gender = Gender.Female, LastName = "Doe", BirthDate = new DateTime(1990, 1, 1) };
+    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateWrapper(1990, 1, 1) };
+    Person person2 = new() { Gender = Gender.Female, LastName = "Doe", BirthDate = new DateWrapper(1990, 1, 1) };
 
     // Act
     bool result = People.CompareGenderLastNameAndBirthDate(person1, person2);
@@ -175,8 +175,8 @@ public class PeopleTest
   public void CompareGenderLastNameAndBirthDate_ShouldReturnFalse_WhenLastNameIsNotEqual()
   {
     // Arrange
-    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateTime(1990, 1, 1) };
-    Person person2 = new() { Gender = Gender.Male, LastName = "Smith", BirthDate = new DateTime(1990, 1, 1) };
+    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateWrapper(1990, 1, 1) };
+    Person person2 = new() { Gender = Gender.Male, LastName = "Smith", BirthDate = new DateWrapper(1990, 1, 1) };
 
     // Act
     bool result = People.CompareGenderLastNameAndBirthDate(person1, person2);
@@ -189,8 +189,8 @@ public class PeopleTest
   public void CompareGenderLastNameAndBirthDate_ShouldReturnFalse_WhenBirthDateIsNotEqual()
   {
     // Arrange
-    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateTime(1990, 1, 1) };
-    Person person2 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateTime(1991, 1, 1) };
+    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateWrapper(1990, 1, 1) };
+    Person person2 = new() { Gender = Gender.Male, LastName = "Doe", BirthDate = new DateWrapper(1991, 1, 1) };
 
     // Act
     bool result = People.CompareGenderLastNameAndBirthDate(person1, person2);
@@ -202,8 +202,8 @@ public class PeopleTest
   public void CompareGenderLastNameAndDeathDate_ShouldReturnTrue_WhenGenderLastNameAndDeathDateAreEqual()
   {
     // Arrange
-    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateTime(2020, 1, 1) };
-    Person person2 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateTime(2020, 1, 1) };
+    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateWrapper(2020, 1, 1) };
+    Person person2 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateWrapper(2020, 1, 1) };
 
     // Act
     bool result = People.CompareGenderLastNameAndDeathDate(person1, person2);
@@ -216,8 +216,8 @@ public class PeopleTest
   public void CompareGenderLastNameAndDeathDate_ShouldReturnFalse_WhenGenderIsNotEqual()
   {
     // Arrange
-    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateTime(2020, 1, 1) };
-    Person person2 = new() { Gender = Gender.Female, LastName = "Doe", DeathDate = new DateTime(2020, 1, 1) };
+    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateWrapper(2020, 1, 1) };
+    Person person2 = new() { Gender = Gender.Female, LastName = "Doe", DeathDate = new DateWrapper(2020, 1, 1) };
 
     // Act
     bool result = People.CompareGenderLastNameAndDeathDate(person1, person2);
@@ -230,8 +230,8 @@ public class PeopleTest
   public void CompareGenderLastNameAndDeathDate_ShouldReturnFalse_WhenLastNameIsNotEqual()
   {
     // Arrange
-    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateTime(2020, 1, 1) };
-    Person person2 = new() { Gender = Gender.Male, LastName = "Smith", DeathDate = new DateTime(2020, 1, 1) };
+    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateWrapper(2020, 1, 1) };
+    Person person2 = new() { Gender = Gender.Male, LastName = "Smith", DeathDate = new DateWrapper(2020, 1, 1) };
 
     // Act
     bool result = People.CompareGenderLastNameAndDeathDate(person1, person2);
@@ -244,8 +244,8 @@ public class PeopleTest
   public void CompareGenderLastNameAndDeathDate_ShouldReturnFalse_WhenDeathDateIsNotEqual()
   {
     // Arrange
-    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateTime(2020, 1, 1) };
-    Person person2 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateTime(2021, 1, 1) };
+    Person person1 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateWrapper(2020, 1, 1) };
+    Person person2 = new() { Gender = Gender.Male, LastName = "Doe", DeathDate = new DateWrapper(2021, 1, 1) };
 
     // Act
     bool result = People.CompareGenderLastNameAndDeathDate(person1, person2);

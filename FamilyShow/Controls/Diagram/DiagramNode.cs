@@ -25,6 +25,8 @@ using System.Windows.Media.Animation;
 
 using FamilyShowLib;
 
+using Genealogy;
+
 #pragma warning disable IDE0161 // Convert to file-scoped namespace - class diagram does not work without
 namespace FamilyShow
 #pragma warning restore IDE0161 // Convert to file-scoped namespace
@@ -139,8 +141,8 @@ namespace FamilyShow
         _displayYear = value;
 
         // Update the filtered state based on the birth date.
-        IsFiltered = (_person != null && _person.BirthDate != null &&
-            _person.BirthDate.Value.Year > _displayYear);
+        IsFiltered = (_person != null && DateWrapper.IsDateExact(_person.BirthDate, out IDateExact birthdate) &&
+            birthdate.Year > _displayYear);
 
         // Recompuate the bottom label which contains the age,
         // the new age is relative to the new display year
@@ -195,10 +197,12 @@ namespace FamilyShow
           return string.Empty;
         }
 
+        DateWrapper.IsDateExact(_person.BirthDate, out IDateExact birthdate);
+        DateWrapper.IsDateExact(_person.DeathDate, out IDateExact deathDate);
         // Living, example: 1900 | 107
         if (_person.IsLiving)
         {
-          if (_person.BirthDate == null)
+          if (birthdate == null)
           {
             return string.Empty;
           }
@@ -210,36 +214,36 @@ namespace FamilyShow
 
           int age = _person.Age.Value - (DateTime.Now.Year - (int)_displayYear);
           return string.Format(CultureInfo.CurrentUICulture,
-              "{0}{1} | {2}", _person.BirthDateDescriptor, _person.BirthDate.Value.Year, Math.Max(0, age));
+              "{0}{1} | {2}", _person.BirthDateDescriptor, birthdate.Year, Math.Max(0, age));
         }
 
         // Deceased, example: 1900 - 1950 | 50                    
-        if (_person.BirthDate != null && _person.DeathDate != null)
+        if (birthdate != null && deathDate != null)
         {
           if (!_person.Age.HasValue)
           {
             return string.Empty;
           }
 
-          int age = (_displayYear >= _person.DeathDate.Value.Year) ?
-              _person.Age.Value : _person.Age.Value - (_person.DeathDate.Value.Year - (int)_displayYear);  //change the displayed age when the time slider is altered
+          int age = (_displayYear >= deathDate.Year) ?
+              _person.Age.Value : _person.Age.Value - (deathDate.Year - (int)_displayYear);  //change the displayed age when the time slider is altered
 
           return string.Format(CultureInfo.CurrentUICulture,
-              "{0}{1} - {2}{3} | {4}", _person.BirthDateDescriptor, _person.BirthDate.Value.Year, _person.DeathDateDescriptor, _person.DeathDate.Value.Year, Math.Max(0, age));
+              "{0}{1} - {2}{3} | {4}", _person.BirthDateDescriptor, birthdate.Year, _person.DeathDateDescriptor, deathDate.Year, Math.Max(0, age));
         }
 
         // Deceased, example: ? - 1950 | ?
-        if (_person.BirthDate == null && _person.DeathDate != null)
+        if (birthdate == null && deathDate != null)
         {
           return string.Format(CultureInfo.CurrentUICulture,
-              "? - {0}{1} | ?", _person.DeathDateDescriptor, _person.DeathDate.Value.Year);
+              "? - {0}{1} | ?", _person.DeathDateDescriptor, deathDate.Year);
         }
 
         // Deceased, example: 1900 - ? | ?
-        if (_person.BirthDate != null && _person.DeathDate == null)
+        if (birthdate != null && deathDate == null)
         {
           return string.Format(CultureInfo.CurrentUICulture,
-              "{0}{1} - ? | ?", _person.BirthDateDescriptor, _person.BirthDate.Value.Year);
+              "{0}{1} - ? | ?", _person.BirthDateDescriptor, birthdate.Year);
         }
 
         return string.Empty;

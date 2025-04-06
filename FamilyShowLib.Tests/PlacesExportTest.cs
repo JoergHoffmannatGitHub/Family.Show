@@ -30,7 +30,7 @@ public class PlacesExportTest
       Person person = new("John", "Doe")
       {
         BirthPlace = "New York",
-        BirthDate = new DateTime(2000, 1, 1),
+        BirthDate = new(2000, 1, 1),
         Gender = Gender.Male
       };
       peopleCollection.Add(person);
@@ -57,7 +57,7 @@ public class PlacesExportTest
       Person person = new("Jane", "Doe")
       {
         DeathPlace = "Los Angeles",
-        DeathDate = new DateTime(2020, 1, 1),
+        DeathDate = new(2020, 1, 1),
         Gender = Gender.Female,
         IsLiving = false
       };
@@ -85,7 +85,7 @@ public class PlacesExportTest
       Person person = new("John", "Smith")
       {
         BurialPlace = "Chicago",
-        BurialDate = new DateTime(2021, 1, 1),
+        BurialDate = new(2021, 1, 1),
         Gender = Gender.Male,
         IsLiving = false
       };
@@ -113,7 +113,7 @@ public class PlacesExportTest
       Person person = new("Jane", "Smith")
       {
         CremationPlace = "San Francisco",
-        CremationDate = new DateTime(2022, 1, 1),
+        CremationDate = new(2022, 1, 1),
         Gender = Gender.Female,
         IsLiving = false
       };
@@ -151,7 +151,7 @@ public class PlacesExportTest
       SpouseRelationship relationship = new(person, SpouseModifier.Current)
       {
         MarriagePlace = "Las Vegas",
-        MarriageDate = new DateTime(2010, 1, 1)
+        MarriageDate = new(2010, 1, 1)
       };
       person.Relationships.Add(relationship);
       peopleCollection.Add(person);
@@ -181,23 +181,23 @@ public class PlacesExportTest
       Person person = new("John", "Doe")
       {
         BirthPlace = "New York",
-        BirthDate = new DateTime(2000, 1, 1),
+        BirthDate = new(2000, 1, 1),
         Gender = Gender.Male
       };
       peopleCollection.Add(person);
       person = new("Jane", "Doe")
       {
         BirthPlace = "Los Angeles",
-        BirthDate = new DateTime(2000, 1, 1),
+        BirthDate = new(2000, 1, 1),
         Gender = Gender.Female
       };
       peopleCollection.Add(person);
       person = new("John", "Smith")
       {
         BirthPlace = "Chicago",
-        BirthDate = new DateTime(1980, 1, 1),
+        BirthDate = new(1980, 1, 1),
         DeathPlace = "San Francisco",
-        DeathDate = new DateTime(2020, 1, 1),
+        DeathDate = new(2020, 1, 1),
         Gender = Gender.Male,
         IsLiving = false
       };
@@ -230,9 +230,9 @@ public class PlacesExportTest
       Person person = new("Jane", "Doe")
       {
         BirthPlace = "Los Angeles",
-        BirthDate = new DateTime(2000, 1, 1),
+        BirthDate = new(2000, 1, 1),
         BurialPlace = "San Francisco",
-        BurialDate = withBurialDate ? new DateTime(2020, 1, 1) : null,
+        BurialDate = withBurialDate ? new(2020, 1, 1) : null,
         Gender = Gender.Female
       };
       peopleCollection.Add(person);
@@ -264,9 +264,9 @@ public class PlacesExportTest
       Person person = new("Jane", "Doe")
       {
         BirthPlace = "Los Angeles",
-        BirthDate = new DateTime(2000, 1, 1),
+        BirthDate = new(2000, 1, 1),
         CremationPlace = "San Francisco",
-        CremationDate = withCremationDate ? new DateTime(2020, 1, 1) : null,
+        CremationDate = withCremationDate ? new(2020, 1, 1) : null,
         Gender = Gender.Female
       };
       peopleCollection.Add(person);
@@ -298,27 +298,27 @@ public class PlacesExportTest
       Person john = new("John", "Doe")
       {
         BirthPlace = "New York",
-        BirthDate = new DateTime(2000, 1, 1),
+        BirthDate = new(2000, 1, 1),
         Gender = Gender.Male
       };
       peopleCollection.Add(john);
       Person jane = new("Jane", "Doe")
       {
         BirthPlace = "Los Angeles",
-        BirthDate = new DateTime(2000, 1, 1),
+        BirthDate = new(2000, 1, 1),
         Gender = Gender.Female
       };
       peopleCollection.Add(jane);
       SpouseRelationship relationship = new(john, SpouseModifier.Current)
       {
         MarriagePlace = "Las Vegas",
-        MarriageDate = withMarriagesDate ? new DateTime(2020, 1, 1) : null
+        MarriageDate = withMarriagesDate ? new(2020, 1, 1) : null
       };
       jane.Relationships.Add(relationship);
       relationship = new(jane, SpouseModifier.Current)
       {
         MarriagePlace = "Las Vegas",
-        MarriageDate = withMarriagesDate ? new DateTime(2020, 1, 1) : null
+        MarriageDate = withMarriagesDate ? new(2020, 1, 1) : null
       };
       john.Relationships.Add(relationship);
       string fileName = "test_exportPlacesTypes.kml";

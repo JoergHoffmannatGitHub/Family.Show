@@ -514,7 +514,7 @@ public class GedcomImport
     if (node.SelectSingleNode("MARR") != null || node.SelectSingleNode("DIV") != null)
     {
       string marriageDateDescriptor = GetValueDateDescriptor(node, "MARR/DATE");
-      DateTime? marriageDate = GetValueDate(node, "MARR/DATE");
+      DateWrapper marriageDate = GetValueDate(node, "MARR/DATE");
       string marriagePlace = GetValue(node, "MARR/PLAC");
       string marriageSource = GetValueId(node, "MARR/SOUR");
       string marriageCitation = GetValue(node, "MARR/SOUR/PAGE");
@@ -534,7 +534,7 @@ public class GedcomImport
       }
 
       string divorceDateDescriptor = GetValueDateDescriptor(node, "DIV/DATE");
-      DateTime? divorceDate = GetValueDate(node, "DIV/DATE");
+      DateWrapper divorceDate = GetValueDate(node, "DIV/DATE");
       string divorceSource = GetValueId(node, "DIV/SOUR");
       string divorceCitation = GetValue(node, "DIV/SOUR/PAGE");
       string divorceCitationActualText = GetValue(node, "DIV/SOUR/DATA/TEXT");
@@ -1121,29 +1121,13 @@ public class GedcomImport
   /// <param name="node">The XML node containing the date information.</param>
   /// <param name="xpath">The XPath query to select the date node.</param>
   /// <returns>A nullable DateTime object representing the extracted date, or null if the date is invalid.</returns>
-  internal static DateTime? GetValueDate(XmlNode node, string xpath)
+  internal static DateWrapper GetValueDate(XmlNode node, string xpath)
   {
-    DateTime? result = null;
+    DateWrapper result = null;
 
     try
     {
       string value = GetValue(node, xpath);
-      value = value.ToLower(new CultureInfo("en-GB", false));  // dates are of DD/MM/YYYY format so always use en-GB culture info.
-
-      if (value.Contains("abt"))
-      {
-        value = value.Replace("abt", string.Empty);
-      }
-
-      if (value.Contains("aft"))
-      {
-        value = value.Replace("aft", string.Empty);
-      }
-
-      if (value.Contains("bef"))
-      {
-        value = value.Replace("bef", string.Empty);
-      }
 
       //look for quarter abbreviations and remove
 
@@ -1189,14 +1173,13 @@ public class GedcomImport
 
       value = value.Trim();  //remove leading and trailing spaces which will confuse when looking for only year
 
-      if (value.Length == 4)
-      {
-        value = "1/1/" + value;
-      }
-
       if (!string.IsNullOrEmpty(value))
       {
-        result = DateTime.Parse(value, new CultureInfo("en-GB", false));  // dates are of DD/MM/YYYY format so always use en-GB culture info.
+        result = new DateWrapper(value);
+        if (DateWrapper.IsNullOrEmpty(result))
+        {
+          result = null;
+        }
       }
     }
     catch

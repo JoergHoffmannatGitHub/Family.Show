@@ -10,6 +10,8 @@ using System.Windows;
 
 using FamilyShowLib;
 
+using Genealogy;
+
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace FamilyShow;
 #pragma warning restore IDE0130 // Namespace does not match folder structure
@@ -107,11 +109,11 @@ internal class DiagramLogic
 
   #endregion
 
-  internal static double GetMinimumYearFromDate(double minimumYear, DateTime? date)
+  internal static double GetMinimumYearFromDate(double minimumYear, DateWrapper date)
   {
-    if (date != null)
+    if (DateWrapper.IsDateExact(date, out IDateExact exact))
     {
-      minimumYear = Math.Min(minimumYear, date.Value.Year);
+      minimumYear = Math.Min(minimumYear, exact.Year);
     }
 
     return minimumYear;
