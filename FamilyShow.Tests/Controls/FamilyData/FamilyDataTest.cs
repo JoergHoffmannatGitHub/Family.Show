@@ -21,6 +21,8 @@ public class FamilyDataTest
 
     // Assert
     Assert.Equal(date.ToShortString(), familyData._birthdateFilter);
+
+    SharedBirthdays.s_lcv = null;
   }
 
   [StaFact]
@@ -38,5 +40,7 @@ public class FamilyDataTest
     // Assert
     Assert.Equal("date", familyData._birthdateFilter);
     familyData._birthdateFilter = null;
+
+    SharedBirthdays.s_lcv = null;
   }
 }

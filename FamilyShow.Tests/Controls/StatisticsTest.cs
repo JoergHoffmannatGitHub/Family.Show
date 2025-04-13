@@ -2,6 +2,9 @@
 
 namespace FamilyShow.Tests.Controls;
 
+[CollectionDefinition("SequentialTest", DisableParallelization = true)]
+
+[Collection("SequentialTest")]
 public class StatisticsTest
 {
   private static void Marry(Person husband, Person wife)
@@ -70,6 +73,8 @@ public class StatisticsTest
 
       // Assert
       Assert.Equal("Citations: 7", statistics.Citations.Text);
+
+      SharedBirthdays.s_lcv = null;
     }
   }
 
@@ -95,6 +100,8 @@ public class StatisticsTest
       // Assert
       Assert.Equal("Marriages: 2", statistics.Marriages.Text);
       Assert.Equal("Divorces: 1", statistics.Divorces.Text);
+
+      SharedBirthdays.s_lcv = null;
     }
   }
 
@@ -126,6 +133,8 @@ public class StatisticsTest
 
       // Assert
       Assert.Equal("Facts/Events: 7", statistics.TotalFactsEvents.Text);
+
+      SharedBirthdays.s_lcv = null;
     }
   }
 }
