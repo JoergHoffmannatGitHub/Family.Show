@@ -8,6 +8,8 @@ namespace Genealogy.DateImplementation
   /// </summary>
   internal class DateExact : IDateExact, IEquatable<IDate>
   {
+    private YearMonthDay _yearMonthDay;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="DateExact"/> class with the specified date string.
     /// </summary>
@@ -26,9 +28,7 @@ namespace Genealogy.DateImplementation
     /// <param name="day">The day of the date. Default is 0.</param>
     internal DateExact(int year, int month = 0, int day = 0)
     {
-      Year = year;
-      Month = month;
-      Day = day;
+      _yearMonthDay = new YearMonthDay(year, month, day);
     }
 
     #region IDate
@@ -55,13 +55,13 @@ namespace Genealogy.DateImplementation
     #region IDateExact
 
     /// <inheritdoc />
-    public int Year { get; private set; }
+    public int Year => _yearMonthDay.Year;
 
     /// <inheritdoc />
-    public int Month { get; private set; }
+    public int Month => _yearMonthDay.Month;
 
     /// <inheritdoc />
-    public int Day { get; private set; }
+    public int Day => _yearMonthDay.Day;
 
     #endregion IDateExact
 
@@ -112,20 +112,17 @@ namespace Genealogy.DateImplementation
       if (DateTime.TryParseExact(date, new string[] { "d MMM yyyy", "yyyy-MM-dd", "yyyy-MM-ddThh:mm:ss" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateValue))
       {
         // year, month and day are given
-        Year = dateValue.Year;
-        Month = dateValue.Month;
-        Day = dateValue.Day;
+        _yearMonthDay = new YearMonthDay(dateValue.Year, dateValue.Month, dateValue.Day);
       }
       else if (DateTime.TryParseExact(date, "MMM yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
       {
-        // year and month day are given
-        Year = dateValue.Year;
-        Month = dateValue.Month;
+        // year and month are given
+        _yearMonthDay = new YearMonthDay(dateValue.Year, dateValue.Month, 0);
       }
       else if (DateTime.TryParseExact(date, "yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
       {
         // only year is given
-        Year = dateValue.Year;
+        _yearMonthDay = new YearMonthDay(dateValue.Year, 0, 0);
       }
       else
       {
@@ -170,7 +167,8 @@ namespace Genealogy.DateImplementation
           return "DEC";
         default:
           throw new GenealogyException("Not a valid month in date.");
-      };
+      }
+      ;
     }
   }
 }
