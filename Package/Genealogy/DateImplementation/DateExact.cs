@@ -8,7 +8,7 @@ namespace Genealogy.DateImplementation
   /// </summary>
   internal class DateExact : IDateExact, IEquatable<IDate>
   {
-    private YearMonthDay _yearMonthDay;
+    private YearMonthDayCalendar _yearMonthDayCalendar;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DateExact"/> class with the specified date string.
@@ -28,7 +28,7 @@ namespace Genealogy.DateImplementation
     /// <param name="day">The day of the date. Default is 0.</param>
     internal DateExact(int year, int month = 0, int day = 0)
     {
-      _yearMonthDay = new YearMonthDay(year, month, day);
+      _yearMonthDayCalendar = new YearMonthDayCalendar(year, month, day);
     }
 
     #region IDate
@@ -55,13 +55,13 @@ namespace Genealogy.DateImplementation
     #region IDateExact
 
     /// <inheritdoc />
-    public int Year => _yearMonthDay.Year;
+    public int Year => _yearMonthDayCalendar.Year;
 
     /// <inheritdoc />
-    public int Month => _yearMonthDay.Month;
+    public int Month => _yearMonthDayCalendar.Month;
 
     /// <inheritdoc />
-    public int Day => _yearMonthDay.Day;
+    public int Day => _yearMonthDayCalendar.Day;
 
     #endregion IDateExact
 
@@ -112,17 +112,17 @@ namespace Genealogy.DateImplementation
       if (DateTime.TryParseExact(date, new string[] { "d MMM yyyy", "yyyy-MM-dd", "yyyy-MM-ddThh:mm:ss" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateValue))
       {
         // year, month and day are given
-        _yearMonthDay = new YearMonthDay(dateValue.Year, dateValue.Month, dateValue.Day);
+        _yearMonthDayCalendar = new YearMonthDayCalendar(dateValue.Year, dateValue.Month, dateValue.Day);
       }
       else if (DateTime.TryParseExact(date, "MMM yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
       {
         // year and month are given
-        _yearMonthDay = new YearMonthDay(dateValue.Year, dateValue.Month, 0);
+        _yearMonthDayCalendar = new YearMonthDayCalendar(dateValue.Year, dateValue.Month, 0);
       }
       else if (DateTime.TryParseExact(date, "yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
       {
         // only year is given
-        _yearMonthDay = new YearMonthDay(dateValue.Year, 0, 0);
+        _yearMonthDayCalendar = new YearMonthDayCalendar(dateValue.Year, 0, 0);
       }
       else
       {

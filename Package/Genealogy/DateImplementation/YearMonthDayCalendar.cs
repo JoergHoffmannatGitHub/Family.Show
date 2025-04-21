@@ -1,4 +1,4 @@
-﻿// based on NodaTime.YearMonthDay (see: https://github.com/nodatime/nodatime)
+﻿// based on NodaTime.YearMonthDayCalendar (see: https://github.com/nodatime/nodatime)
 
 using System;
 
@@ -16,7 +16,7 @@ namespace Genealogy.DateImplementation
   /// 0 for day or for month and day means that the specification is missing.
   /// </para>
   /// </remarks>
-  internal readonly struct YearMonthDay : IComparable<YearMonthDay>, IEquatable<YearMonthDay>
+  internal readonly struct YearMonthDayCalendar : IComparable<YearMonthDayCalendar>, IEquatable<YearMonthDayCalendar>
   {
     private const int DayBits = 6;   // Up to 64 days in a month.
     private const int MonthBits = 5; // Up to 32 months per year.
@@ -34,7 +34,7 @@ namespace Genealogy.DateImplementation
     /// <param name="year">The year of the date.</param>
     /// <param name="month">The month of the date.</param>
     /// <param name="day">The day of the date.</param>
-    public YearMonthDay(int year, int month, int day)
+    public YearMonthDayCalendar(int year, int month, int day)
     {
       unchecked
       {
@@ -58,21 +58,21 @@ namespace Genealogy.DateImplementation
     internal int Day => unchecked(_dateBits & DayMask);
 
     /// <summary>
-    /// Compares the current instance with another <see cref="YearMonthDay"/> instance.
+    /// Compares the current instance with another <see cref="YearMonthDayCalendar"/> instance.
     /// </summary>
-    /// <param name="other">The other <see cref="YearMonthDay"/> instance to compare.</param>
+    /// <param name="other">The other <see cref="YearMonthDayCalendar"/> instance to compare.</param>
     /// <returns>
     /// A value less than zero if this instance is earlier than <paramref name="other"/>, 
     /// zero if they are equal, or greater than zero if this instance is later than <paramref name="other"/>.
     /// </returns>
-    public int CompareTo(YearMonthDay other) => _dateBits.CompareTo(other._dateBits);
+    public int CompareTo(YearMonthDayCalendar other) => _dateBits.CompareTo(other._dateBits);
 
     /// <summary>
-    /// Indicates whether the current instance is equal to another <see cref="YearMonthDay"/> instance.
+    /// Indicates whether the current instance is equal to another <see cref="YearMonthDayCalendar"/> instance.
     /// </summary>
-    /// <param name="other">The other <see cref="YearMonthDay"/> instance to compare.</param>
+    /// <param name="other">The other <see cref="YearMonthDayCalendar"/> instance to compare.</param>
     /// <returns><see langword="true"/> if the instances are equal; otherwise, <see langword="false"/>.</returns>
-    public bool Equals(YearMonthDay other)
+    public bool Equals(YearMonthDayCalendar other)
     {
       return _dateBits == other._dateBits;
     }
@@ -82,7 +82,7 @@ namespace Genealogy.DateImplementation
     /// </summary>
     /// <param name="obj">The object to compare with the current instance.</param>
     /// <returns><see langword="true"/> if the specified object is equal to the current instance; otherwise, <see langword="false"/>.</returns>
-    public override bool Equals(object obj) => obj is YearMonthDay other && Equals(other);
+    public override bool Equals(object obj) => obj is YearMonthDayCalendar other && Equals(other);
 
     /// <summary>
     /// Serves as the default hash function.
@@ -91,51 +91,51 @@ namespace Genealogy.DateImplementation
     public override int GetHashCode() => _dateBits;
 
     /// <summary>
-    /// Determines whether two <see cref="YearMonthDay"/> instances are equal.
+    /// Determines whether two <see cref="YearMonthDayCalendar"/> instances are equal.
     /// </summary>
-    /// <param name="lhs">The first <see cref="YearMonthDay"/> instance to compare.</param>
-    /// <param name="rhs">The second <see cref="YearMonthDay"/> instance to compare.</param>
+    /// <param name="lhs">The first <see cref="YearMonthDayCalendar"/> instance to compare.</param>
+    /// <param name="rhs">The second <see cref="YearMonthDayCalendar"/> instance to compare.</param>
     /// <returns><see langword="true"/> if the instances are equal; otherwise, <see langword="false"/>.</returns>
-    public static bool operator ==(YearMonthDay lhs, YearMonthDay rhs) => lhs._dateBits == rhs._dateBits;
+    public static bool operator ==(YearMonthDayCalendar lhs, YearMonthDayCalendar rhs) => lhs._dateBits == rhs._dateBits;
 
     /// <summary>
-    /// Determines whether two <see cref="YearMonthDay"/> instances are not equal.
+    /// Determines whether two <see cref="YearMonthDayCalendar"/> instances are not equal.
     /// </summary>
-    /// <param name="lhs">The first <see cref="YearMonthDay"/> instance to compare.</param>
-    /// <param name="rhs">The second <see cref="YearMonthDay"/> instance to compare.</param>
+    /// <param name="lhs">The first <see cref="YearMonthDayCalendar"/> instance to compare.</param>
+    /// <param name="rhs">The second <see cref="YearMonthDayCalendar"/> instance to compare.</param>
     /// <returns><see langword="true"/> if the instances are not equal; otherwise, <see langword="false"/>.</returns>
-    public static bool operator !=(YearMonthDay lhs, YearMonthDay rhs) => lhs._dateBits != rhs._dateBits;
+    public static bool operator !=(YearMonthDayCalendar lhs, YearMonthDayCalendar rhs) => lhs._dateBits != rhs._dateBits;
 
     /// <summary>
-    /// Determines whether one <see cref="YearMonthDay"/> instance is earlier than another.
+    /// Determines whether one <see cref="YearMonthDayCalendar"/> instance is earlier than another.
     /// </summary>
-    /// <param name="lhs">The first <see cref="YearMonthDay"/> instance to compare.</param>
-    /// <param name="rhs">The second <see cref="YearMonthDay"/> instance to compare.</param>
+    /// <param name="lhs">The first <see cref="YearMonthDayCalendar"/> instance to compare.</param>
+    /// <param name="rhs">The second <see cref="YearMonthDayCalendar"/> instance to compare.</param>
     /// <returns><see langword="true"/> if <paramref name="lhs"/> is earlier than <paramref name="rhs"/>; otherwise, <see langword="false"/>.</returns>
-    public static bool operator <(YearMonthDay lhs, YearMonthDay rhs) => lhs._dateBits < rhs._dateBits;
+    public static bool operator <(YearMonthDayCalendar lhs, YearMonthDayCalendar rhs) => lhs._dateBits < rhs._dateBits;
 
     /// <summary>
-    /// Determines whether one <see cref="YearMonthDay"/> instance is earlier than or equal to another.
+    /// Determines whether one <see cref="YearMonthDayCalendar"/> instance is earlier than or equal to another.
     /// </summary>
-    /// <param name="lhs">The first <see cref="YearMonthDay"/> instance to compare.</param>
-    /// <param name="rhs">The second <see cref="YearMonthDay"/> instance to compare.</param>
+    /// <param name="lhs">The first <see cref="YearMonthDayCalendar"/> instance to compare.</param>
+    /// <param name="rhs">The second <see cref="YearMonthDayCalendar"/> instance to compare.</param>
     /// <returns><see langword="true"/> if <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>; otherwise, <see langword="false"/>.</returns>
-    public static bool operator <=(YearMonthDay lhs, YearMonthDay rhs) => lhs._dateBits <= rhs._dateBits;
+    public static bool operator <=(YearMonthDayCalendar lhs, YearMonthDayCalendar rhs) => lhs._dateBits <= rhs._dateBits;
 
     /// <summary>
-    /// Determines whether one <see cref="YearMonthDay"/> instance is later than another.
+    /// Determines whether one <see cref="YearMonthDayCalendar"/> instance is later than another.
     /// </summary>
-    /// <param name="lhs">The first <see cref="YearMonthDay"/> instance to compare.</param>
-    /// <param name="rhs">The second <see cref="YearMonthDay"/> instance to compare.</param>
+    /// <param name="lhs">The first <see cref="YearMonthDayCalendar"/> instance to compare.</param>
+    /// <param name="rhs">The second <see cref="YearMonthDayCalendar"/> instance to compare.</param>
     /// <returns><see langword="true"/> if <paramref name="lhs"/> is later than <paramref name="rhs"/>; otherwise, <see langword="false"/>.</returns>
-    public static bool operator >(YearMonthDay lhs, YearMonthDay rhs) => lhs._dateBits > rhs._dateBits;
+    public static bool operator >(YearMonthDayCalendar lhs, YearMonthDayCalendar rhs) => lhs._dateBits > rhs._dateBits;
 
     /// <summary>
-    /// Determines whether one <see cref="YearMonthDay"/> instance is later than or equal to another.
+    /// Determines whether one <see cref="YearMonthDayCalendar"/> instance is later than or equal to another.
     /// </summary>
-    /// <param name="lhs">The first <see cref="YearMonthDay"/> instance to compare.</param>
-    /// <param name="rhs">The second <see cref="YearMonthDay"/> instance to compare.</param>
+    /// <param name="lhs">The first <see cref="YearMonthDayCalendar"/> instance to compare.</param>
+    /// <param name="rhs">The second <see cref="YearMonthDayCalendar"/> instance to compare.</param>
     /// <returns><see langword="true"/> if <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>; otherwise, <see langword="false"/>.</returns>
-    public static bool operator >=(YearMonthDay lhs, YearMonthDay rhs) => lhs._dateBits >= rhs._dateBits;
+    public static bool operator >=(YearMonthDayCalendar lhs, YearMonthDayCalendar rhs) => lhs._dateBits >= rhs._dateBits;
   }
 }
