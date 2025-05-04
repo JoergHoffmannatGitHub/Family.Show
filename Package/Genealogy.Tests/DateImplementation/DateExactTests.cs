@@ -13,7 +13,7 @@ public class DateExactTests
     };
 
   [Theory, MemberData(nameof(ValidToGedcomDates))]
-  public void Constructor_ShouldInitializeDate_WhenDateStringWithYearMonthDayIsProvided(
+  public void Constructor_ShouldInitializeDate_WhenDateStringWithYearMonthDayCalendarIsProvided(
     int expectedYear,
     int expectedMonth,
     int expectedDay,
@@ -38,13 +38,11 @@ public class DateExactTests
     Assert.Throws<NotImplementedException>(() => new DateExact(invalidDateString));
   }
 
-  // Existing tests...
-
   [Theory, MemberData(nameof(ValidToGedcomDates))]
   public void ToGedcom_ShouldReturnCorrectGedcomString_WhenValidYearMonthDayAreProvided(int year, int month, int day, string expectedGedcom)
   {
     // Arrange
-    var dateExact = new DateExact(year, month, day);
+    DateExact dateExact = new(year, month, day);
 
     // Act
     string result = dateExact.ToGedcom();
@@ -53,7 +51,27 @@ public class DateExactTests
     Assert.Equal(expectedGedcom, result);
   }
 
-  public static readonly TheoryData<int, string> MonthCases =
+  [Theory]
+  [InlineData("1670", "1670")]
+  [InlineData("@#DGREGORIAN@1670", "1670")]
+  [InlineData("@#DJULIAN@1670","@#DJULIAN@1670")]
+  [InlineData("@#DHEBREW@1670", "@#DHEBREW@1670")]
+  [InlineData("@#DFRENCH R@1670", "@#DFRENCH R@1670")]
+  [InlineData("@#DROMAN@1670", "@#DROMAN@1670")]
+  [InlineData("@#DUNKNOWN@1670", "@#DUNKNOWN@1670")]
+  public void ToGedcom_ShouldReturnValidGedcom_WhenGedcomWithCalendarIsProvided(string gedcom, string expectedGedcom)
+  {
+    // Arrange
+    DateExact dateExact = new(gedcom);
+
+    // Act
+    string result = dateExact.ToGedcom();
+
+    // Assert
+    Assert.Equal(expectedGedcom, result);
+  }
+
+  public static readonly TheoryData<int, string> GregorianMonthCases =
     new()
     {
       { 0, "2023" },
@@ -71,8 +89,8 @@ public class DateExactTests
       { 12, "DEC 2023" },
     };
 
-  [Theory, MemberData(nameof(MonthCases))]
-  public void ToGedcom_ShouldReturnCorrectGedcomString_WhenYearAndEachMonthAreProvided(int month, string expectedDate)
+  [Theory, MemberData(nameof(GregorianMonthCases))]
+  public void ToGedcom_ShouldReturnCorrectGedcomString_WhenYearAndEachGregorianMonthAreProvided(int month, string expectedDate)
   {
     // Arrange
     DateExact dateExact = new(2023, month);

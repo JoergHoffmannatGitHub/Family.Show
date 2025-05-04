@@ -1,28 +1,9 @@
-﻿namespace Genealogy.Tests.DateImplementation;
+﻿// based on NodaTime.Test.TestHelper (see: https://github.com/nodatime/nodatime)
+
+namespace Genealogy.Tests.DateImplementation;
 
 public static class TestHelper
 {
-  /// <summary>
-  /// Tests the <see cref="IComparable{T}.CompareTo" /> method for value objects.
-  /// </summary>
-  /// <typeparam name="T">The type to test.</typeparam>
-  /// <param name="value">The base value.</param>
-  /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
-  /// <param name="greaterValue">The values greater than the base value, in ascending order.</param>
-  internal static void TestCompareToStruct<T>(T value, T equalValue, params T[] greaterValues) where T : struct, IComparable<T>
-  {
-    Assert.True(value.CompareTo(value) == 0, "value.CompareTo(value)");
-    Assert.True(value.CompareTo(equalValue) == 0, "value.CompareTo(equalValue)");
-    Assert.True(equalValue.CompareTo(value) == 0, "equalValue.CompareTo(value)");
-    foreach (T greaterValue in greaterValues)
-    {
-      Assert.True(value.CompareTo(greaterValue) < 0, "value.CompareTo(greaterValue)");
-      Assert.True(greaterValue.CompareTo(value) > 0, "greaterValue.CompareTo(value)");
-      // Now move up to the next pair...
-      value = greaterValue;
-    }
-  }
-
   /// <summary>
   /// Tests the IEquatable.Equals method for value objects. Also tests the
   /// object equals method.
@@ -182,7 +163,7 @@ public static class TestHelper
   /// <param name="value">The base value.</param>
   /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
   /// <param name="unequalValue">The value not equal to the base value.</param>
-  private static void TestOperatorEquality<T>(T value, T equalValue, T unequalValue) where T : struct
+  internal static void TestOperatorEquality<T>(T value, T equalValue, T unequalValue) where T : struct
   {
     ValidateInput(value, equalValue, unequalValue, "unequalValue");
     Type type = typeof(T);

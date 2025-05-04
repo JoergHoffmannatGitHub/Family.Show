@@ -1,7 +1,5 @@
 ﻿// based on NodaTime.Test.YearMonthDayCalendarTest (see: https://github.com/nodatime/nodatime)
 
-using System.Globalization;
-
 using Genealogy.DateImplementation;
 
 namespace Genealogy.Tests.DateImplementation;
@@ -14,13 +12,14 @@ public class YearMonthDayCalendarTest
   [InlineData(9999, 12, 31)]
   public void Constructor_ShouldStoreYearMonthDayCalendarCorrectly(int year, int month, int day)
   {
-    // Arrange & Act
-    var ymd = new YearMonthDayCalendar(year, month, day);
+    // Act
+    YearMonthDayCalendar ymdc = new(year, month, day, 0);
 
     // Assert
-    Assert.Equal(year, ymd.Year);
-    Assert.Equal(month, ymd.Month);
-    Assert.Equal(day, ymd.Day);
+    Assert.Equal(year, ymdc.Year);
+    Assert.Equal(month, ymdc.Month);
+    Assert.Equal(day, ymdc.Day);
+    Assert.Equal(CalendarOrdinal.Gregorian, ymdc.CalendarOrdinal);
   }
 
   [Fact]
@@ -29,10 +28,14 @@ public class YearMonthDayCalendarTest
     // Range of years we actually care about. We support more, but that's okay.
     for (int year = -9999; year <= 9999; year++)
     {
-      var ymd = new YearMonthDayCalendar(year, 5, 20);
-      Assert.Equal(year, ymd.Year);
-      Assert.Equal(5, ymd.Month);
-      Assert.Equal(20, ymd.Day);
+      // Act
+      YearMonthDayCalendar ymdc = new(year, 5, 20, CalendarOrdinal.Julian);
+
+      // Assert
+      Assert.Equal(CalendarOrdinal.Julian, ymdc.CalendarOrdinal);
+      Assert.Equal(20, ymdc.Day);
+      Assert.Equal(5, ymdc.Month);
+      Assert.Equal(year, ymdc.Year);
     }
   }
 
@@ -40,12 +43,17 @@ public class YearMonthDayCalendarTest
   public void YearMonthDayCalendar_ShouldHandleAllMonths()
   {
     // We'll never actually need 32 months, but we support that many...
-    for (int month = 0; month < 32; month++)
+    int monthCount = (int)Math.Pow(2, YearMonthDayCalendar.MonthBits);
+    for (int month = 0; month < monthCount; month++)
     {
-      var ymd = new YearMonthDayCalendar(-123, month, 20);
-      Assert.Equal(-123, ymd.Year);
-      Assert.Equal(month, ymd.Month);
-      Assert.Equal(20, ymd.Day);
+      // Act
+      YearMonthDayCalendar ymdc = new(-123, month, 20, CalendarOrdinal.Hebrew);
+
+      // Assert
+      Assert.Equal(-123, ymdc.Year);
+      Assert.Equal(month, ymdc.Month);
+      Assert.Equal(20, ymdc.Day);
+      Assert.Equal(CalendarOrdinal.Hebrew, ymdc.CalendarOrdinal);
     }
   }
 
@@ -53,52 +61,57 @@ public class YearMonthDayCalendarTest
   public void YearMonthDayCalendar_ShouldHandleAllDays()
   {
     // We'll never actually need 64 days, but we support that many...
-    for (int day = 0; day < 64; day++)
+    int dayCount = (int)Math.Pow(2, YearMonthDayCalendar.DayBits);
+    for (int day = 0; day < dayCount; day++)
     {
-      var ymd = new YearMonthDayCalendar(-123, 30, day);
-      Assert.Equal(-123, ymd.Year);
-      Assert.Equal(30, ymd.Month);
-      Assert.Equal(day, ymd.Day);
+      // Act
+      YearMonthDayCalendar ymdc = new(-123, 30, day, CalendarOrdinal.FrenchRepublican);
+
+      // Assert
+      Assert.Equal(-123, ymdc.Year);
+      Assert.Equal(30, ymdc.Month);
+      Assert.Equal(day, ymdc.Day);
+      Assert.Equal(CalendarOrdinal.FrenchRepublican, ymdc.CalendarOrdinal);
     }
   }
 
-  [Theory]
-  [InlineData("1000-01-01", "1000-01-02")]
-  [InlineData("1000-01-01", "1000-02-01")]
-  [InlineData("999-16-64", "1000-01-01")]
-  [InlineData("999-16-64", "1000-01-00")]
-  [InlineData("999-16-64", "1000-00-00")]
-  [InlineData("-1-01-01", "-1-01-02")]
-  [InlineData("-1-01-01", "-1-02-01")]
-  [InlineData("-2-16-64", "-1-01-01")]
-  [InlineData("-1-16-64", "0-01-01")]
-  [InlineData("-1-16-64", "1-01-01")]
-  public void YearMonthDayCalendar_ShouldHandleComparisonsCorrectly(string smallerText, string greaterText)
+  [Fact]
+  public void YearMonthDayCalendar_ShouldHandleAllCalendars()
+  {
+    int calendarCount = (int)Math.Pow(2, YearMonthDayCalendar.CalendarBits);
+    for (int ordinal = 0; ordinal < calendarCount; ordinal++)
+    {
+      // Arrange
+      CalendarOrdinal calendar = (CalendarOrdinal)ordinal;
+
+      // Act
+      YearMonthDayCalendar ymdc = new(-123, 30, 63, calendar);
+
+      // Assert
+      Assert.Equal(-123, ymdc.Year);
+      Assert.Equal(30, ymdc.Month);
+      Assert.Equal(63, ymdc.Day);
+      Assert.Equal(calendar, ymdc.CalendarOrdinal);
+    }
+  }
+
+  [Fact]
+  public void YearMonthDayCalendar_ShouldHandleEqualityCorrectly()
   {
     // Arrange
-    YearMonthDayCalendar smaller = Parse(smallerText);
-    YearMonthDayCalendar greater = Parse(greaterText);
+    YearMonthDayCalendar ymdc = new(1000, 12, 20, CalendarOrdinal.FrenchRepublican);
+    YearMonthDayCalendar[] unequalValues = [
+      new(ymdc.Year + 1, ymdc.Month, ymdc.Day, ymdc.CalendarOrdinal),
+      new(ymdc.Year, ymdc.Month + 1, ymdc.Day, ymdc.CalendarOrdinal),
+      new(ymdc.Year, ymdc.Month, ymdc.Day + 1, ymdc.CalendarOrdinal),
+      new(ymdc.Year, ymdc.Month, ymdc.Day, CalendarOrdinal.Gregorian)
+    ];
 
     // Act & Assert
-    TestHelper.TestCompareToStruct(smaller, smaller, greater);
-    TestHelper.TestOperatorComparisonEquality(smaller, smaller, greater);
-    TestHelper.TestEqualsStruct(smaller, smaller, greater);
-  }
-
-  // Just for testing purposes... note that this does not perform clean validation.
-  private static YearMonthDayCalendar Parse(string text)
-  {
-    // Handle a leading - to negate the year
-    if (text[0] == '-')
-    {
-      YearMonthDayCalendar ymd = Parse(text.Substring(1));
-      return new(-ymd.Year, ymd.Month, ymd.Day);
-    }
-
-    string[] bits = text.Split('-');
-    return new(
-        int.Parse(bits[0], CultureInfo.InvariantCulture),
-        int.Parse(bits[1], CultureInfo.InvariantCulture),
-        int.Parse(bits[2], CultureInfo.InvariantCulture));
+    TestHelper.TestOperatorComparisonEquality(ymdc, new(1000, 12, 20, CalendarOrdinal.FrenchRepublican), unequalValues);
+    TestHelper.TestEqualsStruct(ymdc,
+      new(1000, 12, 20, CalendarOrdinal.FrenchRepublican),
+      unequalValues);
+    TestHelper.TestOperatorEquality(ymdc, ymdc, new YearMonthDayCalendar(ymdc.Year + 1, ymdc.Month, ymdc.Day, ymdc.CalendarOrdinal));
   }
 }

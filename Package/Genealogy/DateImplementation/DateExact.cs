@@ -28,7 +28,7 @@ namespace Genealogy.DateImplementation
     /// <param name="day">The day of the date. Default is 0.</param>
     internal DateExact(int year, int month = 0, int day = 0)
     {
-      _yearMonthDayCalendar = new YearMonthDayCalendar(year, month, day);
+      _yearMonthDayCalendar = new YearMonthDayCalendar(year, month, day, CalendarOrdinal.Gregorian);
     }
 
     #region IDate
@@ -37,17 +37,24 @@ namespace Genealogy.DateImplementation
     public string ToGedcom()
     {
       string result = string.Empty;
-      if (Day > 0)
+
+      // only output type if it isn't the default (Gregorian)
+      if (_yearMonthDayCalendar.CalendarOrdinal != CalendarOrdinal.Gregorian)
       {
-        result += Day + " ";
+        result += CalendarSystem.ForOrdinal(_yearMonthDayCalendar.CalendarOrdinal).Escape;
       }
 
-      if (Month > 0)
+      if (_yearMonthDayCalendar.Day > 0)
       {
-        result += GetMMM(Month) + " ";
+        result += _yearMonthDayCalendar.Day + " ";
       }
 
-      return result + Year;
+      if (_yearMonthDayCalendar.Month > 0)
+      {
+        result += GetMMM(_yearMonthDayCalendar.Month) + " ";
+      }
+
+      return result + _yearMonthDayCalendar.Year;
     }
 
     #endregion IDate
@@ -72,7 +79,7 @@ namespace Genealogy.DateImplementation
     /// </summary>
     /// <param name="other">An object to compare with this object.</param>
     /// <returns>True if the current object is equal to the other parameter; otherwise, false.</returns>
-    public bool Equals(IDate obj) => obj != null && obj is DateExact other && Year == other.Year && Month == other.Month && Day == other.Day;
+    public bool Equals(IDate obj) => obj != null && obj is DateExact other && _yearMonthDayCalendar == other._yearMonthDayCalendar;
 
     /// <summary>
     /// Determines whether the specified object is equal to the current object.
@@ -85,14 +92,7 @@ namespace Genealogy.DateImplementation
     /// Serves as the default hash function.
     /// </summary>
     /// <returns>A hash code for the current object.</returns>
-    public override int GetHashCode()
-    {
-      int hashCode = 592158470;
-      hashCode = hashCode * -1521134295 + Year.GetHashCode();
-      hashCode = hashCode * -1521134295 + Month.GetHashCode();
-      hashCode = hashCode * -1521134295 + Day.GetHashCode();
-      return hashCode;
-    }
+    public override int GetHashCode() => _yearMonthDayCalendar.GetHashCode();
 
     #endregion
 
@@ -103,6 +103,11 @@ namespace Genealogy.DateImplementation
     /// <exception cref="GenealogyException">Thrown when the date string is invalid.</exception>
     private void ParseDate(string date)
     {
+      CalendarOrdinal ordinal = ParseCalendarOrdinal(ref date);
+      int year;
+      int month;
+      int day;
+
       // There is a minimum length of 4 characters
       if (date.Length < 4)
       {
@@ -112,23 +117,74 @@ namespace Genealogy.DateImplementation
       if (DateTime.TryParseExact(date, new string[] { "d MMM yyyy", "yyyy-MM-dd", "yyyy-MM-ddThh:mm:ss" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateValue))
       {
         // year, month and day are given
-        _yearMonthDayCalendar = new YearMonthDayCalendar(dateValue.Year, dateValue.Month, dateValue.Day);
+        year = dateValue.Year;
+        month = dateValue.Month;
+        day = dateValue.Day;
       }
       else if (DateTime.TryParseExact(date, "MMM yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
       {
         // year and month are given
-        _yearMonthDayCalendar = new YearMonthDayCalendar(dateValue.Year, dateValue.Month, 0);
+        year = dateValue.Year;
+        month = dateValue.Month;
+        day = 0;
       }
       else if (DateTime.TryParseExact(date, "yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
       {
         // only year is given
-        _yearMonthDayCalendar = new YearMonthDayCalendar(dateValue.Year, 0, 0);
+        year = dateValue.Year;
+        month = 0;
+        day = 0;
       }
       else
       {
         Console.WriteLine("  Unable to parse '{0}'.", date);
         throw new NotImplementedException();
       }
+
+      //ordinal.ValidateYearMonthDay(year, month, day);
+      _yearMonthDayCalendar = new YearMonthDayCalendar(year, month, day, ordinal);
+    }
+
+    private static CalendarOrdinal ParseCalendarOrdinal(ref string date)
+    {
+      string dateType = string.Empty;
+      if (date.StartsWith("@#"))
+      {
+        int i = date.IndexOf("@", 2);
+        if (i != -1)
+        {
+          dateType = date.Substring(0, i + 1).ToUpper();
+          date = date.Substring(i + 1);
+        }
+      }
+
+      CalendarOrdinal ordinal;
+      switch (dateType)
+      {
+        case "@#DGREGORIAN@":
+          ordinal = CalendarOrdinal.Gregorian;
+          break;
+        case "@#DJULIAN@":
+          ordinal = CalendarOrdinal.Julian;
+          break;
+        case "@#DHEBREW@":
+          ordinal = CalendarOrdinal.Hebrew;
+          break;
+        case "@#DFRENCH R@":
+          ordinal = CalendarOrdinal.FrenchRepublican;
+          break;
+        case "@#DROMAN@":
+          ordinal = CalendarOrdinal.Roman;
+          break;
+        case "@#DUNKNOWN@":
+          ordinal = CalendarOrdinal.Unknown;
+          break;
+        default:
+          ordinal = CalendarOrdinal.Gregorian;
+          break;
+      }
+
+      return ordinal;
     }
 
     /// <summary>
