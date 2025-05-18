@@ -72,161 +72,71 @@ public class OPCUtility
           CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
           break;
         case ".doc":
-          if (content.Contains(file.ToString()))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
-          }
-
-          break;
         case ".docx":
-          if (content.Contains(file.ToString()))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
-          }
-
-          break;
         case ".xls":
-          if (content.Contains(file.ToString()))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
-          }
-
-          break;
         case ".xlsx":
-          if (content.Contains(file.ToString()))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
-          }
-
-          break;
         case ".ppt":
-          if (content.Contains(file.ToString()))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
-          }
-
-          break;
         case ".pptx":
-          if (content.Contains(file.ToString()))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
-          }
-
-          break;
         case ".odp":
-          if (content.Contains(file.ToString()))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
-          }
-
-          break;
         case ".odt":
-          if (content.Contains(file.ToString()))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
-          }
-
-          break;
         case ".ods":
-          if (content.Contains(file.ToString()))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
-          }
-
-          break;
         case ".xps":
-          if (content.Contains(file.ToString()))
+        case ".kml":
+        case ".kmz":
+          if (content.Contains(file.Name))
           {
             CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
           }
 
           break;
         case ".htm":
-          if (content.Contains(file.ToString()))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Text.Html, storeInDirectory);
-          }
-
-          break;
         case ".html":
-          if (content.Contains(file.ToString()))
+          if (content.Contains(file.Name))
           {
             CreateDocumentPart(package, file, MediaTypeNames.Text.Html, storeInDirectory);
           }
 
           break;
         case ".pdf":
-          if (content.Contains(file.ToString()))
+          if (content.Contains(file.Name))
           {
             CreateDocumentPart(package, file, MediaTypeNames.Application.Pdf, storeInDirectory);
           }
 
           break;
         case ".txt":
-          if (content.Contains(file.ToString()))
+          if (content.Contains(file.Name))
           {
             CreateDocumentPart(package, file, MediaTypeNames.Text.Plain, storeInDirectory);
           }
 
           break;
-        case ".kml":
-          if (content.Contains(file.ToString()))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
-          }
-
-          break;
-        case ".kmz":
-          if (content.Contains(file.ToString()))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
-          }
-
-          break;
         case ".jpeg":
-          if (content.Contains(file.ToString()))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Image.Jpeg, storeInDirectory);
-          }
-
-          break;
         case ".jpg":
-          if (content.Contains(file.ToString()))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Image.Jpeg, storeInDirectory);
-          }
-
-          break;
         case ".png":
-          if (content.Contains(file.ToString()))
+          if (content.Contains(file.Name))
           {
             CreateDocumentPart(package, file, MediaTypeNames.Image.Jpeg, storeInDirectory);
           }
 
           break;
         case ".gif":
-          if (content.Contains(file.ToString()))
+          if (content.Contains(file.Name))
           {
             CreateDocumentPart(package, file, MediaTypeNames.Image.Gif, storeInDirectory);
           }
 
           break;
         case ".tif":
-          if (content.Contains(file.ToString()))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Image.Tiff, storeInDirectory);
-          }
-
-          break;
         case ".tiff":
-          if (content.Contains(file.ToString()))
+          if (content.Contains(file.Name))
           {
             CreateDocumentPart(package, file, MediaTypeNames.Image.Tiff, storeInDirectory);
           }
 
           break;
         case ".rtf":
-          if (content.Contains(file.ToString()))
+          if (content.Contains(file.Name))
           {
             CreateDocumentPart(package, file, MediaTypeNames.Text.RichText, storeInDirectory);
           }
@@ -234,6 +144,7 @@ public class OPCUtility
           break;
       }
     }
+
     xw.Close();
     sw.Close();
   }
@@ -286,22 +197,7 @@ public class OPCUtility
     // If we are opening a new file, clear the current files temporary extracted files.
     if (isOpen)
     {
-      try
-      {
-        // Create a new Target directory.  If the Target directory
-        // exists, first delete it and then create a new empty one.
-        DirectoryInfo directoryInfo = new(targetDirectory);
-        if (directoryInfo.Exists)
-        {
-          directoryInfo.Delete(true);
-        }
-
-        directoryInfo.Create();
-      }
-      catch
-      {
-        // ignore errors
-      }
+      People.RecreateDirectory(targetDirectory);
     }
 
     // Open the Package.
