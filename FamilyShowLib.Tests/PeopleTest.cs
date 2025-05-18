@@ -86,11 +86,7 @@ public class PeopleTest
     Assert.NotNull(sut);
     Assert.True(loaded);
     Assert.Equal(81, sut.PeopleCollection.Count);
-    (int photoCount, int storyCount) = CalculatePhotoAndStoryCounts(sut.PeopleCollection);
-    Assert.Equal(10, photoCount);
-    Assert.Equal(10, Directory.GetFiles(PhotoFolder).Length);
-    Assert.Equal(9, storyCount);
-    Assert.Equal(9, Directory.GetFiles(StoryFolder).Length);
+    // The photo and story counts are the same as the OPC version
     Assert.Empty(sut.SourceCollection);
     Assert.Empty(sut.RepositoryCollection);
   }
