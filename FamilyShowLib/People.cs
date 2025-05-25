@@ -2017,16 +2017,19 @@ public class People
   {
     try
     {
-      if (Directory.Exists(folderToDelete))
+      // Create a new Target directory.  If the Target directory
+      // exists, first delete it and then create a new empty one.
+      DirectoryInfo directoryInfo = new(folderToDelete);
+      if (directoryInfo.Exists)
       {
-        Directory.Delete(folderToDelete, true);
+        directoryInfo.Delete(true);
       }
 
-      Directory.CreateDirectory(folderToDelete);
+      directoryInfo.Create();
     }
     catch
     {
-      // ignore deletion errors
+      // ignore errors
     }
   }
 
