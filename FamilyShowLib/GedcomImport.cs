@@ -36,6 +36,8 @@ public class GedcomImport
   // to parse, this contains the GEDCOM info in an XML format.
   private XmlDocument _doc;
 
+  private string gedcomDirPath = string.Empty;
+
   #endregion
 
   /// <summary>
@@ -62,6 +64,7 @@ public class GedcomImport
       // Convert the GEDCOM file to a temp XML file.
       GedcomConverter.ConvertToXml(gedcomFilePath, xmlFilePath, true, disableCharacterCheck);
 
+      gedcomDirPath = Path.GetDirectoryName(gedcomFilePath);
       _doc = new XmlDocument();
       _doc.Load(xmlFilePath);
 
@@ -621,7 +624,7 @@ public class GedcomImport
   /// Import photo information from the GEDCOM XML file.
   /// Adds the photo if the referenced file exists.
   /// </summary>
-  private static void ImportPhotosAttachments(Person person, XmlNode node)
+  private void ImportPhotosAttachments(Person person, XmlNode node)
   {
     try
     {
@@ -636,18 +639,24 @@ public class GedcomImport
       // the default photo (avatar).
       for (int i = 0; i < files.Length; i++)
       {
+        string _file = files[i];
+        if ( !File.Exists(_file) ){
+          _file = Path.Combine(gedcomDirPath, _file);
+          if ( !File.Exists(_file) ) continue;
+        }
+
         // Only import a photo if it actually exists and it is a supported format.
-        if (File.Exists(files[i]) && App.IsPhotoFileSupported(files[i]))
+        if (App.IsPhotoFileSupported(files[i]))
         {
-          Photo photo = new(files[i])
+          Photo photo = new(_file)
           {
             IsAvatar = (i == 0)
           };
           person.Photos.Add(photo);
         }
-        else if (File.Exists(files[i]) && App.IsAttachmentFileSupported(files[i]))
+        else if (App.IsAttachmentFileSupported(files[i]))
         {
-          Attachment attachment = new(files[i]);
+          Attachment attachment = new(_file);
           person.Attachments.Add(attachment);
         }
       }
