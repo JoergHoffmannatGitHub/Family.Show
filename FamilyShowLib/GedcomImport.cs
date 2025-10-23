@@ -640,13 +640,21 @@ public class GedcomImport
       for (int i = 0; i < files.Length; i++)
       {
         string _file = files[i];
-        if ( !File.Exists(_file) ){
+        if (string.IsNullOrEmpty(_file)) 
+        {
+          continue;
+        }
+        if ( !File.Exists(_file) )
+        {
           _file = Path.Combine(gedcomDirPath, _file);
-          if ( !File.Exists(_file) ) continue;
+          if (!File.Exists(_file))
+          {
+            continue;
+          }
         }
 
         // Only import a photo if it actually exists and it is a supported format.
-        if (App.IsPhotoFileSupported(files[i]))
+        if (App.IsPhotoFileSupported(_file))
         {
           Photo photo = new(_file)
           {
@@ -654,7 +662,7 @@ public class GedcomImport
           };
           person.Photos.Add(photo);
         }
-        else if (App.IsAttachmentFileSupported(files[i]))
+        else if (App.IsAttachmentFileSupported(_file))
         {
           Attachment attachment = new(_file);
           person.Attachments.Add(attachment);
