@@ -6,4 +6,6 @@
   <Language Name="Français (French) - Beta" Code="fr-FR"/>
   <Language Name="Deutsch (German) - Beta" Code="de-DE"/>
   <Language Name="Italiano (Italian) - Beta" Code="it-IT"/>
+  <Language Name="Українська (Ukainian) - Alpha" Code="uk-UA"/>
+  <Language Name="עברית (Hebrew) - Beta" Code="he-IL"/>
 </Languages>
