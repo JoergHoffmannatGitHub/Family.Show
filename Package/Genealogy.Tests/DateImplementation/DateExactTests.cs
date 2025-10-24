@@ -86,7 +86,7 @@ public class DateExactTests
       { 9, "SEP 2023" },
       { 10, "OCT 2023" },
       { 11, "NOV 2023" },
-      { 12, "DEC 2023" },
+      { 12, "DEC 2023" }
     };
 
   [Theory, MemberData(nameof(GregorianMonthCases))]
@@ -145,7 +145,7 @@ public class DateExactTests
       { 2023, 7, 22, true },
       { 2023, 7, 23, false },
       { 2023, 8, 22, false },
-      { 2024, 7, 22, false },
+      { 2024, 7, 22, false }
     };
 
   [Theory, MemberData(nameof(EqualsDateExactObjectCases))]
