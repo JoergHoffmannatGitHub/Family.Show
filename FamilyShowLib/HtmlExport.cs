@@ -24,7 +24,7 @@ using System;
 using System.Globalization;
 using System.IO;
 
-using Genealogy;
+using Genealogy.Domain.Interfaces;
 
 namespace FamilyShowLib;
 

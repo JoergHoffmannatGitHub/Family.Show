@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Genealogy\Genealogy.csproj" />
+    <ProjectReference Include="..\Genealogy.Domain\Genealogy.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

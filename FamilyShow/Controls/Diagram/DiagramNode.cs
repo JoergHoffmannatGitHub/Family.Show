@@ -25,7 +25,7 @@ using System.Windows.Media.Animation;
 
 using FamilyShowLib;
 
-using Genealogy;
+using Genealogy.Domain.Interfaces;
 
 #pragma warning disable IDE0161 // Convert to file-scoped namespace - class diagram does not work without
 namespace FamilyShow

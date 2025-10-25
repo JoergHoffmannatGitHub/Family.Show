@@ -10,7 +10,7 @@ using System.Windows.Threading;
 
 using FamilyShowLib;
 
-using Genealogy;
+using Genealogy.Domain.Interfaces;
 
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace FamilyShow;

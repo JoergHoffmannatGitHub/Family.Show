@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Text;
 using System.Xml.Serialization;
 
-using Genealogy;
+using Genealogy.Domain.Interfaces;
 
 #pragma warning disable IDE0161 // Convert to file-scoped namespace - class diagram does not work without
 namespace FamilyShowLib

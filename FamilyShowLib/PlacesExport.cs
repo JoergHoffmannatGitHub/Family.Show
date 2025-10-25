@@ -19,7 +19,7 @@
 
 using System.IO;
 
-using Genealogy;
+using Genealogy.Domain.Interfaces;
 
 namespace FamilyShowLib;
 

@@ -7,7 +7,7 @@ using System.Windows.Data;
 
 using FamilyShowLib;
 
-using Genealogy;
+using Genealogy.Domain.Interfaces;
 
 namespace FamilyShow;
 

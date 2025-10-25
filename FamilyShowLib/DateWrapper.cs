@@ -4,7 +4,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-using Genealogy;
+using Genealogy.Domain.Interfaces;
 
 namespace FamilyShowLib;
 
@@ -37,7 +37,7 @@ public sealed class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   /// <param name="dateString">The date string to parse and wrap.</param>
   public DateWrapper(string dateString)
   {
-    Date = Genealogy.Date.TryParse(dateString, out IDate date) ? date : null;
+    Date = Genealogy.Domain.ValueObjects.Date.TryParse(dateString, out IDate date) ? date : null;
   }
 
   /// <summary>
@@ -46,7 +46,7 @@ public sealed class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   /// <param name="year">The year component of the date.</param>
   /// <param name="month">The month component of the date.</param>
   /// <param name="day">The day component of the date.</param>
-  public DateWrapper(int year, int month = 0, int day = 0) => Date = Genealogy.Date.Create(year, month, day);
+  public DateWrapper(int year, int month = 0, int day = 0) => Date = Genealogy.Domain.ValueObjects.Date.Create(year, month, day);
 
   /// <summary>
   /// Indicates whether the specified <see cref="DateWrapper"/> is null or an empty <see cref="DateWrapper"/>.
@@ -173,11 +173,11 @@ public sealed class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
       string[] sa = str.Split(' ');
       if (DateTime.TryParse(sa[0], out DateTime date))
       {
-        Date = Genealogy.Date.Create(date.Year, date.Month, date.Day);
+        Date = Genealogy.Domain.ValueObjects.Date.Create(date.Year, date.Month, date.Day);
       }
       else
       {
-        _ = Genealogy.Date.TryParse(str, out IDate iDate);
+        _ = Genealogy.Domain.ValueObjects.Date.TryParse(str, out IDate iDate);
         Date = iDate;
       }
 

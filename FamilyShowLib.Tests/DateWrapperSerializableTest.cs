@@ -3,7 +3,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-using Genealogy;
+using Genealogy.Domain.ValueObjects;
 
 namespace FamilyShowLib.Tests;
 

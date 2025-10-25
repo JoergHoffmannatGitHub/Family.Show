@@ -1,6 +1,8 @@
-using Genealogy.DateImplementation;
+using Genealogy.Domain.Interfaces;
+using Genealogy.Domain.ValueObjects;
+using Genealogy.Domain.ValueObjects.DateImplementation;
 
-namespace Genealogy.Tests;
+namespace Genealogy.Domain.Tests.ValueObjects;
 
 public class DateTest
 {

@@ -1,4 +1,5 @@
-﻿using Genealogy;
+﻿using Genealogy.Domain.Interfaces;
+using Genealogy.Domain.ValueObjects;
 
 namespace FamilyShowLib.Tests;
 

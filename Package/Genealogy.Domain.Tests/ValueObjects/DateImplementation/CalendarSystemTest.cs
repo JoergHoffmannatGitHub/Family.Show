@@ -2,9 +2,9 @@
 
 using System.Globalization;
 
-using Genealogy.DateImplementation;
+using Genealogy.Domain.ValueObjects.DateImplementation;
 
-namespace Genealogy.Tests.DateImplementation;
+namespace Genealogy.Domain.Tests.ValueObjects.DateImplementation;
 
 public class CalendarSystemTest
 {

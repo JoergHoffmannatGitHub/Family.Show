@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 using FamilyShowLib;
 
-using Genealogy;
+using Genealogy.Domain.Interfaces;
 
 namespace FamilyShow;
 

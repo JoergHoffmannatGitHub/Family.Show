@@ -1,6 +1,6 @@
 ﻿// based on NodaTime.Test.TestHelper (see: https://github.com/nodatime/nodatime)
 
-namespace Genealogy.Tests.DateImplementation;
+namespace Genealogy.Domain.Tests.ValueObjects.DateImplementation;
 
 public static class TestHelper
 {
