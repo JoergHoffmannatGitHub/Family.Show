@@ -20,12 +20,12 @@ public class DateFormattingConverter : IValueConverter
 
   public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
   {
-    return ((DateTime?)value).ToShortString();
+    return (value != null) ? (value as DateWrapper).ToShortString() : string.Empty;
   }
 
   public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
   {
-    return ((string)value).ToDate();
+    return new DateWrapper((string)value);
   }
 
   #endregion
