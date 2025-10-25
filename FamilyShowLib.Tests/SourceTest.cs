@@ -10,7 +10,10 @@ public class SourceTest
     Source nullSource = null!;
 
     Assert.False(s_sut.Equals(null));
+#pragma warning disable xUnit2024 // Do not use boolean asserts for simple equality tests
+    // Assert.Null(nullsource); does not call the == operator overload
     Assert.True(nullSource == null);
+#pragma warning restore xUnit2024 // Do not use boolean asserts for simple equality tests
   }
 
   [Fact]
