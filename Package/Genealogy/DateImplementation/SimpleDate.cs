@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace Genealogy.DateImplementation
 {
@@ -57,7 +56,12 @@ namespace Genealogy.DateImplementation
     /// Serves as the default hash function.
     /// </summary>
     /// <returns>A hash code for the current object.</returns>
-    public override int GetHashCode() => 1163315530 + EqualityComparer<string>.Default.GetHashCode(_date);
+    public sealed override int GetHashCode()
+    {
+      var hashCode = new HashCode();
+      hashCode.Add(_date);
+      return hashCode.ToHashCode();
+    }
 
     #endregion
 
