@@ -36,7 +36,7 @@ public class GedcomImport
   // to parse, this contains the GEDCOM info in an XML format.
   private XmlDocument _doc;
 
-  private string gedcomDirPath = string.Empty;
+  private string _gedcomDirPath = string.Empty;
 
   #endregion
 
@@ -64,7 +64,7 @@ public class GedcomImport
       // Convert the GEDCOM file to a temp XML file.
       GedcomConverter.ConvertToXml(gedcomFilePath, xmlFilePath, true, disableCharacterCheck);
 
-      gedcomDirPath = Path.GetDirectoryName(gedcomFilePath);
+      _gedcomDirPath = Path.GetDirectoryName(gedcomFilePath);
       _doc = new XmlDocument();
       _doc.Load(xmlFilePath);
 
@@ -439,8 +439,8 @@ public class GedcomImport
           _people.AddChild(husbandPerson, childPerson, husbandModifier);
           _people.AddChild(wifePerson, childPerson, wifeModifier);
 
-          List<Person> firstParentChildren = new(husbandPerson.NaturalChildren);
-          List<Person> secondParentChildren = new(wifePerson.NaturalChildren);
+          List<Person> firstParentChildren = [.. husbandPerson.NaturalChildren];
+          List<Person> secondParentChildren = [.. wifePerson.NaturalChildren];
 
           // Combined children list that is returned.
           List<Person> naturalChildren = [];
@@ -649,7 +649,7 @@ public class GedcomImport
         }
         if ( !File.Exists(_file) )
         {
-          _file = Path.Combine(gedcomDirPath, _file);
+          _file = Path.Combine(_gedcomDirPath, _file);
           if (!File.Exists(_file))
           {
             continue;
