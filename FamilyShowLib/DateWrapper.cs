@@ -86,7 +86,7 @@ public sealed class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   public string ToShortString()
   {
     return IsDateExact(this, out IDateExact date)
-      ? new DateTime(date.Year, date.Month, date.Day).ToShortDateString()
+      ? new DateTime(date.Year, Math.Max(date.Month, 1), Math.Max(date.Day, 1)).ToShortDateString()
       : string.Empty;
   }
 

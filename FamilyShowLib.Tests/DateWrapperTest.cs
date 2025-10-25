@@ -91,19 +91,22 @@ public class DateWrapperTest
     Assert.Equal(string.Empty, gedcomString);
   }
 
-  [Fact]
-  public void ToShortString_ShouldReturnCorrectShortDateString_WhenDateIsExact()
+  [Theory]
+  [InlineData("22 JUL 2023", "7/22/2023")]
+  [InlineData("OCT 2025", "10/1/2025")]
+  [InlineData("1910", "1/1/1910")]
+  public void ToShortString_ShouldReturnCorrectShortDateString_WhenDateIsExact(string dateWrapperString, string expected)
   {
     using (AnotherCulture.UnitedStates())
     {
       // Arrange
-      DateWrapper dateWrapper = new("22 JUL 2023");
+      DateWrapper dateWrapper = new(dateWrapperString);
 
       // Act
       string shortDateString = dateWrapper.ToShortString();
 
       // Assert
-      Assert.Equal("7/22/2023", shortDateString);
+      Assert.Equal(expected, shortDateString);
     }
   }
 
