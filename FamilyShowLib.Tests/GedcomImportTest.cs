@@ -226,11 +226,9 @@ public class GedcomImportTest
     XmlNode? node = doc.DocumentElement;
 
     // Act
-    string dateDescriptor = GedcomImport.GetValueDateDescriptor(node, "DATE");
     DateWrapper result = GedcomImport.GetValueDate(node!, "DATE");
 
     // Assert
-    Assert.Equal("ABT ", dateDescriptor);
     Assert.Equal(new("ABT 1953"), result);
   }
 
@@ -244,11 +242,9 @@ public class GedcomImportTest
     XmlNode? node = doc.DocumentElement;
 
     // Act
-    string dateDescriptor = GedcomImport.GetValueDateDescriptor(node, "DATE");
     DateWrapper result = GedcomImport.GetValueDate(node!, "DATE");
 
     // Assert
-    Assert.Equal("AFT ", dateDescriptor);
     Assert.Equal(new("AFT 1953"), result);
   }
 
@@ -262,11 +258,9 @@ public class GedcomImportTest
     XmlNode? node = doc.DocumentElement;
 
     // Act
-    string dateDescriptor = GedcomImport.GetValueDateDescriptor(node, "DATE");
     DateWrapper result = GedcomImport.GetValueDate(node!, "DATE");
 
     // Assert
-    Assert.Equal("BEF ", dateDescriptor);
     Assert.Equal(new("BEF 1953"), result);
   }
 
@@ -290,11 +284,9 @@ public class GedcomImportTest
     XmlNode? node = doc.DocumentElement;
 
     // Act
-    string dateDescriptor = GedcomImport.GetValueDateDescriptor(node, "DATE");
     DateWrapper result = GedcomImport.GetValueDate(node!, "DATE");
 
     // Assert
-    Assert.Equal("ABT ", dateDescriptor);
     Assert.Null(result);
   }
 

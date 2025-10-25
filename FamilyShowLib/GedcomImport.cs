@@ -516,7 +516,7 @@ public class GedcomImport
     // See if a marriage (or divorce) is specified.
     if (node.SelectSingleNode("MARR") != null || node.SelectSingleNode("DIV") != null)
     {
-      string marriageDateDescriptor = GetValueDateDescriptor(node, "MARR/DATE");
+      string marriageDateDescriptor = string.Empty;
       DateWrapper marriageDate = GetValueDate(node, "MARR/DATE");
       string marriagePlace = GetValue(node, "MARR/PLAC");
       string marriageSource = GetValueId(node, "MARR/SOUR");
@@ -536,7 +536,7 @@ public class GedcomImport
         marriageLink = GetLink(marriageCitationNote);
       }
 
-      string divorceDateDescriptor = GetValueDateDescriptor(node, "DIV/DATE");
+      string divorceDateDescriptor = string.Empty;
       DateWrapper divorceDate = GetValueDate(node, "DIV/DATE");
       string divorceSource = GetValueId(node, "DIV/SOUR");
       string divorceCitation = GetValue(node, "DIV/SOUR/PAGE");
@@ -718,7 +718,7 @@ public class GedcomImport
   /// </summary>
   private static void ImportBirth(Person person, XmlNode node, XmlDocument doc)
   {
-    person.BirthDateDescriptor = GetValueDateDescriptor(node, "BIRT/DATE");
+    person.BirthDateDescriptor = string.Empty;
     person.BirthDate = GetValueDate(node, "BIRT/DATE");
     person.BirthPlace = GetValue(node, "BIRT/PLAC");
 
@@ -762,7 +762,7 @@ public class GedcomImport
       person.IsLiving = false;  //make an assumption that anyone without a death date and over 90 is dead.  This leads to far less people imported as living when then are dead since GEDCOM does not have an IsLiving field.
     }
 
-    person.DeathDateDescriptor = GetValueDateDescriptor(node, "DEAT/DATE");
+    person.DeathDateDescriptor = string.Empty;
     person.DeathDate = GetValueDate(node, "DEAT/DATE");
     person.DeathPlace = GetValue(node, "DEAT/PLAC");
 
@@ -789,7 +789,7 @@ public class GedcomImport
   private static void ImportBurial(Person person, XmlNode node, XmlDocument doc)
   {
     person.BurialDate = GetValueDate(node, "BURI/DATE");
-    person.BurialDateDescriptor = GetValueDateDescriptor(node, "BURI/DATE");
+    person.BurialDateDescriptor = string.Empty;
     person.BurialPlace = GetValue(node, "BURI/PLAC");
 
     person.BurialSource = GetValue(node, "BURI/SOUR").Replace("@", string.Empty);
@@ -815,7 +815,7 @@ public class GedcomImport
   private static void ImportCremation(Person person, XmlNode node, XmlDocument doc)
   {
     person.CremationDate = GetValueDate(node, "CREM/DATE");
-    person.CremationDateDescriptor = GetValueDateDescriptor(node, "CREM/DATE");
+    person.CremationDateDescriptor = string.Empty;
     person.CremationPlace = GetValue(node, "CREM/PLAC");
 
     person.CremationSource = GetValue(node, "CREM/SOUR").Replace("@", string.Empty);
@@ -840,10 +840,7 @@ public class GedcomImport
   /// </summary>
   private static void ImportReligion(Person person, XmlNode node, XmlDocument doc)
   {
-    //person.ReligionDate = GetValueDate(node, "RELI/DATE");                            //field not supported in Family.Show
-    //person.ReligionDateDescriptor = GetValueDateDescriptor(node, "RELI/DATE");        //field not supported in Family.Show
     person.Religion = GetValue(node, "RELI");
-    //person.ReligionPlace = GetValue(node, "RELI/PLAC");                               //field not supported in Family.Show
     person.ReligionSource = GetValue(node, "RELI/SOUR").Replace("@", string.Empty);
     person.ReligionCitation = GetValue(node, "RELI/SOUR/PAGE");
     person.ReligionCitationActualText = GetValue(node, "RELI/SOUR/DATA/TEXT");
@@ -866,10 +863,7 @@ public class GedcomImport
   /// </summary>
   private static void ImportOccupation(Person person, XmlNode node, XmlDocument doc)
   {
-    //person.OccupationDate = GetValueDate(node, "OCCU/DATE");                            //field not supported in Family.Show
-    //person.OccupationDateDescriptor = GetValueDateDescriptor(node, "OCCU/DATE");        //field not supported in Family.Show
     person.Occupation = GetValue(node, "OCCU");
-    //person.OccupationPlace = GetValue(node, "OCCU/PLAC");                               //field not supported in Family.Show
     person.OccupationSource = GetValue(node, "OCCU/SOUR").Replace("@", string.Empty);
     person.OccupationCitation = GetValue(node, "OCCU/SOUR/PAGE");
     person.OccupationCitationActualText = GetValue(node, "OCCU/SOUR/DATA/TEXT");
@@ -892,10 +886,7 @@ public class GedcomImport
   /// </summary>
   private static void ImportEducation(Person person, XmlNode node, XmlDocument doc)
   {
-    //person.EducationDate = GetValueDate(node, "EDUC/DATE");                            //field not supported in Family.Show
-    //person.EducationDateDescriptor = GetValueDateDescriptor(node, "EDUC/DATE");        //field not supported in Family.Show
     person.Education = GetValue(node, "EDUC");
-    //person.EducationPlace = GetValue(node, "EDUC/PLAC");                               //field not supported in Family.Show
     person.EducationSource = GetValue(node, "EDUC/SOUR").Replace("@", string.Empty);
     person.EducationCitation = GetValue(node, "EDUC/SOUR/PAGE");
     person.EducationCitationActualText = GetValue(node, "EDUC/SOUR/DATA/TEXT");
@@ -1146,7 +1137,8 @@ public class GedcomImport
     {
       string value = GetValue(node, xpath);
 
-      //look for quarter abbreviations and remove
+      // look for quarter abbreviations and remove
+      // There is no GEDCOM specification for quarters but some programs use them.
 
       if (value.Contains("jan-feb-mar"))  //Q1
       {
@@ -1207,85 +1199,6 @@ public class GedcomImport
     }
 
     return result;
-  }
-
-  /// <summary>
-  /// Gets a descriptor for a date value from the GEDCOM XML file.
-  /// The descriptor can be "ABT" (about), "AFT" (after), or "BEF" (before) based on the date value.
-  /// </summary>
-  /// <param name="node">The XML node containing the date information.</param>
-  /// <param name="xpath">The XPath query to select the date node.</param>
-  /// <returns>A string representing the date descriptor, or an empty string if no descriptor is found.</returns>
-  internal static string GetValueDateDescriptor(XmlNode node, string xpath)
-  {
-    try
-    {
-      string value = GetValue(node, xpath);
-      value = value.ToLower(new CultureInfo("en-GB", false));
-
-      if (value.Contains("jan-feb-mar"))  //Q1
-      {
-        return "ABT ";
-      }
-
-      if (value.Contains("apr-may-jun"))  //Q2
-      {
-        return "ABT ";
-      }
-
-      if (value.Contains("jul-aug-sep"))  //Q3
-      {
-        return "ABT ";
-      }
-
-      if (value.Contains("oct-nov-dec"))  //Q4
-      {
-        return "ABT ";
-      }
-
-      if (value.Contains("jan feb mar"))  //Q1
-      {
-        return "ABT ";
-      }
-
-      if (value.Contains("apr may jun"))  //Q2
-      {
-        return "ABT ";
-      }
-
-      if (value.Contains("jul aug sep"))  //Q3
-      {
-        return "ABT ";
-      }
-
-      if (value.Contains("oct nov dec"))  //Q4
-      {
-        return "ABT ";
-      }
-
-      if (value.Contains("abt"))
-      {
-        return "ABT ";
-      }
-
-      if (value.Contains("aft"))
-      {
-        return "AFT ";
-      }
-
-      if (value.Contains("bef"))
-      {
-        return "BEF ";
-      }
-    }
-    catch
-    {
-      // The date is invalid, ignore and continue processing.
-      // inform the developer
-      Debug.Assert(false);
-    }
-
-    return string.Empty;
   }
 
   private static string GetId(XmlNode node)
