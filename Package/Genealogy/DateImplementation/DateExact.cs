@@ -141,7 +141,6 @@ namespace Genealogy.DateImplementation
         throw new NotImplementedException();
       }
 
-      //ordinal.ValidateYearMonthDay(year, month, day);
       _yearMonthDayCalendar = new YearMonthDayCalendar(year, month, day, ordinal);
     }
 
@@ -195,32 +194,33 @@ namespace Genealogy.DateImplementation
     /// <exception cref="NotImplementedException">Thrown when the month number is invalid.</exception>
     private static string GetMMM(int month)
     {
+      // Use IniCaps because it's more readable.
       switch (month)
       {
         case 1:
-          return "JAN";
+          return "Jan";
         case 2:
-          return "FEB";
+          return "Feb";
         case 3:
-          return "MAR";
+          return "Mar";
         case 4:
-          return "APR";
+          return "Apr";
         case 5:
-          return "MAY";
+          return "May";
         case 6:
-          return "JUN";
+          return "Jun";
         case 7:
-          return "JUL";
+          return "Jul";
         case 8:
-          return "AUG";
+          return "Aug";
         case 9:
-          return "SEP";
+          return "Sep";
         case 10:
-          return "OCT";
+          return "Oct";
         case 11:
-          return "NOV";
+          return "Nov";
         case 12:
-          return "DEC";
+          return "Dec";
         default:
           throw new GenealogyException("Not a valid month in date.");
       }

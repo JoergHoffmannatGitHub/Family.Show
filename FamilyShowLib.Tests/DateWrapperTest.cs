@@ -75,7 +75,7 @@ public class DateWrapperTest
     string gedcomString = dateWrapper.ToGedcom();
 
     // Assert
-    Assert.Equal("22 JUL 2023", gedcomString);
+    Assert.Equal("22 Jul 2023", gedcomString);
   }
 
   [Fact]

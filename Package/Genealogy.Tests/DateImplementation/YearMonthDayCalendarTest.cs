@@ -32,10 +32,10 @@ public class YearMonthDayCalendarTest
       YearMonthDayCalendar ymdc = new(year, 5, 20, CalendarOrdinal.Julian);
 
       // Assert
-      Assert.Equal(CalendarOrdinal.Julian, ymdc.CalendarOrdinal);
-      Assert.Equal(20, ymdc.Day);
-      Assert.Equal(5, ymdc.Month);
       Assert.Equal(year, ymdc.Year);
+      Assert.Equal(5, ymdc.Month);
+      Assert.Equal(20, ymdc.Day);
+      Assert.Equal(CalendarOrdinal.Julian, ymdc.CalendarOrdinal);
     }
   }
 

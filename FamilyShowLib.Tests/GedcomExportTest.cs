@@ -39,7 +39,7 @@ public class GedcomExportTest
       Assert.Contains(FormatLine(2, "NAME", "Family.Show"), actual);
       Assert.Contains(FormatLine(2, "CORP", "Microsoft"), actual);
       Assert.Equal(!string.IsNullOrEmpty(nameOfSourceDate), actual.Contains(FormatLine(2, "DATA", nameOfSourceDate)));
-      Assert.Contains(FormatLine(1, "DATE", "18 JAN 2025"), actual);
+      Assert.Contains(FormatLine(1, "DATE", "18 Jan 2025"), actual);
       Assert.Contains(FormatLine(2, "TIME", "5:08:35 PM"), actual);
       Assert.Contains(FormatLine(1, "FILE", filename), actual);
       Assert.Contains(FormatLine(1, "GEDC", string.Empty), actual);
@@ -407,8 +407,8 @@ public class GedcomExportTest
   }
 
   [Theory]
-  [InlineData(2019, 6, 21, "21 JUN 2019")]
-  [InlineData(1982, 1, 9, "9 JAN 1982")]
+  [InlineData(2019, 6, 21, "21 Jun 2019")]
+  [InlineData(1982, 1, 9, "9 Jan 1982")]
   public void ExportDateTest(int year, int month, int day, string expected)
   {
     using (AnotherCulture.UnitedStates())

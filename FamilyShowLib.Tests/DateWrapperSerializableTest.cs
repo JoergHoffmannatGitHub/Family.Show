@@ -11,7 +11,7 @@ public class DateWrapperSerializableTest
 {
   private const string FullName = "Sylvester Stallone";
   private const string BirthDateTime = "1946-07-06T00:00:00";
-  private const string BirthGenealogyDate = "6 JUL 1946";
+  private const string BirthGenealogyDate = "6 Jul 1946";
   private const string PersonWithoutDateXml = @"<?xml version=""1.0"" encoding=""utf-8""?>" +
     @"<Person xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">" +
       "<FullName>" + FullName + "</FullName>" +
@@ -131,7 +131,7 @@ public class DateWrapperSerializableTest
     WriteTo<DateWrapper>(memoryStream, dateWrapper);
 
     // Assert
-    string expectedXml = "1 JAN 2023"; // Assuming _date.ToGedcom() returns "1 JAN 2023"
+    string expectedXml = "1 Jan 2023"; // Assuming _date.ToGedcom() returns "1 Jan 2023"
     StreamReader reader = new(memoryStream);
     string buffer = reader.ReadToEnd();
     Assert.Contains(expectedXml, buffer);

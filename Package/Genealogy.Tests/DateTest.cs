@@ -7,10 +7,10 @@ public class DateTest
   public static readonly TheoryData<string, Type> ValidGedcomDates =
     new()
     {
-        { "22 JUL 2023", typeof(DateExact) },
-        { "JUL 2023", typeof(DateExact) },
+        { "22 Jul 2023", typeof(DateExact) },
+        { "Jul 2023", typeof(DateExact) },
         { "2023", typeof(DateExact) },
-        { "6 MAY 2001", typeof(DateExact) },
+        { "6 May 2001", typeof(DateExact) },
         { "1977", typeof(DateExact) },
         { "CAL SEP 1888", typeof(SimpleDate) }, // DateEstimate
         { "BET 1982 AND 1984", typeof(SimpleDate) }, // DateRange
@@ -52,8 +52,8 @@ public class DateTest
   public static readonly TheoryData<int, int, int, string> ValidCreateDates =
     new()
     {
-      { 2023, 7, 22, "22 JUL 2023" },
-      { 2023, 7, 0, "JUL 2023" },
+      { 2023, 7, 22, "22 Jul 2023" },
+      { 2023, 7, 0, "Jul 2023" },
       { 2023, 0, 0, "2023" }
     };
 

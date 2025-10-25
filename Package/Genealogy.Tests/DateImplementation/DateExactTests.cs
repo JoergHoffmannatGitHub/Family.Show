@@ -7,8 +7,8 @@ public class DateExactTests
   public static readonly TheoryData<int, int, int, string> ValidToGedcomDates =
     new()
     {
-      { 2023, 7, 22, "22 JUL 2023" },
-      { 2023, 7, 0, "JUL 2023" },
+      { 2023, 7, 22, "22 Jul 2023" },
+      { 2023, 7, 0, "Jul 2023" },
       { 2023, 0, 0, "2023" }
     };
 
@@ -75,18 +75,18 @@ public class DateExactTests
     new()
     {
       { 0, "2023" },
-      { 1, "JAN 2023" },
-      { 2, "FEB 2023" },
-      { 3, "MAR 2023" },
-      { 4, "APR 2023" },
-      { 5, "MAY 2023" },
-      { 6, "JUN 2023" },
-      { 7, "JUL 2023" },
-      { 8, "AUG 2023" },
-      { 9, "SEP 2023" },
-      { 10, "OCT 2023" },
-      { 11, "NOV 2023" },
-      { 12, "DEC 2023" }
+      { 1, "Jan 2023" },
+      { 2, "Feb 2023" },
+      { 3, "Mar 2023" },
+      { 4, "Apr 2023" },
+      { 5, "May 2023" },
+      { 6, "Jun 2023" },
+      { 7, "Jul 2023" },
+      { 8, "Aug 2023" },
+      { 9, "Sep 2023" },
+      { 10, "Oct 2023" },
+      { 11, "Nov 2023" },
+      { 12, "Dec 2023" }
     };
 
   [Theory, MemberData(nameof(GregorianMonthCases))]
