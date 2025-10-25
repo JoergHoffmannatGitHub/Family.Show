@@ -1704,9 +1704,15 @@ namespace FamilyShow
             ToDescriptor.Content = string.Empty;
             FromDescriptor.Content = string.Empty;
 
-            FromEditTextBox.Text = spouseRel.MarriageDate.ToShortString();
+            if (!DateWrapper.IsNullOrEmpty(spouseRel.MarriageDate))
+            {
+              FromEditTextBox.Text = spouseRel.MarriageDate.ToShortString();
+            }
 
-            ToEditTextBox.Text = spouseRel.DivorceDate.ToShortString();
+            if (!DateWrapper.IsNullOrEmpty(spouseRel.DivorceDate))
+            {
+              ToEditTextBox.Text = spouseRel.DivorceDate.ToShortString();
+            }
 
             if (spouseRel.MarriagePlace != null)
             {
