@@ -56,6 +56,8 @@ public class Date
       throw new GenealogyException("Invalid Date");
     }
 
+    date = date.ToUpperInvariant();
+
     if (date.StartsWith("BEF ") ||
       date.StartsWith("AFT ") ||
       date.StartsWith("BET "))
@@ -69,12 +71,11 @@ public class Date
       // DatePeriod
       return new SimpleDate(date);
     }
-    else if (date.Contains("ABT ") ||
+    else if (date.StartsWith("ABT ") ||
       date.StartsWith("CAL ") ||
       date.StartsWith("EST "))
     {
-      // DateApproximated
-      return new SimpleDate(date);
+      return new DateApproximated(date);
     }
 
     return new DateExact(date);
