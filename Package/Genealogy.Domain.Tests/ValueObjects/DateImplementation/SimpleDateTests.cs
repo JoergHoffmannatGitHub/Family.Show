@@ -29,7 +29,7 @@ public class SimpleDateTests
     var simpleDate = new SimpleDate(inputDate);
 
     // Assert
-    Assert.Equal(expectedDate, simpleDate.ToGedcom());
+    Assert.Equal(expectedDate, simpleDate.ToString());
   }
 
   public static readonly TheoryData<string?> InvalidDates =

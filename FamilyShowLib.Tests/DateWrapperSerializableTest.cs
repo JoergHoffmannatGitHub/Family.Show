@@ -116,7 +116,7 @@ public class DateWrapperSerializableTest
       // Assert
       Assert.Equal(FullName, person.FullName);
       Assert.False(DateWrapper.IsNullOrEmpty(person.BirthDate));
-      Assert.Equal(BirthGenealogyDate, person.BirthDate.Date!.ToGedcom());
+      Assert.Equal(BirthGenealogyDate, person.BirthDate.Date!.ToString());
     }
   }
 
@@ -131,7 +131,7 @@ public class DateWrapperSerializableTest
     WriteTo<DateWrapper>(memoryStream, dateWrapper);
 
     // Assert
-    string expectedXml = "1 Jan 2023"; // Assuming _date.ToGedcom() returns "1 Jan 2023"
+    string expectedXml = "1 Jan 2023"; // Assuming _date.ToString() returns "1 Jan 2023"
     StreamReader reader = new(memoryStream);
     string buffer = reader.ReadToEnd();
     Assert.Contains(expectedXml, buffer);

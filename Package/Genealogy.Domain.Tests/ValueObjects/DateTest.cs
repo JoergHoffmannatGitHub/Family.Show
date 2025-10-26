@@ -33,7 +33,7 @@ public class DateTest
 
     // Assert
     Assert.True(result);
-    Assert.Equal(inputDate, dateResult.ToGedcom());
+    Assert.Equal(inputDate, dateResult.ToString());
     Assert.IsType(type, dateResult);
   }
 
@@ -66,6 +66,6 @@ public class DateTest
     IDate result = Date.Create(year, month, day);
 
     // Assert
-    Assert.Equal(expectedGedcom, result.ToGedcom());
+    Assert.Equal(expectedGedcom, result.ToString());
   }
 }

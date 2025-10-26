@@ -9,5 +9,5 @@ public interface IDate
   /// Converts the date to its GEDCOM representation.
   /// </summary>
   /// <returns>A string representing the date in GEDCOM format.</returns>
-  string ToGedcom();
+  string ToString();
 }

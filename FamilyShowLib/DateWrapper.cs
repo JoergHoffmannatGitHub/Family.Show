@@ -77,7 +77,7 @@ public sealed class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   /// Converts the wrapped date to its GEDCOM representation.
   /// </summary>
   /// <returns>A string representing the date in GEDCOM format.</returns>
-  public string ToGedcom() => IsNullOrEmpty(this) ? string.Empty : Date.ToGedcom();
+  public string ToGedcom() => IsNullOrEmpty(this) ? string.Empty : Date.ToString();
 
   /// <summary>
   /// Converts the wrapped date to a short date string.
@@ -193,7 +193,7 @@ public sealed class DateWrapper : IEquatable<DateWrapper>, IXmlSerializable
   {
     if (Date != null)
     {
-      writer.WriteString(Date.ToGedcom());
+      writer.WriteString(Date.ToString());
     }
     else
     {

@@ -45,7 +45,7 @@ public class DateExactTests
     DateExact dateExact = new(year, month, day);
 
     // Act
-    string result = dateExact.ToGedcom();
+    string result = dateExact.ToString();
 
     // Assert
     Assert.Equal(expectedGedcom, result);
@@ -65,7 +65,7 @@ public class DateExactTests
     DateExact dateExact = new(gedcom);
 
     // Act
-    string result = dateExact.ToGedcom();
+    string result = dateExact.ToString();
 
     // Assert
     Assert.Equal(expectedGedcom, result);
@@ -96,7 +96,7 @@ public class DateExactTests
     DateExact dateExact = new(2023, month);
 
     // Act
-    string gedcomString = dateExact.ToGedcom();
+    string gedcomString = dateExact.ToString();
 
     // Assert
     Assert.Equal(expectedDate, gedcomString);
@@ -109,7 +109,7 @@ public class DateExactTests
     DateExact dateExact = new(2023, 13);
 
     // Act & Assert
-    Assert.Throws<GenealogyException>(() => dateExact.ToGedcom());
+    Assert.Throws<GenealogyException>(() => dateExact.ToString());
   }
 
   public static readonly TheoryData<int, int, int, bool> EqualsDates =
@@ -187,29 +187,18 @@ public class DateExactTests
     Assert.False(result);
   }
 
-  public static readonly TheoryData<int, int, int, int> HashCodeDates =
-    new()
-    {
-      { 2023, 7, 22, new DateExact(2023, 7, 22).GetHashCode() },
-      { 2023, 7, 23, new DateExact(2023, 7, 23).GetHashCode() },
-      { 2023, 8, 22, new DateExact(2023, 8, 22).GetHashCode() },
-      { 2024, 7, 22, new DateExact(2024, 7, 22).GetHashCode() }
-    };
-
-  [Theory, MemberData(nameof(HashCodeDates))]
-  public void GetHashCode_ShouldReturnCorrectHashCode_WhenDateIsProvided(
-    int year,
-    int month,
-    int day,
-    int expectedHashCode)
+  [Fact]
+  public void GetHashCode_ShouldReturnCorrectHashCode_WhenDateIsProvided()
   {
     // Arrange
-    DateExact date = new(year, month, day);
+    DateExact date1 = new(2023, 7, 22);
+    DateExact date2 = new(2023, 7, 22);
 
     // Act
-    int result = date.GetHashCode();
+    int hash1 = date1.GetHashCode();
+    int hash2 = date2.GetHashCode();
 
     // Assert
-    Assert.Equal(expectedHashCode, result);
+    Assert.Equal(hash1, hash2);
   }
 }
