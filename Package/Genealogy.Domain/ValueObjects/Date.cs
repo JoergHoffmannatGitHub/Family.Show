@@ -1,4 +1,6 @@
 
+using System;
+
 using Genealogy.Domain.Interfaces;
 using Genealogy.Domain.ValueObjects.DateImplementation;
 
@@ -31,14 +33,19 @@ public class Date
   /// <returns><c>true</c> if the date string was parsed successfully; otherwise, <c>false</c>.</returns>
   public static bool TryParse(string date, out IDate result)
   {
+    result = null;
+    if (string.IsNullOrWhiteSpace(date))
+    {
+      return false;
+    }
+
     try
     {
       result = Parse(date);
       return true;
     }
-    catch
+    catch (Exception)
     {
-      result = new DateExact(0);
       return false;
     }
   }
@@ -62,14 +69,12 @@ public class Date
       date.StartsWith("AFT ") ||
       date.StartsWith("BET "))
     {
-      // DateRange
-      return new SimpleDate(date);
+      return new DateRange(date);
     }
     else if (date.StartsWith("FROM ") ||
       date.StartsWith("TO "))
     {
-      // DatePeriod
-      return new SimpleDate(date);
+      return new DatePeriod(date);
     }
     else if (date.StartsWith("ABT ") ||
       date.StartsWith("CAL ") ||

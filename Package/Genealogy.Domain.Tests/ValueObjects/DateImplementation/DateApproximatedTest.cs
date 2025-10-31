@@ -4,25 +4,31 @@ namespace Genealogy.Domain.Tests.ValueObjects.DateImplementation;
 
 public class DateApproximatedTest
 {
-  public static readonly TheoryData<string> ValidToGedcomDates =
-  new()
+  [Fact]
+  public void Constructor_ShouldThrowArgumentNullException_WhenNullProvided()
   {
-      { "ABT 22 Jul 2023" },
-      { "CAL Jul 2023" },
-      { "EST 2023" }
-  };
+    // Act & Assert
+    Assert.Throws<ArgumentNullException>(() => new DateApproximated(null));
+  }
+
+  [Fact]
+  public void Constructor_ShouldThrowException_WhenInvalidDatePrefixIsProvided()
+  {
+    // Act & Assert
+    Assert.Throws<ArgumentException>(() => new DateApproximated("BEF 22 Jul 2023"));
+  }
 
   [Fact]
   public void Constructor_ShouldThrowException_WhenInvalidDateStringIsProvided()
   {
-    // Arrange
-    string invalidDateString = "BEF 22 Jul 2023";
-
     // Act & Assert
-    Assert.Throws<NotImplementedException>(() => new DateApproximated(invalidDateString));
+    Assert.Throws<GenealogyException>(() => new DateApproximated("CAL 17"));
   }
 
-  [Theory, MemberData(nameof(ValidToGedcomDates))]
+  [Theory]
+  [InlineData("ABT 22 Jul 2023")]
+  [InlineData("CAL Jul 2023")]
+  [InlineData("EST 2023")]
   public void Constructor_ShouldInitializeDate_WhenDateApproximatedStringIsProvided(
     string dateString)
   {
@@ -31,13 +37,6 @@ public class DateApproximatedTest
 
     // Assert
     Assert.Equal(dateString, dateApproximated.ToString());
-  }
-
-  [Fact]
-  public void Constructor_ShouldThrowArgumentNullException_WhenNullProvided()
-  {
-    // Act & Assert
-    Assert.Throws<ArgumentNullException>(() => new DateApproximated(null!));
   }
 
   [Fact]
@@ -53,16 +52,6 @@ public class DateApproximatedTest
     // Assert
     // ToString should be normalized (single space after prefix and trimmed remainder)
     Assert.Equal("ABT 2023", sut.ToString());
-  }
-
-  [Fact]
-  public void Constructor_ShouldThrowNotImplementedException_ForUnknownPrefix()
-  {
-    // Arrange
-    string input = "XYZ2023";
-
-    // Act & Assert
-    Assert.Throws<NotImplementedException>(() => new DateApproximated(input));
   }
 
   [Fact]
@@ -113,7 +102,7 @@ public class DateApproximatedTest
     if (expected)
     {
       Assert.NotNull(date);
-      Assert.Equal(input, date!.ToString());
+      Assert.Equal(input, date.ToString());
     }
     else
     {

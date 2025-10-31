@@ -2,7 +2,7 @@ using Genealogy.Domain.ValueObjects.DateImplementation;
 
 namespace Genealogy.Domain.Tests.ValueObjects.DateImplementation;
 
-public class DateExactTests
+public class DateExactTest
 {
   public static readonly TheoryData<int, int, int, string> ValidToGedcomDates =
     new()
@@ -54,7 +54,7 @@ public class DateExactTests
   [Theory]
   [InlineData("1670", "1670")]
   [InlineData("@#DGREGORIAN@1670", "1670")]
-  [InlineData("@#DJULIAN@1670","@#DJULIAN@1670")]
+  [InlineData("@#DJULIAN@1670", "@#DJULIAN@1670")]
   [InlineData("@#DHEBREW@1670", "@#DHEBREW@1670")]
   [InlineData("@#DFRENCH R@1670", "@#DFRENCH R@1670")]
   [InlineData("@#DROMAN@1670", "@#DROMAN@1670")]
@@ -200,5 +200,27 @@ public class DateExactTests
 
     // Assert
     Assert.Equal(hash1, hash2);
+  }
+
+  [Theory]
+  [InlineData("22 Jul 2023", true)]
+  [InlineData("Jul 2023", true)]
+  [InlineData("2023", true)]
+  [InlineData("XYZ2023", false)]
+  [InlineData("ABT", false)]
+  [InlineData("", false)]
+  public void TryParse_ShouldReturnExpectedResult(string input, bool expected)
+  {
+    bool result = DateExact.TryParse(input, out DateExact? date);
+    Assert.Equal(expected, result);
+    if (expected)
+    {
+      Assert.NotNull(date);
+      Assert.Equal(input, date!.ToString());
+    }
+    else
+    {
+      Assert.Null(date);
+    }
   }
 }

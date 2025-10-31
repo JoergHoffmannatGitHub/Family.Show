@@ -16,7 +16,36 @@ namespace Genealogy.Domain.ValueObjects.DateImplementation;
 [ValueObject]
 internal partial class DateExact : IDateExact, IEquatable<IDate>
 {
+  /// <summary>
+  /// Gets the compact representation of year, month, day, and calendar system.
+  /// </summary>
   internal YearMonthDayCalendar YearMonthDayCalendar { get; private init; }
+
+  /// <summary>
+  /// Attempts to parse the specified date string into a <see cref="DateExact"/> object.
+  /// </summary>
+  /// <param name="date">The date string to parse.</param>
+  /// <param name="result">When this method returns, contains the parsed <see cref="DateExact"/> object
+  /// if parsing succeeded; otherwise, <c>null</c>.</param>
+  /// <returns><c>true</c> if the date string was successfully parsed; otherwise, <c>false</c>.</returns>
+  public static bool TryParse(string date, out DateExact result)
+  {
+    result = null;
+    if (string.IsNullOrWhiteSpace(date) || date.Length < 4)
+    {
+      return false;
+    }
+
+    try
+    {
+      result = new DateExact(date);
+      return true;
+    }
+    catch (Exception)
+    {
+      return false;
+    }
+  }
 
   /// <summary>
   /// Initializes a new instance of the <see cref="DateExact"/> class with a specified date string.
@@ -25,8 +54,12 @@ internal partial class DateExact : IDateExact, IEquatable<IDate>
   /// cref="YearMonthDayCalendar"/> property. Ensure that the date string is in a recognized format to avoid parsing
   /// errors.</remarks>
   /// <param name="date">The date string to parse into a year, month, and day format. The string must be in a valid date format.</param>
+  /// <exception cref="ArgumentNullException">Thrown if <paramref name="date"/> is null.</exception>
+  /// <exception cref="GenealogyException">Thrown if <paramref name="date"/> is less than 4 characters.</exception>
   internal DateExact(string date)
   {
+    ArgumentNullException.ThrowIfNull(date);
+
     YearMonthDayCalendar = ParseDate(date);
   }
 
@@ -45,10 +78,7 @@ internal partial class DateExact : IDateExact, IEquatable<IDate>
 
   #region IDate
 
-  /// <summary>
-  /// Converts the date to its GEDCOM representation.
-  /// </summary>
-  /// <returns>A string representing the date in GEDCOM format.</returns>
+  /// <inheritdoc/>
   public override string ToString()
   {
     string result = string.Empty;
@@ -89,13 +119,9 @@ internal partial class DateExact : IDateExact, IEquatable<IDate>
 
   #region IEquatable<IDate>
 
-  /// <summary>
-  /// Determines whether the specified <see cref="IDate"/> is equal to the current instance.
-  /// </summary>
-  /// <param name="obj">The <see cref="IDate"/> to compare with the current instance.</param>
-  /// <returns><see langword="true"/> if the specified <see cref="IDate"/> is equal to the current instance; otherwise, <see
-  /// langword="false"/>.</returns>
-  public bool Equals(IDate obj) => obj != null && obj is DateExact other && YearMonthDayCalendar == other.YearMonthDayCalendar;
+  /// <inheritdoc/>
+  public bool Equals(IDate obj) => obj != null && obj is DateExact other &&
+    YearMonthDayCalendar == other.YearMonthDayCalendar;
 
   #endregion
 
@@ -144,7 +170,7 @@ internal partial class DateExact : IDateExact, IEquatable<IDate>
     }
     else
     {
-      Console.WriteLine("  Unable to parse '{0}'.", date);
+      Console.WriteLine($"  Unable to parse '{date}'.");
       throw new NotImplementedException();
     }
 
@@ -167,8 +193,8 @@ internal partial class DateExact : IDateExact, IEquatable<IDate>
       int i = date.IndexOf('@', 2);
       if (i != -1)
       {
-        dateType = date.Substring(0, i + 1).ToUpper();
-        date = date.Substring(i + 1);
+        dateType = date[..(i + 1)].ToUpper();
+        date = date[(i + 1)..];
       }
     }
 

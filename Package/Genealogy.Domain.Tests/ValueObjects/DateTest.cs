@@ -13,14 +13,14 @@ public class DateTest
         { "22 Jul 2023", typeof(DateExact) },
         { "6 May 2001", typeof(DateExact) },
         { "ABT Jan 1781", typeof(DateApproximated) },
-        { "AFT JAN 1781", typeof(SimpleDate) }, // DateRange
-        { "BEF JAN 1781", typeof(SimpleDate) }, // DateRange
-        { "BET 1982 AND 1984", typeof(SimpleDate) }, // DateRange
+        { "AFT Jan 1781", typeof(DateRange) },
+        { "BEF Jan 1781", typeof(DateRange) },
+        { "BET 1982 AND 1984", typeof(DateRange) },
         { "CAL Sep 1888", typeof(DateApproximated) },
         { "EST 1752", typeof(DateApproximated) },
-        { "FROM 1670 TO 1800", typeof(SimpleDate) }, // DatePeriod
-        { "FROM 1670 TO JULIAN 1800", typeof(SimpleDate) }, // DatePeriod
-        { "FROM JULIAN 1670 TO 1800", typeof(SimpleDate) }, // DatePeriod
+        { "FROM 1670 TO 1800", typeof(DatePeriod) },
+        { "FROM 1670 TO @#DJULIAN@1800", typeof(DatePeriod) },
+        { "FROM @#DJULIAN@1670 TO 1800", typeof(DatePeriod) },
         { "Jul 2023", typeof(DateExact) }
     };
 
