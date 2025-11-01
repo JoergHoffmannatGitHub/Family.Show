@@ -16,227 +16,254 @@ namespace Genealogy.Domain.ValueObjects.DateImplementation;
 [ValueObject]
 internal partial class DateExact : IDateExact, IEquatable<IDate>
 {
-  /// <summary>
-  /// Gets the compact representation of year, month, day, and calendar system.
-  /// </summary>
-  internal YearMonthDayCalendar YearMonthDayCalendar { get; private init; }
+    /// <summary>
+    /// Gets the compact representation of year, month, day, and calendar system.
+    /// </summary>
+    internal YearMonthDayCalendar YearMonthDayCalendar { get; private init; }
 
-  /// <summary>
-  /// Attempts to parse the specified date string into a <see cref="DateExact"/> object.
-  /// </summary>
-  /// <param name="date">The date string to parse.</param>
-  /// <param name="result">When this method returns, contains the parsed <see cref="DateExact"/> object
-  /// if parsing succeeded; otherwise, <c>null</c>.</param>
-  /// <returns><c>true</c> if the date string was successfully parsed; otherwise, <c>false</c>.</returns>
-  public static bool TryParse(string date, out DateExact result)
-  {
-    result = null;
-    if (string.IsNullOrWhiteSpace(date) || date.Length < 4)
+    /// <summary>
+    /// Attempts to parse the specified date string into a <see cref="DateExact"/> object.
+    /// </summary>
+    /// <param name="date">The date string to parse.</param>
+    /// <param name="result">When this method returns, contains the parsed <see cref="DateExact"/> object
+    /// if parsing succeeded; otherwise, <c>null</c>.</param>
+    /// <returns><c>true</c> if the date string was successfully parsed; otherwise, <c>false</c>.</returns>
+    public static bool TryParse(string date, out DateExact result)
     {
-      return false;
+        result = null;
+        if (string.IsNullOrWhiteSpace(date) || date.Length < 4)
+        {
+            return false;
+        }
+
+        try
+        {
+            result = new DateExact(date);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
-    try
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DateExact"/> class with a specified date string.
+    /// </summary>
+    /// <remarks>The <see cref="DateExact"/> constructor parses the provided date string and initializes the <see
+    /// cref="YearMonthDayCalendar"/> property. Ensure that the date string is in a recognized format to avoid parsing
+    /// errors.</remarks>
+    /// <param name="date">
+    /// The date string to parse into a year, month, and day format. The string must be in a valid date format.
+    /// </param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="date"/> is null.</exception>
+    /// <exception cref="GenealogyException">Thrown if <paramref name="date"/> is less than 4 characters.</exception>
+    internal DateExact(string date)
     {
-      result = new DateExact(date);
-      return true;
-    }
-    catch (Exception)
-    {
-      return false;
-    }
-  }
+        ArgumentNullException.ThrowIfNull(date);
 
-  /// <summary>
-  /// Initializes a new instance of the <see cref="DateExact"/> class with a specified date string.
-  /// </summary>
-  /// <remarks>The <see cref="DateExact"/> constructor parses the provided date string and initializes the <see
-  /// cref="YearMonthDayCalendar"/> property. Ensure that the date string is in a recognized format to avoid parsing
-  /// errors.</remarks>
-  /// <param name="date">The date string to parse into a year, month, and day format. The string must be in a valid date format.</param>
-  /// <exception cref="ArgumentNullException">Thrown if <paramref name="date"/> is null.</exception>
-  /// <exception cref="GenealogyException">Thrown if <paramref name="date"/> is less than 4 characters.</exception>
-  internal DateExact(string date)
-  {
-    ArgumentNullException.ThrowIfNull(date);
-
-    YearMonthDayCalendar = ParseDate(date);
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <see cref="DateExact"/> class with the specified year, month, and day.
-  /// </summary>
-  /// <remarks>This constructor creates a date using the Gregorian calendar. The month and day parameters are
-  /// optional and default to 0.</remarks>
-  /// <param name="year">The year component of the date.</param>
-  /// <param name="month">The month component of the date. Defaults to 0 if not specified.</param>
-  /// <param name="day">The day component of the date. Defaults to 0 if not specified.</param>
-  internal DateExact(int year, int month = 0, int day = 0)
-  {
-    YearMonthDayCalendar = new YearMonthDayCalendar(year, month, day, CalendarOrdinal.Gregorian);
-  }
-
-  #region IDate
-
-  /// <inheritdoc/>
-  public override string ToString()
-  {
-    string result = string.Empty;
-
-    // only output type if it isn't the default (Gregorian)
-    if (YearMonthDayCalendar.CalendarOrdinal != CalendarOrdinal.Gregorian)
-    {
-      result += CalendarSystem.ForOrdinal(YearMonthDayCalendar.CalendarOrdinal).Escape;
+        YearMonthDayCalendar = ParseDate(date);
     }
 
-    if (YearMonthDayCalendar.Day > 0)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DateExact"/> class with the specified year, month, and day.
+    /// </summary>
+    /// <remarks>This constructor creates a date using the Gregorian calendar. The month and day parameters are
+    /// optional and default to 0.</remarks>
+    /// <param name="year">The year component of the date.</param>
+    /// <param name="month">The month component of the date. Defaults to 0 if not specified.</param>
+    /// <param name="day">The day component of the date. Defaults to 0 if not specified.</param>
+    internal DateExact(int year, int month = 0, int day = 0)
     {
-      result += YearMonthDayCalendar.Day + " ";
+        YearMonthDayCalendar = new YearMonthDayCalendar(year, month, day, CalendarOrdinal.Gregorian);
     }
 
-    if (YearMonthDayCalendar.Month > 0)
+    #region IDate
+
+    /// <inheritdoc/>
+    public override string ToString()
     {
-      result += GetMMM(YearMonthDayCalendar.Month) + " ";
+        string result = string.Empty;
+
+        // only output type if it isn't the default (Gregorian)
+        if (YearMonthDayCalendar.CalendarOrdinal != CalendarOrdinal.Gregorian)
+        {
+            result += CalendarSystem.ForOrdinal(YearMonthDayCalendar.CalendarOrdinal).Escape;
+        }
+
+        if (YearMonthDayCalendar.Day > 0)
+        {
+            result += YearMonthDayCalendar.Day + " ";
+        }
+
+        if (YearMonthDayCalendar.Month > 0)
+        {
+            result += GetMMM(YearMonthDayCalendar.Month) + " ";
+        }
+
+        return result + YearMonthDayCalendar.Year;
     }
 
-    return result + YearMonthDayCalendar.Year;
-  }
+    #endregion IDate
 
-  #endregion IDate
+    #region IDateExact
 
-  #region IDateExact
+    /// <inheritdoc />
+    public int Year => YearMonthDayCalendar.Year;
 
-  /// <inheritdoc />
-  public int Year => YearMonthDayCalendar.Year;
+    /// <inheritdoc />
+    public int Month => YearMonthDayCalendar.Month;
 
-  /// <inheritdoc />
-  public int Month => YearMonthDayCalendar.Month;
+    /// <inheritdoc />
+    public int Day => YearMonthDayCalendar.Day;
 
-  /// <inheritdoc />
-  public int Day => YearMonthDayCalendar.Day;
+    #endregion IDateExact
 
-  #endregion IDateExact
+    #region IEquatable<IDate>
 
-  #region IEquatable<IDate>
+    /// <inheritdoc/>
+    public bool Equals(IDate obj) => obj != null && obj is DateExact other &&
+      YearMonthDayCalendar == other.YearMonthDayCalendar;
 
-  /// <inheritdoc/>
-  public bool Equals(IDate obj) => obj != null && obj is DateExact other &&
-    YearMonthDayCalendar == other.YearMonthDayCalendar;
+    #endregion
 
-  #endregion
-
-  /// <summary>
-  /// Parses a date string into a <see cref="YearMonthDayCalendar"/> object.
-  /// </summary>
-  /// <param name="date">The date string to parse, which must be in one of the following formats: "d MMM yyyy", "yyyy-MM-dd",
-  /// "yyyy-MM-ddThh:mm:ss", "MMM yyyy", or "yyyy".</param>
-  /// <returns>A <see cref="YearMonthDayCalendar"/> object representing the parsed date, with year, month, and day components as
-  /// specified in the input string.</returns>
-  /// <exception cref="GenealogyException">Thrown if the date string is less than 4 characters long.</exception>
-  /// <exception cref="NotImplementedException">Thrown if the date string cannot be parsed into any of the supported formats.</exception>
-  private static YearMonthDayCalendar ParseDate(string date)
-  {
-    CalendarOrdinal ordinal = ParseCalendarOrdinal(ref date);
-    int year;
-    int month;
-    int day;
-
-    // There is a minimum length of 4 characters
-    if (date.Length < 4)
+    /// <summary>
+    /// Parses a date string into a <see cref="YearMonthDayCalendar"/> object.
+    /// </summary>
+    /// <param name="date">
+    /// The date string to parse, which must be in one of the following formats: "d MMM yyyy", "yyyy-MM-dd",
+    /// "yyyy-MM-ddThh:mm:ss", "MMM yyyy", or "yyyy".
+    /// </param>
+    /// <returns>
+    /// A <see cref="YearMonthDayCalendar"/> object representing the parsed date, with year, month, and day components
+    /// as specified in the input string.
+    /// </returns>
+    /// <exception cref="GenealogyException">Thrown if the date string is less than 4 characters long.</exception>
+    /// <exception cref="NotImplementedException">
+    /// Thrown if the date string cannot be parsed into any of the supported formats.
+    /// </exception>
+    private static YearMonthDayCalendar ParseDate(string date)
     {
-      throw new GenealogyException("Invalid Date: Must have at least YYYY");
+        CalendarOrdinal ordinal = ParseCalendarOrdinal(ref date);
+        int year;
+        int month;
+        int day;
+
+        // There is a minimum length of 4 characters
+        if (date.Length < 4)
+        {
+            throw new GenealogyException("Invalid Date: Must have at least YYYY");
+        }
+
+        if (DateTime.TryParseExact(
+            date,
+            ["d MMM yyyy", "yyyy-MM-dd", "yyyy-MM-ddThh:mm:ss"],
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.None,
+            out DateTime dateValue))
+        {
+            // year, month and day are given
+            year = dateValue.Year;
+            month = dateValue.Month;
+            day = dateValue.Day;
+        }
+        else if (DateTime.TryParseExact(
+            date,
+            "MMM yyyy",
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.None,
+            out dateValue))
+        {
+            // year and month are given
+            year = dateValue.Year;
+            month = dateValue.Month;
+            day = 0;
+        }
+        else if (DateTime.TryParseExact(
+            date,
+            "yyyy",
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.None,
+            out dateValue))
+        {
+            // only year is given
+            year = dateValue.Year;
+            month = 0;
+            day = 0;
+        }
+        else
+        {
+            Console.WriteLine($"  Unable to parse '{date}'.");
+            throw new NotImplementedException();
+        }
+
+        return new YearMonthDayCalendar(year, month, day, ordinal);
     }
 
-    if (DateTime.TryParseExact(date, ["d MMM yyyy", "yyyy-MM-dd", "yyyy-MM-ddThh:mm:ss"], CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateValue))
+    /// <summary>
+    /// Parses the calendar ordinal from the specified date string.
+    /// </summary>
+    /// <remarks>The method identifies the calendar type by checking for specific prefixes in the date string.
+    /// Supported calendar types include Gregorian, Julian, Hebrew, French Republican, Roman, and Unknown.</remarks>
+    /// <param name="date">
+    /// A reference to the date string to parse. The method modifies this string to remove the calendar type prefix.
+    /// </param>
+    /// <returns>
+    /// A <see cref="CalendarOrdinal"/> value representing the calendar type found in the date string. Defaults to <see
+    /// cref="CalendarOrdinal.Gregorian"/> if no recognized prefix is found.
+    /// </returns>
+    private static CalendarOrdinal ParseCalendarOrdinal(ref string date)
     {
-      // year, month and day are given
-      year = dateValue.Year;
-      month = dateValue.Month;
-      day = dateValue.Day;
-    }
-    else if (DateTime.TryParseExact(date, "MMM yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
-    {
-      // year and month are given
-      year = dateValue.Year;
-      month = dateValue.Month;
-      day = 0;
-    }
-    else if (DateTime.TryParseExact(date, "yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
-    {
-      // only year is given
-      year = dateValue.Year;
-      month = 0;
-      day = 0;
-    }
-    else
-    {
-      Console.WriteLine($"  Unable to parse '{date}'.");
-      throw new NotImplementedException();
-    }
+        string dateType = string.Empty;
+        if (date.StartsWith("@#"))
+        {
+            int i = date.IndexOf('@', 2);
+            if (i != -1)
+            {
+                dateType = date[..(i + 1)].ToUpper();
+                date = date[(i + 1)..];
+            }
+        }
 
-    return new YearMonthDayCalendar(year, month, day, ordinal);
-  }
+        CalendarOrdinal ordinal = dateType switch
+        {
+            "@#DGREGORIAN@" => CalendarOrdinal.Gregorian,
+            "@#DJULIAN@" => CalendarOrdinal.Julian,
+            "@#DHEBREW@" => CalendarOrdinal.Hebrew,
+            "@#DFRENCH R@" => CalendarOrdinal.FrenchRepublican,
+            "@#DROMAN@" => CalendarOrdinal.Roman,
+            "@#DUNKNOWN@" => CalendarOrdinal.Unknown,
+            _ => CalendarOrdinal.Gregorian,
+        };
 
-  /// <summary>
-  /// Parses the calendar ordinal from the specified date string.
-  /// </summary>
-  /// <remarks>The method identifies the calendar type by checking for specific prefixes in the date string.
-  /// Supported calendar types include Gregorian, Julian, Hebrew, French Republican, Roman, and Unknown.</remarks>
-  /// <param name="date">A reference to the date string to parse. The method modifies this string to remove the calendar type prefix.</param>
-  /// <returns>A <see cref="CalendarOrdinal"/> value representing the calendar type found in the date string. Defaults to <see
-  /// cref="CalendarOrdinal.Gregorian"/> if no recognized prefix is found.</returns>
-  private static CalendarOrdinal ParseCalendarOrdinal(ref string date)
-  {
-    string dateType = string.Empty;
-    if (date.StartsWith("@#"))
-    {
-      int i = date.IndexOf('@', 2);
-      if (i != -1)
-      {
-        dateType = date[..(i + 1)].ToUpper();
-        date = date[(i + 1)..];
-      }
+        return ordinal;
     }
 
-    CalendarOrdinal ordinal = dateType switch
+    /// <summary>
+    /// Gets the three-letter month abbreviation for the specified month number.
+    /// </summary>
+    /// <param name="month">The month number (1-12).</param>
+    /// <returns>The three-letter month abbreviation.</returns>
+    /// <exception cref="NotImplementedException">Thrown when the month number is invalid.</exception>
+    private static string GetMMM(int month)
     {
-      "@#DGREGORIAN@" => CalendarOrdinal.Gregorian,
-      "@#DJULIAN@" => CalendarOrdinal.Julian,
-      "@#DHEBREW@" => CalendarOrdinal.Hebrew,
-      "@#DFRENCH R@" => CalendarOrdinal.FrenchRepublican,
-      "@#DROMAN@" => CalendarOrdinal.Roman,
-      "@#DUNKNOWN@" => CalendarOrdinal.Unknown,
-      _ => CalendarOrdinal.Gregorian,
-    };
-
-    return ordinal;
-  }
-
-  /// <summary>
-  /// Gets the three-letter month abbreviation for the specified month number.
-  /// </summary>
-  /// <param name="month">The month number (1-12).</param>
-  /// <returns>The three-letter month abbreviation.</returns>
-  /// <exception cref="NotImplementedException">Thrown when the month number is invalid.</exception>
-  private static string GetMMM(int month)
-  {
-    // Use IniCaps because it's more readable.
-    return month switch
-    {
-      1 => "Jan",
-      2 => "Feb",
-      3 => "Mar",
-      4 => "Apr",
-      5 => "May",
-      6 => "Jun",
-      7 => "Jul",
-      8 => "Aug",
-      9 => "Sep",
-      10 => "Oct",
-      11 => "Nov",
-      12 => "Dec",
-      _ => throw new GenealogyException("Not a valid month in date."),
-    };
-    ;
-  }
+        // Use IniCaps because it's more readable.
+        return month switch
+        {
+            1 => "Jan",
+            2 => "Feb",
+            3 => "Mar",
+            4 => "Apr",
+            5 => "May",
+            6 => "Jun",
+            7 => "Jul",
+            8 => "Aug",
+            9 => "Sep",
+            10 => "Oct",
+            11 => "Nov",
+            12 => "Dec",
+            _ => throw new GenealogyException("Not a valid month in date."),
+        };
+        ;
+    }
 }

@@ -18,225 +18,230 @@ namespace FamilyShowLib;
 [Serializable]
 public class Source : INotifyPropertyChanged, IEquatable<Source>
 {
+    #region Fields and Constants
 
-  #region Fields and Constants
+    private string _id;
+    private string _sourceName;
+    private string _sourceAuthor;
+    private string _sourcePublisher;
+    private string _sourceNote;
+    private string _sourceRepository;
 
-  private string _id;
-  private string _sourceName;
-  private string _sourceAuthor;
-  private string _sourcePublisher;
-  private string _sourceNote;
-  private string _sourceRepository;
+    #endregion
 
-  #endregion
+    #region Properties
 
-  #region Properties
-
-  [XmlAttribute]
-  public string Id
-  {
-    get { return _id; }
-    set
+    [XmlAttribute]
+    public string Id
     {
-      if (_id != value)
-      {
-        _id = value;
-        OnPropertyChanged(nameof(Id));
-      }
-    }
-  }
-
-  public string SourceName
-  {
-    get { return _sourceName; }
-    set
-    {
-      if (_sourceName != value)
-      {
-        _sourceName = value;
-        OnPropertyChanged(nameof(SourceName));
-      }
-    }
-  }
-
-  public string SourceAuthor
-  {
-    get { return _sourceAuthor; }
-    set
-    {
-      if (_sourceAuthor != value)
-      {
-        _sourceAuthor = value;
-        OnPropertyChanged(nameof(SourceAuthor));
-      }
-    }
-  }
-
-  public string SourcePublisher
-  {
-    get { return _sourcePublisher; }
-    set
-    {
-      if (_sourcePublisher != value)
-      {
-        _sourcePublisher = value;
-        OnPropertyChanged(nameof(SourcePublisher));
-      }
-    }
-  }
-
-  public string SourceNote
-  {
-    get { return _sourceNote; }
-    set
-    {
-      if (_sourceNote != value)
-      {
-        _sourceNote = value;
-        OnPropertyChanged(nameof(SourceNote));
-      }
-    }
-  }
-
-  public string SourceRepository
-  {
-    get { return _sourceRepository; }
-    set
-    {
-      if (_sourceRepository != value)
-      {
-        _sourceRepository = value;
-        OnPropertyChanged(nameof(SourceRepository));
-      }
-    }
-  }
-
-  [XmlIgnore]
-  public string SourceNameAndId
-  {
-    get { return _id + " " + _sourceName; }
-    set { }
-  }
-
-  #endregion
-
-  #region Constructors
-
-  /// <summary>
-  /// Creates a new instance of a sourceobject.
-  /// This parameterless constructor is also required for serialization.
-  /// </summary>
-  public Source()
-  {
-    _sourceName = Properties.Resources.Unknown;
-  }
-
-  /// <summary>
-  /// Creates a new instance of the source class with the id, name, author, publisher, note and repository of the source.  
-  /// The calling method must ensure that there are no duplicated ids.
-  /// </summary>
-  public Source(string sourceId, string sourceName, string sourceAuthor, string sourcePublisher, string sourceNote, string sourceRepository)
-      : this()
-  {
-    if (!string.IsNullOrEmpty(sourceId))
-    {
-      _id = sourceId;
+        get { return _id; }
+        set
+        {
+            if (_id != value)
+            {
+                _id = value;
+                OnPropertyChanged(nameof(Id));
+            }
+        }
     }
 
-    if (!string.IsNullOrEmpty(sourceName))
+    public string SourceName
     {
-      _sourceName = sourceName;
+        get { return _sourceName; }
+        set
+        {
+            if (_sourceName != value)
+            {
+                _sourceName = value;
+                OnPropertyChanged(nameof(SourceName));
+            }
+        }
     }
 
-    if (!string.IsNullOrEmpty(sourceAuthor))
+    public string SourceAuthor
     {
-      _sourceAuthor = sourceAuthor;
+        get { return _sourceAuthor; }
+        set
+        {
+            if (_sourceAuthor != value)
+            {
+                _sourceAuthor = value;
+                OnPropertyChanged(nameof(SourceAuthor));
+            }
+        }
     }
 
-    if (!string.IsNullOrEmpty(sourcePublisher))
+    public string SourcePublisher
     {
-      _sourcePublisher = sourcePublisher;
+        get { return _sourcePublisher; }
+        set
+        {
+            if (_sourcePublisher != value)
+            {
+                _sourcePublisher = value;
+                OnPropertyChanged(nameof(SourcePublisher));
+            }
+        }
     }
 
-    if (!string.IsNullOrEmpty(sourceNote))
+    public string SourceNote
     {
-      _sourceNote = sourceNote;
+        get { return _sourceNote; }
+        set
+        {
+            if (_sourceNote != value)
+            {
+                _sourceNote = value;
+                OnPropertyChanged(nameof(SourceNote));
+            }
+        }
     }
 
-    if (!string.IsNullOrEmpty(sourceRepository))
+    public string SourceRepository
     {
-      _sourceRepository = sourceRepository;
+        get { return _sourceRepository; }
+        set
+        {
+            if (_sourceRepository != value)
+            {
+                _sourceRepository = value;
+                OnPropertyChanged(nameof(SourceRepository));
+            }
+        }
     }
-  }
 
-  #endregion
-
-  #region IEquatable Members
-
-  /// <summary>
-  /// Determine equality between two source classes
-  /// </summary>
-  public bool Equals(Source other)
-  {
-    if (other is null)
+    [XmlIgnore]
+    public string SourceNameAndId
     {
-      return false;
+        get { return _id + " " + _sourceName; }
+        set { }
     }
-    // Optimization for a common success case.
-    if (ReferenceEquals(this, other))
+
+    #endregion
+
+    #region Constructors
+
+    /// <summary>
+    /// Creates a new instance of a sourceobject.
+    /// This parameterless constructor is also required for serialization.
+    /// </summary>
+    public Source()
     {
-      return true;
+        _sourceName = Properties.Resources.Unknown;
     }
-    // If run-time types are not exactly the same, return false.
-    if (GetType() != other.GetType())
+
+    /// <summary>
+    /// Creates a new instance of the source class with the id, name, author,
+    /// publisher, note and repository of the source.  
+    /// The calling method must ensure that there are no duplicated ids.
+    /// </summary>
+    public Source(
+        string sourceId,
+        string sourceName,
+        string sourceAuthor,
+        string sourcePublisher,
+        string sourceNote,
+        string sourceRepository)
+        : this()
     {
-      return false;
+        if (!string.IsNullOrEmpty(sourceId))
+        {
+            _id = sourceId;
+        }
+
+        if (!string.IsNullOrEmpty(sourceName))
+        {
+            _sourceName = sourceName;
+        }
+
+        if (!string.IsNullOrEmpty(sourceAuthor))
+        {
+            _sourceAuthor = sourceAuthor;
+        }
+
+        if (!string.IsNullOrEmpty(sourcePublisher))
+        {
+            _sourcePublisher = sourcePublisher;
+        }
+
+        if (!string.IsNullOrEmpty(sourceNote))
+        {
+            _sourceNote = sourceNote;
+        }
+
+        if (!string.IsNullOrEmpty(sourceRepository))
+        {
+            _sourceRepository = sourceRepository;
+        }
     }
-    // Return true if the Id match.
-    return (Id == other.Id);
-  }
 
-  #endregion
+    #endregion
 
-  #region Equals Methods
+    #region IEquatable Members
 
-  /// <summary>
-  /// Determines whether the specified object is equal to the current source.
-  /// </summary>
-  public override bool Equals(object obj) => Equals(obj as Source);
+    /// <summary>
+    /// Determine equality between two source classes
+    /// </summary>
+    public bool Equals(Source other)
+    {
+        if (other is null)
+        {
+            return false;
+        }
+        // Optimization for a common success case.
+        if (ReferenceEquals(this, other))
+        {
+            return true;
+        }
+        // If run-time types are not exactly the same, return false.
+        if (GetType() != other.GetType())
+        {
+            return false;
+        }
+        // Return true if the Id match.
+        return (Id == other.Id);
+    }
 
-  /// <summary>
-  /// Returns the hash code of this source.
-  /// </summary>
-  public override int GetHashCode()
-  {
-    return Id.GetHashCode();
-  }
+    #endregion
 
-  public static bool operator ==(Source lhs, Source rhs)
-  {
-    return lhs is null ? rhs is null : lhs.Equals(rhs);
-  }
+    #region Equals Methods
 
-  public static bool operator !=(Source lhs, Source rhs) => !(lhs == rhs);
+    /// <summary>
+    /// Determines whether the specified object is equal to the current source.
+    /// </summary>
+    public override bool Equals(object obj) => Equals(obj as Source);
 
-  #endregion
+    /// <summary>
+    /// Returns the hash code of this source.
+    /// </summary>
+    public override int GetHashCode()
+    {
+        return Id.GetHashCode();
+    }
 
-  #region INotifyPropertyChanged Members
+    public static bool operator ==(Source lhs, Source rhs)
+    {
+        return lhs is null ? rhs is null : lhs.Equals(rhs);
+    }
 
-  /// <summary>
-  /// INotifyPropertyChanged requires a property called PropertyChanged.
-  /// </summary>
-  public event PropertyChangedEventHandler PropertyChanged;
+    public static bool operator !=(Source lhs, Source rhs) => !(lhs == rhs);
 
-  /// <summary>
-  /// Fires the event for the property when it changes.
-  /// </summary>
-  public virtual void OnPropertyChanged(string propertyName)
-  {
-    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-  }
+    #endregion
 
-  #endregion
+    #region INotifyPropertyChanged Members
 
+    /// <summary>
+    /// INotifyPropertyChanged requires a property called PropertyChanged.
+    /// </summary>
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    /// <summary>
+    /// Fires the event for the property when it changes.
+    /// </summary>
+    public virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    #endregion
 }

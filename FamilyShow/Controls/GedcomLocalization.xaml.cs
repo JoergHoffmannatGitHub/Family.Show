@@ -8,28 +8,28 @@ namespace FamilyShow;
 /// </summary>
 public partial class GedcomLocalization : UserControl
 {
-  public GedcomLocalization()
-  {
-    InitializeComponent();
-  }
+    public GedcomLocalization()
+    {
+        InitializeComponent();
+    }
 
-  #region routed events
+    #region routed events
 
-  public static readonly RoutedEvent ContinueButtonClickEvent = EventManager.RegisterRoutedEvent(
-    "ContinueButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GedcomLocalization));
+    public static readonly RoutedEvent ContinueButtonClickEvent = EventManager.RegisterRoutedEvent(
+      "ContinueButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GedcomLocalization));
 
 
-  // Expose this event for this control's container
-  public event RoutedEventHandler ContinueButtonClick
-  {
-    add { AddHandler(ContinueButtonClickEvent, value); }
-    remove { RemoveHandler(ContinueButtonClickEvent, value); }
-  }
+    // Expose this event for this control's container
+    public event RoutedEventHandler ContinueButtonClick
+    {
+        add { AddHandler(ContinueButtonClickEvent, value); }
+        remove { RemoveHandler(ContinueButtonClickEvent, value); }
+    }
 
-  #endregion
+    #endregion
 
-  private void ContinueButton_Click(object sender, RoutedEventArgs e)
-  {
-    RaiseEvent(new RoutedEventArgs(ContinueButtonClickEvent));
-  }
+    private void ContinueButton_Click(object sender, RoutedEventArgs e)
+    {
+        RaiseEvent(new RoutedEventArgs(ContinueButtonClickEvent));
+    }
 }

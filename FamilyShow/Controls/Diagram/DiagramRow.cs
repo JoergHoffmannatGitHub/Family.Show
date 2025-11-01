@@ -13,159 +13,161 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
 
+#pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace FamilyShow;
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 
 /// <summary>
 /// Row in the diagram that contains group objects.
 /// </summary>
 public class DiagramRow : FrameworkElement
 {
-  #region fields
+    #region fields
 
-  // Location of the row, relative to the diagram.
-  private Point _location;
+    // Location of the row, relative to the diagram.
+    private Point _location;
 
-  // List of groups in the row.
-  private readonly List<DiagramGroup> _groups = [];
+    // List of groups in the row.
+    private readonly List<DiagramGroup> _groups = [];
 
-  #endregion
+    #endregion
 
-  #region properties
+    #region properties
 
-  /// <summary>
-  /// Space between each group.
-  /// </summary>
-  public double GroupSpace { get; set; } = 80;
+    /// <summary>
+    /// Space between each group.
+    /// </summary>
+    public double GroupSpace { get; set; } = 80;
 
-  /// <summary>
-  /// Location of the row, relative to the diagram.
-  /// </summary>
-  public Point Location
-  {
-    get { return _location; }
-    set { _location = value; }
-  }
-
-  /// <summary>
-  /// List of groups in the row.
-  /// </summary>
-  public ReadOnlyCollection<DiagramGroup> Groups
-  {
-    get { return new ReadOnlyCollection<DiagramGroup>(_groups); }
-  }
-
-  public int NodeCount
-  {
-    get
+    /// <summary>
+    /// Location of the row, relative to the diagram.
+    /// </summary>
+    public Point Location
     {
-      int count = 0;
-      foreach (DiagramGroup group in _groups)
-      {
-        count += group.Nodes.Count;
-      }
-
-      return count;
-    }
-  }
-
-  #endregion
-
-  #region overrides
-
-  protected override Size MeasureOverride(Size availableSize)
-  {
-    // Let each group determine how large they want to be.
-    Size size = new(double.PositiveInfinity, double.PositiveInfinity);
-    foreach (DiagramGroup group in _groups)
-    {
-      group.Measure(size);
+        get { return _location; }
+        set { _location = value; }
     }
 
-    // Return the total size of the row.
-    return ArrangeGroups(false);
-  }
-
-  protected override Size ArrangeOverride(Size finalSize)
-  {
-    // Arrange the groups in the row, return the total size.
-    return ArrangeGroups(true);
-  }
-
-  protected override int VisualChildrenCount
-  {
-    // Return the number of groups.
-    get { return _groups.Count; }
-  }
-
-  protected override Visual GetVisualChild(int index)
-  {
-    // Return the requested group.
-    return _groups[index];
-  }
-
-  #endregion
-
-  /// <summary>
-  /// Add the group to the row.
-  /// </summary>
-  public void Add(DiagramGroup group)
-  {
-    _groups.Add(group);
-    AddVisualChild(group);
-  }
-
-  /// <summary>
-  /// Remove all groups from the row.
-  /// </summary>
-  public void Clear()
-  {
-    foreach (DiagramGroup group in _groups)
+    /// <summary>
+    /// List of groups in the row.
+    /// </summary>
+    public ReadOnlyCollection<DiagramGroup> Groups
     {
-      group.Clear();
-      RemoveVisualChild(group);
+        get { return new ReadOnlyCollection<DiagramGroup>(_groups); }
     }
 
-    _groups.Clear();
-  }
-
-  /// <summary>
-  /// Arrange the groups in the row, return the total size.
-  /// </summary>
-  private Size ArrangeGroups(bool arrange)
-  {
-    // Position of the next group.
-    double pos = 0;
-
-    // Bounding area of the group.
-    Rect bounds = new();
-
-    // Total size of the row.
-    Size totalSize = new(0, 0);
-
-    foreach (DiagramGroup group in _groups)
+    public int NodeCount
     {
-      // Group location.
-      bounds.X = pos;
-      bounds.Y = 0;
+        get
+        {
+            int count = 0;
+            foreach (DiagramGroup group in _groups)
+            {
+                count += group.Nodes.Count;
+            }
 
-      // Group size.                    
-      bounds.Width = group.DesiredSize.Width;
-      bounds.Height = group.DesiredSize.Height;
-
-      // Arrange the group, save the location.
-      if (arrange)
-      {
-        group.Arrange(bounds);
-        group.Location = bounds.TopLeft;
-      }
-
-      // Update the size of the row.
-      totalSize.Width = pos + group.DesiredSize.Width;
-      totalSize.Height = Math.Max(totalSize.Height, group.DesiredSize.Height);
-
-      pos += (bounds.Width + GroupSpace);
+            return count;
+        }
     }
 
-    return totalSize;
-  }
+    #endregion
+
+    #region overrides
+
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        // Let each group determine how large they want to be.
+        Size size = new(double.PositiveInfinity, double.PositiveInfinity);
+        foreach (DiagramGroup group in _groups)
+        {
+            group.Measure(size);
+        }
+
+        // Return the total size of the row.
+        return ArrangeGroups(false);
+    }
+
+    protected override Size ArrangeOverride(Size finalSize)
+    {
+        // Arrange the groups in the row, return the total size.
+        return ArrangeGroups(true);
+    }
+
+    protected override int VisualChildrenCount
+    {
+        // Return the number of groups.
+        get { return _groups.Count; }
+    }
+
+    protected override Visual GetVisualChild(int index)
+    {
+        // Return the requested group.
+        return _groups[index];
+    }
+
+    #endregion
+
+    /// <summary>
+    /// Add the group to the row.
+    /// </summary>
+    public void Add(DiagramGroup group)
+    {
+        _groups.Add(group);
+        AddVisualChild(group);
+    }
+
+    /// <summary>
+    /// Remove all groups from the row.
+    /// </summary>
+    public void Clear()
+    {
+        foreach (DiagramGroup group in _groups)
+        {
+            group.Clear();
+            RemoveVisualChild(group);
+        }
+
+        _groups.Clear();
+    }
+
+    /// <summary>
+    /// Arrange the groups in the row, return the total size.
+    /// </summary>
+    private Size ArrangeGroups(bool arrange)
+    {
+        // Position of the next group.
+        double pos = 0;
+
+        // Bounding area of the group.
+        Rect bounds = new();
+
+        // Total size of the row.
+        Size totalSize = new(0, 0);
+
+        foreach (DiagramGroup group in _groups)
+        {
+            // Group location.
+            bounds.X = pos;
+            bounds.Y = 0;
+
+            // Group size.                    
+            bounds.Width = group.DesiredSize.Width;
+            bounds.Height = group.DesiredSize.Height;
+
+            // Arrange the group, save the location.
+            if (arrange)
+            {
+                group.Arrange(bounds);
+                group.Location = bounds.TopLeft;
+            }
+
+            // Update the size of the row.
+            totalSize.Width = pos + group.DesiredSize.Width;
+            totalSize.Height = Math.Max(totalSize.Height, group.DesiredSize.Height);
+
+            pos += (bounds.Width + GroupSpace);
+        }
+
+        return totalSize;
+    }
 }

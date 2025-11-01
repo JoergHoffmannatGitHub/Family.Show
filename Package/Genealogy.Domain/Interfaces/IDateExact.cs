@@ -5,18 +5,18 @@ namespace Genealogy.Domain.Interfaces;
 /// </summary>
 public interface IDateExact : IDate
 {
-  /// <summary>
-  /// Gets the year component of the date.
-  /// </summary>
-  int Year { get; }
+    /// <summary>
+    /// Gets the year component of the date.
+    /// </summary>
+    int Year { get; }
 
-  /// <summary>
-  /// Gets the month component of the date.
-  /// </summary>
-  int Month { get; }
+    /// <summary>
+    /// Gets the month component of the date.
+    /// </summary>
+    int Month { get; }
 
-  /// <summary>
-  /// Gets the day component of the date.
-  /// </summary>
-  int Day { get; }
+    /// <summary>
+    /// Gets the day component of the date.
+    /// </summary>
+    int Day { get; }
 }

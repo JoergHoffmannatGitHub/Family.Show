@@ -9,17 +9,17 @@ namespace Genealogy.Domain;
 /// used to differentiate genealogy-related errors from other exceptions in the application.</remarks>
 public class GenealogyException : Exception
 {
-  public GenealogyException()
-  {
-  }
+    public GenealogyException()
+    {
+    }
 
-  public GenealogyException(string message)
-      : base(message)
-  {
-  }
+    public GenealogyException(string message)
+        : base(message)
+    {
+    }
 
-  public GenealogyException(string message, Exception inner)
-      : base(message, inner)
-  {
-  }
+    public GenealogyException(string message, Exception inner)
+        : base(message, inner)
+    {
+    }
 }

@@ -2,196 +2,196 @@ namespace FamilyShowLib.Tests;
 
 public class SpouseRelationshipTests
 {
-  [Fact]
-  public void MarriageDate_SetAndGet_ReturnsCorrectValue()
-  {
-    // Arrange
-    var spouseRelationship = new SpouseRelationship();
-    DateWrapper expectedDate = new(2020, 5, 15);
-
-    // Act
-    spouseRelationship.MarriageDate = expectedDate;
-    DateWrapper actualDate = spouseRelationship.MarriageDate;
-
-    // Assert
-    Assert.Equal(expectedDate, actualDate);
-  }
-
-  [Fact]
-  public void MarriageDate_SetNull_ReturnsNull()
-  {
-    // Arrange
-    var spouseRelationship = new SpouseRelationship
+    [Fact]
+    public void MarriageDate_SetAndGet_ReturnsCorrectValue()
     {
-      // Act
-      MarriageDate = null
-    };
+        // Arrange
+        var spouseRelationship = new SpouseRelationship();
+        DateWrapper expectedDate = new(2020, 5, 15);
 
-    DateWrapper? actualDate = spouseRelationship.MarriageDate;
+        // Act
+        spouseRelationship.MarriageDate = expectedDate;
+        DateWrapper actualDate = spouseRelationship.MarriageDate;
 
-    // Assert
-    Assert.Null(actualDate);
-  }
+        // Assert
+        Assert.Equal(expectedDate, actualDate);
+    }
 
-  [Fact]
-  public void MarriageDate_SetAndGet_ReturnsCorrectValueAfterMultipleAssignments()
-  {
-    // Arrange
-    var spouseRelationship = new SpouseRelationship();
-    DateWrapper firstDate = new(2018, 3, 10);
-    DateWrapper secondDate = new(2021, 7, 20);
-
-    // Act
-    spouseRelationship.MarriageDate = firstDate;
-    spouseRelationship.MarriageDate = secondDate;
-    DateWrapper actualDate = spouseRelationship.MarriageDate;
-
-    // Assert
-    Assert.Equal(secondDate, actualDate);
-  }
-
-  [Fact]
-  public void MarriageDateDescriptor_SetAndGet_ReturnsCorrectValue()
-  {
-    // Arrange
-    var spouseRelationship = new SpouseRelationship();
-    string expectedDescriptor = "Spring 2020";
-
-    // Act
-    spouseRelationship.MarriageDateDescriptor = expectedDescriptor;
-    string actualDescriptor = spouseRelationship.MarriageDateDescriptor;
-
-    // Assert
-    Assert.Equal(expectedDescriptor, actualDescriptor);
-  }
-
-  [Fact]
-  public void MarriageDateDescriptor_SetNull_ReturnsNull()
-  {
-    // Arrange
-    var spouseRelationship = new SpouseRelationship
+    [Fact]
+    public void MarriageDate_SetNull_ReturnsNull()
     {
-      // Act
-      MarriageDateDescriptor = null
-    };
+        // Arrange
+        var spouseRelationship = new SpouseRelationship
+        {
+            // Act
+            MarriageDate = null
+        };
+
+        DateWrapper? actualDate = spouseRelationship.MarriageDate;
+
+        // Assert
+        Assert.Null(actualDate);
+    }
+
+    [Fact]
+    public void MarriageDate_SetAndGet_ReturnsCorrectValueAfterMultipleAssignments()
+    {
+        // Arrange
+        var spouseRelationship = new SpouseRelationship();
+        DateWrapper firstDate = new(2018, 3, 10);
+        DateWrapper secondDate = new(2021, 7, 20);
+
+        // Act
+        spouseRelationship.MarriageDate = firstDate;
+        spouseRelationship.MarriageDate = secondDate;
+        DateWrapper actualDate = spouseRelationship.MarriageDate;
+
+        // Assert
+        Assert.Equal(secondDate, actualDate);
+    }
+
+    [Fact]
+    public void MarriageDateDescriptor_SetAndGet_ReturnsCorrectValue()
+    {
+        // Arrange
+        var spouseRelationship = new SpouseRelationship();
+        string expectedDescriptor = "Spring 2020";
+
+        // Act
+        spouseRelationship.MarriageDateDescriptor = expectedDescriptor;
+        string actualDescriptor = spouseRelationship.MarriageDateDescriptor;
+
+        // Assert
+        Assert.Equal(expectedDescriptor, actualDescriptor);
+    }
+
+    [Fact]
+    public void MarriageDateDescriptor_SetNull_ReturnsNull()
+    {
+        // Arrange
+        var spouseRelationship = new SpouseRelationship
+        {
+            // Act
+            MarriageDateDescriptor = null
+        };
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-    string actualDescriptor = spouseRelationship.MarriageDateDescriptor;
+        string actualDescriptor = spouseRelationship.MarriageDateDescriptor;
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
-    // Assert
-    Assert.Null(actualDescriptor);
-  }
+        // Assert
+        Assert.Null(actualDescriptor);
+    }
 
-  [Fact]
-  public void MarriageDateDescriptor_SetAndGet_ReturnsCorrectValueAfterMultipleAssignments()
-  {
-    // Arrange
-    var spouseRelationship = new SpouseRelationship();
-    string firstDescriptor = "Summer 2018";
-    string secondDescriptor = "Winter 2021";
-
-    // Act
-    spouseRelationship.MarriageDateDescriptor = firstDescriptor;
-    spouseRelationship.MarriageDateDescriptor = secondDescriptor;
-    string actualDescriptor = spouseRelationship.MarriageDateDescriptor;
-
-    // Assert
-    Assert.Equal(secondDescriptor, actualDescriptor);
-  }
-
-  [Fact]
-  public void DivorceDate_SetAndGet_ReturnsCorrectValue()
-  {
-    // Arrange
-    var spouseRelationship = new SpouseRelationship();
-    DateWrapper expectedDate = new(2022, 8, 25);
-
-    // Act
-    spouseRelationship.DivorceDate = expectedDate;
-    DateWrapper actualDate = spouseRelationship.DivorceDate;
-
-    // Assert
-    Assert.Equal(expectedDate, actualDate);
-  }
-
-  [Fact]
-  public void DivorceDate_SetNull_ReturnsNull()
-  {
-    // Arrange
-    var spouseRelationship = new SpouseRelationship
+    [Fact]
+    public void MarriageDateDescriptor_SetAndGet_ReturnsCorrectValueAfterMultipleAssignments()
     {
-      // Act
-      DivorceDate = null
-    };
-    DateWrapper? actualDate = spouseRelationship.DivorceDate;
+        // Arrange
+        var spouseRelationship = new SpouseRelationship();
+        string firstDescriptor = "Summer 2018";
+        string secondDescriptor = "Winter 2021";
 
-    // Assert
-    Assert.Null(actualDate);
-  }
+        // Act
+        spouseRelationship.MarriageDateDescriptor = firstDescriptor;
+        spouseRelationship.MarriageDateDescriptor = secondDescriptor;
+        string actualDescriptor = spouseRelationship.MarriageDateDescriptor;
 
-  [Fact]
-  public void DivorceDate_SetAndGet_ReturnsCorrectValueAfterMultipleAssignments()
-  {
-    // Arrange
-    var spouseRelationship = new SpouseRelationship();
-    DateWrapper firstDate = new(2019, 4, 10);
-    DateWrapper secondDate = new(2023, 11, 15);
+        // Assert
+        Assert.Equal(secondDescriptor, actualDescriptor);
+    }
 
-    // Act
-    spouseRelationship.DivorceDate = firstDate;
-    spouseRelationship.DivorceDate = secondDate;
-    DateWrapper actualDate = spouseRelationship.DivorceDate;
-
-    // Assert
-    Assert.Equal(secondDate, actualDate);
-  }
-
-  [Fact]
-  public void DivorceDateDescriptor_SetAndGet_ReturnsCorrectValue()
-  {
-    // Arrange
-    var spouseRelationship = new SpouseRelationship();
-    string expectedDescriptor = "Fall 2022";
-
-    // Act
-    spouseRelationship.DivorceDateDescriptor = expectedDescriptor;
-    string actualDescriptor = spouseRelationship.DivorceDateDescriptor;
-
-    // Assert
-    Assert.Equal(expectedDescriptor, actualDescriptor);
-  }
-
-  [Fact]
-  public void DivorceDateDescriptor_SetNull_ReturnsNull()
-  {
-    // Arrange
-    var spouseRelationship = new SpouseRelationship
+    [Fact]
+    public void DivorceDate_SetAndGet_ReturnsCorrectValue()
     {
-      // Act
-      DivorceDateDescriptor = null
-    };
+        // Arrange
+        var spouseRelationship = new SpouseRelationship();
+        DateWrapper expectedDate = new(2022, 8, 25);
+
+        // Act
+        spouseRelationship.DivorceDate = expectedDate;
+        DateWrapper actualDate = spouseRelationship.DivorceDate;
+
+        // Assert
+        Assert.Equal(expectedDate, actualDate);
+    }
+
+    [Fact]
+    public void DivorceDate_SetNull_ReturnsNull()
+    {
+        // Arrange
+        var spouseRelationship = new SpouseRelationship
+        {
+            // Act
+            DivorceDate = null
+        };
+        DateWrapper? actualDate = spouseRelationship.DivorceDate;
+
+        // Assert
+        Assert.Null(actualDate);
+    }
+
+    [Fact]
+    public void DivorceDate_SetAndGet_ReturnsCorrectValueAfterMultipleAssignments()
+    {
+        // Arrange
+        var spouseRelationship = new SpouseRelationship();
+        DateWrapper firstDate = new(2019, 4, 10);
+        DateWrapper secondDate = new(2023, 11, 15);
+
+        // Act
+        spouseRelationship.DivorceDate = firstDate;
+        spouseRelationship.DivorceDate = secondDate;
+        DateWrapper actualDate = spouseRelationship.DivorceDate;
+
+        // Assert
+        Assert.Equal(secondDate, actualDate);
+    }
+
+    [Fact]
+    public void DivorceDateDescriptor_SetAndGet_ReturnsCorrectValue()
+    {
+        // Arrange
+        var spouseRelationship = new SpouseRelationship();
+        string expectedDescriptor = "Fall 2022";
+
+        // Act
+        spouseRelationship.DivorceDateDescriptor = expectedDescriptor;
+        string actualDescriptor = spouseRelationship.DivorceDateDescriptor;
+
+        // Assert
+        Assert.Equal(expectedDescriptor, actualDescriptor);
+    }
+
+    [Fact]
+    public void DivorceDateDescriptor_SetNull_ReturnsNull()
+    {
+        // Arrange
+        var spouseRelationship = new SpouseRelationship
+        {
+            // Act
+            DivorceDateDescriptor = null
+        };
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-    string actualDescriptor = spouseRelationship.DivorceDateDescriptor;
+        string actualDescriptor = spouseRelationship.DivorceDateDescriptor;
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
-    // Assert
-    Assert.Null(actualDescriptor);
-  }
+        // Assert
+        Assert.Null(actualDescriptor);
+    }
 
-  [Fact]
-  public void DivorceDateDescriptor_SetAndGet_ReturnsCorrectValueAfterMultipleAssignments()
-  {
-    // Arrange
-    var spouseRelationship = new SpouseRelationship();
-    string firstDescriptor = "Spring 2019";
-    string secondDescriptor = "Winter 2023";
+    [Fact]
+    public void DivorceDateDescriptor_SetAndGet_ReturnsCorrectValueAfterMultipleAssignments()
+    {
+        // Arrange
+        var spouseRelationship = new SpouseRelationship();
+        string firstDescriptor = "Spring 2019";
+        string secondDescriptor = "Winter 2023";
 
-    // Act
-    spouseRelationship.DivorceDateDescriptor = firstDescriptor;
-    spouseRelationship.DivorceDateDescriptor = secondDescriptor;
-    string actualDescriptor = spouseRelationship.DivorceDateDescriptor;
+        // Act
+        spouseRelationship.DivorceDateDescriptor = firstDescriptor;
+        spouseRelationship.DivorceDateDescriptor = secondDescriptor;
+        string actualDescriptor = spouseRelationship.DivorceDateDescriptor;
 
-    // Assert
-    Assert.Equal(secondDescriptor, actualDescriptor);
-  }
+        // Assert
+        Assert.Equal(secondDescriptor, actualDescriptor);
+    }
 }

@@ -13,9 +13,9 @@ namespace FamilyShow;
 /// </summary>
 public class FilterEntry(string display, string extension)
 {
-  public string Display { get; } = display;
+    public string Display { get; } = display;
 
-  public string Extension { get; } = extension;
+    public string Extension { get; } = extension;
 }
 
 /// <summary>
@@ -23,70 +23,70 @@ public class FilterEntry(string display, string extension)
 /// </summary>
 internal class CommonDialog
 {
-  #region properties
+    #region properties
 
-  public List<FilterEntry> Filter { get; } = [];
+    public List<FilterEntry> Filter { get; } = [];
 
-  public string Title { private get; set; }
+    public string Title { private get; set; }
 
-  public string InitialDirectory { private get; set; }
+    public string InitialDirectory { private get; set; }
 
-  public string DefaultExtension { private get; set; }
+    public string DefaultExtension { private get; set; }
 
-  public string FileName { get; set; }
+    public string FileName { get; set; }
 
-  #endregion
+    #endregion
 
-  /// <summary>
-  /// Displays a dialog box from which the user can select a file.
-  /// </summary>
-  public bool ShowOpen()
-  {
-    using OpenFileDialog openFileDialog = new();
-    openFileDialog.Filter = SetFilter();
-    openFileDialog.DefaultExt = DefaultExtension;
-    if (openFileDialog.ShowDialog() == DialogResult.OK)
+    /// <summary>
+    /// Displays a dialog box from which the user can select a file.
+    /// </summary>
+    public bool ShowOpen()
     {
-      FileName = openFileDialog.FileName;
-      return true;
+        using OpenFileDialog openFileDialog = new();
+        openFileDialog.Filter = SetFilter();
+        openFileDialog.DefaultExt = DefaultExtension;
+        if (openFileDialog.ShowDialog() == DialogResult.OK)
+        {
+            FileName = openFileDialog.FileName;
+            return true;
+        }
+
+        return false;
     }
 
-    return false;
-  }
 
-
-  /// <summary>
-  /// Prompts the user to select a location for saving a file. This class cannot be inherited.
-  /// </summary>
-  public bool ShowSave()
-  {
-    using SaveFileDialog saveFileDialog = new();
-    saveFileDialog.Filter = SetFilter();
-    saveFileDialog.CheckPathExists = true;
-    saveFileDialog.OverwritePrompt = true;
-    saveFileDialog.DefaultExt = DefaultExtension;
-    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+    /// <summary>
+    /// Prompts the user to select a location for saving a file. This class cannot be inherited.
+    /// </summary>
+    public bool ShowSave()
     {
-      FileName = saveFileDialog.FileName;
-      return true;
+        using SaveFileDialog saveFileDialog = new();
+        saveFileDialog.Filter = SetFilter();
+        saveFileDialog.CheckPathExists = true;
+        saveFileDialog.OverwritePrompt = true;
+        saveFileDialog.DefaultExt = DefaultExtension;
+        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+        {
+            FileName = saveFileDialog.FileName;
+            return true;
+        }
+
+        return false;
     }
 
-    return false;
-  }
-
-  /// <summary>
-  /// Set the low level filter with the filter collection.
-  /// </summary>
-  private string SetFilter()
-  {
-    StringBuilder sb = new();
-    foreach (FilterEntry entry in Filter)
+    /// <summary>
+    /// Set the low level filter with the filter collection.
+    /// </summary>
+    private string SetFilter()
     {
-      sb.AppendFormat("{0}|{1}|", entry.Display, entry.Extension);
+        StringBuilder sb = new();
+        foreach (FilterEntry entry in Filter)
+        {
+            sb.AppendFormat("{0}|{1}|", entry.Display, entry.Extension);
+        }
+        sb.Length--;
+        return sb.ToString();
     }
-    sb.Length--;
-    return sb.ToString();
-  }
 
 
 }

@@ -11,270 +11,278 @@ namespace FamilyShow;
 /// </summary>
 public partial class Sources : UserControl
 {
+    #region fields
 
-  #region fields
+    private readonly People _familyCollection = App.FamilyCollection;
+    private readonly PeopleCollection _family = App.Family;
+    private readonly SourceCollection _source = App.Sources;
+    private readonly RepositoryCollection _repository = App.Repositories;
 
-  private readonly People _familyCollection = App.FamilyCollection;
-  private readonly PeopleCollection _family = App.Family;
-  private readonly SourceCollection _source = App.Sources;
-  private readonly RepositoryCollection _repository = App.Repositories;
+    #endregion
 
-  #endregion
-
-  public Sources()
-  {
-    InitializeComponent();
-    SourceRepository.Content = string.Empty;  //remove the place holder text on load
-  }
-
-  #region routed events
-
-  public static readonly RoutedEvent CancelButtonClickEvent = EventManager.RegisterRoutedEvent(
-    "CancelButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Sources));
-
-  public event RoutedEventHandler CancelButtonClick
-  {
-    add { AddHandler(CancelButtonClickEvent, value); }
-    remove { RemoveHandler(CancelButtonClickEvent, value); }
-  }
-
-  #endregion
-
-  #region methods
-
-  private void SaveButton_Click(object sender, RoutedEventArgs e)
-  {
-    Save();
-  }
-
-  private void AddButton_Click(object sender, RoutedEventArgs e)
-  {
-    Add();
-  }
-
-  private void DeleteButton_Click(object sender, RoutedEventArgs e)
-  {
-    Delete();
-  }
-
-  private void CancelButton_Click(object sender, RoutedEventArgs e)
-  {
-    Clear();
-    RaiseEvent(new RoutedEventArgs(CancelButtonClickEvent));
-  }
-
-  private void ExportSourcesButton_Click(object sender, RoutedEventArgs e)
-  {
-    Export();
-  }
-
-  private void SourcesCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-  {
-    Change();
-  }
-
-  #endregion
-
-  #region helper methods
-
-  private void Change()
-  {
-    if (SourcesCombobox.SelectedItem != null)
+    public Sources()
     {
-      Source s = (Source)SourcesCombobox.SelectedItem;
-      SourceNameEditTextBox.Text = s.SourceName;
-      SourceAuthorEditTextBox.Text = s.SourceAuthor;
-      SourcePublisherEditTextBox.Text = s.SourcePublisher;
-      //SourceNoteEditTextBox.Text = s.SourceNote;
-      SourceRepositoryEditTextBox.Text = s.SourceRepository;
-
-      try
-      {
-        SourceRepository.Content = "(" + _repository.Find(SourceRepositoryEditTextBox.Text).RepositoryName + ")";
-      }
-      catch
-      {
-        SourceRepository.Content = string.Empty;
-      }
-    }
-  }
-
-  private void Export()
-  {
-    CommonDialog dialog = new()
-    {
-      InitialDirectory = People.ApplicationFolderPath
-    };
-    dialog.Filter.Add(new FilterEntry(Properties.Resources.htmlFiles, Properties.Resources.htmlExtension));
-    dialog.Title = Properties.Resources.Export;
-    dialog.DefaultExtension = Properties.Resources.DefaulthtmlExtension;
-    dialog.ShowSave();
-
-    if (!string.IsNullOrEmpty(dialog.FileName))
-    {
-      SourcesExport sources = new();
-      sources.ExportSources(dialog.FileName, Path.GetFileName(_familyCollection.FullyQualifiedFilename), _source);
+        InitializeComponent();
+        SourceRepository.Content = string.Empty;  //remove the place holder text on load
     }
 
-    if (File.Exists(dialog.FileName))
-    {
-      MessageBoxResult result = MessageBox.Show(Properties.Resources.SourcesExportMessage,
-     Properties.Resources.ExportResult, MessageBoxButton.YesNo, MessageBoxImage.Question);
+    #region routed events
 
-      try
-      {
-        if (result == MessageBoxResult.Yes)
+    public static readonly RoutedEvent CancelButtonClickEvent = EventManager.RegisterRoutedEvent(
+      "CancelButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Sources));
+
+    public event RoutedEventHandler CancelButtonClick
+    {
+        add { AddHandler(CancelButtonClickEvent, value); }
+        remove { RemoveHandler(CancelButtonClickEvent, value); }
+    }
+
+    #endregion
+
+    #region methods
+
+    private void SaveButton_Click(object sender, RoutedEventArgs e)
+    {
+        Save();
+    }
+
+    private void AddButton_Click(object sender, RoutedEventArgs e)
+    {
+        Add();
+    }
+
+    private void DeleteButton_Click(object sender, RoutedEventArgs e)
+    {
+        Delete();
+    }
+
+    private void CancelButton_Click(object sender, RoutedEventArgs e)
+    {
+        Clear();
+        RaiseEvent(new RoutedEventArgs(CancelButtonClickEvent));
+    }
+
+    private void ExportSourcesButton_Click(object sender, RoutedEventArgs e)
+    {
+        Export();
+    }
+
+    private void SourcesCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        Change();
+    }
+
+    #endregion
+
+    #region helper methods
+
+    private void Change()
+    {
+        if (SourcesCombobox.SelectedItem != null)
         {
-          System.Diagnostics.Process.Start(dialog.FileName);
-        }
-      }
-      catch { }
-    }
-  }
+            Source s = (Source)SourcesCombobox.SelectedItem;
+            SourceNameEditTextBox.Text = s.SourceName;
+            SourceAuthorEditTextBox.Text = s.SourceAuthor;
+            SourcePublisherEditTextBox.Text = s.SourcePublisher;
+            //SourceNoteEditTextBox.Text = s.SourceNote;
+            SourceRepositoryEditTextBox.Text = s.SourceRepository;
 
-  private void Clear()
-  {
-
-    SourcesCombobox.SelectedIndex = -1;
-
-    SourceNameEditTextBox.Text = string.Empty;
-    SourceAuthorEditTextBox.Text = string.Empty;
-    SourcePublisherEditTextBox.Text = string.Empty;
-    //SourceNoteEditTextBox.Text = string.Empty;
-    SourceRepositoryEditTextBox.Text = string.Empty;
-    SourceRepository.Content = string.Empty;
-  }
-
-  private void Add()
-  {
-    int y = 0;
-
-    string oldSourceIDs = string.Empty;
-
-    foreach (Source s in _source)
-    {
-      oldSourceIDs += s.Id + "E";
-    }
-
-    do
-    {
-      y++;
-    }
-    while (oldSourceIDs.Contains("S" + y.ToString() + "E"));
-
-    string sourceID = "S" + y.ToString();
-
-    Source newSource = new(sourceID, "", "", "", "", "");
-    _source.Add(newSource);
-    _source.OnContentChanged();
-  }
-
-  private void Save()
-  {
-
-    if (SourcesCombobox.Items != null && SourcesCombobox.Items.Count > 0 && SourcesCombobox.SelectedItem != null)
-    {
-      Source s = (Source)SourcesCombobox.SelectedItem;
-
-      s.SourceName = SourceNameEditTextBox.Text;
-      s.SourceAuthor = SourceAuthorEditTextBox.Text;
-      s.SourcePublisher = SourcePublisherEditTextBox.Text;
-      //s.SourceNote = SourceNoteEditTextBox.Text;
-      s.SourceRepository = SourceRepositoryEditTextBox.Text;
-      s.OnPropertyChanged("SourceNameAndId");
-    }
-  }
-
-  private void Delete()
-  {
-    if (SourcesCombobox.Items != null && SourcesCombobox.Items.Count > 0 && SourcesCombobox.SelectedItem != null)
-    {
-      Source sourceToRemove = (Source)SourcesCombobox.SelectedItem;
-
-      bool deletable = true;
-
-      foreach (Person p in _family)
-      {
-
-        if (deletable == true)
-        {
-          if (p.HasSpouse)
-          {
-            foreach (Relationship rel in p.Relationships)
+            try
             {
-              if (rel.RelationshipType == RelationshipType.Spouse)
-              {
-                SpouseRelationship spouseRel = (SpouseRelationship)rel;
+                SourceRepository.Content =
+                    "(" + _repository.Find(SourceRepositoryEditTextBox.Text).RepositoryName + ")";
+            }
+            catch
+            {
+                SourceRepository.Content = string.Empty;
+            }
+        }
+    }
 
-                if (spouseRel.MarriageSource != null)
+    private void Export()
+    {
+        CommonDialog dialog = new()
+        {
+            InitialDirectory = People.ApplicationFolderPath
+        };
+        dialog.Filter.Add(new FilterEntry(Properties.Resources.htmlFiles, Properties.Resources.htmlExtension));
+        dialog.Title = Properties.Resources.Export;
+        dialog.DefaultExtension = Properties.Resources.DefaulthtmlExtension;
+        dialog.ShowSave();
+
+        if (!string.IsNullOrEmpty(dialog.FileName))
+        {
+            SourcesExport sources = new();
+            sources.ExportSources(
+                dialog.FileName,
+                Path.GetFileName(_familyCollection.FullyQualifiedFilename), _source);
+        }
+
+        if (File.Exists(dialog.FileName))
+        {
+            MessageBoxResult result = MessageBox.Show(Properties.Resources.SourcesExportMessage,
+           Properties.Resources.ExportResult, MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            try
+            {
+                if (result == MessageBoxResult.Yes)
                 {
-                  if (spouseRel.MarriageSource == sourceToRemove.Id)
-                  {
-                    deletable = false;
-                  }
+                    System.Diagnostics.Process.Start(dialog.FileName);
                 }
+            }
+            catch { }
+        }
+    }
 
-                if (spouseRel.DivorceSource != null)
+    private void Clear()
+    {
+
+        SourcesCombobox.SelectedIndex = -1;
+
+        SourceNameEditTextBox.Text = string.Empty;
+        SourceAuthorEditTextBox.Text = string.Empty;
+        SourcePublisherEditTextBox.Text = string.Empty;
+        //SourceNoteEditTextBox.Text = string.Empty;
+        SourceRepositoryEditTextBox.Text = string.Empty;
+        SourceRepository.Content = string.Empty;
+    }
+
+    private void Add()
+    {
+        int y = 0;
+
+        string oldSourceIDs = string.Empty;
+
+        foreach (Source s in _source)
+        {
+            oldSourceIDs += s.Id + "E";
+        }
+
+        do
+        {
+            y++;
+        }
+        while (oldSourceIDs.Contains("S" + y.ToString() + "E"));
+
+        string sourceID = "S" + y.ToString();
+
+        Source newSource = new(sourceID, "", "", "", "", "");
+        _source.Add(newSource);
+        _source.OnContentChanged();
+    }
+
+    private void Save()
+    {
+
+        if (SourcesCombobox.Items != null && SourcesCombobox.Items.Count > 0 && SourcesCombobox.SelectedItem != null)
+        {
+            Source s = (Source)SourcesCombobox.SelectedItem;
+
+            s.SourceName = SourceNameEditTextBox.Text;
+            s.SourceAuthor = SourceAuthorEditTextBox.Text;
+            s.SourcePublisher = SourcePublisherEditTextBox.Text;
+            //s.SourceNote = SourceNoteEditTextBox.Text;
+            s.SourceRepository = SourceRepositoryEditTextBox.Text;
+            s.OnPropertyChanged("SourceNameAndId");
+        }
+    }
+
+    private void Delete()
+    {
+        if (SourcesCombobox.Items != null && SourcesCombobox.Items.Count > 0 && SourcesCombobox.SelectedItem != null)
+        {
+            Source sourceToRemove = (Source)SourcesCombobox.SelectedItem;
+
+            bool deletable = true;
+
+            foreach (Person p in _family)
+            {
+
+                if (deletable == true)
                 {
-                  if (spouseRel.DivorceSource == sourceToRemove.Id)
-                  {
-                    deletable = false;
-                  }
-                }
+                    if (p.HasSpouse)
+                    {
+                        foreach (Relationship rel in p.Relationships)
+                        {
+                            if (rel.RelationshipType == RelationshipType.Spouse)
+                            {
+                                SpouseRelationship spouseRel = (SpouseRelationship)rel;
 
-              }
+                                if (spouseRel.MarriageSource != null)
+                                {
+                                    if (spouseRel.MarriageSource == sourceToRemove.Id)
+                                    {
+                                        deletable = false;
+                                    }
+                                }
+
+                                if (spouseRel.DivorceSource != null)
+                                {
+                                    if (spouseRel.DivorceSource == sourceToRemove.Id)
+                                    {
+                                        deletable = false;
+                                    }
+                                }
+
+                            }
+                        }
+
+                    }
+
+                    if (p.BirthSource == sourceToRemove.Id ||
+                        p.DeathSource == sourceToRemove.Id ||
+                        p.EducationSource == sourceToRemove.Id ||
+                        p.EducationSource == sourceToRemove.Id ||
+                        p.OccupationSource == sourceToRemove.Id ||
+                        p.ReligionSource == sourceToRemove.Id ||
+                        p.BurialCitation == sourceToRemove.Id ||
+                        p.CremationSource == sourceToRemove.Id
+                        )
+                    {
+                        deletable = false;
+                    }
+                }
+                else { }
+
+
             }
 
-          }
+            if (deletable == true)
+            {
+                MessageBoxResult result = MessageBox.Show(Properties.Resources.ConfirmDeleteSource,
+           Properties.Resources.Source, MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-          if (p.BirthSource == sourceToRemove.Id ||
-              p.DeathSource == sourceToRemove.Id ||
-              p.EducationSource == sourceToRemove.Id ||
-              p.EducationSource == sourceToRemove.Id ||
-              p.OccupationSource == sourceToRemove.Id ||
-              p.ReligionSource == sourceToRemove.Id ||
-              p.BurialCitation == sourceToRemove.Id ||
-              p.CremationSource == sourceToRemove.Id
-              )
-          {
-            deletable = false;
-          }
+                if (result == MessageBoxResult.Yes)
+                {
+                    _source.Remove(sourceToRemove);
+                    _source.OnContentChanged();
+                    Clear();
+                }
+            }
+            else
+            {
+                MessageBox.Show(
+                    Properties.Resources.UnableDeleteSource1 + " " +
+                        sourceToRemove.Id + " " +
+                        Properties.Resources.UnableDeleteSource2,
+                    Properties.Resources.Source,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
         }
-        else { }
+    }
 
-
-      }
-
-      if (deletable == true)
-      {
-        MessageBoxResult result = MessageBox.Show(Properties.Resources.ConfirmDeleteSource,
-   Properties.Resources.Source, MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-        if (result == MessageBoxResult.Yes)
+    private void SourceRepositoryEditTextBox_LostFocus(object sender, RoutedEventArgs e)
+    {
+        try
         {
-          _source.Remove(sourceToRemove);
-          _source.OnContentChanged();
-          Clear();
+            SourceRepository.Content = "(" + _repository.Find(SourceRepositoryEditTextBox.Text).RepositoryName + ")";
         }
-      }
-      else
-      {
-        MessageBox.Show(Properties.Resources.UnableDeleteSource1 + " " + sourceToRemove.Id + " " + Properties.Resources.UnableDeleteSource2, Properties.Resources.Source, MessageBoxButton.OK, MessageBoxImage.Warning);
-      }
+        catch
+        {
+            SourceRepository.Content = string.Empty;
+        }
     }
-  }
 
-  private void SourceRepositoryEditTextBox_LostFocus(object sender, RoutedEventArgs e)
-  {
-    try
-    {
-      SourceRepository.Content = "(" + _repository.Find(SourceRepositoryEditTextBox.Text).RepositoryName + ")";
-    }
-    catch
-    {
-      SourceRepository.Content = string.Empty;
-    }
-  }
-
-  #endregion
+    #endregion
 }

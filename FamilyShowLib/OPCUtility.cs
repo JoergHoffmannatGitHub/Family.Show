@@ -13,313 +13,313 @@ namespace FamilyShowLib;
 /// </summary>
 public class OPCUtility
 {
-  private const string PackageRelationshipType =
-      @"http://schemas.microsoft.com/opc/2006/sample/document";
-  private const string ResourceRelationshipType =
-      @"http://schemas.microsoft.com/opc/2006/sample/required-resource";
+    private const string PackageRelationshipType =
+        @"http://schemas.microsoft.com/opc/2006/sample/document";
+    private const string ResourceRelationshipType =
+        @"http://schemas.microsoft.com/opc/2006/sample/required-resource";
 
-  #region Write Package
+    #region Write Package
 
-  /// <summary>
-  /// Creates a package file containing the content from the specified directory.
-  /// </summary>
-  /// <param name="TargetDirectory">Path to directory containing the content to package</param>
-  public static void CreatePackage(string PackageFileName, string targetDirectory)
-  {
-    using (Package package = Package.Open(PackageFileName, FileMode.Create))
+    /// <summary>
+    /// Creates a package file containing the content from the specified directory.
+    /// </summary>
+    /// <param name="TargetDirectory">Path to directory containing the content to package</param>
+    public static void CreatePackage(string PackageFileName, string targetDirectory)
     {
-      // Package the contents of the top directory
-      DirectoryInfo mainDirectory = new(targetDirectory);
-      CreatePart(package, mainDirectory, false);
+        using (Package package = Package.Open(PackageFileName, FileMode.Create))
+        {
+            // Package the contents of the top directory
+            DirectoryInfo mainDirectory = new(targetDirectory);
+            CreatePart(package, mainDirectory, false);
 
-      // Package the contents of the sub-directories
-      foreach (DirectoryInfo di in mainDirectory.GetDirectories())
-      {
-        CreatePart(package, di, true);
-      }
-    }
-  }
-
-  /// <summary>
-  /// Adds files from the specified directory as parts of the package
-  /// </summary>
-  private static void CreatePart(Package package, DirectoryInfo directoryInfo, bool storeInDirectory)
-  {
-
-    XmlDocument xmlDoc = new();
-    string contentpath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\" + App.ApplicationFolderName + @"\" + App.AppDataFolderName + @"\content.xml";
-    try
-    {
-      xmlDoc.Load(contentpath);
-    }
-    catch
-    {
-      //do nothing
-    }
-    // Create StringWriter object to get data from xml document.
-    StringWriter sw = new();
-    XmlTextWriter xw = new(sw);
-    xmlDoc.WriteTo(xw);
-    string content = sw.ToString();
-
-    foreach (FileInfo file in directoryInfo.GetFiles())
-    {
-      // Only Add files for the following known types and if photo/story/attachment is referenced in content.xml.
-      // Only "safe" file types should be permitted.
-      switch (file.Extension.ToLower())
-      {
-        case ".xml":
-          CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
-          break;
-        case ".doc":
-        case ".docx":
-        case ".xls":
-        case ".xlsx":
-        case ".ppt":
-        case ".pptx":
-        case ".odp":
-        case ".odt":
-        case ".ods":
-        case ".xps":
-        case ".kml":
-        case ".kmz":
-          if (content.Contains(file.Name))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
-          }
-
-          break;
-        case ".htm":
-        case ".html":
-          if (content.Contains(file.Name))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Text.Html, storeInDirectory);
-          }
-
-          break;
-        case ".pdf":
-          if (content.Contains(file.Name))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Application.Pdf, storeInDirectory);
-          }
-
-          break;
-        case ".txt":
-          if (content.Contains(file.Name))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Text.Plain, storeInDirectory);
-          }
-
-          break;
-        case ".jpeg":
-        case ".jpg":
-        case ".png":
-          if (content.Contains(file.Name))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Image.Jpeg, storeInDirectory);
-          }
-
-          break;
-        case ".gif":
-          if (content.Contains(file.Name))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Image.Gif, storeInDirectory);
-          }
-
-          break;
-        case ".tif":
-        case ".tiff":
-          if (content.Contains(file.Name))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Image.Tiff, storeInDirectory);
-          }
-
-          break;
-        case ".rtf":
-          if (content.Contains(file.Name))
-          {
-            CreateDocumentPart(package, file, MediaTypeNames.Text.RichText, storeInDirectory);
-          }
-
-          break;
-      }
+            // Package the contents of the sub-directories
+            foreach (DirectoryInfo di in mainDirectory.GetDirectories())
+            {
+                CreatePart(package, di, true);
+            }
+        }
     }
 
-    xw.Close();
-    sw.Close();
-  }
-
-  /// <summary>
-  /// Adds the speficied file to the package as document part
-  /// </summary>
-  private static void CreateDocumentPart(Package package, FileInfo file, string contentType, bool storeInDirectory)
-  {
-    Uri partUriDocument;
-
-    // Convert system path and file names to Part URIs.
-    if (storeInDirectory)
+    /// <summary>
+    /// Adds files from the specified directory as parts of the package
+    /// </summary>
+    private static void CreatePart(Package package, DirectoryInfo directoryInfo, bool storeInDirectory)
     {
-      partUriDocument = PackUriHelper.CreatePartUri(new Uri(Path.Combine(file.Directory.Name, file.Name), UriKind.Relative));
+
+        XmlDocument xmlDoc = new();
+        string contentpath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\" + App.ApplicationFolderName + @"\" + App.AppDataFolderName + @"\content.xml";
+        try
+        {
+            xmlDoc.Load(contentpath);
+        }
+        catch
+        {
+            //do nothing
+        }
+        // Create StringWriter object to get data from xml document.
+        StringWriter sw = new();
+        XmlTextWriter xw = new(sw);
+        xmlDoc.WriteTo(xw);
+        string content = sw.ToString();
+
+        foreach (FileInfo file in directoryInfo.GetFiles())
+        {
+            // Only Add files for the following known types and if photo/story/attachment is referenced in content.xml.
+            // Only "safe" file types should be permitted.
+            switch (file.Extension.ToLower())
+            {
+                case ".xml":
+                    CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
+                    break;
+                case ".doc":
+                case ".docx":
+                case ".xls":
+                case ".xlsx":
+                case ".ppt":
+                case ".pptx":
+                case ".odp":
+                case ".odt":
+                case ".ods":
+                case ".xps":
+                case ".kml":
+                case ".kmz":
+                    if (content.Contains(file.Name))
+                    {
+                        CreateDocumentPart(package, file, MediaTypeNames.Text.Xml, storeInDirectory);
+                    }
+
+                    break;
+                case ".htm":
+                case ".html":
+                    if (content.Contains(file.Name))
+                    {
+                        CreateDocumentPart(package, file, MediaTypeNames.Text.Html, storeInDirectory);
+                    }
+
+                    break;
+                case ".pdf":
+                    if (content.Contains(file.Name))
+                    {
+                        CreateDocumentPart(package, file, MediaTypeNames.Application.Pdf, storeInDirectory);
+                    }
+
+                    break;
+                case ".txt":
+                    if (content.Contains(file.Name))
+                    {
+                        CreateDocumentPart(package, file, MediaTypeNames.Text.Plain, storeInDirectory);
+                    }
+
+                    break;
+                case ".jpeg":
+                case ".jpg":
+                case ".png":
+                    if (content.Contains(file.Name))
+                    {
+                        CreateDocumentPart(package, file, MediaTypeNames.Image.Jpeg, storeInDirectory);
+                    }
+
+                    break;
+                case ".gif":
+                    if (content.Contains(file.Name))
+                    {
+                        CreateDocumentPart(package, file, MediaTypeNames.Image.Gif, storeInDirectory);
+                    }
+
+                    break;
+                case ".tif":
+                case ".tiff":
+                    if (content.Contains(file.Name))
+                    {
+                        CreateDocumentPart(package, file, MediaTypeNames.Image.Tiff, storeInDirectory);
+                    }
+
+                    break;
+                case ".rtf":
+                    if (content.Contains(file.Name))
+                    {
+                        CreateDocumentPart(package, file, MediaTypeNames.Text.RichText, storeInDirectory);
+                    }
+
+                    break;
+            }
+        }
+
+        xw.Close();
+        sw.Close();
     }
-    else
+
+    /// <summary>
+    /// Adds the speficied file to the package as document part
+    /// </summary>
+    private static void CreateDocumentPart(Package package, FileInfo file, string contentType, bool storeInDirectory)
     {
-      partUriDocument = PackUriHelper.CreatePartUri(new Uri(file.Name, UriKind.Relative));
+        Uri partUriDocument;
+
+        // Convert system path and file names to Part URIs.
+        if (storeInDirectory)
+        {
+            partUriDocument = PackUriHelper.CreatePartUri(new Uri(Path.Combine(file.Directory.Name, file.Name), UriKind.Relative));
+        }
+        else
+        {
+            partUriDocument = PackUriHelper.CreatePartUri(new Uri(file.Name, UriKind.Relative));
+        }
+
+        // Add the Document part to the Package
+        PackagePart packagePartDocument = package.CreatePart(
+            partUriDocument, contentType);
+
+        // Copy the data to the Document Part
+        using (FileStream fileStream = new(file.FullName, FileMode.Open, FileAccess.Read))
+        {
+            CopyStream(fileStream, packagePartDocument.GetStream());
+        }
+
+        // Add a Package Relationship to the Document Part
+        package.CreateRelationship(packagePartDocument.Uri, TargetMode.Internal, PackageRelationshipType);
     }
 
-    // Add the Document part to the Package
-    PackagePart packagePartDocument = package.CreatePart(
-        partUriDocument, contentType);
+    #endregion
 
-    // Copy the data to the Document Part
-    using (FileStream fileStream = new(file.FullName, FileMode.Open, FileAccess.Read))
+    #region ReadPackage
+
+    /// <summary>
+    ///   Extracts content and resource parts from a given Package
+    ///   zip file to a specified target directory.</summary>
+    /// <param name="packagePath">
+    ///   The relative path and filename of the Package zip file.</param>
+    /// <param name="targetDirectory">
+    ///   The relative path from the current directory to the targer folder.
+    /// </param>
+    public static void ExtractPackage(string packagePath, string targetDirectory, bool isOpen)
     {
-      CopyStream(fileStream, packagePartDocument.GetStream());
-    }
-
-    // Add a Package Relationship to the Document Part
-    package.CreateRelationship(packagePartDocument.Uri, TargetMode.Internal, PackageRelationshipType);
-  }
-
-  #endregion
-
-  #region ReadPackage
-
-  /// <summary>
-  ///   Extracts content and resource parts from a given Package
-  ///   zip file to a specified target directory.</summary>
-  /// <param name="packagePath">
-  ///   The relative path and filename of the Package zip file.</param>
-  /// <param name="targetDirectory">
-  ///   The relative path from the current directory to the targer folder.
-  /// </param>
-  public static void ExtractPackage(string packagePath, string targetDirectory, bool isOpen)
-  {
-    // If we are opening a new file, clear the current files temporary extracted files.
-    if (isOpen)
-    {
-      People.RecreateDirectory(targetDirectory);
-    }
-
-    // Open the Package.
-    using (Package package = Package.Open(packagePath, FileMode.Open, FileAccess.Read))
-    {
-      PackagePart documentPart = null;
-      PackagePart resourcePart = null;
-
-      // Get the Package Relationships and look for the Document part based on the RelationshipType
-      Uri uriDocumentTarget = null;
-      foreach (PackageRelationship relationship in package.GetRelationshipsByType(PackageRelationshipType))
-      {
-        // Resolve the Relationship Target Uri so the Document Part can be retrieved.
-        uriDocumentTarget = PackUriHelper.ResolvePartUri(new Uri("/", UriKind.Relative), relationship.TargetUri);
-
-        // Open the Document Part, write the contents to a file.
-        documentPart = package.GetPart(uriDocumentTarget);
-        ExtractPart(documentPart, targetDirectory);
-      }
-
-      // Get the Document part's Relationships, and look for required resources.
-      Uri uriResourceTarget = null;
-      foreach (PackageRelationship relationship in documentPart.GetRelationshipsByType(ResourceRelationshipType))
-      {
-        // Resolve the Relationship Target Uri so the Resource Part can be retrieved.
-        uriResourceTarget = PackUriHelper.ResolvePartUri(documentPart.Uri, relationship.TargetUri);
-
-        // Open the Resource Part and write the contents to a file.
-        resourcePart = package.GetPart(uriResourceTarget);
+        // If we are opening a new file, clear the current files temporary extracted files.
         if (isOpen)
         {
-          ExtractPart(resourcePart, targetDirectory);
+            People.RecreateDirectory(targetDirectory);
         }
-        else if (!isOpen)
+
+        // Open the Package.
+        using (Package package = Package.Open(packagePath, FileMode.Open, FileAccess.Read))
         {
-          MergeExtractPart(resourcePart, targetDirectory);
+            PackagePart documentPart = null;
+            PackagePart resourcePart = null;
+
+            // Get the Package Relationships and look for the Document part based on the RelationshipType
+            Uri uriDocumentTarget = null;
+            foreach (PackageRelationship relationship in package.GetRelationshipsByType(PackageRelationshipType))
+            {
+                // Resolve the Relationship Target Uri so the Document Part can be retrieved.
+                uriDocumentTarget = PackUriHelper.ResolvePartUri(new Uri("/", UriKind.Relative), relationship.TargetUri);
+
+                // Open the Document Part, write the contents to a file.
+                documentPart = package.GetPart(uriDocumentTarget);
+                ExtractPart(documentPart, targetDirectory);
+            }
+
+            // Get the Document part's Relationships, and look for required resources.
+            Uri uriResourceTarget = null;
+            foreach (PackageRelationship relationship in documentPart.GetRelationshipsByType(ResourceRelationshipType))
+            {
+                // Resolve the Relationship Target Uri so the Resource Part can be retrieved.
+                uriResourceTarget = PackUriHelper.ResolvePartUri(documentPart.Uri, relationship.TargetUri);
+
+                // Open the Resource Part and write the contents to a file.
+                resourcePart = package.GetPart(uriResourceTarget);
+                if (isOpen)
+                {
+                    ExtractPart(resourcePart, targetDirectory);
+                }
+                else if (!isOpen)
+                {
+                    MergeExtractPart(resourcePart, targetDirectory);
+                }
+            }
         }
-      }
     }
-  }
 
-  /// <summary>
-  ///   Extracts a specified package part to a target folder.  Does not overwrite existing histories, photos and attachments</summary>
-  /// <param name="packagePart">
-  ///   The package part to extract.</param>
-  /// <param name="targetDirectory">
-  ///   The absolute path to the targer folder.</param>
-  private static void ExtractPart(PackagePart packagePart, string targetDirectory)
-  {
-    try
+    /// <summary>
+    ///   Extracts a specified package part to a target folder.  Does not overwrite existing histories, photos and attachments</summary>
+    /// <param name="packagePart">
+    ///   The package part to extract.</param>
+    /// <param name="targetDirectory">
+    ///   The absolute path to the targer folder.</param>
+    private static void ExtractPart(PackagePart packagePart, string targetDirectory)
     {
-      // Create a string with the full path to the target directory.
-      string pathToTarget = targetDirectory;
+        try
+        {
+            // Create a string with the full path to the target directory.
+            string pathToTarget = targetDirectory;
 
-      // Remove leading slash from the Part Uri, and make a new Uri from the result
-      string stringPart = packagePart.Uri.ToString().TrimStart('/');
-      Uri partUri = new(stringPart, UriKind.Relative);
+            // Remove leading slash from the Part Uri, and make a new Uri from the result
+            string stringPart = packagePart.Uri.ToString().TrimStart('/');
+            Uri partUri = new(stringPart, UriKind.Relative);
 
-      // Create a full Uri to the Part based on the Package Uri
-      Uri uriFullPartPath = new(new Uri(pathToTarget, UriKind.Absolute), partUri);
+            // Create a full Uri to the Part based on the Package Uri
+            Uri uriFullPartPath = new(new Uri(pathToTarget, UriKind.Absolute), partUri);
 
-      // Create the necessary Directories based on the Full Part Path
-      Directory.CreateDirectory(Path.GetDirectoryName(uriFullPartPath.LocalPath));
+            // Create the necessary Directories based on the Full Part Path
+            Directory.CreateDirectory(Path.GetDirectoryName(uriFullPartPath.LocalPath));
 
-      // Create the file with the Part content
-      using (FileStream fileStream = new(uriFullPartPath.LocalPath, FileMode.Create))
-      {
-        CopyStream(packagePart.GetStream(), fileStream);
-      }
+            // Create the file with the Part content
+            using (FileStream fileStream = new(uriFullPartPath.LocalPath, FileMode.Create))
+            {
+                CopyStream(packagePart.GetStream(), fileStream);
+            }
+        }
+        catch
+        {
+            // ignore errors
+        }
     }
-    catch
+
+    /// <summary>
+    ///   Extracts a specified package part to a target folder using special conditions for merging files.</summary>
+    /// <param name="packagePart">
+    ///   The package part to extract.</param>
+    /// <param name="targetDirectory">
+    ///   The absolute path to the targer folder.</param>
+    private static void MergeExtractPart(PackagePart packagePart, string targetDirectory)
     {
-      // ignore errors
+        // Create a string with the full path to the target directory.
+        string pathToTarget = targetDirectory;
+
+        // Remove leading slash from the Part Uri, and make a new Uri from the result
+        string stringPart = packagePart.Uri.ToString().TrimStart('/');
+        Uri partUri = new(stringPart, UriKind.Relative);
+
+        //for merge, don't overwrite existing photos, stories or attachments, only add those with different file names.
+        if (!File.Exists(Path.Combine(pathToTarget, stringPart)) || stringPart == "content.xml")
+        {
+            // Create a full Uri to the Part based on the Package Uri
+            Uri uriFullPartPath = new(new Uri(pathToTarget, UriKind.Absolute), partUri);
+
+            // Create the necessary Directories based on the Full Part Path
+            Directory.CreateDirectory(Path.GetDirectoryName(uriFullPartPath.LocalPath));
+
+            // Create the file with the Part content
+            using (FileStream fileStream = new(uriFullPartPath.LocalPath, FileMode.Create))
+            {
+                CopyStream(packagePart.GetStream(), fileStream);
+            }
+        }
     }
-  }
 
-  /// <summary>
-  ///   Extracts a specified package part to a target folder using special conditions for merging files.</summary>
-  /// <param name="packagePart">
-  ///   The package part to extract.</param>
-  /// <param name="targetDirectory">
-  ///   The absolute path to the targer folder.</param>
-  private static void MergeExtractPart(PackagePart packagePart, string targetDirectory)
-  {
-    // Create a string with the full path to the target directory.
-    string pathToTarget = targetDirectory;
+    #endregion
 
-    // Remove leading slash from the Part Uri, and make a new Uri from the result
-    string stringPart = packagePart.Uri.ToString().TrimStart('/');
-    Uri partUri = new(stringPart, UriKind.Relative);
-
-    //for merge, don't overwrite existing photos, stories or attachments, only add those with different file names.
-    if (!File.Exists(Path.Combine(pathToTarget, stringPart)) || stringPart == "content.xml")
+    /// <summary>
+    /// Copies data from a source stream to a target stream.
+    /// NOTE: This method was taken from the PackageWrite sample in the Microsoft Windows SDK
+    /// </summary>
+    private static void CopyStream(Stream source, Stream target)
     {
-      // Create a full Uri to the Part based on the Package Uri
-      Uri uriFullPartPath = new(new Uri(pathToTarget, UriKind.Absolute), partUri);
-
-      // Create the necessary Directories based on the Full Part Path
-      Directory.CreateDirectory(Path.GetDirectoryName(uriFullPartPath.LocalPath));
-
-      // Create the file with the Part content
-      using (FileStream fileStream = new(uriFullPartPath.LocalPath, FileMode.Create))
-      {
-        CopyStream(packagePart.GetStream(), fileStream);
-      }
+        const int bufSize = 0x1000;
+        byte[] buf = new byte[bufSize];
+        int bytesRead;
+        while ((bytesRead = source.Read(buf, 0, bufSize)) > 0)
+        {
+            target.Write(buf, 0, bytesRead);
+        }
     }
-  }
-
-  #endregion
-
-  /// <summary>
-  /// Copies data from a source stream to a target stream.
-  /// NOTE: This method was taken from the PackageWrite sample in the Microsoft Windows SDK
-  /// </summary>
-  private static void CopyStream(Stream source, Stream target)
-  {
-    const int bufSize = 0x1000;
-    byte[] buf = new byte[bufSize];
-    int bytesRead;
-    while ((bytesRead = source.Read(buf, 0, bufSize)) > 0)
-    {
-      target.Write(buf, 0, bytesRead);
-    }
-  }
 }

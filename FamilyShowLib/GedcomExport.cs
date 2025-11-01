@@ -31,14 +31,14 @@ namespace FamilyShowLib;
 /// </summary>
 public class GedcomExport
 {
-  #region fields
+    #region fields
 
-  // Writes the text (GEDCOM) file.
-  internal StreamWriter _writer;
+    // Writes the text (GEDCOM) file.
+    internal StreamWriter _writer;
 
-  internal TimeProvider _timeProvider = TimeProvider.System;
+    internal TimeProvider _timeProvider = TimeProvider.System;
 
-  internal readonly Dictionary<string, string> _culturLanguageIdMap = new()
+    internal readonly Dictionary<string, string> _culturLanguageIdMap = new()
   {
     { "en-US", "English" },
     { "en-GB", "Anglo-Saxon" },
@@ -48,768 +48,876 @@ public class GedcomExport
     { "de-DE", "German" },
   };
 
-  // Maps GUID IDs (which are too long for GEDCOM) to smaller IDs.
-  private readonly GedcomIdMap _idMap = new();
+    // Maps GUID IDs (which are too long for GEDCOM) to smaller IDs.
+    private readonly GedcomIdMap _idMap = new();
 
-  // The people collection that is being exported.
-  private PeopleCollection _people;
-  internal SourceCollection _sources;
-  private RepositoryCollection _repositories;
+    // The people collection that is being exported.
+    private PeopleCollection _people;
+    internal SourceCollection _sources;
+    private RepositoryCollection _repositories;
 
-  // Family group counter.
-  private int _familyId = 1;
+    // Family group counter.
+    private int _familyId = 1;
 
-  #endregion
+    #endregion
 
-  /// <summary>
-  /// Export the data from the People collection to the specified GEDCOM file.
-  /// </summary>
-  public void Export(PeopleCollection peopleCollection, SourceCollection sourceCollection, RepositoryCollection repositoryCollection, string gedcomFilePath, string familyxFilePath, string language)
-  {
-    _people = peopleCollection;
-    _sources = sourceCollection;
-    _repositories = repositoryCollection;
-
-    using (_writer = new StreamWriter(gedcomFilePath))
+    /// <summary>
+    /// Export the data from the People collection to the specified GEDCOM file.
+    /// </summary>
+    public void Export(
+        PeopleCollection peopleCollection,
+        SourceCollection sourceCollection,
+        RepositoryCollection repositoryCollection,
+        string gedcomFilePath,
+        string familyxFilePath,
+        string language)
     {
-      WriteLine(0, "HEAD", "");
-      ExportSummary(gedcomFilePath, familyxFilePath, language);
-      ExportPeople();
-      ExportFamilies();
-      ExportSources();
-      ExportRepositories();
-      WriteLine(0, "TRLR", "");
-    }
-  }
+        _people = peopleCollection;
+        _sources = sourceCollection;
+        _repositories = repositoryCollection;
 
-  /// <summary>
-  /// Export summary to GEDCOM file.
-  /// </summary>
-  internal void ExportSummary(string gedcomFilePath, string familyxFilePath, string language)
-  {
-    WriteLine(1, "SOUR", "");
-
-    Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-    string versionlabel = string.Format(CultureInfo.CurrentCulture, "{0}.{1}.{2}", version.Major, version.Minor, version.Build);
-    WriteLine(2, "VERS", versionlabel);
-    WriteLine(2, "NAME", "Family.Show");
-    WriteLine(2, "CORP", "Microsoft");
-
-    if (!string.IsNullOrEmpty(familyxFilePath))
-    {
-      WriteLine(2, "DATA", Path.GetFileName(familyxFilePath));
-    }
-
-    DateTime now = _timeProvider.GetLocalNow().DateTime;
-    string Date = ExportDate(new DateWrapper(now.Year, now.Month, now.Day));  //GEDCOM dates must be of the form 01 JAN 2009
-    string Time = now.ToLongTimeString();
-    string filename = Path.GetFileName(gedcomFilePath);
-
-    WriteLine(1, "DATE", Date);
-    WriteLine(2, "TIME", Time);
-    WriteLine(1, "FILE", filename);
-    WriteLine(1, "GEDC", "");
-    WriteLine(2, "VERS", "5.5");
-    WriteLine(2, "FORM", "LINEAGE-LINKED");
-    WriteLine(1, "CHAR", "UTF-8");
-
-    WriteLine(1, "LANG", _culturLanguageIdMap.GetValueOrDefault(language, "English"));
-  }
-
-  /// <summary>
-  /// Export sources to GEDCOM file.
-  /// </summary>
-  private void ExportSources()
-  {
-    foreach (Source source in _sources)
-    {
-      WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@{0}@", source.Id), "SOUR");
-      if (!string.IsNullOrEmpty(source.SourceRepository))
-      {
-        WriteLine(1, "REPO", "@" + source.SourceRepository + "@");
-      }
-
-      if (!string.IsNullOrEmpty(source.SourceName))
-      {
-        WriteLine(1, "TITL", source.SourceName);
-      }
-
-      if (!string.IsNullOrEmpty(source.SourceAuthor))
-      {
-        WriteLine(1, "AUTH", source.SourceAuthor);
-      }
-
-      if (!string.IsNullOrEmpty(source.SourcePublisher))
-      {
-        WriteLine(1, "PUBL", source.SourcePublisher);
-      }
-
-      if (!string.IsNullOrEmpty(source.SourceNote))
-      {
-        WriteLine(1, "NOTE", source.SourceNote);
-      }
-    }
-  }
-
-  /// <summary>
-  /// Export sources to GEDCOM file.
-  /// </summary>
-  private void ExportRepositories()
-  {
-    foreach (Repository r in _repositories)
-    {
-      WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@{0}@", r.Id), "REPO");
-      if (!string.IsNullOrEmpty(r.RepositoryName))
-      {
-        WriteLine(1, "NAME", r.RepositoryName);
-      }
-
-      if (!string.IsNullOrEmpty(r.RepositoryAddress))
-      {
-        WriteLine(1, "ADDR", r.RepositoryAddress);
-      }
-    }
-  }
-
-  /// <summary>
-  /// Export each person to the GEDCOM file.
-  /// </summary>
-  private void ExportPeople()
-  {
-
-    FamilyMap map = [];
-    map.Create(_people);
-
-    foreach (Person person in _people)
-    {
-
-      string id = _idMap.Get(person.Id);
-
-      // Start of a new individual record.
-      WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@{0}@", id), "INDI");
-
-      // Export details.
-
-      // Restriction.
-      ExportRestriction(person);
-
-      if (person.Restriction == Restriction.Private)
-      {
-        WriteLine(1, "NAME", Properties.Resources.PrivateRecord);
-      }
-      else
-      {
-
-        // Name.
-        ExportName(person);
-
-        // Surname
-        if (!string.IsNullOrEmpty(person.LastName))
+        using (_writer = new StreamWriter(gedcomFilePath))
         {
-          WriteLine(2, "SURN", person.LastName);
+            WriteLine(0, "HEAD", "");
+            ExportSummary(gedcomFilePath, familyxFilePath, language);
+            ExportPeople();
+            ExportFamilies();
+            ExportSources();
+            ExportRepositories();
+            WriteLine(0, "TRLR", "");
+        }
+    }
+
+    /// <summary>
+    /// Export summary to GEDCOM file.
+    /// </summary>
+    internal void ExportSummary(string gedcomFilePath, string familyxFilePath, string language)
+    {
+        WriteLine(1, "SOUR", "");
+
+        Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+        string versionlabel =
+            string.Format(CultureInfo.CurrentCulture, "{0}.{1}.{2}", version.Major, version.Minor, version.Build);
+        WriteLine(2, "VERS", versionlabel);
+        WriteLine(2, "NAME", "Family.Show");
+        WriteLine(2, "CORP", "Microsoft");
+
+        if (!string.IsNullOrEmpty(familyxFilePath))
+        {
+            WriteLine(2, "DATA", Path.GetFileName(familyxFilePath));
         }
 
-        // Prefix.
-        if (!string.IsNullOrEmpty(person.Suffix))
+        DateTime now = _timeProvider.GetLocalNow().DateTime;
+        // GEDCOM dates must be of the form 1 JAN 2009
+        string Date = ExportDate(new DateWrapper(now.Year, now.Month, now.Day));
+        string Time = now.ToLongTimeString();
+        string filename = Path.GetFileName(gedcomFilePath);
+
+        WriteLine(1, "DATE", Date);
+        WriteLine(2, "TIME", Time);
+        WriteLine(1, "FILE", filename);
+        WriteLine(1, "GEDC", "");
+        WriteLine(2, "VERS", "5.5");
+        WriteLine(2, "FORM", "LINEAGE-LINKED");
+        WriteLine(1, "CHAR", "UTF-8");
+
+        WriteLine(1, "LANG", _culturLanguageIdMap.GetValueOrDefault(language, "English"));
+    }
+
+    /// <summary>
+    /// Export sources to GEDCOM file.
+    /// </summary>
+    private void ExportSources()
+    {
+        foreach (Source source in _sources)
         {
-          WriteLine(2, "NPFX", person.Suffix);
+            WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@{0}@", source.Id), "SOUR");
+            if (!string.IsNullOrEmpty(source.SourceRepository))
+            {
+                WriteLine(1, "REPO", "@" + source.SourceRepository + "@");
+            }
+
+            if (!string.IsNullOrEmpty(source.SourceName))
+            {
+                WriteLine(1, "TITL", source.SourceName);
+            }
+
+            if (!string.IsNullOrEmpty(source.SourceAuthor))
+            {
+                WriteLine(1, "AUTH", source.SourceAuthor);
+            }
+
+            if (!string.IsNullOrEmpty(source.SourcePublisher))
+            {
+                WriteLine(1, "PUBL", source.SourcePublisher);
+            }
+
+            if (!string.IsNullOrEmpty(source.SourceNote))
+            {
+                WriteLine(1, "NOTE", source.SourceNote);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Export sources to GEDCOM file.
+    /// </summary>
+    private void ExportRepositories()
+    {
+        foreach (Repository r in _repositories)
+        {
+            WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@{0}@", r.Id), "REPO");
+            if (!string.IsNullOrEmpty(r.RepositoryName))
+            {
+                WriteLine(1, "NAME", r.RepositoryName);
+            }
+
+            if (!string.IsNullOrEmpty(r.RepositoryAddress))
+            {
+                WriteLine(1, "ADDR", r.RepositoryAddress);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Export each person to the GEDCOM file.
+    /// </summary>
+    private void ExportPeople()
+    {
+
+        FamilyMap map = [];
+        map.Create(_people);
+
+        foreach (Person person in _people)
+        {
+
+            string id = _idMap.Get(person.Id);
+
+            // Start of a new individual record.
+            WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@{0}@", id), "INDI");
+
+            // Export details.
+
+            // Restriction.
+            ExportRestriction(person);
+
+            if (person.Restriction == Restriction.Private)
+            {
+                WriteLine(1, "NAME", Properties.Resources.PrivateRecord);
+            }
+            else
+            {
+
+                // Name.
+                ExportName(person);
+
+                // Surname
+                if (!string.IsNullOrEmpty(person.LastName))
+                {
+                    WriteLine(2, "SURN", person.LastName);
+                }
+
+                // Prefix.
+                if (!string.IsNullOrEmpty(person.Suffix))
+                {
+                    WriteLine(2, "NPFX", person.Suffix);
+                }
+
+                // Gender.
+                ExportGender(person);
+
+                // Birth and death info.
+                ExportEvent(
+                    "BIRT",
+                    "",
+                    person.BirthDateDescriptor,
+                    person.BirthDate,
+                    person.BirthPlace,
+                    person.BirthCitation,
+                    person.BirthCitationNote,
+                    person.BirthCitationActualText,
+                    person.BirthLink,
+                    person.BirthSource);
+                ExportEvent(
+                    "DEAT",
+                    "",
+                    person.DeathDateDescriptor,
+                    person.DeathDate,
+                    person.DeathPlace,
+                    person.DeathCitation,
+                    person.DeathCitationNote,
+                    person.DeathCitationActualText,
+                    person.BirthLink,
+                    person.BirthSource);
+                ExportEvent(
+                    "BURI",
+                    "",
+                    person.BurialDateDescriptor,
+                    person.BurialDate,
+                    person.BurialPlace,
+                    person.BurialCitation,
+                    person.BurialCitationNote,
+                    person.BurialCitationActualText,
+                    person.BirthLink,
+                    person.BirthSource);
+                ExportEvent(
+                    "CREM",
+                    "",
+                    person.CremationDateDescriptor,
+                    person.CremationDate,
+                    person.CremationPlace,
+                    person.CremationCitation,
+                    person.CremationCitationNote,
+                    person.CremationCitationActualText,
+                    person.BirthLink,
+                    person.BirthSource);
+                ExportEvent(
+                    "EDUC",
+                    person.Education,
+                    "",
+                    null,
+                    "",
+                    person.EducationCitation,
+                    person.EducationCitationNote,
+                    person.EducationCitationActualText,
+                    person.EducationLink,
+                    person.EducationSource);
+                ExportEvent(
+                    "OCCU",
+                    person.Occupation,
+                    "",
+                    null,
+                    "",
+                    person.OccupationCitation,
+                    person.OccupationCitationNote,
+                    person.OccupationCitationActualText,
+                    person.OccupationLink,
+                    person.OccupationSource);
+                ExportEvent(
+                    "RELI",
+                    person.Religion,
+                    "",
+                    null,
+                    "",
+                    person.ReligionCitation,
+                    person.ReligionCitationNote,
+                    person.ReligionCitationActualText,
+                    person.ReligionLink,
+                    person.ReligionSource);
+
+                // Photo file names, files themselves cannot be exported as GEDCOM is simply a text file.
+                ExportPhotos(person);
+                ExportAttachments(person);
+
+                // Notes.	
+                if (!string.IsNullOrEmpty(person.Note))
+                {
+                    WriteLine(1, "NOTE", person.Note);
+                }
+
+                int i = 1;  //current family number
+
+                //Write a FAMC or FAMS tag for every family which contains the person
+                foreach (Family family in map.Values)
+                {
+
+                    //FAMC for children
+                    foreach (Person child in family.Children)
+                    {
+                        if (person.Id == child.Id)
+                        {
+                            WriteLine(1, "FAMC", string.Format(CultureInfo.InvariantCulture, "@F{0}@", i));
+                        }
+                    }
+
+                    //FAMS for parents/spouses
+                    if (person.Id == family.ParentLeft.Id)
+                    {
+                        WriteLine(1, "FAMS", string.Format(CultureInfo.InvariantCulture, "@F{0}@", i));
+                    }
+
+                    if (person.Id == family.ParentRight.Id)
+                    {
+                        WriteLine(1, "FAMS", string.Format(CultureInfo.InvariantCulture, "@F{0}@", i));
+                    }
+
+                    i++;
+                }
+
+
+            }
+        }
+    }
+
+    /// <summary>
+    /// An exportable citation is one which has a source reference which is
+    /// contained in the current source list for the family.
+    /// </summary>
+    private bool ExportableCitation(string sourceID)
+    {
+        bool exportableSource = false;
+        int i = 0;
+        foreach (Source s in _sources)
+        {
+            if (s.Id == sourceID)
+            {
+                i++;
+            }
         }
 
-        // Gender.
-        ExportGender(person);
-
-        // Birth and death info.
-        ExportEvent("BIRT", "", person.BirthDateDescriptor, person.BirthDate, person.BirthPlace, person.BirthCitation, person.BirthCitationNote, person.BirthCitationActualText, person.BirthLink, person.BirthSource);
-        ExportEvent("DEAT", "", person.DeathDateDescriptor, person.DeathDate, person.DeathPlace, person.DeathCitation, person.DeathCitationNote, person.DeathCitationActualText, person.BirthLink, person.BirthSource);
-        ExportEvent("BURI", "", person.BurialDateDescriptor, person.BurialDate, person.BurialPlace, person.BurialCitation, person.BurialCitationNote, person.BurialCitationActualText, person.BirthLink, person.BirthSource);
-        ExportEvent("CREM", "", person.CremationDateDescriptor, person.CremationDate, person.CremationPlace, person.CremationCitation, person.CremationCitationNote, person.CremationCitationActualText, person.BirthLink, person.BirthSource);
-        ExportEvent("EDUC", person.Education, "", null, "", person.EducationCitation, person.EducationCitationNote, person.EducationCitationActualText, person.EducationLink, person.EducationSource);
-        ExportEvent("OCCU", person.Occupation, "", null, "", person.OccupationCitation, person.OccupationCitationNote, person.OccupationCitationActualText, person.OccupationLink, person.OccupationSource);
-        ExportEvent("RELI", person.Religion, "", null, "", person.ReligionCitation, person.ReligionCitationNote, person.ReligionCitationActualText, person.ReligionLink, person.ReligionSource);
-
-        // Photo file names, files themselves cannot be exported as GEDCOM is simply a text file.
-        ExportPhotos(person);
-        ExportAttachments(person);
-
-        // Notes.	
-        if (!string.IsNullOrEmpty(person.Note))
+        if (i > 0)
         {
-          WriteLine(1, "NOTE", person.Note);
+            exportableSource = true;
         }
 
-        int i = 1;  //current family number
+        return exportableSource;
+    }
 
-        //Write a FAMC or FAMS tag for every family which contains the person
+    /// <summary>
+    /// Create the family section (the FAM tags) in the GEDCOM file.
+    /// </summary>
+    private void ExportFamilies()
+    {
+        // Exporting families is more difficult since need to export each
+        // family group. A family group consists of one or more parents,
+        // marriage / divorce information and children. The FamilyMap class
+        // creates a list of family groups from the People collection.
+        FamilyMap map = [];
+        map.Create(_people);
+
+        // Created the family groups, now export each family.
         foreach (Family family in map.Values)
         {
+            ExportFamily(family);
+        }
+    }
 
-          //FAMC for children
-          foreach (Person child in family.Children)
-          {
-            if (person.Id == child.Id)
+    /// <summary>
+    /// Export one family group to the GEDCOM file.  
+    /// GEDCOM has no simple way to accurately define parent child modifiers
+    /// so use the non standard _MREL and _FREL tags as many other programs do
+    /// (e.g. Family Tree Maker, Ancestry online trees)
+    /// </summary>
+    private void ExportFamily(Family family)
+    {
+        // Return right away if this is only a single person without any children.
+        if (family.ParentRight == null && family.Children.Count == 0)
+        {
+            return;
+        }
+
+        // Start of new family record.
+        WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@F{0}@", _familyId++), "FAM");
+
+        // Marriage info.
+        ExportMarriage(family.ParentLeft, family.ParentRight, family.Relationship);
+
+        // Children.
+        foreach (Person child in family.Children)
+        {
+
+            WriteLine(1, "CHIL", string.Format(CultureInfo.InvariantCulture, "@{0}@", _idMap.Get(child.Id)));
+
+            // Export the adoption information
+
+            string mrel = string.Empty;
+            string frel = string.Empty;
+
+            foreach (Relationship rel in child.Relationships)
             {
-              WriteLine(1, "FAMC", string.Format(CultureInfo.InvariantCulture, "@F{0}@", i));
+                if (rel.RelationshipType == RelationshipType.Parent)
+                {
+
+                    ParentRelationship pRel = (ParentRelationship)rel;
+
+                    if (rel.PersonId == family.ParentLeft.Id && family.ParentLeft.Gender == Gender.Male)
+                    {
+                        mrel = pRel.ParentChildModifier.ToString();
+                    }
+
+                    if (rel.PersonId == family.ParentLeft.Id && family.ParentLeft.Gender == Gender.Female)
+                    {
+                        frel = pRel.ParentChildModifier.ToString();
+                    }
+
+                    if (rel.PersonId == family.ParentRight.Id && family.ParentRight.Gender == Gender.Female)
+                    {
+                        frel = pRel.ParentChildModifier.ToString();
+                    }
+
+                    if (rel.PersonId == family.ParentRight.Id && family.ParentRight.Gender == Gender.Male)
+                    {
+                        mrel = pRel.ParentChildModifier.ToString();
+                    }
+                }
             }
-          }
 
-          //FAMS for parents/spouses
-          if (person.Id == family.ParentLeft.Id)
-          {
-            WriteLine(1, "FAMS", string.Format(CultureInfo.InvariantCulture, "@F{0}@", i));
-          }
+            //export nothing if natural relationship
+            if (frel.Length > 0 && frel != "Natural")
+            {
+                WriteLine(2, "_FREL", frel);
+            }
 
-          if (person.Id == family.ParentRight.Id)
-          {
-            WriteLine(1, "FAMS", string.Format(CultureInfo.InvariantCulture, "@F{0}@", i));
-          }
+            if (mrel.Length > 0 && mrel != "Natural")
+            {
+                WriteLine(2, "_MREL", mrel);
+            }
+        }
+    }
 
-          i++;
+    /// <summary>
+    /// Export marriage / divorce information.
+    /// </summary>
+    private void ExportMarriage(Person partnerLeft, Person partnerRight, SpouseRelationship relationship)
+    {
+
+        // PartnerLeft.
+        if (partnerLeft != null && partnerLeft.Gender == Gender.Male)
+        {
+            WriteLine(1, "HUSB", string.Format(CultureInfo.InvariantCulture,
+            "@{0}@", _idMap.Get(partnerLeft.Id)));
+        }
+
+        if (partnerLeft != null && partnerLeft.Gender == Gender.Female)
+        {
+            WriteLine(1, "WIFE", string.Format(CultureInfo.InvariantCulture,
+            "@{0}@", _idMap.Get(partnerLeft.Id)));
+        }
+
+        if (!partnerLeft.Spouses.Contains(partnerRight))
+        {
+            return;
+        }
+
+        // PartnerRight.
+        if (partnerRight != null && partnerRight.Gender == Gender.Male)
+        {
+            WriteLine(1, "HUSB", string.Format(CultureInfo.InvariantCulture,
+            "@{0}@", _idMap.Get(partnerRight.Id)));
+        }
+
+        if (partnerRight != null && partnerRight.Gender == Gender.Female)
+        {
+            WriteLine(1, "WIFE", string.Format(CultureInfo.InvariantCulture,
+            "@{0}@", _idMap.Get(partnerRight.Id)));
+        }
+
+        if (relationship == null)
+        {
+            return;
         }
 
 
-      }
-    }
-  }
-
-  /// <summary>
-  /// An exportable citation is one which has a source reference which is contained in the current source list for the family.
-  /// </summary>
-  private bool ExportableCitation(string sourceID)
-  {
-    bool exportableSource = false;
-    int i = 0;
-    foreach (Source s in _sources)
-    {
-      if (s.Id == sourceID)
-      {
-        i++;
-      }
-    }
-
-    if (i > 0)
-    {
-      exportableSource = true;
-    }
-
-    return exportableSource;
-  }
-
-  /// <summary>
-  /// Create the family section (the FAM tags) in the GEDCOM file.
-  /// </summary>
-  private void ExportFamilies()
-  {
-    // Exporting families is more difficult since need to export each
-    // family group. A family group consists of one or more parents,
-    // marriage / divorce information and children. The FamilyMap class
-    // creates a list of family groups from the People collection.
-    FamilyMap map = [];
-    map.Create(_people);
-
-    // Created the family groups, now export each family.
-    foreach (Family family in map.Values)
-    {
-      ExportFamily(family);
-    }
-  }
-
-  /// <summary>
-  /// Export one family group to the GEDCOM file.  
-  /// GEDCOM has no simple way to accurately define parent child modifiers
-  /// so use the non standard _MREL and _FREL tags as many other programs do
-  /// (e.g. Family Tree Maker, Ancestry online trees)
-  /// </summary>
-  private void ExportFamily(Family family)
-  {
-    // Return right away if this is only a single person without any children.
-    if (family.ParentRight == null && family.Children.Count == 0)
-    {
-      return;
-    }
-
-    // Start of new family record.
-    WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@F{0}@", _familyId++), "FAM");
-
-    // Marriage info.
-    ExportMarriage(family.ParentLeft, family.ParentRight, family.Relationship);
-
-    // Children.
-    foreach (Person child in family.Children)
-    {
-
-      WriteLine(1, "CHIL", string.Format(CultureInfo.InvariantCulture, "@{0}@", _idMap.Get(child.Id)));
-
-      // Export the adoption information
-
-      string mrel = string.Empty;
-      string frel = string.Empty;
-
-      foreach (Relationship rel in child.Relationships)
-      {
-        if (rel.RelationshipType == RelationshipType.Parent)
+        // Marriage.
+        if (relationship.SpouseModifier == SpouseModifier.Current)
         {
+            WriteLine(1, "MARR", "");
 
-          ParentRelationship pRel = (ParentRelationship)rel;
+            if (relationship.MarriageDate != null)
+            {
 
-          if (rel.PersonId == family.ParentLeft.Id && family.ParentLeft.Gender == Gender.Male)
-          {
-            mrel = pRel.ParentChildModifier.ToString();
-          }
+                string Date = ExportDate(relationship.MarriageDate);
+                // Date if it exist.
 
-          if (rel.PersonId == family.ParentLeft.Id && family.ParentLeft.Gender == Gender.Female)
-          {
-            frel = pRel.ParentChildModifier.ToString();
-          }
+                if (relationship.MarriageDateDescriptor != null && relationship.MarriageDateDescriptor.Length > 1)
+                {
+                    WriteLine(2, "DATE", relationship.MarriageDateDescriptor + Date);
+                }
+                else
+                {
+                    WriteLine(2, "DATE", Date);
+                }
+            }
+            //Place if it exist.
+            if (relationship.MarriagePlace != null && relationship.MarriagePlace.Length > 0)
+            {
+                WriteLine(2, "PLAC", relationship.MarriagePlace);
+            }
 
-          if (rel.PersonId == family.ParentRight.Id && family.ParentRight.Gender == Gender.Female)
-          {
-            frel = pRel.ParentChildModifier.ToString();
-          }
+            //Source if it exist.
+            if (!string.IsNullOrEmpty(relationship.MarriageSource) &&
+                !string.IsNullOrEmpty(relationship.MarriageCitation) &&
+                ExportableCitation(relationship.MarriageSource) == true)
+            {
+                WriteLine(2, "SOUR", "@" + relationship.MarriageSource + "@");
+                WriteLine(3, "PAGE", relationship.MarriageCitation);
+                WriteLine(3, "DATA", "");
+                if (!string.IsNullOrEmpty(relationship.MarriageCitationActualText))
+                {
+                    WriteLine(4, "TEXT", relationship.MarriageCitationActualText);
+                }
+                //Many programs ignore web links so add web link to note.
+                if (!string.IsNullOrEmpty(relationship.MarriageCitationNote) &&
+                    string.IsNullOrEmpty(relationship.MarriageLink))
+                {
+                    WriteLine(3, "NOTE", relationship.MarriageCitationNote);
+                }
 
-          if (rel.PersonId == family.ParentRight.Id && family.ParentRight.Gender == Gender.Male)
-          {
-            mrel = pRel.ParentChildModifier.ToString();
-          }
+                if (!string.IsNullOrEmpty(relationship.MarriageCitationNote) &&
+                    !string.IsNullOrEmpty(relationship.MarriageLink))
+                {
+                    WriteLine(3, "NOTE", relationship.MarriageCitationNote + " " + relationship.MarriageLink);
+                }
+
+                if (string.IsNullOrEmpty(relationship.MarriageCitationNote) &&
+                    !string.IsNullOrEmpty(relationship.MarriageLink))
+                {
+                    WriteLine(3, "NOTE", relationship.MarriageLink);
+                }
+
+                if (!string.IsNullOrEmpty(relationship.MarriageLink))
+                {
+                    WriteLine(3, "OBJE", "");
+                    WriteLine(4, "FORM", "URL");
+                    WriteLine(4, "TITL", "URL of citation");
+                    WriteLine(4, "FILE", relationship.MarriageLink);
+                }
+            }
         }
-      }
 
-      //export nothing if natural relationship
-      if (frel.Length > 0 && frel != "Natural")
-      {
-        WriteLine(2, "_FREL", frel);
-      }
-
-      if (mrel.Length > 0 && mrel != "Natural")
-      {
-        WriteLine(2, "_MREL", mrel);
-      }
-    }
-  }
-
-  /// <summary>
-  /// Export marriage / divorce information.
-  /// </summary>
-  private void ExportMarriage(Person partnerLeft, Person partnerRight, SpouseRelationship relationship)
-  {
-
-    // PartnerLeft.
-    if (partnerLeft != null && partnerLeft.Gender == Gender.Male)
-    {
-      WriteLine(1, "HUSB", string.Format(CultureInfo.InvariantCulture,
-      "@{0}@", _idMap.Get(partnerLeft.Id)));
-    }
-
-    if (partnerLeft != null && partnerLeft.Gender == Gender.Female)
-    {
-      WriteLine(1, "WIFE", string.Format(CultureInfo.InvariantCulture,
-      "@{0}@", _idMap.Get(partnerLeft.Id)));
-    }
-
-    if (!partnerLeft.Spouses.Contains(partnerRight))
-    {
-      return;
-    }
-
-    // PartnerRight.
-    if (partnerRight != null && partnerRight.Gender == Gender.Male)
-    {
-      WriteLine(1, "HUSB", string.Format(CultureInfo.InvariantCulture,
-      "@{0}@", _idMap.Get(partnerRight.Id)));
-    }
-
-    if (partnerRight != null && partnerRight.Gender == Gender.Female)
-    {
-      WriteLine(1, "WIFE", string.Format(CultureInfo.InvariantCulture,
-      "@{0}@", _idMap.Get(partnerRight.Id)));
-    }
-
-    if (relationship == null)
-    {
-      return;
-    }
-
-
-    // Marriage.
-    if (relationship.SpouseModifier == SpouseModifier.Current)
-    {
-      WriteLine(1, "MARR", "");
-
-      if (relationship.MarriageDate != null)
-      {
-
-        string Date = ExportDate(relationship.MarriageDate);
-        // Date if it exist.
-
-        if (relationship.MarriageDateDescriptor != null && relationship.MarriageDateDescriptor.Length > 1)
+        // Divorce. 
+        if (relationship.SpouseModifier == SpouseModifier.Former)
         {
-          WriteLine(2, "DATE", relationship.MarriageDateDescriptor + Date);
+
+            WriteLine(1, "MARR", "");
+
+            if (relationship.MarriageDate != null)
+            {
+
+                string Date = ExportDate(relationship.MarriageDate);
+                // Date if it exist.
+
+                if (relationship.MarriageDateDescriptor != null &&
+                    relationship.MarriageDateDescriptor.Length > 1)
+                {
+                    WriteLine(2, "DATE", relationship.MarriageDateDescriptor + Date);
+                }
+                else
+                {
+                    WriteLine(2, "DATE", Date);
+                }
+            }
+            //Place if it exist.
+            if (relationship.MarriagePlace != null && relationship.MarriagePlace.Length > 0)
+            {
+                WriteLine(2, "PLAC", relationship.MarriagePlace);
+            }
+
+            //Source if it exist.
+            if (!string.IsNullOrEmpty(relationship.MarriageSource) &&
+                !string.IsNullOrEmpty(relationship.MarriageCitation) &&
+                ExportableCitation(relationship.MarriageSource) == true)
+            {
+                WriteLine(2, "SOUR", "@" + relationship.MarriageSource + "@");
+                WriteLine(3, "PAGE", relationship.MarriageCitation);
+                WriteLine(3, "DATA", "");
+                if (!string.IsNullOrEmpty(relationship.MarriageCitationActualText))
+                {
+                    WriteLine(4, "TEXT", relationship.MarriageCitationActualText);
+                }
+                //Many programs ignore web links so add web link to note.
+                if (!string.IsNullOrEmpty(relationship.MarriageCitationNote) &&
+                    string.IsNullOrEmpty(relationship.MarriageLink))
+                {
+                    WriteLine(3, "NOTE", relationship.MarriageCitationNote);
+                }
+
+                if (!string.IsNullOrEmpty(relationship.MarriageCitationNote) &&
+                    !string.IsNullOrEmpty(relationship.MarriageLink))
+                {
+                    WriteLine(3, "NOTE", relationship.MarriageCitationNote + " " + relationship.MarriageLink);
+                }
+
+                if (string.IsNullOrEmpty(relationship.MarriageCitationNote) &&
+                    !string.IsNullOrEmpty(relationship.MarriageLink))
+                {
+                    WriteLine(3, "NOTE", relationship.MarriageLink);
+                }
+
+                if (!string.IsNullOrEmpty(relationship.MarriageLink))
+                {
+                    WriteLine(3, "OBJE", "");
+                    WriteLine(4, "FORM", "URL");
+                    WriteLine(4, "TITL", "URL of citation");
+                    WriteLine(4, "FILE", relationship.MarriageLink);
+                }
+            }
+
+            WriteLine(1, "DIV", "");
+
+            if (relationship.DivorceDate != null)
+            {
+
+                string Date = ExportDate(relationship.DivorceDate);
+                // Date if it exist.
+
+                if (relationship.DivorceDateDescriptor != null &&
+                    relationship.DivorceDateDescriptor.Length > 1)
+                {
+                    WriteLine(2, "DATE", relationship.DivorceDateDescriptor + Date);
+                }
+                else
+                {
+                    WriteLine(2, "DATE", Date);
+                }
+            }
+
+            //Source if it exist.
+            if (!string.IsNullOrEmpty(relationship.DivorceSource) &&
+                !string.IsNullOrEmpty(relationship.DivorceCitation) &&
+                ExportableCitation(relationship.DivorceSource) == true)
+            {
+                WriteLine(2, "SOUR", "@" + relationship.DivorceSource + "@");
+                WriteLine(3, "PAGE", relationship.DivorceCitation);
+                WriteLine(3, "DATA", "");
+                if (!string.IsNullOrEmpty(relationship.DivorceCitationActualText))
+                {
+                    WriteLine(4, "TEXT", relationship.DivorceCitationActualText);
+                }
+                //Many programs ignore web links so add web link to note.
+                if (!string.IsNullOrEmpty(relationship.DivorceCitationNote) &&
+                    string.IsNullOrEmpty(relationship.DivorceLink))
+                {
+                    WriteLine(4, "NOTE", relationship.DivorceCitationNote);
+                }
+
+                if (!string.IsNullOrEmpty(relationship.DivorceCitationNote) &&
+                    !string.IsNullOrEmpty(relationship.DivorceLink))
+                {
+                    WriteLine(4, "NOTE", relationship.DivorceCitationNote + " " + relationship.DivorceLink);
+                }
+
+                if (string.IsNullOrEmpty(relationship.DivorceCitationNote) &&
+                    !string.IsNullOrEmpty(relationship.DivorceLink))
+                {
+                    WriteLine(4, "NOTE", relationship.DivorceLink);
+                }
+
+                if (!string.IsNullOrEmpty(relationship.DivorceLink))
+                {
+                    WriteLine(3, "OBJE", "");
+                    WriteLine(4, "FORM", "URL");
+                    WriteLine(4, "TITL", "URL of citation");
+                    WriteLine(4, "FILE", relationship.DivorceLink);
+                }
+            }
+
+        }
+    }
+
+    private void ExportName(Person person)
+    {
+        string Space = " ";
+
+        string value = string.Format(CultureInfo.InvariantCulture,
+            "{0}{1}/{2}/", person.FirstName, Space, person.LastName);
+
+        WriteLine(1, "NAME", value);
+    }
+
+    private void ExportPhotos(Person person)
+    {
+        foreach (Photo photo in person.Photos)
+        {
+            WriteLine(1, "OBJE", "");
+            WriteLine(2, "FORM", Path.GetExtension(photo.FullyQualifiedPath).Replace(".", ""));
+            WriteLine(2, "FILE", @"\PathToFile\Images\" + Path.GetFileName(photo.FullyQualifiedPath));
+        }
+    }
+
+    private void ExportAttachments(Person person)
+    {
+        foreach (Attachment attachment in person.Attachments)
+        {
+            WriteLine(1, "OBJE", "");
+            WriteLine(2, "FORM", Path.GetExtension(attachment.FullyQualifiedPath).Replace(".", ""));
+            WriteLine(2, "FILE", @"\PathToFile\Attachments\" + Path.GetFileName(attachment.FullyQualifiedPath));
+        }
+    }
+
+    internal void ExportEvent(
+        string tag,
+        string tagDescription,
+        string descriptor,
+        DateWrapper date,
+        string place,
+        string citation,
+        string citationNote,
+        string citationActualText,
+        string link,
+        string source)
+    {
+        // Return right away if don't have a date or place to export.
+        if (DateWrapper.IsNullOrEmpty(date) && string.IsNullOrEmpty(place))
+        {
+            return;
+        }
+
+        // Start the new event tag.
+        WriteLine(1, tag, tagDescription);
+
+        string Date = ExportDate(date);
+        if (!string.IsNullOrEmpty(Date))
+        {
+            WriteLine(2, "DATE", descriptor + Date);
+        }
+
+        // Place.
+        if (!string.IsNullOrEmpty(place))
+        {
+            WriteLine(2, "PLAC", place);
+        }
+
+        // Source.
+        if (!string.IsNullOrEmpty(source) &&
+            !string.IsNullOrEmpty(citation) &&
+            ExportableCitation(source) == true)
+        {
+            WriteLine(2, "SOUR", "@" + source + "@");
+            WriteLine(3, "PAGE", citation);
+            WriteLine(3, "DATA", "");
+            if (!string.IsNullOrEmpty(citationActualText))
+            {
+                WriteLine(4, "TEXT", citationActualText);
+            }
+            //Many programs ignore web links so add web link to note.
+            if (!string.IsNullOrEmpty(citationNote) && string.IsNullOrEmpty(link))
+            {
+                WriteLine(3, "NOTE", citationNote);
+            }
+
+            if (!string.IsNullOrEmpty(citationNote) && !string.IsNullOrEmpty(link))
+            {
+                WriteLine(3, "NOTE", citationNote + " " + link);
+            }
+
+            if (string.IsNullOrEmpty(citationNote) && !string.IsNullOrEmpty(link))
+            {
+                WriteLine(3, "NOTE", link);
+            }
+
+            if (!string.IsNullOrEmpty(link))
+            {
+                WriteLine(3, "OBJE", "");
+                WriteLine(4, "FORM", "URL");
+                WriteLine(4, "TITL", "URL of citation");
+                WriteLine(4, "FILE", link);
+            }
+        }
+
+    }
+
+    internal static string ExportDate(DateWrapper date)
+    {
+        if (!DateWrapper.IsNullOrEmpty(date))
+        {
+            return date.ToGedcom();
+        }
+
+        return string.Empty;
+    }
+
+    private void ExportGender(Person person)
+    {
+        WriteLine(1, "SEX", (person.Gender == Gender.Female) ? "F" : "M");
+    }
+
+    private void ExportRestriction(Person person)
+    {
+        if (person.Restriction == Restriction.Private)
+        {
+            WriteLine(1, "RESN", "privacy");
+        }
+        else if (person.Restriction == Restriction.Locked)
+        {
+            WriteLine(1, "RESN", "locked");
         }
         else
         {
-          WriteLine(2, "DATE", Date);
+            //return and do nothing
         }
-      }
-      //Place if it exist.
-      if (relationship.MarriagePlace != null && relationship.MarriagePlace.Length > 0)
-      {
-        WriteLine(2, "PLAC", relationship.MarriagePlace);
-      }
-
-      //Source if it exist.
-      if (!string.IsNullOrEmpty(relationship.MarriageSource) && !string.IsNullOrEmpty(relationship.MarriageCitation) && ExportableCitation(relationship.MarriageSource) == true)
-      {
-        WriteLine(2, "SOUR", "@" + relationship.MarriageSource + "@");
-        WriteLine(3, "PAGE", relationship.MarriageCitation);
-        WriteLine(3, "DATA", "");
-        if (!string.IsNullOrEmpty(relationship.MarriageCitationActualText))
-        {
-          WriteLine(4, "TEXT", relationship.MarriageCitationActualText);
-        }
-        //Many programs ignore web links so add web link to note.
-        if (!string.IsNullOrEmpty(relationship.MarriageCitationNote) && string.IsNullOrEmpty(relationship.MarriageLink))
-        {
-          WriteLine(3, "NOTE", relationship.MarriageCitationNote);
-        }
-
-        if (!string.IsNullOrEmpty(relationship.MarriageCitationNote) && !string.IsNullOrEmpty(relationship.MarriageLink))
-        {
-          WriteLine(3, "NOTE", relationship.MarriageCitationNote + " " + relationship.MarriageLink);
-        }
-
-        if (string.IsNullOrEmpty(relationship.MarriageCitationNote) && !string.IsNullOrEmpty(relationship.MarriageLink))
-        {
-          WriteLine(3, "NOTE", relationship.MarriageLink);
-        }
-
-        if (!string.IsNullOrEmpty(relationship.MarriageLink))
-        {
-          WriteLine(3, "OBJE", "");
-          WriteLine(4, "FORM", "URL");
-          WriteLine(4, "TITL", "URL of citation");
-          WriteLine(4, "FILE", relationship.MarriageLink);
-        }
-      }
     }
 
-    // Divorce. 
-    if (relationship.SpouseModifier == SpouseModifier.Former)
+    // Write a GEDCOM line, this is more involved since the line cannot contain 
+    // carriage returns or exceed 255 characters. First, divide the value by carriage 
+    // return. Then divide each carriage-return line into chunks of 200 characters. 
+    // The first line contains the original tag name and level, carriage returns contain
+    // the CONT tag and continue lines contains CONC.
+    private void WriteLine(int level, string tag, string value)
     {
+        // Trim leading white space
+        value = value.Trim();
 
-      WriteLine(1, "MARR", "");
-
-      if (relationship.MarriageDate != null)
-      {
-
-        string Date = ExportDate(relationship.MarriageDate);
-        // Date if it exist.
-
-        if (relationship.MarriageDateDescriptor != null && relationship.MarriageDateDescriptor.Length > 1)
+        // Remove leading carriage returns (these break the level structure)
+        if (value.StartsWith('\n') || value.StartsWith('\r'))
         {
-          WriteLine(2, "DATE", relationship.MarriageDateDescriptor + Date);
-        }
-        else
-        {
-          WriteLine(2, "DATE", Date);
-        }
-      }
-      //Place if it exist.
-      if (relationship.MarriagePlace != null && relationship.MarriagePlace.Length > 0)
-      {
-        WriteLine(2, "PLAC", relationship.MarriagePlace);
-      }
-
-      //Source if it exist.
-      if (!string.IsNullOrEmpty(relationship.MarriageSource) && !string.IsNullOrEmpty(relationship.MarriageCitation) && ExportableCitation(relationship.MarriageSource) == true)
-      {
-        WriteLine(2, "SOUR", "@" + relationship.MarriageSource + "@");
-        WriteLine(3, "PAGE", relationship.MarriageCitation);
-        WriteLine(3, "DATA", "");
-        if (!string.IsNullOrEmpty(relationship.MarriageCitationActualText))
-        {
-          WriteLine(4, "TEXT", relationship.MarriageCitationActualText);
-        }
-        //Many programs ignore web links so add web link to note.
-        if (!string.IsNullOrEmpty(relationship.MarriageCitationNote) && string.IsNullOrEmpty(relationship.MarriageLink))
-        {
-          WriteLine(3, "NOTE", relationship.MarriageCitationNote);
+            do
+            {
+                value = value.Remove(0, 2);
+            }
+            while (value.StartsWith('\n') || value.StartsWith('\r'));
         }
 
-        if (!string.IsNullOrEmpty(relationship.MarriageCitationNote) && !string.IsNullOrEmpty(relationship.MarriageLink))
+        // The entire line length cannot exceed 255 characters using
+        // 200 for the value which should stay below the 255 line length.
+        const int ValueLimit = 200;
+
+        // Most lines do not need special processing, export the line if it
+        // does not contain carriage returns or exceed the line length.
+        if (value.Length < ValueLimit && !value.Contains('\r') && !value.Contains('\n'))
         {
-          WriteLine(3, "NOTE", relationship.MarriageCitationNote + " " + relationship.MarriageLink);
+            _writer.WriteLine(string.Format(
+                CultureInfo.InvariantCulture,
+                "{0} {1} {2}", level, tag, value));
+
+            return;
         }
 
-        if (string.IsNullOrEmpty(relationship.MarriageCitationNote) && !string.IsNullOrEmpty(relationship.MarriageLink))
+        // First divide the value by carriage returns.
+        value = value.Replace("\r\n", "\n");
+        value = value.Replace("\r", "\n");
+        string[] lines = value.Split('\n');
+
+        // Process each line.
+        for (int lineIndex = 0; lineIndex < lines.Length; lineIndex++)
         {
-          WriteLine(3, "NOTE", relationship.MarriageLink);
+            // The current line processing.
+            string line = lines[lineIndex];
+
+            // Write each line but don't exceed the line limit, loop here
+            // and write each chunk out at a time.
+            int chunkCount = (line.Length + ValueLimit - 1) / ValueLimit;
+
+            for (int chunkIndex = 0; chunkIndex < chunkCount; chunkIndex++)
+            {
+                // Current position in the value.
+                int pos = chunkIndex * ValueLimit;
+
+                // Current value chunk to write.
+                string chunk = line.Substring(pos, Math.Min(line.Length - pos, ValueLimit));
+
+                // Always use the original level and tag for the first line, but use
+                // the concatenation tag (CONT) for all other lines.
+                if (lineIndex == 0 && chunkIndex == 0)
+                {
+                    _writer.WriteLine(string.Format(CultureInfo.InvariantCulture,
+                        "{0} {1} {2}", level, tag, chunk));
+                }
+                else
+                {
+                    _writer.WriteLine(string.Format(CultureInfo.InvariantCulture,
+                        "{0} {1} {2}", level + 1, "CONC", chunk));
+                }
+            }
+
+            // All lines except the last line have the continue (CONT) tag.
+            if (lineIndex < lines.Length - 1)
+            {
+                _writer.WriteLine(string.Format(CultureInfo.InvariantCulture,
+                   "{0} {1}", level + 1, "CONT"));
+            }
         }
-
-        if (!string.IsNullOrEmpty(relationship.MarriageLink))
-        {
-          WriteLine(3, "OBJE", "");
-          WriteLine(4, "FORM", "URL");
-          WriteLine(4, "TITL", "URL of citation");
-          WriteLine(4, "FILE", relationship.MarriageLink);
-        }
-      }
-
-      WriteLine(1, "DIV", "");
-
-      if (relationship.DivorceDate != null)
-      {
-
-        string Date = ExportDate(relationship.DivorceDate);
-        // Date if it exist.
-
-        if (relationship.DivorceDateDescriptor != null && relationship.DivorceDateDescriptor.Length > 1)
-        {
-          WriteLine(2, "DATE", relationship.DivorceDateDescriptor + Date);
-        }
-        else
-        {
-          WriteLine(2, "DATE", Date);
-        }
-      }
-
-      //Source if it exist.
-      if (!string.IsNullOrEmpty(relationship.DivorceSource) && !string.IsNullOrEmpty(relationship.DivorceCitation) && ExportableCitation(relationship.DivorceSource) == true)
-      {
-        WriteLine(2, "SOUR", "@" + relationship.DivorceSource + "@");
-        WriteLine(3, "PAGE", relationship.DivorceCitation);
-        WriteLine(3, "DATA", "");
-        if (!string.IsNullOrEmpty(relationship.DivorceCitationActualText))
-        {
-          WriteLine(4, "TEXT", relationship.DivorceCitationActualText);
-        }
-        //Many programs ignore web links so add web link to note.
-        if (!string.IsNullOrEmpty(relationship.DivorceCitationNote) && string.IsNullOrEmpty(relationship.DivorceLink))
-        {
-          WriteLine(4, "NOTE", relationship.DivorceCitationNote);
-        }
-
-        if (!string.IsNullOrEmpty(relationship.DivorceCitationNote) && !string.IsNullOrEmpty(relationship.DivorceLink))
-        {
-          WriteLine(4, "NOTE", relationship.DivorceCitationNote + " " + relationship.DivorceLink);
-        }
-
-        if (string.IsNullOrEmpty(relationship.DivorceCitationNote) && !string.IsNullOrEmpty(relationship.DivorceLink))
-        {
-          WriteLine(4, "NOTE", relationship.DivorceLink);
-        }
-
-        if (!string.IsNullOrEmpty(relationship.DivorceLink))
-        {
-          WriteLine(3, "OBJE", "");
-          WriteLine(4, "FORM", "URL");
-          WriteLine(4, "TITL", "URL of citation");
-          WriteLine(4, "FILE", relationship.DivorceLink);
-        }
-      }
-
     }
-  }
-
-  private void ExportName(Person person)
-  {
-    string Space = " ";
-
-    string value = string.Format(CultureInfo.InvariantCulture,
-        "{0}{1}/{2}/", person.FirstName, Space, person.LastName);
-
-    WriteLine(1, "NAME", value);
-  }
-
-  private void ExportPhotos(Person person)
-  {
-    foreach (Photo photo in person.Photos)
-    {
-      WriteLine(1, "OBJE", "");
-      WriteLine(2, "FORM", Path.GetExtension(photo.FullyQualifiedPath).Replace(".", ""));
-      WriteLine(2, "FILE", @"\PathToFile\Images\" + Path.GetFileName(photo.FullyQualifiedPath));
-    }
-  }
-
-  private void ExportAttachments(Person person)
-  {
-    foreach (Attachment attachment in person.Attachments)
-    {
-      WriteLine(1, "OBJE", "");
-      WriteLine(2, "FORM", Path.GetExtension(attachment.FullyQualifiedPath).Replace(".", ""));
-      WriteLine(2, "FILE", @"\PathToFile\Attachments\" + Path.GetFileName(attachment.FullyQualifiedPath));
-    }
-  }
-
-  internal void ExportEvent(string tag, string tagDescription, string descriptor, DateWrapper date, string place, string citation, string citationNote, string citationActualText, string link, string source)
-  {
-    // Return right away if don't have a date or place to export.
-    if (DateWrapper.IsNullOrEmpty(date) && string.IsNullOrEmpty(place))
-    {
-      return;
-    }
-
-    // Start the new event tag.
-    WriteLine(1, tag, tagDescription);
-
-    string Date = ExportDate(date);
-    if (!string.IsNullOrEmpty(Date))
-    {
-      WriteLine(2, "DATE", descriptor + Date);
-    }
-
-    // Place.
-    if (!string.IsNullOrEmpty(place))
-    {
-      WriteLine(2, "PLAC", place);
-    }
-
-    // Source.
-    if (!string.IsNullOrEmpty(source) && !string.IsNullOrEmpty(citation) && ExportableCitation(source) == true)
-    {
-      WriteLine(2, "SOUR", "@" + source + "@");
-      WriteLine(3, "PAGE", citation);
-      WriteLine(3, "DATA", "");
-      if (!string.IsNullOrEmpty(citationActualText))
-      {
-        WriteLine(4, "TEXT", citationActualText);
-      }
-      //Many programs ignore web links so add web link to note.
-      if (!string.IsNullOrEmpty(citationNote) && string.IsNullOrEmpty(link))
-      {
-        WriteLine(3, "NOTE", citationNote);
-      }
-
-      if (!string.IsNullOrEmpty(citationNote) && !string.IsNullOrEmpty(link))
-      {
-        WriteLine(3, "NOTE", citationNote + " " + link);
-      }
-
-      if (string.IsNullOrEmpty(citationNote) && !string.IsNullOrEmpty(link))
-      {
-        WriteLine(3, "NOTE", link);
-      }
-
-      if (!string.IsNullOrEmpty(link))
-      {
-        WriteLine(3, "OBJE", "");
-        WriteLine(4, "FORM", "URL");
-        WriteLine(4, "TITL", "URL of citation");
-        WriteLine(4, "FILE", link);
-      }
-    }
-
-  }
-
-  internal static string ExportDate(DateWrapper date)
-  {
-    if (!DateWrapper.IsNullOrEmpty(date))
-    {
-      return date.ToGedcom();
-    }
-
-    return string.Empty;
-  }
-
-  private void ExportGender(Person person)
-  {
-    WriteLine(1, "SEX", (person.Gender == Gender.Female) ? "F" : "M");
-  }
-
-  private void ExportRestriction(Person person)
-  {
-    if (person.Restriction == Restriction.Private)
-    {
-      WriteLine(1, "RESN", "privacy");
-    }
-    else if (person.Restriction == Restriction.Locked)
-    {
-      WriteLine(1, "RESN", "locked");
-    }
-    else
-    {
-      //return and do nothing
-    }
-  }
-
-  // Write a GEDCOM line, this is more involved since the line cannot contain 
-  // carriage returns or exceed 255 characters. First, divide the value by carriage 
-  // return. Then divide each carriage-return line into chunks of 200 characters. 
-  // The first line contains the original tag name and level, carriage returns contain
-  // the CONT tag and continue lines contains CONC.
-  private void WriteLine(int level, string tag, string value)
-  {
-    // Trim leading white space
-    value = value.Trim();
-
-    // Remove leading carriage returns (these break the level structure)
-    if (value.StartsWith('\n') || value.StartsWith('\r'))
-    {
-      do
-      {
-        value = value.Remove(0, 2);
-      }
-      while (value.StartsWith('\n') || value.StartsWith('\r'));
-    }
-
-    // The entire line length cannot exceed 255 characters using
-    // 200 for the value which should stay below the 255 line length.
-    const int ValueLimit = 200;
-
-    // Most lines do not need special processing, export the line if it
-    // does not contain carriage returns or exceed the line length.
-    if (value.Length < ValueLimit && !value.Contains('\r') && !value.Contains('\n'))
-    {
-      _writer.WriteLine(string.Format(
-          CultureInfo.InvariantCulture,
-          "{0} {1} {2}", level, tag, value));
-
-      return;
-    }
-
-    // First divide the value by carriage returns.
-    value = value.Replace("\r\n", "\n");
-    value = value.Replace("\r", "\n");
-    string[] lines = value.Split('\n');
-
-    // Process each line.
-    for (int lineIndex = 0; lineIndex < lines.Length; lineIndex++)
-    {
-      // The current line processing.
-      string line = lines[lineIndex];
-
-      // Write each line but don't exceed the line limit, loop here
-      // and write each chunk out at a time.
-      int chunkCount = (line.Length + ValueLimit - 1) / ValueLimit;
-
-      for (int chunkIndex = 0; chunkIndex < chunkCount; chunkIndex++)
-      {
-        // Current position in the value.
-        int pos = chunkIndex * ValueLimit;
-
-        // Current value chunk to write.
-        string chunk = line.Substring(pos, Math.Min(line.Length - pos, ValueLimit));
-
-        // Always use the original level and tag for the first line, but use
-        // the concatenation tag (CONT) for all other lines.
-        if (lineIndex == 0 && chunkIndex == 0)
-        {
-          _writer.WriteLine(string.Format(CultureInfo.InvariantCulture,
-              "{0} {1} {2}", level, tag, chunk));
-        }
-        else
-        {
-          _writer.WriteLine(string.Format(CultureInfo.InvariantCulture,
-              "{0} {1} {2}", level + 1, "CONC", chunk));
-        }
-      }
-
-      // All lines except the last line have the continue (CONT) tag.
-      if (lineIndex < lines.Length - 1)
-      {
-        _writer.WriteLine(string.Format(CultureInfo.InvariantCulture,
-           "{0} {1}", level + 1, "CONT"));
-      }
-    }
-  }
 }
 
 /// <summary>
@@ -819,32 +927,32 @@ public class GedcomExport
 /// </summary>
 internal class GedcomIdMap
 {
-  #region fields
+    #region fields
 
-  // Quick lookup that maps a GUID to a GEDCOM ID.
-  private readonly Dictionary<string, string> _map = [];
+    // Quick lookup that maps a GUID to a GEDCOM ID.
+    private readonly Dictionary<string, string> _map = [];
 
-  // The next ID to assign.
-  private int _nextId;
+    // The next ID to assign.
+    private int _nextId;
 
-  #endregion
+    #endregion
 
-  /// <summary>
-  /// Return the mapped ID for the specified GUID.
-  /// </summary>
-  public string Get(string guid)
-  {
-    // Return right away if already mapped.
-    if (_map.TryGetValue(guid, out string id))
+    /// <summary>
+    /// Return the mapped ID for the specified GUID.
+    /// </summary>
+    public string Get(string guid)
     {
-      return id;
-    }
+        // Return right away if already mapped.
+        if (_map.TryGetValue(guid, out string id))
+        {
+            return id;
+        }
 
-    // Assign a new GEDCOM ID and add to map.
-    id = string.Format(CultureInfo.InvariantCulture, "I{0}", _nextId++);
-    _map[guid] = id;
-    return id;
-  }
+        // Assign a new GEDCOM ID and add to map.
+        id = string.Format(CultureInfo.InvariantCulture, "I{0}", _nextId++);
+        _map[guid] = id;
+        return id;
+    }
 }
 
 /// <summary>
@@ -852,25 +960,25 @@ internal class GedcomIdMap
 /// </summary>
 internal class Family(Person parentLeft, Person parentRight)
 {
-  /// <summary>
-  /// Get the left-side parent.
-  /// </summary>
-  public Person ParentLeft { get; } = parentLeft;
+    /// <summary>
+    /// Get the left-side parent.
+    /// </summary>
+    public Person ParentLeft { get; } = parentLeft;
 
-  /// <summary>
-  /// Get the right-side parent.
-  /// </summary>
-  public Person ParentRight { get; } = parentRight;
+    /// <summary>
+    /// Get the right-side parent.
+    /// </summary>
+    public Person ParentRight { get; } = parentRight;
 
-  /// <summary>
-  /// Get or set the relationship for the two parents.
-  /// </summary>
-  public SpouseRelationship Relationship { get; set; }
+    /// <summary>
+    /// Get or set the relationship for the two parents.
+    /// </summary>
+    public SpouseRelationship Relationship { get; set; }
 
-  /// <summary>
-  /// Get the list of children.
-  /// </summary>
-  public List<Person> Children { get; } = [];
+    /// <summary>
+    /// Get the list of children.
+    /// </summary>
+    public List<Person> Children { get; } = [];
 }
 
 /// <summary>
@@ -878,107 +986,107 @@ internal class Family(Person parentLeft, Person parentRight)
 /// </summary>
 internal class FamilyMap : Dictionary<string, Family>
 {
-  /// <summary>
-  /// Organize the People collection into a list of families. A family consists of
-  /// an wife, husband, children, and married / divorced information.
-  /// </summary>
-  public void Create(PeopleCollection people)
-  {
-    Clear();
-
-    // First, iterate though the list and create parent groups.
-    // A parent group is one or two parents that have one or
-    // more children.
-    foreach (Person person in people)
+    /// <summary>
+    /// Organize the People collection into a list of families. A family consists of
+    /// an wife, husband, children, and married / divorced information.
+    /// </summary>
+    public void Create(PeopleCollection people)
     {
-      Collection<Person> parents = person.Parents;
+        Clear();
 
-      int i = parents.Count;
-
-      for (int j = 0; j < i; j += 2)
-      {
-        if (parents.Count > j)
+        // First, iterate though the list and create parent groups.
+        // A parent group is one or two parents that have one or
+        // more children.
+        foreach (Person person in people)
         {
-          // Use an additional sets if they exist
-          Person parentLeft = parents[j];
-          Person parentRight = new();
-          if (parents.Count > j + 1)
-          {
-            parentRight = (parents.Count > j + 1) ? parents[j + 1] : null;
-          }
+            Collection<Person> parents = person.Parents;
 
-          // See if this parent group has been added to the list yet.
-          string key = GetKey(parentLeft, parentRight);
-          if (!ContainsKey(key))
-          {
-            // This parent group does not exist, add it to the list.
-            Family details = new(parentLeft, parentRight)
+            int i = parents.Count;
+
+            for (int j = 0; j < i; j += 2)
             {
-              Relationship = parentLeft.GetSpouseRelationship(parentRight)
-            };
-            this[key] = details;
-          }
+                if (parents.Count > j)
+                {
+                    // Use an additional sets if they exist
+                    Person parentLeft = parents[j];
+                    Person parentRight = new();
+                    if (parents.Count > j + 1)
+                    {
+                        parentRight = (parents.Count > j + 1) ? parents[j + 1] : null;
+                    }
 
-          // Add the child to the parent group.
-          this[key].Children.Add(person);
+                    // See if this parent group has been added to the list yet.
+                    string key = GetKey(parentLeft, parentRight);
+                    if (!ContainsKey(key))
+                    {
+                        // This parent group does not exist, add it to the list.
+                        Family details = new(parentLeft, parentRight)
+                        {
+                            Relationship = parentLeft.GetSpouseRelationship(parentRight)
+                        };
+                        this[key] = details;
+                    }
+
+                    // Add the child to the parent group.
+                    this[key].Children.Add(person);
+                }
+            }
         }
-      }
-    }
 
-    // Next, iterate though the list and create marriage groups.
-    // A marriage group is current or former marriages that
-    // don't have any children.
-    foreach (Person person in people)
-    {
-      Collection<Person> spouses = person.Spouses;
-      foreach (Person spouse in spouses)
-      {
-        // See if this marriage group is in the list.
-        string key = GetKey(person, spouse);
-        if (!ContainsKey(key))
+        // Next, iterate though the list and create marriage groups.
+        // A marriage group is current or former marriages that
+        // don't have any children.
+        foreach (Person person in people)
         {
-          // This marriage group is not in the list, add it to the list.
-          Family details = new(person, spouse)
-          {
-            Relationship = person.GetSpouseRelationship(spouse)
-          };
-          this[key] = details;
+            Collection<Person> spouses = person.Spouses;
+            foreach (Person spouse in spouses)
+            {
+                // See if this marriage group is in the list.
+                string key = GetKey(person, spouse);
+                if (!ContainsKey(key))
+                {
+                    // This marriage group is not in the list, add it to the list.
+                    Family details = new(person, spouse)
+                    {
+                        Relationship = person.GetSpouseRelationship(spouse)
+                    };
+                    this[key] = details;
+                }
+            }
         }
-      }
     }
-  }
 
-  /// <summary>
-  /// Return a string for the parent group.
-  /// </summary>
-  private static string GetKey(Person partnerLeft, Person partnerRight)
-  {
-    // This is used as the key to the list. This is tricky since parent
-    // groups should not be duplicated. For example, the list should
-    // not contain the parent groups:
-    //
-    //  Bob Bee
-    //  Bee Bob
-    //  
-    // The list should only contain the group:
-    //
-    //  Bob Bee
-    //
-    // This is accomplished by concatenating the parent
-    // ID's together when creating the key.
-
-    string key = partnerLeft.Id;
-    if (partnerRight != null)
+    /// <summary>
+    /// Return a string for the parent group.
+    /// </summary>
+    private static string GetKey(Person partnerLeft, Person partnerRight)
     {
-      if (partnerLeft.Id.CompareTo(partnerRight.Id) < 0)
-      {
-        key = partnerLeft.Id + partnerRight.Id;
-      }
-      else
-      {
-        key = partnerRight.Id + partnerLeft.Id;
-      }
+        // This is used as the key to the list. This is tricky since parent
+        // groups should not be duplicated. For example, the list should
+        // not contain the parent groups:
+        //
+        //  Bob Bee
+        //  Bee Bob
+        //  
+        // The list should only contain the group:
+        //
+        //  Bob Bee
+        //
+        // This is accomplished by concatenating the parent
+        // ID's together when creating the key.
+
+        string key = partnerLeft.Id;
+        if (partnerRight != null)
+        {
+            if (partnerLeft.Id.CompareTo(partnerRight.Id) < 0)
+            {
+                key = partnerLeft.Id + partnerRight.Id;
+            }
+            else
+            {
+                key = partnerRight.Id + partnerLeft.Id;
+            }
+        }
+        return key;
     }
-    return key;
-  }
 }
