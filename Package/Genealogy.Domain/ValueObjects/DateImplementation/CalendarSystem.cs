@@ -32,6 +32,24 @@ public sealed class CalendarSystem
     private const string RomanId = "Roman";
     private const string UnknownId = "Unknown";
 
+    /// <summary>
+    /// Abbreviated month names for the Gregorian and Julian calendars.
+    /// </summary>
+    private static readonly string[] s_months =
+        ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    /// <summary>
+    /// Abbreviated month names for the French Republican calendar.
+    /// </summary>
+    private static readonly string[] s_monthsFrench =
+        ["Vend", "Brum", "Frim", "Nivo", "Pluv", "Vent", "Germ", "Flor", "Prai", "Mess", "Ther", "Fruc", "Comp"];
+
+    /// <summary>
+    /// Abbreviated month names for the Hebrew calendar.
+    /// </summary>
+    private static readonly string[] s_monthsHebr =
+        ["Tsh", "Csh", "Ksl", "Tvt", "Shv", "Adr", "Ads", "Nsn", "Iyr", "Svn", "Tmz", "Aav", "Ell"];
+
     #region Public factory members for calendars
 
     /// <summary>
@@ -43,7 +61,7 @@ public sealed class CalendarSystem
     /// <seealso cref="Id"/>
     /// <exception cref="KeyNotFoundException">No calendar system for the specified ID can be found.</exception>
     /// <exception cref="NotSupportedException">The calendar system with the specified ID is known, but not supported on this platform.</exception>
-    public static CalendarSystem ForId(string id)
+    internal static CalendarSystem ForId(string id)
     {
         if (!s_idToFactoryMap.TryGetValue(id, out Func<CalendarSystem> factory))
         {
@@ -65,7 +83,9 @@ public sealed class CalendarSystem
             CalendarOrdinal.FrenchRepublican => FrenchRepublican,
             CalendarOrdinal.Roman => Roman,
             CalendarOrdinal.Unknown => Unknown,
-            _ => throw new InvalidOperationException($"Bug in Noda Time: calendar ordinal {ordinal} missing from switch in CalendarSystem.ForOrdinal."),
+            _ => throw new InvalidOperationException(
+                $"Bug in Genealogy.CalendarSystem: calendar ordinal {ordinal} " +
+                "missing from switch in CalendarSystem.ForOrdinal."),
         };
         return result;
     }
@@ -76,17 +96,30 @@ public sealed class CalendarSystem
     /// <value>The IDs of all calendar systems available within Noda Time.</value>
     public static IEnumerable<string> Ids => s_idToFactoryMap.Keys;
 
+    /// <summary>
+    /// Returns the abbreviated month names for the specified calendar ordinal.
+    /// </summary>
+    /// <param name="ordinal">The calendar ordinal value.</param>
+    /// <returns>An array of abbreviated month names for the calendar system.</returns>
+    internal static string[] MonthNames(CalendarOrdinal ordinal) => ordinal switch
+    {
+        CalendarOrdinal.Gregorian or CalendarOrdinal.Julian => s_months,
+        CalendarOrdinal.FrenchRepublican => s_monthsFrench,
+        CalendarOrdinal.Hebrew => s_monthsHebr,
+        _ => [],
+    };
+
     // Note: each factory method must return the same reference on every invocation.
     // If the delegate calls a method, that method must have the same guarantee.
     private static readonly Dictionary<string, Func<CalendarSystem>> s_idToFactoryMap = new()
-  {
-    {GregorianId, () => Gregorian},
-    {JulianId, () => Julian},
-    {HebrewId, () => Hebrew},
-    {FrenchRepublicanId, () => FrenchRepublican},
-    {RomanId, () => Roman},
-    {UnknownId, () => Unknown},
-  };
+    {
+        {GregorianId, () => Gregorian},
+        {JulianId, () => Julian},
+        {HebrewId, () => Hebrew},
+        {FrenchRepublicanId, () => FrenchRepublican},
+        {RomanId, () => Roman},
+        {UnknownId, () => Unknown},
+    };
 
     #endregion
 

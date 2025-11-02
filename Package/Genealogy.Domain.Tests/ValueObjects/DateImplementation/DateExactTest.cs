@@ -4,6 +4,13 @@ namespace Genealogy.Domain.Tests.ValueObjects.DateImplementation;
 
 public class DateExactTest
 {
+    [Fact]
+    public void Constructor_ShouldThrowException_WhenDayWithoutMonthStringIsProvided()
+    {
+        // Act & Assert
+        Assert.Throws<GenealogyException>(() => new DateExact(1980, 0, 15));
+    }
+
     public static readonly TheoryData<int, int, int, string> ValidToGedcomDates =
       new()
       {
@@ -35,7 +42,7 @@ public class DateExactTest
         string invalidDateString = "InvalidDate";
 
         // Act & Assert
-        Assert.Throws<NotImplementedException>(() => new DateExact(invalidDateString));
+        Assert.Throws<GenealogyException>(() => new DateExact(invalidDateString));
     }
 
     [Theory, MemberData(nameof(ValidToGedcomDates))]
@@ -58,11 +65,15 @@ public class DateExactTest
     [Theory]
     [InlineData("1670", "1670")]
     [InlineData("@#DGREGORIAN@1670", "1670")]
-    [InlineData("@#DJULIAN@1670", "@#DJULIAN@1670")]
-    [InlineData("@#DHEBREW@1670", "@#DHEBREW@1670")]
-    [InlineData("@#DFRENCH R@1670", "@#DFRENCH R@1670")]
-    [InlineData("@#DROMAN@1670", "@#DROMAN@1670")]
-    [InlineData("@#DUNKNOWN@1670", "@#DUNKNOWN@1670")]
+    [InlineData("@#DJULIAN@1670", "@#DJULIAN@ 1670")]
+    [InlineData("@#DHEBREW@1670", "@#DHEBREW@ 1670")]
+    [InlineData("@#DFRENCH R@1670", "@#DFRENCH R@ 1670")]
+    [InlineData("@#DROMAN@1670", "@#DROMAN@ 1670")]
+    [InlineData("@#DUNKNOWN@1670", "@#DUNKNOWN@ 1670")]
+    [InlineData("@#DGREGORIAN@JUN 1670", "Jun 1670")]
+    [InlineData("@#DJULIAN@ OCT 1670", "@#DJULIAN@ Oct 1670")]
+    [InlineData("@#DHEBREW@ SHV 1670", "@#DHEBREW@ Shv 1670")]
+    [InlineData("@#DFRENCH R@ VENT 1670", "@#DFRENCH R@ Vent 1670")]
     public void ToGedcom_ShouldReturnValidGedcom_WhenGedcomWithCalendarIsProvided(string gedcom, string expectedGedcom)
     {
         // Arrange
@@ -100,6 +111,64 @@ public class DateExactTest
     {
         // Arrange
         DateExact dateExact = new(2023, month);
+
+        // Act
+        string gedcomString = dateExact.ToString();
+
+        // Assert
+        Assert.Equal(expectedDate, gedcomString);
+    }
+
+    [Theory]
+    [InlineData("@#DFRENCH R@ 1670", "@#DFRENCH R@ 1670")]
+    [InlineData("@#DFRENCH R@ VEND 1670", "@#DFRENCH R@ Vend 1670")]
+    [InlineData("@#DFRENCH R@ BRUM 1670", "@#DFRENCH R@ Brum 1670")]
+    [InlineData("@#DFRENCH R@ FrIM 1670", "@#DFRENCH R@ Frim 1670")]
+    [InlineData("@#DFRENCH R@ NIvO 1670", "@#DFRENCH R@ Nivo 1670")]
+    [InlineData("@#DFRENCH R@ PLUV 1670", "@#DFRENCH R@ Pluv 1670")]
+    [InlineData("@#DFRENCH R@ VENt 1670", "@#DFRENCH R@ Vent 1670")]
+    [InlineData("@#DFRENCH R@ GERM 1670", "@#DFRENCH R@ Germ 1670")]
+    [InlineData("@#DFRENCH R@ FLOR 1670", "@#DFRENCH R@ Flor 1670")]
+    [InlineData("@#DFRENCH R@ PRAI 1670", "@#DFRENCH R@ Prai 1670")]
+    [InlineData("@#DFRENCH R@ MESS 1670", "@#DFRENCH R@ Mess 1670")]
+    [InlineData("@#DFRENCH R@ THER 1670", "@#DFRENCH R@ Ther 1670")]
+    [InlineData("@#DFRENCH R@ FRUC 1670", "@#DFRENCH R@ Fruc 1670")]
+    [InlineData("@#DFRENCH R@ COMP 1670", "@#DFRENCH R@ Comp 1670")]
+    public void ToGedcom_ShouldReturnCorrectGedcomString_WhenYearAndEachFrenchMonthAreProvided(
+    string gedcom,
+    string expectedDate)
+    {
+        // Arrange
+        DateExact dateExact = new(gedcom);
+
+        // Act
+        string gedcomString = dateExact.ToString();
+
+        // Assert
+        Assert.Equal(expectedDate, gedcomString);
+    }
+
+    [Theory]
+    [InlineData("@#DHEBREW@ 1670", "@#DHEBREW@ 1670")]
+    [InlineData("@#DHEBREW@ TSH 1670", "@#DHEBREW@ Tsh 1670")]
+    [InlineData("@#DHEBREW@ CSh 1670", "@#DHEBREW@ Csh 1670")]
+    [InlineData("@#DHEBREW@ KSL 1670", "@#DHEBREW@ Ksl 1670")]
+    [InlineData("@#DHEBREW@ 04 TVT 1670", "@#DHEBREW@ 4 Tvt 1670")]
+    [InlineData("@#DHEBREW@ SHV 1670", "@#DHEBREW@ Shv 1670")]
+    [InlineData("@#DHEBREW@ ADR 1670", "@#DHEBREW@ Adr 1670")]
+    [InlineData("@#DHEBREW@ ADS 1670", "@#DHEBREW@ Ads 1670")]
+    [InlineData("@#DHEBREW@ NSN 1670", "@#DHEBREW@ Nsn 1670")]
+    [InlineData("@#DHEBREW@ IYR 1670", "@#DHEBREW@ Iyr 1670")]
+    [InlineData("@#DHEBREW@ SVN 1670", "@#DHEBREW@ Svn 1670")]
+    [InlineData("@#DHEBREW@ TMZ 1670", "@#DHEBREW@ Tmz 1670")]
+    [InlineData("@#DHEBREW@ AAV 1670", "@#DHEBREW@ Aav 1670")]
+    [InlineData("@#DHEBREW@ ELL 1670", "@#DHEBREW@ Ell 1670")]
+    public void ToGedcom_ShouldReturnCorrectGedcomString_WhenYearAndEachHebrewMonthAreProvided(
+    string gedcom,
+    string expectedDate)
+    {
+        // Arrange
+        DateExact dateExact = new(gedcom);
 
         // Act
         string gedcomString = dateExact.ToString();

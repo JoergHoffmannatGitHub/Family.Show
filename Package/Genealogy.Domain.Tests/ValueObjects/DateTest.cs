@@ -19,8 +19,8 @@ public class DateTest
         { "CAL Sep 1888", typeof(DateApproximated) },
         { "EST 1752", typeof(DateApproximated) },
         { "FROM 1670 TO 1800", typeof(DatePeriod) },
-        { "FROM 1670 TO @#DJULIAN@1800", typeof(DatePeriod) },
-        { "FROM @#DJULIAN@1670 TO 1800", typeof(DatePeriod) },
+        { "FROM 1670 TO @#DJULIAN@ 1800", typeof(DatePeriod) },
+        { "FROM @#DJULIAN@ 1670 TO 1800", typeof(DatePeriod) },
         { "Jul 2023", typeof(DateExact) }
       };
 

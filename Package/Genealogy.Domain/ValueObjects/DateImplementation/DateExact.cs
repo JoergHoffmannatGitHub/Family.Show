@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Linq;
 
 using Architect.DomainModeling;
 
@@ -17,9 +18,24 @@ namespace Genealogy.Domain.ValueObjects.DateImplementation;
 internal partial class DateExact : IDateExact, IEquatable<IDate>
 {
     /// <summary>
+    /// Represents the prefix used to denote years occurring before the birth of Christ (B.C.).
+    /// </summary>
+    private const string BeforeCristusPrefix = "B.C.";
+
+    /// <summary>
+    /// The character used to indicate an alternative year value (e.g., "1699/00") in date strings.
+    /// </summary>
+    private const char YearModifier = '/';
+
+    /// <summary>
     /// Gets the compact representation of year, month, day, and calendar system.
     /// </summary>
     internal YearMonthDayCalendar YearMonthDayCalendar { get; private init; }
+
+    /// <summary>
+    /// Gets a value indicating whether the date has an alternative year value (e.g., "1699/00").
+    /// </summary>
+    internal bool YearAlternative { get; private set; }
 
     /// <summary>
     /// Attempts to parse the specified date string into a <see cref="DateExact"/> object.
@@ -75,6 +91,11 @@ internal partial class DateExact : IDateExact, IEquatable<IDate>
     /// <param name="day">The day component of the date. Defaults to 0 if not specified.</param>
     internal DateExact(int year, int month = 0, int day = 0)
     {
+        if (month == 0 && day != 0)
+        {
+            throw new GenealogyException("Month cannot be zero, when day is not zero.");
+        }
+
         YearMonthDayCalendar = new YearMonthDayCalendar(year, month, day, CalendarOrdinal.Gregorian);
     }
 
@@ -83,25 +104,45 @@ internal partial class DateExact : IDateExact, IEquatable<IDate>
     /// <inheritdoc/>
     public override string ToString()
     {
-        string result = string.Empty;
-
+        string[] dateParts = new string[5];
+        int part = 0;
         // only output type if it isn't the default (Gregorian)
         if (YearMonthDayCalendar.CalendarOrdinal != CalendarOrdinal.Gregorian)
         {
-            result += CalendarSystem.ForOrdinal(YearMonthDayCalendar.CalendarOrdinal).Escape;
+            dateParts[part++] = CalendarSystem.ForOrdinal(YearMonthDayCalendar.CalendarOrdinal).Escape;
         }
 
         if (YearMonthDayCalendar.Day > 0)
         {
-            result += YearMonthDayCalendar.Day + " ";
+            dateParts[part++] = YearMonthDayCalendar.Day.ToString();
         }
 
         if (YearMonthDayCalendar.Month > 0)
         {
-            result += GetMMM(YearMonthDayCalendar.Month) + " ";
+            string[] monthNames = CalendarSystem.MonthNames(YearMonthDayCalendar.CalendarOrdinal);
+            if (YearMonthDayCalendar.Month > monthNames.Length)
+            {
+                throw new GenealogyException("Not a valid month in date.");
+            }
+
+            dateParts[part++] = monthNames[YearMonthDayCalendar.Month - 1];
         }
 
-        return result + YearMonthDayCalendar.Year;
+        if (Year < 0)
+        {
+            dateParts[part++] = (-YearMonthDayCalendar.Year).ToString();
+            dateParts[part++] = BeforeCristusPrefix;
+        }
+        else
+        {
+            dateParts[part++] = YearMonthDayCalendar.Year.ToString();
+            if (YearAlternative)
+            {
+                dateParts[part - 1] += YearModifier + ((YearMonthDayCalendar.Year + 1) % 100).ToString("00");
+            }
+        }
+
+        return string.Join(" ", dateParts, 0, part);
     }
 
     #endregion IDate
@@ -142,7 +183,7 @@ internal partial class DateExact : IDateExact, IEquatable<IDate>
     /// <exception cref="NotImplementedException">
     /// Thrown if the date string cannot be parsed into any of the supported formats.
     /// </exception>
-    private static YearMonthDayCalendar ParseDate(string date)
+    private YearMonthDayCalendar ParseDate(string date)
     {
         CalendarOrdinal ordinal = ParseCalendarOrdinal(ref date);
         int year;
@@ -193,11 +234,147 @@ internal partial class DateExact : IDateExact, IEquatable<IDate>
         }
         else
         {
-            Console.WriteLine($"  Unable to parse '{date}'.");
-            throw new NotImplementedException();
+            bool bc = false;
+            if (date.EndsWith(BeforeCristusPrefix, true, CultureInfo.InvariantCulture))
+            {
+                bc = true;
+                date = date.Substring(0, date.Length - BeforeCristusPrefix.Length);
+            }
+
+            string[] dateSplit = date.Split([' ', '-'], StringSplitOptions.RemoveEmptyEntries);
+            string yearString = string.Empty;
+            string monthString = string.Empty;
+            string dayString = string.Empty;
+
+            if (dateSplit.Length == 1)
+            {
+                yearString = dateSplit[0];
+            }
+            else if (dateSplit.Length == 2)
+            {
+                monthString = dateSplit[0];
+                yearString = dateSplit[1];
+            }
+            else if (dateSplit.Length == 3)
+            {
+                dayString = dateSplit[0];
+                monthString = dateSplit[1];
+                yearString = dateSplit[2];
+            }
+
+            day = ParseDay(dayString);
+            month = ParseMonth(monthString, ordinal);
+            year = ParseYear(yearString, ordinal);
+
+            if (bc)
+            {
+                if (day != 0 || month != 0)
+                {
+                    throw new GenealogyException($"'{BeforeCristusPrefix}' dates can only have year component.");
+                }
+
+                year *= -1;
+            }
         }
 
         return new YearMonthDayCalendar(year, month, day, ordinal);
+    }
+
+    /// <summary>
+    /// Parses the year component from a string representation.
+    /// </summary>
+    /// <param name="yearString">The string containing the year to parse.</param>
+    /// <param name="ordinal">
+    /// The calendar ordinal used to determine the set of month names for parsing.
+    /// This is required when the input is a month name.
+    /// </param>
+    /// <returns>The parsed year as an integer.</returns>
+    /// <exception cref="GenealogyException">
+    /// Thrown when the <paramref name="yearString"/> cannot be parsed as an integer.
+    /// </exception>
+    private int ParseYear(string yearString, CalendarOrdinal ordinal)
+    {
+        // year could be of the form 1699/00
+        // have 2 datetimes for each date ?
+        // only having 1 won't lose the data, could prevent proper merge
+        // though as the DateTime will be used for comparison
+        int YearAlternativeValue = -1;
+        if (yearString.Contains(YearModifier))
+        {
+            if (ordinal != CalendarOrdinal.Gregorian)
+            {
+                throw new GenealogyException("Year alternatives are only supported for Gregorian calendar.");
+            }
+
+            YearAlternative = true;
+            int yearModifierIndex = yearString.IndexOf(YearModifier);
+            _ = int.TryParse(yearString.AsSpan(yearModifierIndex + 1, 2), out YearAlternativeValue);
+            yearString = yearString.Substring(0, yearModifierIndex);
+        }
+
+        bool parseResult = int.TryParse(yearString, out int year);
+        if (YearAlternativeValue != -1 && YearAlternativeValue != ((year % 100) + 1) % 100)
+        {
+            throw new GenealogyException($"The date alternatives for {year}{YearModifier}{YearAlternativeValue} are not displayed with the following year. ");
+        }
+
+        return !parseResult ? throw new GenealogyException($"Unable to parse year '{yearString}'.") : year;
+    }
+
+    /// <summary>
+    /// Parses a month string and converts it to its corresponding numeric representation.
+    /// </summary>
+    /// <param name="monthString">
+    /// The string representation of the month. This can be a numeric string (e.g., "1" for January)  or a month name
+    /// (e.g., "January"). The comparison is case-insensitive.
+    /// </param>
+    /// <param name="ordinal">
+    /// The calendar ordinal used to determine the set of month names for parsing.
+    /// This is required when the input is a month name.
+    /// </param>
+    /// <returns>
+    /// An integer representing the month, where 1 corresponds to January, 2 to February, and so on.
+    /// </returns>
+    /// <exception cref="GenealogyException">
+    /// Thrown if <paramref name="monthString"/> is not a valid numeric month or does not match any
+    /// month name in the specified calendar system.
+    /// </exception>
+    private static int ParseMonth(string monthString, CalendarOrdinal ordinal)
+    {
+        if ((!int.TryParse(monthString, out int month)) && monthString != string.Empty)
+        {
+            string[] monthNames = [.. CalendarSystem.MonthNames(ordinal).Select(s => s.ToUpperInvariant())];
+
+            int monthIndex = Array.IndexOf(monthNames, monthString.ToUpperInvariant());
+
+            if (monthIndex == -1)
+            {
+                throw new GenealogyException("Not a valid month in date.");
+            }
+
+            month = monthIndex + 1;
+        }
+
+        return month;
+    }
+
+    /// <summary>
+    /// Parses a string representation of a day into an integer.
+    /// </summary>
+    /// <param name="dayString">
+    /// The string representation of the day to parse. This can be a numeric string or an empty string.
+    /// </param>
+    /// <returns>
+    /// The parsed integer value of the day. If <paramref name="dayString"/> is empty, returns 0.
+    /// </returns>
+    /// <exception cref="GenealogyException">
+    /// Thrown if <paramref name="dayString"/> is not a valid numeric string and is not empty.
+    /// </exception>
+    private static int ParseDay(string dayString)
+    {
+        return !int.TryParse(dayString, out int day) && dayString != string.Empty
+            ? throw new GenealogyException($"Unable to parse day '{dayString}'.")
+            : day;
     }
 
     /// <summary>
@@ -221,7 +398,7 @@ internal partial class DateExact : IDateExact, IEquatable<IDate>
             if (i != -1)
             {
                 dateType = date[..(i + 1)].ToUpper();
-                date = date[(i + 1)..];
+                date = date[(i + 1)..].Trim();
             }
         }
 
@@ -237,33 +414,5 @@ internal partial class DateExact : IDateExact, IEquatable<IDate>
         };
 
         return ordinal;
-    }
-
-    /// <summary>
-    /// Gets the three-letter month abbreviation for the specified month number.
-    /// </summary>
-    /// <param name="month">The month number (1-12).</param>
-    /// <returns>The three-letter month abbreviation.</returns>
-    /// <exception cref="NotImplementedException">Thrown when the month number is invalid.</exception>
-    private static string GetMMM(int month)
-    {
-        // Use IniCaps because it's more readable.
-        return month switch
-        {
-            1 => "Jan",
-            2 => "Feb",
-            3 => "Mar",
-            4 => "Apr",
-            5 => "May",
-            6 => "Jun",
-            7 => "Jul",
-            8 => "Aug",
-            9 => "Sep",
-            10 => "Oct",
-            11 => "Nov",
-            12 => "Dec",
-            _ => throw new GenealogyException("Not a valid month in date."),
-        };
-        ;
     }
 }
