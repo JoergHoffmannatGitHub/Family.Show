@@ -94,6 +94,8 @@ namespace FamilyShowLib
 
     #endregion
 
+    internal string _UID;
+
     #region Properties
 
     /// <summary>
