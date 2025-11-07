@@ -29,6 +29,9 @@ namespace FamilyShowLib
     private string _lastName;
     private string _suffix;
 
+    // New: Collection of names for supporting multiple names
+    private readonly NameCollection _names;
+
     private string _occupation;
     private string _occupationCitation;
     private string _occupationSource;
@@ -92,6 +95,9 @@ namespace FamilyShowLib
     private Story _story;
     private readonly RelationshipCollection _relationships;
 
+    // Flag to prevent recursion when syncing names
+    private bool _isSyncingNames;
+
     #endregion
 
     #region Properties
@@ -154,7 +160,15 @@ namespace FamilyShowLib
     #region name details
 
     /// <summary>
-    /// Gets first names
+    /// Gets the collection of names for this person (supports multiple names from GEDCOM)
+    /// </summary>
+    public NameCollection Names
+    {
+      get { return _names; }
+    }
+
+    /// <summary>
+    /// Gets first names (from primary name)
     /// </summary>
     public string FirstName
     {
@@ -164,6 +178,7 @@ namespace FamilyShowLib
         if (_firstName != value)
         {
           _firstName = value;
+          SyncPrimaryNameFromFields();
           OnPropertyChanged(nameof(FirstName));
           OnPropertyChanged(nameof(Name));
           OnPropertyChanged(nameof(FullName));
@@ -192,7 +207,7 @@ namespace FamilyShowLib
     }
 
     /// <summary>
-    ///Gets last name
+    ///Gets last name (from primary name)
     /// </summary>
     public string LastName
     {
@@ -202,6 +217,7 @@ namespace FamilyShowLib
         if (_lastName != value)
         {
           _lastName = value;
+          SyncPrimaryNameFromFields();
           OnPropertyChanged(nameof(LastName));
           OnPropertyChanged(nameof(Name));
           OnPropertyChanged(nameof(FullName));
@@ -259,7 +275,7 @@ namespace FamilyShowLib
     }
 
     /// <summary>
-    /// Gets or sets the text that appears after the last name providing additional information about the person
+    /// Gets or sets the text that appears after the last name providing additional information about the person (from primary name)
     /// </summary>
 
     public string Suffix
@@ -270,6 +286,7 @@ namespace FamilyShowLib
         if (_suffix != value)
         {
           _suffix = value;
+          SyncPrimaryNameFromFields();
           OnPropertyChanged(nameof(Suffix));
           OnPropertyChanged(nameof(FullName));
         }
@@ -2333,6 +2350,110 @@ namespace FamilyShowLib
 
     #endregion
 
+    #region Name Synchronization
+
+    /// <summary>
+    /// Syncs the primary name in the Names collection from the FirstName/LastName/Suffix fields
+    /// </summary>
+    private void SyncPrimaryNameFromFields()
+    {
+      if (_isSyncingNames || _names == null)
+      {
+        return;
+      }
+
+      _isSyncingNames = true;
+      try
+      {
+        Name primaryName = _names.PrimaryName;
+        if (primaryName != null)
+        {
+          primaryName.FirstName = _firstName;
+          primaryName.LastName = _lastName;
+          primaryName.Suffix = _suffix;
+        }
+      }
+      finally
+      {
+        _isSyncingNames = false;
+      }
+    }
+
+    /// <summary>
+    /// Syncs the FirstName/LastName/Suffix fields from the primary name in the Names collection
+    /// </summary>
+    private void SyncFieldsFromPrimaryName()
+    {
+      if (_isSyncingNames || _names == null)
+      {
+        return;
+      }
+
+      _isSyncingNames = true;
+      try
+      {
+        Name primaryName = _names.PrimaryName;
+        if (primaryName != null)
+        {
+          _firstName = primaryName.FirstName ?? string.Empty;
+          _lastName = primaryName.LastName ?? string.Empty;
+          _suffix = primaryName.Suffix ?? string.Empty;
+
+          OnPropertyChanged(nameof(FirstName));
+          OnPropertyChanged(nameof(LastName));
+          OnPropertyChanged(nameof(Suffix));
+          OnPropertyChanged(nameof(Name));
+          OnPropertyChanged(nameof(FullName));
+        }
+      }
+      finally
+      {
+        _isSyncingNames = false;
+      }
+    }
+
+    /// <summary>
+    /// Handles changes to the Names collection
+    /// </summary>
+    private void Names_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+      // When names are added or changed, sync the primary name to the legacy fields
+      SyncFieldsFromPrimaryName();
+
+      // Subscribe to property changes on new names
+      if (e.NewItems != null)
+      {
+        foreach (Name name in e.NewItems)
+        {
+          name.PropertyChanged += Name_PropertyChanged;
+        }
+      }
+
+      // Unsubscribe from property changes on removed names
+      if (e.OldItems != null)
+      {
+        foreach (Name name in e.OldItems)
+        {
+          name.PropertyChanged -= Name_PropertyChanged;
+        }
+      }
+    }
+
+    /// <summary>
+    /// Handles property changes on individual Name objects
+    /// </summary>
+    private void Name_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+      Name changedName = sender as Name;
+      if (changedName != null && changedName.IsPrimary)
+      {
+        // If the primary name changed, sync to legacy fields
+        SyncFieldsFromPrimaryName();
+      }
+    }
+
+    #endregion
+
     #region Constructors
 
     /// <summary>
@@ -2346,9 +2467,16 @@ namespace FamilyShowLib
       _relationships = [];
       _photos = [];
       _attachments = [];
+      _names = [];
       _firstName = Properties.Resources.Unknown;
       _isLiving = true;
       _restriction = Restriction.None;
+
+      // Initialize with a default primary name
+      _names.Add(new Name(_firstName, string.Empty) { IsPrimary = true });
+
+      // Subscribe to collection changes to keep fields in sync
+      _names.CollectionChanged += Names_CollectionChanged;
     }
 
     /// <summary>

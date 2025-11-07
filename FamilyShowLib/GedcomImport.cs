@@ -112,20 +112,25 @@ public class GedcomImport
     {
 
       // Create a new person that will be added to the collection.
-      Person person = new()
-      {
-        // Import details about the person.
-        FirstName = GetNames(node),
-        LastName = GetSurname(node)
-      };
+      Person person = new();
 
-      // If no name or surname, call them unknown rather than an empty string
-      if (string.IsNullOrEmpty(person.FirstName) && string.IsNullOrEmpty(person.LastName))
+      // Import all names (GEDCOM 5.5.1 supports multiple NAME tags)
+      ImportNames(person, node);
+
+      // Set legacy fields from primary name for backward compatibility
+      if (person.Names.Count > 0)
       {
+        Name primaryName = person.Names.PrimaryName;
+        person.FirstName = primaryName.FirstName;
+        person.LastName = primaryName.LastName;
+        person.Suffix = primaryName.Suffix;
+      }
+      else
+      {
+        // If no names imported, set unknown
         person.FirstName = Properties.Resources.Unknown;
       }
 
-      person.Suffix = GetSuffix(node);
       person.Id = GetId(node);
       person.Gender = GetGender(node);
       person.Restriction = GetRestriction(node);
@@ -1010,6 +1015,92 @@ public class GedcomImport
   private static string GetSuffix(XmlNode node)
   {
     return GetValue(node, "NAME/NPFX");
+  }
+
+  /// <summary>
+  /// Imports all NAME tags from a GEDCOM INDI node into the Person's Names collection
+  /// GEDCOM 5.5.1+ supports multiple NAME tags for alternate names
+  /// </summary>
+  private static void ImportNames(Person person, XmlNode node)
+  {
+    // Clear the default name that was added in the constructor
+    person.Names.Clear();
+
+    // Get all NAME nodes
+    XmlNodeList nameNodes = node.SelectNodes("NAME");
+
+    if (nameNodes == null || nameNodes.Count == 0)
+    {
+      // No names found, add a default unknown name
+      person.Names.Add(new Name(Properties.Resources.Unknown, string.Empty) { IsPrimary = true });
+      return;
+    }
+
+    bool isFirstName = true;
+    foreach (XmlNode nameNode in nameNodes)
+    {
+      // Parse the NAME value (format: "FirstName /LastName/")
+      string nameValue = GetValue(nameNode, ".");
+      string givenName = string.Empty;
+      string surname = string.Empty;
+
+      if (!string.IsNullOrEmpty(nameValue))
+      {
+        string[] parts = nameValue.Split('/');
+        if (parts.Length > 0)
+        {
+          givenName = parts[0].Trim();
+        }
+        if (parts.Length > 1)
+        {
+          surname = parts[1].Trim();
+        }
+      }
+
+      // Get other name components
+      string suffix = GetValue(nameNode, "NPFX"); // Note: GEDCOM uses NPFX for suffix
+      string prefix = GetValue(nameNode, "SPFX"); // SPFX for surname prefix
+      string nameType = GetValue(nameNode, "TYPE");
+
+      // Determine name type from TYPE tag
+      NameType type = ParseNameType(nameType);
+
+      // Create the name object
+      Name name = new Name(givenName, surname, suffix, prefix, type, isFirstName);
+
+      // Add to collection
+      person.Names.Add(name);
+
+      isFirstName = false; // Only the first name is primary
+    }
+
+    // If no names were added, add an unknown name
+    if (person.Names.Count == 0)
+    {
+      person.Names.Add(new Name(Properties.Resources.Unknown, string.Empty) { IsPrimary = true });
+    }
+  }
+
+  /// <summary>
+  /// Converts GEDCOM NAME TYPE string to NameType enum
+  /// </summary>
+  private static NameType ParseNameType(string gedcomType)
+  {
+    if (string.IsNullOrEmpty(gedcomType))
+    {
+      return NameType.Birth;
+    }
+
+    return gedcomType.ToUpperInvariant() switch
+    {
+      "AKA" or "ALSO KNOWN AS" => NameType.Aka,
+      "BIRTH" => NameType.Birth,
+      "MARRIED" => NameType.Married,
+      "MAIDEN" => NameType.Maiden,
+      "IMMIGRANT" or "IMMIGRATION" => NameType.Immigration,
+      "PROFESSIONAL" or "STAGE" => NameType.Professional,
+      _ => NameType.Other
+    };
   }
 
   private static string GetHusbandID(XmlNode node)
