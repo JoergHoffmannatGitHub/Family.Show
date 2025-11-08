@@ -15,7 +15,7 @@ namespace Genealogy.Domain.ValueObjects.DateImplementation;
 /// formats and calendar systems. It supports conversion to GEDCOM format and implements equality comparison with other
 /// date objects.</remarks>
 [ValueObject]
-internal partial class DateExact : IDateExact, IEquatable<IDate>
+internal partial class DateExact : IDateExact
 {
     /// <summary>
     /// Represents the prefix used to denote years occurring before the birth of Christ (B.C.).
@@ -159,14 +159,6 @@ internal partial class DateExact : IDateExact, IEquatable<IDate>
     public int Day => YearMonthDayCalendar.Day;
 
     #endregion IDateExact
-
-    #region IEquatable<IDate>
-
-    /// <inheritdoc/>
-    public bool Equals(IDate obj) => obj != null && obj is DateExact other &&
-      YearMonthDayCalendar == other.YearMonthDayCalendar;
-
-    #endregion
 
     /// <summary>
     /// Parses a date string into a <see cref="YearMonthDayCalendar"/> object.

@@ -58,29 +58,21 @@ public class Date
     /// <exception cref="GenealogyException">Thrown when the date string is null or empty.</exception>
     private static IDate Parse(string date)
     {
-        if (string.IsNullOrEmpty(date))
-        {
-            throw new GenealogyException("Invalid Date");
-        }
-
-        date = date.ToUpperInvariant();
-
-        if (date.StartsWith("BEF ") ||
-          date.StartsWith("AFT ") ||
-          date.StartsWith("BET "))
+        if (DateRange.IsValidFormat(date))
         {
             return new DateRange(date);
         }
-        else if (date.StartsWith("FROM ") ||
-          date.StartsWith("TO "))
+        else if (DatePeriod.IsValidFormat(date))
         {
             return new DatePeriod(date);
         }
-        else if (date.StartsWith("ABT ") ||
-          date.StartsWith("CAL ") ||
-          date.StartsWith("EST "))
+        else if (DateApproximated.IsValidFormat(date))
         {
             return new DateApproximated(date);
+        }
+        else if (DateInterpreted.IsValidFormat(date))
+        {
+            return new DateInterpreted(date);
         }
 
         return new DateExact(date);

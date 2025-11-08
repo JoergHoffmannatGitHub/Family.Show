@@ -16,7 +16,7 @@ namespace Genealogy.Domain.ValueObjects.DateImplementation;
 /// range.
 /// </remarks>
 [ValueObject]
-internal partial class DatePeriod : IDate, IEquatable<IDate>
+internal partial class DatePeriod : IDate
 {
     private const string FromPrefix = "FROM";
 
@@ -31,6 +31,16 @@ internal partial class DatePeriod : IDate, IEquatable<IDate>
     /// Gets the ending date of the period, or <c>null</c> if not specified.
     /// </summary>
     internal DateExact To { get; private init; } = null;
+
+    /// <summary>
+    /// Determines whether the specified date string starts with a valid prefix.
+    /// </summary>
+    /// <param name="date">The date string to validate.</param>
+    /// <returns><see langword="true"/> if the <paramref name="date"/> starts with a valid prefix; otherwise, <see
+    /// langword="false"/>.</returns>
+    public static bool IsValidFormat(string date) =>
+        date.StartsWith(FromPrefix + ' ', StringComparison.InvariantCultureIgnoreCase) ||
+        date.StartsWith(ToPrefix + ' ', StringComparison.InvariantCultureIgnoreCase);
 
     /// <summary>
     /// Tries to parse the specified string representation of a date period.
@@ -128,12 +138,4 @@ internal partial class DatePeriod : IDate, IEquatable<IDate>
     }
 
     #endregion IDate
-
-    #region IEquatable<IDate>
-
-    /// <inheritdoc/>
-    public bool Equals(IDate obj) => obj != null && obj is DatePeriod other &&
-      From == other.From && To == other.To;
-
-    #endregion
 }

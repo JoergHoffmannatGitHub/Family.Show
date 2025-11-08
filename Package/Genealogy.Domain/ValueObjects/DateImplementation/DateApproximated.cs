@@ -17,7 +17,7 @@ namespace Genealogy.Domain.ValueObjects.DateImplementation;
 /// following: "About", "Calculated", or "Estimated".
 /// </remarks>
 [ValueObject]
-internal partial class DateApproximated : IDate, IEquatable<IDate>
+internal partial class DateApproximated : IDate
 {
     /// <summary>
     /// Specifies the type of date approximation.
@@ -52,6 +52,26 @@ internal partial class DateApproximated : IDate, IEquatable<IDate>
     /// Gets the exact date value associated with the approximation.
     /// </summary>
     internal DateExact Date { get; private init; }
+
+    /// <summary>
+    /// Determines whether the specified date string starts with a valid prefix.
+    /// </summary>
+    /// <param name="date">The date string to validate.</param>
+    /// <returns><see langword="true"/> if the <paramref name="date"/> starts with a valid prefix; otherwise, <see
+    /// langword="false"/>.</returns>
+    public static bool IsValidFormat(string date) =>
+        date.StartsWith(
+            EnumConverting.GetEnumValue(
+                Approximated.About),
+                StringComparison.InvariantCultureIgnoreCase) ||
+        date.StartsWith(
+            EnumConverting.GetEnumValue(
+                Approximated.Calculated),
+                StringComparison.InvariantCultureIgnoreCase) ||
+        date.StartsWith(
+            EnumConverting.GetEnumValue(
+                Approximated.Estimated),
+                StringComparison.InvariantCultureIgnoreCase);
 
     /// <summary>
     /// Attempts to parse the specified string representation of an approximated date.
@@ -116,12 +136,4 @@ internal partial class DateApproximated : IDate, IEquatable<IDate>
     public override string ToString() => EnumConverting.GetEnumValue(Type) + Date.ToString();
 
     #endregion IDate
-
-    #region IEquatable<IDate>
-
-    /// <inheritdoc/>
-    public bool Equals(IDate obj) => obj != null && obj is DateApproximated other &&
-      Type == other.Type && Date.Equals(other.Date);
-
-    #endregion
 }

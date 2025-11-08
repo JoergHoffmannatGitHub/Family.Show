@@ -16,7 +16,7 @@ namespace Genealogy.Domain.ValueObjects.DateImplementation;
 /// to string representations, including GEDCOM format.
 /// </remarks>
 [ValueObject]
-internal partial class DateRange : IDate, IEquatable<IDate>
+internal partial class DateRange : IDate
 {
     private const string BetweenDateConnector = "AND ";
 
@@ -58,6 +58,17 @@ internal partial class DateRange : IDate, IEquatable<IDate>
     /// Gets the end date of the range, if applicable.
     /// </summary>
     internal DateExact End { get; private init; } = null;
+
+    /// <summary>
+    /// Determines whether the specified date string starts with a valid prefix.
+    /// </summary>
+    /// <param name="date">The date string to validate.</param>
+    /// <returns><see langword="true"/> if the <paramref name="date"/> starts with a valid prefix; otherwise, <see
+    /// langword="false"/>.</returns>
+    public static bool IsValidFormat(string date) =>
+        date.StartsWith(EnumConverting.GetEnumValue(Range.Before), StringComparison.InvariantCultureIgnoreCase) ||
+        date.StartsWith(EnumConverting.GetEnumValue(Range.After), StringComparison.InvariantCultureIgnoreCase) ||
+        date.StartsWith(EnumConverting.GetEnumValue(Range.Between), StringComparison.InvariantCultureIgnoreCase);
 
     /// <summary>
     /// Attempts to parse the specified date string into a <see cref="DateRange"/> object.
@@ -142,12 +153,4 @@ internal partial class DateRange : IDate, IEquatable<IDate>
     }
 
     #endregion IDate
-
-    #region IEquatable<IDate>
-
-    /// <inheritdoc/>
-    public bool Equals(IDate obj) => obj != null && obj is DateRange other &&
-      Type == other.Type && Start.Equals(other.Start) && End.Equals(other.End);
-
-    #endregion
 }
