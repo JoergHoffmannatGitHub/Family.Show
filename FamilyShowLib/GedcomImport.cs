@@ -132,6 +132,7 @@ public class GedcomImport
 
             person.Suffix = GetSuffix(node);
             person.Id = GetId(node);
+            person._UID = _Uid(node);
             person.Gender = GetGender(node);
             person.Restriction = GetRestriction(node);
 
@@ -155,7 +156,16 @@ public class GedcomImport
         foreach (Person p in _people)
         {
             string oldpId = p.Id;
-            p.Id = Guid.NewGuid().ToString();
+            if (string.IsNullOrEmpty(p._UID))
+            {
+                // No UID, create a new GUID
+                p.Id = Guid.NewGuid().ToString();
+            }
+            else
+            {
+                GedcomUid.UidToGuid(p._UID, out Guid newID);
+                p.Id = newID.ToString();
+            }
 
             foreach (Relationship r1 in p.Relationships)
             {
@@ -1012,6 +1022,11 @@ public class GedcomImport
 
         return value;
 
+    }
+
+    private static string _Uid(XmlNode node)
+    {
+        return GetValue(node, "_UID");
     }
 
     private static string GetSuffix(XmlNode node)

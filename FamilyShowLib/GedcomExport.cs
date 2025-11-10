@@ -46,6 +46,8 @@ public class GedcomExport
     { "es-ES", "Spanish" },
     { "fr-FR", "French" },
     { "de-DE", "German" },
+    { "ru-RU", "Russian" },
+    { "uk-UA", "Ukrainian" },
   };
 
     // Maps GUID IDs (which are too long for GEDCOM) to smaller IDs.
@@ -179,6 +181,23 @@ public class GedcomExport
         }
     }
 
+    private static string GetUID(string guidString)
+    {
+        Guid guid;
+        try
+        {
+            guid = new Guid(guidString);
+            return GedcomUid.GuidToUid(guid, true);
+        }
+        catch (FormatException)
+        {
+#if DEBUG
+            Console.WriteLine("Incorrect GUID format: " + guidString);
+#endif
+            return string.Empty;
+        }
+    }
+
     /// <summary>
     /// Export each person to the GEDCOM file.
     /// </summary>
@@ -192,9 +211,14 @@ public class GedcomExport
         {
 
             string id = _idMap.Get(person.Id);
+            string uid = GetUID(person.Id);
 
             // Start of a new individual record.
             WriteLine(0, string.Format(CultureInfo.InvariantCulture, "@{0}@", id), "INDI");
+            if (!string.IsNullOrEmpty(uid))
+            {
+                WriteLine(1, "_UID", uid);
+            }
 
             // Export details.
 
@@ -949,7 +973,7 @@ internal class GedcomIdMap
         }
 
         // Assign a new GEDCOM ID and add to map.
-        id = string.Format(CultureInfo.InvariantCulture, "I{0}", _nextId++);
+        id = string.Format(CultureInfo.InvariantCulture, "I{0}", ++_nextId);
         _map[guid] = id;
         return id;
     }

@@ -575,13 +575,17 @@ public class GedcomIdMapTest
     {
         GedcomIdMap sut = new();
         string personId = Guid.NewGuid().ToString();
-        Assert.Equal("I0", sut.Get(Guid.NewGuid().ToString()));
+
+        // The first call should now return I1
         Assert.Equal("I1", sut.Get(Guid.NewGuid().ToString()));
         Assert.Equal("I2", sut.Get(Guid.NewGuid().ToString()));
-        Assert.Equal("I3", sut.Get(personId));
-        Assert.Equal("I4", sut.Get(Guid.NewGuid().ToString()));
+        Assert.Equal("I3", sut.Get(Guid.NewGuid().ToString()));
+
+        // Check for reuse
+        Assert.Equal("I4", sut.Get(personId));
         Assert.Equal("I5", sut.Get(Guid.NewGuid().ToString()));
-        Assert.Equal("I3", sut.Get(personId));
+        Assert.Equal("I6", sut.Get(Guid.NewGuid().ToString()));
+        Assert.Equal("I4", sut.Get(personId));
     }
 }
 

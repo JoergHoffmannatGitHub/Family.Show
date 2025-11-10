@@ -96,6 +96,10 @@ namespace FamilyShowLib
 
         #endregion
 
+#pragma warning disable IDE1006 // Naming Styles
+        internal string _UID;
+#pragma warning restore IDE1006 // Naming Styles
+
         #region Properties
 
         /// <summary>
