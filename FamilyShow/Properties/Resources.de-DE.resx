@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -126,8 +126,8 @@
   <data name="Export" xml:space="preserve">
     <value>Exportieren</value>
   </data>
-  <data name="FamilyFiles" xml:space="preserve">
-    <value>Family.Show 2.0 Dateien (*. family)</value>
+  <data name="FamilyxFiles" xml:space="preserve">
+    <value>Family.Show Dateien 4.0 (*. familyx)</value>
   </data>
   <data name="GedcomFailed" xml:space="preserve">
     <value>Import fehlgeschlagen</value>
@@ -366,9 +366,6 @@
   <data name="Help" xml:space="preserve">
     <value>Hilfe</value>
   </data>
-  <data name="Media" xml:space="preserve">
-    <value>Tools</value>
-  </data>
   <data name="PhotosMenu" xml:space="preserve">
     <value>Fotos</value>
   </data>
@@ -424,7 +421,7 @@
     <value>Datum der Beerdigung</value>
   </data>
   <data name="BurialPlace" xml:space="preserve">
-    <value>Ort der Bestattung</value>
+    <value>Ort der Beerdigung</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Abbrechen</value>
@@ -656,9 +653,6 @@
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Bearbeiten</value>
-  </data>
-  <data name="EnableUTF8" xml:space="preserve">
-    <value>Aktivieren Sie UTF-8 Unterstützung</value>
   </data>
   <data name="ExportHtml" xml:space="preserve">
     <value>HTML exportieren</value>
@@ -1023,26 +1017,26 @@
   <data name="PrivateRecord" xml:space="preserve">
     <value>Private Rekord</value>
   </data>
+  <data name="DateCalculator" xml:space="preserve">
+    <value>Datum-Rechner</value>
+  </data>
+  <data name="DateCalculatorMessage" xml:space="preserve">
+    <value>Verwenden Sie dieses Tool, um Hilfe bei der Berechnung stammt aus Beweise haben Sie gesammelt.</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Jahr</value>
+  </data>
   <data name="AddOrSubtract" xml:space="preserve">
     <value>Hinzufügen oder abziehen</value>
   </data>
   <data name="AgeBirthDeath" xml:space="preserve">
     <value>Ages, Geburten</value>
   </data>
-  <data name="Black" xml:space="preserve">
-    <value>Schwarz</value>
-  </data>
   <data name="Calculate" xml:space="preserve">
     <value>Berechnen</value>
   </data>
-  <data name="DateCalculator" xml:space="preserve">
-    <value>Datum-Rechner</value>
-  </data>
   <data name="DateCalculatorMenu" xml:space="preserve">
     <value>Datum-Rechner</value>
-  </data>
-  <data name="DateCalculatorMessage" xml:space="preserve">
-    <value>Verwenden Sie dieses Tool, um Hilfe bei der Berechnung stammt aus Beweise haben Sie gesammelt.</value>
   </data>
   <data name="DateTo" xml:space="preserve">
     <value>zu</value>
@@ -1053,20 +1047,23 @@
   <data name="months" xml:space="preserve">
     <value>Monat</value>
   </data>
-  <data name="Silver" xml:space="preserve">
-    <value>Silber</value>
-  </data>
   <data name="Subtract" xml:space="preserve">
     <value>Subtrahieren</value>
   </data>
   <data name="years" xml:space="preserve">
     <value>Jahre</value>
   </data>
-  <data name="Links" xml:space="preserve">
-    <value>Links</value>
+  <data name="Black" xml:space="preserve">
+    <value>Schwarz</value>
+  </data>
+  <data name="Silver" xml:space="preserve">
+    <value>Silber</value>
   </data>
   <data name="StartANewFamilyTree" xml:space="preserve">
     <value>Starten einer neuen Familie-Struktur...</value>
+  </data>
+  <data name="Links" xml:space="preserve">
+    <value>Links</value>
   </data>
   <data name="HideControls" xml:space="preserve">
     <value>Ausblenden Diagramm Kontrollen</value>
@@ -1077,17 +1074,17 @@
   <data name="DropPhotosHere" xml:space="preserve">
     <value>Ziehen Sie Bilder hier.</value>
   </data>
-  <data name="Homepage" xml:space="preserve">
-    <value>Projekt-Website</value>
-  </data>
   <data name="NoExistingPhotos" xml:space="preserve">
     <value>Es bestehen keine Fotos dabei.</value>
+  </data>
+  <data name="Homepage" xml:space="preserve">
+    <value>Projekt-Website</value>
   </data>
   <data name="People" xml:space="preserve">
     <value>Leute</value>
   </data>
-  <data name="Year" xml:space="preserve">
-    <value>Jahr</value>
+  <data name="ChooseWhatToExtractColon" xml:space="preserve">
+    <value>Wählen Sie was zu extrahieren:</value>
   </data>
   <data name="CurrentPersonOnly" xml:space="preserve">
     <value>Aktuelle Person nur</value>
@@ -1095,14 +1092,11 @@
   <data name="ExtractHeader" xml:space="preserve">
     <value>Ausschnitt Inhalt</value>
   </data>
-  <data name="ExtractingStatus" xml:space="preserve">
-    <value>(Extrahieren)</value>
-  </data>
   <data name="OpenFolderAfterExtraction" xml:space="preserve">
     <value>Ordner öffnen nach der Extraktion</value>
   </data>
-  <data name="ChooseWhatToExtractColon" xml:space="preserve">
-    <value>Wählen Sie was zu extrahieren:</value>
+  <data name="ExtractingStatus" xml:space="preserve">
+    <value>(Extrahieren)</value>
   </data>
   <data name="ExtractFilesMenu" xml:space="preserve">
     <value>Ausschnitt Inhalt...</value>
@@ -1116,11 +1110,20 @@
   <data name="Events" xml:space="preserve">
     <value>Veranstaltungen</value>
   </data>
-  <data name="ExportPlaces" xml:space="preserve">
-    <value>Exportieren Orte</value>
+  <data name="Tiebreak" xml:space="preserve">
+    <value>* Kennzeichnet ein Tie Break.</value>
   </data>
   <data name="DoYouWantToHideLivingPeople" xml:space="preserve">
     <value>Wollen Sie Lebensbedingungen der Menschen zu verbergen?</value>
+  </data>
+  <data name="ExportPlaces" xml:space="preserve">
+    <value>Exportieren Orte</value>
+  </data>
+  <data name="ChooseWhatToExportColon" xml:space="preserve">
+    <value>Wählen Sie, was für den Export:</value>
+  </data>
+  <data name="EnableUTF8" xml:space="preserve">
+    <value>Aktivieren Sie UTF-8 Unterstützung</value>
   </data>
   <data name="AlignCenter" xml:space="preserve">
     <value>Zentrum  (Ctrl+E)</value>
@@ -1139,9 +1142,6 @@
   </data>
   <data name="Burials" xml:space="preserve">
     <value>Bestattungen</value>
-  </data>
-  <data name="ChooseWhatToExportColon" xml:space="preserve">
-    <value>Wählen Sie, was für den Export:</value>
   </data>
   <data name="Cremations" xml:space="preserve">
     <value>Feuerbestattungen</value>
@@ -1176,28 +1176,28 @@
   <data name="ShrinkFont" xml:space="preserve">
     <value>Schrift Verkleinern (Ctrl+&lt;)</value>
   </data>
-  <data name="Tiebreak" xml:space="preserve">
-    <value>* Kennzeichnet ein Tie Break.</value>
-  </data>
   <data name="Underline" xml:space="preserve">
     <value>Unterstrichen (Ctrl+U)</value>
   </data>
   <data name="ClearFilterText" xml:space="preserve">
     <value>Frei Text für den Filter.</value>
   </data>
-  <data name="OldVersionMessage" xml:space="preserve">
-    <value>Diese Datei wurde mit einer früheren Version von Family.Show erstellt. Es wird in einem neuen Format für die Verwendung mit dieser Version gespeichert werden. Die neue Datei der Name endet mit. Familyx und bündelt sämtliche Ihrer Familie Fotos, Geschichten und Baum in dieser einzigen Datei.</value>
-  </data>
   <data name="Compatability" xml:space="preserve">
     <value>Kompatibilität</value>
   </data>
-  <data name="FamilyxFiles" xml:space="preserve">
-    <value>Family.Show Dateien 4.0 (*. familyx)</value>
+  <data name="FamilyFiles" xml:space="preserve">
+    <value>Family.Show 2.0 Dateien (*. family)</value>
   </data>
   <data name="FamilyShowFiles" xml:space="preserve">
     <value>Family.Show Dateien (*. familyx)</value>
   </data>
+  <data name="OldVersionMessage" xml:space="preserve">
+    <value>Diese Datei wurde mit einer früheren Version von Family.Show erstellt. Es wird in einem neuen Format für die Verwendung mit dieser Version gespeichert werden. Die neue Datei der Name endet mit. Familyx und bündelt sämtliche Ihrer Familie Fotos, Geschichten und Baum in dieser einzigen Datei.</value>
+  </data>
   <data name="FamilyxFilesAll" xml:space="preserve">
     <value>Family.Show Dateien 3.0 - 4.0 (*. familyx)</value>
+  </data>
+  <data name="Media" xml:space="preserve">
+    <value>Tools</value>
   </data>
 </root>
