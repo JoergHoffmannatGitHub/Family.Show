@@ -126,6 +126,16 @@
                 <TextBlock Text="{Binding Path=FileName, Mode=Default}" />
             </DataTemplate>
 
+            <!-- Data Template for displaying the parent child modifier -->
+            <DataTemplate x:Key="ParentChildModifierDataTemplate">
+                <TextBlock Text="{Binding Converter={StaticResource EnumValueDescriptionConverter}}" />
+            </DataTemplate>
+
+            <!-- Data Template for displaying the spouse modifier -->
+            <DataTemplate x:Key="SpouseModifierDataTemplate">
+                <TextBlock Text="{Binding Converter={StaticResource EnumValueDescriptionConverter}}" />
+            </DataTemplate>
+
             <!-- Animation for expanding the Details Add section -->
             <Storyboard x:Key="ExpandDetailsAdd"
                         Completed="ExpandDetailsAdd_StoryboardCompleted">
