@@ -4,15 +4,15 @@ using System.Windows.Input;
 
 using FamilyShowLib;
 
-namespace FamilyShow.Controls;
+namespace FamilyShow.Controls.FamilyData;
 
 /// <summary>
-/// Interaction logic for DateEditControl.xaml
+/// Interaction logic for IndividualEventDate.xaml
 /// A reusable custom control for editing dates with descriptors
 /// </summary>
-public partial class DateEditControl : UserControl
+public partial class IndividualEventDate : UserControl
 {
-    public DateEditControl()
+    public IndividualEventDate()
     {
         InitializeComponent();
     }
@@ -23,7 +23,7 @@ public partial class DateEditControl : UserControl
     /// The date value being edited
     /// </summary>
     public static readonly DependencyProperty DateProperty =
-        DependencyProperty.Register("Date", typeof(DateWrapper), typeof(DateEditControl),
+        DependencyProperty.Register("Date", typeof(DateWrapper), typeof(IndividualEventDate),
             new PropertyMetadata(null));
 
     public DateWrapper Date
@@ -36,7 +36,7 @@ public partial class DateEditControl : UserControl
     /// The date descriptor (e.g., "abt", "bef", "aft")
     /// </summary>
     public static readonly DependencyProperty DateDescriptorProperty =
-        DependencyProperty.Register("DateDescriptor", typeof(string), typeof(DateEditControl),
+        DependencyProperty.Register("DateDescriptor", typeof(string), typeof(IndividualEventDate),
             new PropertyMetadata(string.Empty));
 
     public string DateDescriptor
@@ -49,7 +49,7 @@ public partial class DateEditControl : UserControl
     /// The label text for the date field (e.g., "Date of Birth")
     /// </summary>
     public static readonly DependencyProperty DateLabelTextProperty =
-        DependencyProperty.Register("DateLabelText", typeof(string), typeof(DateEditControl),
+        DependencyProperty.Register("DateLabelText", typeof(string), typeof(IndividualEventDate),
             new PropertyMetadata("Date"));
 
     public string DateLabelText
@@ -62,7 +62,7 @@ public partial class DateEditControl : UserControl
     /// Whether the control is enabled
     /// </summary>
     public static readonly DependencyProperty IsControlEnabledProperty =
-        DependencyProperty.Register("IsControlEnabled", typeof(bool), typeof(DateEditControl),
+        DependencyProperty.Register("IsControlEnabled", typeof(bool), typeof(IndividualEventDate),
             new PropertyMetadata(true));
 
     public bool IsControlEnabled
@@ -75,7 +75,7 @@ public partial class DateEditControl : UserControl
     /// Whether to show the checkbox (e.g., for "Living" checkbox on birth dates)
     /// </summary>
     public static readonly DependencyProperty ShowCheckBoxProperty =
-        DependencyProperty.Register("ShowCheckBox", typeof(bool), typeof(DateEditControl),
+        DependencyProperty.Register("ShowCheckBox", typeof(bool), typeof(IndividualEventDate),
             new PropertyMetadata(false));
 
     public bool ShowCheckBox
@@ -88,7 +88,7 @@ public partial class DateEditControl : UserControl
     /// The text for the checkbox
     /// </summary>
     public static readonly DependencyProperty CheckBoxTextProperty =
-        DependencyProperty.Register("CheckBoxText", typeof(string), typeof(DateEditControl),
+        DependencyProperty.Register("CheckBoxText", typeof(string), typeof(IndividualEventDate),
             new PropertyMetadata("Living"));
 
     public string CheckBoxText
@@ -101,7 +101,7 @@ public partial class DateEditControl : UserControl
     /// The value of the checkbox
     /// </summary>
     public static readonly DependencyProperty CheckBoxValueProperty =
-        DependencyProperty.Register("CheckBoxValue", typeof(bool?), typeof(DateEditControl),
+        DependencyProperty.Register("CheckBoxValue", typeof(bool?), typeof(IndividualEventDate),
             new PropertyMetadata(true));
 
     public bool? CheckBoxValue
@@ -119,7 +119,7 @@ public partial class DateEditControl : UserControl
     /// </summary>
     public static readonly RoutedEvent DateDescriptorChangedEvent =
         EventManager.RegisterRoutedEvent("DateDescriptorChanged", RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler), typeof(DateEditControl));
+            typeof(RoutedEventHandler), typeof(IndividualEventDate));
 
     public event RoutedEventHandler DateDescriptorChanged
     {
