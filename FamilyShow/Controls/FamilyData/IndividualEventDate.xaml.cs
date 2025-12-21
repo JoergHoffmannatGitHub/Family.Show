@@ -138,6 +138,7 @@ public partial class IndividualEventDate : UserControl
     {
         if (sender is Label label && label.IsEnabled)
         {
+            label.Foreground = System.Windows.Media.Brushes.LightSteelBlue;
             Mouse.OverrideCursor = Cursors.Hand;
         }
     }
@@ -147,6 +148,10 @@ public partial class IndividualEventDate : UserControl
     /// </summary>
     private void Label_MouseLeave(object sender, MouseEventArgs e)
     {
+        if (sender is Label label && label.IsEnabled)
+        {
+            label.Foreground = System.Windows.Media.Brushes.White;
+        }
         Mouse.OverrideCursor = null;
     }
 
@@ -155,7 +160,7 @@ public partial class IndividualEventDate : UserControl
     /// </summary>
     private void ChangeDateDescriptorForward(object sender, RoutedEventArgs e)
     {
-        if (IsControlEnabled)
+        if (sender is Label label && label.IsEnabled)
         {
             DateDescriptor = ForwardDateDescriptor(DateDescriptor);
             RaiseEvent(new RoutedEventArgs(DateDescriptorChangedEvent));
@@ -167,7 +172,7 @@ public partial class IndividualEventDate : UserControl
     /// </summary>
     private void ChangeDateDescriptorBackward(object sender, RoutedEventArgs e)
     {
-        if (IsControlEnabled)
+        if (sender is Label label && label.IsEnabled)
         {
             DateDescriptor = BackwardDateDescriptor(DateDescriptor);
             RaiseEvent(new RoutedEventArgs(DateDescriptorChangedEvent));
@@ -195,16 +200,15 @@ public partial class IndividualEventDate : UserControl
     /// </summary>
     private static string ForwardDateDescriptor(string currentDescriptor)
     {
-        return currentDescriptor switch
+        return (currentDescriptor != null ? currentDescriptor.ToUpper() : string.Empty) switch
         {
-            "" => "abt ",
-            "abt " => "bef ",
-            "bef " => "aft ",
-            "aft " => "bet ",
-            "bet " => "cal ",
-            "cal " => "est ",
-            "est " => "",
-            _ => ""
+            "" => "ABT ",
+            "ABT " => "AFT ",
+            "AFT " => "BEF ",
+            "BEF " => "BET ",
+            "BET " => "CAL ",
+            "CAL " => "EST ",
+            _ => "",
         };
     }
 
@@ -213,15 +217,14 @@ public partial class IndividualEventDate : UserControl
     /// </summary>
     private static string BackwardDateDescriptor(string currentDescriptor)
     {
-        return currentDescriptor switch
+        return (currentDescriptor != null ? currentDescriptor.ToUpper() : string.Empty) switch
         {
-            "" => "est ",
-            "abt " => "",
-            "bef " => "abt ",
-            "aft " => "bef ",
-            "bet " => "aft ",
-            "cal " => "bet ",
-            "est " => "cal ",
+            "" => "EST ",
+            "EST " => "CAL ",
+            "CAL " => "BET ",
+            "BET " => "BEF ",
+            "BEF " => "AFT ",
+            "AFT " => "ABT ",
             _ => ""
         };
     }

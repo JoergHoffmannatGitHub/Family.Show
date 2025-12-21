@@ -1,8 +1,6 @@
-using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
 using FamilyShow.Controls.FamilyData;
 
@@ -112,10 +110,11 @@ public class IndividualEventDateTest
     public void ShowCheckBox_PropertySetGet_ShouldWorkCorrectly()
     {
         // Arrange
-        IndividualEventDate control = new();
-
-        // Act
-        control.ShowCheckBox = true;
+        IndividualEventDate control = new()
+        {
+            // Act
+            ShowCheckBox = true
+        };
 
         // Assert
         Assert.True(control.ShowCheckBox);
@@ -159,10 +158,11 @@ public class IndividualEventDateTest
     public void CheckBoxValue_PropertySetGet_ShouldWorkCorrectly()
     {
         // Arrange
-        IndividualEventDate control = new();
-
-        // Act
-        control.CheckBoxValue = false;
+        IndividualEventDate control = new()
+        {
+            // Act
+            CheckBoxValue = false
+        };
 
         // Assert
         Assert.False(control.CheckBoxValue);
@@ -182,10 +182,11 @@ public class IndividualEventDateTest
     public void CheckBoxValue_CanBeNull_ShouldWorkCorrectly()
     {
         // Arrange
-        IndividualEventDate control = new();
-
-        // Act
-        control.CheckBoxValue = null;
+        IndividualEventDate control = new()
+        {
+            // Act
+            CheckBoxValue = null
+        };
 
         // Assert
         Assert.Null(control.CheckBoxValue);
@@ -298,91 +299,91 @@ public class IndividualEventDateTest
     public void ForwardDateDescriptor_EmptyString_ShouldReturnAbt()
     {
         // Arrange
-        var method = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor", 
+        System.Reflection.MethodInfo? method = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
         // Act
         string? result = method?.Invoke(null, [""]) as string;
 
         // Assert
-        Assert.Equal("abt ", result);
+        Assert.Equal("ABT ", result);
     }
 
     [Fact]
     public void ForwardDateDescriptor_Abt_ShouldReturnBef()
     {
         // Arrange
-        var method = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor", 
+        System.Reflection.MethodInfo? method = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
         // Act
         string? result = method?.Invoke(null, ["abt "]) as string;
 
         // Assert
-        Assert.Equal("bef ", result);
-    }
-
-    [Fact]
-    public void ForwardDateDescriptor_Bef_ShouldReturnAft()
-    {
-        // Arrange
-        var method = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor", 
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-
-        // Act
-        string? result = method?.Invoke(null, ["bef "]) as string;
-
-        // Assert
-        Assert.Equal("aft ", result);
+        Assert.Equal("AFT ", result);
     }
 
     [Fact]
     public void ForwardDateDescriptor_Aft_ShouldReturnBet()
     {
         // Arrange
-        var method = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor", 
+        System.Reflection.MethodInfo? method = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
         // Act
         string? result = method?.Invoke(null, ["aft "]) as string;
 
         // Assert
-        Assert.Equal("bet ", result);
+        Assert.Equal("BEF ", result);
+    }
+
+    [Fact]
+    public void ForwardDateDescriptor_Bef_ShouldReturnAft()
+    {
+        // Arrange
+        System.Reflection.MethodInfo? method = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+
+        // Act
+        string? result = method?.Invoke(null, ["bef "]) as string;
+
+        // Assert
+        Assert.Equal("BET ", result);
     }
 
     [Fact]
     public void ForwardDateDescriptor_Bet_ShouldReturnCal()
     {
         // Arrange
-        var method = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor", 
+        System.Reflection.MethodInfo? method = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
         // Act
         string? result = method?.Invoke(null, ["bet "]) as string;
 
         // Assert
-        Assert.Equal("cal ", result);
+        Assert.Equal("CAL ", result);
     }
 
     [Fact]
     public void ForwardDateDescriptor_Cal_ShouldReturnEst()
     {
         // Arrange
-        var method = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor", 
+        System.Reflection.MethodInfo? method = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
         // Act
         string? result = method?.Invoke(null, ["cal "]) as string;
 
         // Assert
-        Assert.Equal("est ", result);
+        Assert.Equal("EST ", result);
     }
 
     [Fact]
     public void ForwardDateDescriptor_Est_ShouldReturnEmpty()
     {
         // Arrange
-        var method = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor", 
+        System.Reflection.MethodInfo? method = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
         // Act
@@ -396,7 +397,7 @@ public class IndividualEventDateTest
     public void ForwardDateDescriptor_UnknownValue_ShouldReturnEmpty()
     {
         // Arrange
-        var method = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor", 
+        System.Reflection.MethodInfo? method = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
         // Act
@@ -410,21 +411,91 @@ public class IndividualEventDateTest
     public void BackwardDateDescriptor_EmptyString_ShouldReturnEst()
     {
         // Arrange
-        var method = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor", 
+        System.Reflection.MethodInfo? method = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
         // Act
         string? result = method?.Invoke(null, [""]) as string;
 
         // Assert
-        Assert.Equal("est ", result);
+        Assert.Equal("EST ", result);
+    }
+
+    [Fact]
+    public void BackwardDateDescriptor_Est_ShouldReturnCal()
+    {
+        // Arrange
+        System.Reflection.MethodInfo? method = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+
+        // Act
+        string? result = method?.Invoke(null, ["est "]) as string;
+
+        // Assert
+        Assert.Equal("CAL ", result);
+    }
+
+    [Fact]
+    public void BackwardDateDescriptor_Cal_ShouldReturnBet()
+    {
+        // Arrange
+        System.Reflection.MethodInfo? method = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+
+        // Act
+        string? result = method?.Invoke(null, ["cal "]) as string;
+
+        // Assert
+        Assert.Equal("BET ", result);
+    }
+
+    [Fact]
+    public void BackwardDateDescriptor_Bet_ShouldReturnAft()
+    {
+        // Arrange
+        System.Reflection.MethodInfo? method = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+
+        // Act
+        string? result = method?.Invoke(null, ["bet "]) as string;
+
+        // Assert
+        Assert.Equal("BEF ", result);
+    }
+
+    [Fact]
+    public void BackwardDateDescriptor_Bef_ShouldReturnAbt()
+    {
+        // Arrange
+        System.Reflection.MethodInfo? method = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+
+        // Act
+        string? result = method?.Invoke(null, ["bef "]) as string;
+
+        // Assert
+        Assert.Equal("AFT ", result);
+    }
+
+    [Fact]
+    public void BackwardDateDescriptor_Aft_ShouldReturnBef()
+    {
+        // Arrange
+        System.Reflection.MethodInfo? method = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+
+        // Act
+        string? result = method?.Invoke(null, ["aft "]) as string;
+
+        // Assert
+        Assert.Equal("ABT ", result);
     }
 
     [Fact]
     public void BackwardDateDescriptor_Abt_ShouldReturnEmpty()
     {
         // Arrange
-        var method = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor", 
+        System.Reflection.MethodInfo? method = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
         // Act
@@ -435,80 +506,10 @@ public class IndividualEventDateTest
     }
 
     [Fact]
-    public void BackwardDateDescriptor_Bef_ShouldReturnAbt()
-    {
-        // Arrange
-        var method = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor", 
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-
-        // Act
-        string? result = method?.Invoke(null, ["bef "]) as string;
-
-        // Assert
-        Assert.Equal("abt ", result);
-    }
-
-    [Fact]
-    public void BackwardDateDescriptor_Aft_ShouldReturnBef()
-    {
-        // Arrange
-        var method = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor", 
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-
-        // Act
-        string? result = method?.Invoke(null, ["aft "]) as string;
-
-        // Assert
-        Assert.Equal("bef ", result);
-    }
-
-    [Fact]
-    public void BackwardDateDescriptor_Bet_ShouldReturnAft()
-    {
-        // Arrange
-        var method = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor", 
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-
-        // Act
-        string? result = method?.Invoke(null, ["bet "]) as string;
-
-        // Assert
-        Assert.Equal("aft ", result);
-    }
-
-    [Fact]
-    public void BackwardDateDescriptor_Cal_ShouldReturnBet()
-    {
-        // Arrange
-        var method = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor", 
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-
-        // Act
-        string? result = method?.Invoke(null, ["cal "]) as string;
-
-        // Assert
-        Assert.Equal("bet ", result);
-    }
-
-    [Fact]
-    public void BackwardDateDescriptor_Est_ShouldReturnCal()
-    {
-        // Arrange
-        var method = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor", 
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-
-        // Act
-        string? result = method?.Invoke(null, ["est "]) as string;
-
-        // Assert
-        Assert.Equal("cal ", result);
-    }
-
-    [Fact]
     public void BackwardDateDescriptor_UnknownValue_ShouldReturnEmpty()
     {
         // Arrange
-        var method = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor", 
+        System.Reflection.MethodInfo? method = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
         // Act
@@ -572,23 +573,23 @@ public class IndividualEventDateTest
     public void Control_DateDescriptorCycling_ShouldWorkBothDirections()
     {
         // Arrange
-        var forwardMethod = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor", 
+        System.Reflection.MethodInfo? forwardMethod = typeof(IndividualEventDate).GetMethod("ForwardDateDescriptor",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-        var backwardMethod = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor", 
+        System.Reflection.MethodInfo? backwardMethod = typeof(IndividualEventDate).GetMethod("BackwardDateDescriptor",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
 
         // Act & Assert - Forward cycling
         string currentDescriptor = "";
-        
+
         string? result1 = forwardMethod?.Invoke(null, [currentDescriptor]) as string;
-        Assert.Equal("abt ", result1);
+        Assert.Equal("ABT ", result1);
 
         string? result2 = forwardMethod?.Invoke(null, [result1]) as string;
-        Assert.Equal("bef ", result2);
+        Assert.Equal("AFT ", result2);
 
         // Test backward cycling
         string? result3 = backwardMethod?.Invoke(null, [result2]) as string;
-        Assert.Equal("abt ", result3);
+        Assert.Equal("ABT ", result3);
 
         string? result4 = backwardMethod?.Invoke(null, [result3]) as string;
         Assert.Equal("", result4);
@@ -618,10 +619,11 @@ public class IndividualEventDateTest
     public void DateDescriptor_WithNullValue_ShouldHandleGracefully()
     {
         // Arrange
-        IndividualEventDate control = new();
-
-        // Act & Assert - Should not throw
-        control.DateDescriptor = null;
+        IndividualEventDate _ = new()
+        {
+            // Act & Assert - Should not throw
+            DateDescriptor = null
+        };
         // Note: WPF dependency properties typically convert null to default value
         // The actual behavior depends on the property metadata
     }
@@ -630,12 +632,13 @@ public class IndividualEventDateTest
     public void Date_WithInvalidDate_ShouldHandleGracefully()
     {
         // Arrange
-        IndividualEventDate control = new();
-        
-        // Act & Assert - Should not throw when setting various date values
-        control.Date = null;
+        IndividualEventDate control = new()
+        {
+            // Act & Assert - Should not throw when setting various date values
+            Date = null
+        };
         Assert.Null(control.Date);
-        
+
         // Test with valid date
         DateWrapper validDate = new(2000, 1, 1);
         control.Date = validDate;
