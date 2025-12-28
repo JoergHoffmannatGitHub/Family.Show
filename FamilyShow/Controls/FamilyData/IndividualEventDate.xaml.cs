@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 using FamilyShowLib;
 
@@ -184,16 +185,44 @@ public partial class IndividualEventDate : UserControl
     /// </summary>
     private void ToolTip_DateTextBox(object sender, ToolTipEventArgs e)
     {
-        // This can be extended to show helpful date format information
-        if (sender is TextBox textBox)
+        // Find the parent Details control and call its ToolTip_All method
+        Details detailsControl = FindParentOfType<Details>(this);
+        if (detailsControl != null)
         {
-            textBox.ToolTip = "Enter date in format: MM/DD/YYYY, DD MMM YYYY, or YYYY\nRight-click label to change descriptor (abt, bef, aft, etc.)";
+            detailsControl.ToolTip_All(sender, e);
+        }
+        else
+        {
+            // Fallback if Details control not found
+            if (sender is TextBox textBox)
+            {
+                textBox.ToolTip = "Enter date in format: MM/DD/YYYY, DD MMM YYYY, or YYYY\nRight-click label to change descriptor (abt, bef, aft, etc.)";
+            }
         }
     }
 
     #endregion
 
     #region Helper Methods
+
+    /// <summary>
+    /// Helper method to find a parent control of a specific type
+    /// </summary>
+    private static T FindParentOfType<T>(DependencyObject child) where T : DependencyObject
+    {
+        DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+        if (parentObject == null)
+        {
+            return null;
+        }
+
+        if (parentObject is T parent)
+        {
+            return parent;
+        }
+
+        return FindParentOfType<T>(parentObject);
+    }
 
     /// <summary>
     /// Move to the next date descriptor in sequence

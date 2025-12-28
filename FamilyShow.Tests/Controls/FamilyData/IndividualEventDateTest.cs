@@ -272,7 +272,7 @@ public class IndividualEventDateTest
     }
 
     [StaFact]
-    public void ToolTip_DateTextBox_ShouldSetHelpfulTooltip()
+    public void ToolTip_DateTextBox_WithoutDetailsParent_ShouldSetFallbackTooltip()
     {
         // Arrange
         IndividualEventDate control = new();
@@ -285,7 +285,7 @@ public class IndividualEventDateTest
             .GetMethod("ToolTip_DateTextBox", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?
             .Invoke(control, [mockTextBox, null]);
 
-        // Assert
+        // Assert - Should fall back to the original behavior when no Details parent is found
         Assert.NotNull(mockTextBox.ToolTip);
         Assert.Contains("MM/DD/YYYY", mockTextBox.ToolTip.ToString());
         Assert.Contains("descriptor", mockTextBox.ToolTip.ToString());

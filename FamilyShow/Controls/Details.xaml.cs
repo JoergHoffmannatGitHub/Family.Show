@@ -3216,7 +3216,7 @@ namespace FamilyShow
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ToolTip_All(object sender, ToolTipEventArgs e)
+        internal void ToolTip_All(object sender, ToolTipEventArgs e)
         {
             UpdateToolTip(BirthDateEditControl.DateEditTextBox, _family.Current.BirthSource, _family.Current.BirthCitation);
             UpdateToolTip(BirthPlaceEditTextBox, _family.Current.BirthSource, _family.Current.BirthCitation);
