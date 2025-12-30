@@ -1697,14 +1697,14 @@ namespace FamilyShow
             // This is necessary since this method can be invoked when the Enter key is pressed,
             // but the text field has not lost focus yet, so it does not update binding. This
             // manually updates the binding for those fields.
-            if (BirthDateEditControl.DateEditTextBox.IsFocused)
+            if (BirthDate.EditTextBox.IsFocused)
             {
-                BirthDateEditControl.DateEditTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                BirthDate.EditTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             }
 
-            if (DeathDateEditControl.DateEditTextBox.IsFocused)
+            if (DeathDate.EditTextBox.IsFocused)
             {
-                DeathDateEditControl.DateEditTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                DeathDate.EditTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             }
 
             // Let the collection know that it has been updated so that the diagram control will update.
@@ -1725,14 +1725,14 @@ namespace FamilyShow
             // This is necessary since this method can be invoked when the Enter key is pressed,
             // but the text field has not lost focus yet, so it does not update binding. This
             // manually updates the binding for those fields.
-            if (BurialDateEditControl.DateEditTextBox.IsFocused)
+            if (BurialDate.EditTextBox.IsFocused)
             {
-                BurialDateEditControl.DateEditTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                BurialDate.EditTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             }
 
-            if (CremationDateEditControl.DateEditTextBox.IsFocused)
+            if (CremationDate.EditTextBox.IsFocused)
             {
-                CremationDateEditControl.DateEditTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                CremationDate.EditTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
             }
 
             // Let the collection know that it has been updated so that the diagram control will update.
@@ -2780,7 +2780,7 @@ namespace FamilyShow
         private void ExpandDetailsEditMore_StoryboardCompleted(object sender, EventArgs e)
         {
             disableButtons();
-            BurialDateEditControl.DateEditTextBox.Focus();
+            BurialDate.EditTextBox.Focus();
         }
 
         private void CollapseDetailsEditMore_StoryboardCompleted(object sender, EventArgs e)
@@ -3218,16 +3218,16 @@ namespace FamilyShow
         /// <param name="e"></param>
         internal void ToolTip_All(object sender, ToolTipEventArgs e)
         {
-            UpdateToolTip(BirthDateEditControl.DateEditTextBox, _family.Current.BirthSource, _family.Current.BirthCitation);
+            UpdateToolTip(BirthDate.EditTextBox, _family.Current.BirthSource, _family.Current.BirthCitation);
             UpdateToolTip(BirthPlaceEditTextBox, _family.Current.BirthSource, _family.Current.BirthCitation);
 
-            UpdateToolTip(DeathDateEditControl.DateEditTextBox, _family.Current.DeathSource, _family.Current.DeathCitation);
+            UpdateToolTip(DeathDate.EditTextBox, _family.Current.DeathSource, _family.Current.DeathCitation);
             UpdateToolTip(DeathPlaceEditTextBox, _family.Current.DeathSource, _family.Current.DeathCitation);
 
-            UpdateToolTip(CremationDateEditControl.DateEditTextBox, _family.Current.CremationSource, _family.Current.CremationCitation);
+            UpdateToolTip(CremationDate.EditTextBox, _family.Current.CremationSource, _family.Current.CremationCitation);
             UpdateToolTip(CremationPlaceEditTextBox, _family.Current.CremationSource, _family.Current.CremationCitation);
 
-            UpdateToolTip(BurialDateEditControl.DateEditTextBox, _family.Current.BurialSource, _family.Current.BurialCitation);
+            UpdateToolTip(BurialDate.EditTextBox, _family.Current.BurialSource, _family.Current.BurialCitation);
             UpdateToolTip(BurialPlaceEditTextBox, _family.Current.BurialSource, _family.Current.BurialCitation);
 
             UpdateToolTip(EducationEditTextBox, _family.Current.EducationSource, _family.Current.EducationCitation);

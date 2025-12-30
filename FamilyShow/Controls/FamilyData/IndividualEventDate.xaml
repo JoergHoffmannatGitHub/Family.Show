@@ -30,13 +30,13 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Column="0"
-                   x:Name="DateLabel"
+                   x:Name="Label"
                    MouseEnter="Label_MouseEnter"
                    MouseLeave="Label_MouseLeave"
                    Content="{Binding DateLabelText, RelativeSource={RelativeSource AncestorType=UserControl}}"
                    MouseLeftButtonUp="ChangeDateDescriptorForward"
                    MouseRightButtonUp="ChangeDateDescriptorBackward"
-                   Target="{Binding ElementName=DateEditTextBox, Mode=OneWay}"
+                   Target="{Binding ElementName=EditTextBox, Mode=OneWay}"
                    Foreground="{DynamicResource InputFontColor}"
                    IsEnabled="{Binding IsControlEnabled, RelativeSource={RelativeSource AncestorType=UserControl}}" />
             <Label Grid.Column="1"
@@ -57,7 +57,7 @@
             </Grid.RowDefinitions>
 
             <TextBox TextWrapping="NoWrap"
-                     x:Name="DateEditTextBox"
+                     x:Name="EditTextBox"
                      Width="135"
                      VerticalAlignment="Top"
                      Margin="5,0,0,0"

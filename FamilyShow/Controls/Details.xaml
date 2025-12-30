@@ -2510,7 +2510,7 @@
                                                DockPanel.Dock="Top"
                                                FontSize="12" />
                                     <Label Content="{x:Static properties:Resources.Born}"
-                                           Target="{Binding ElementName=BirthDateEditControl.DateEditTextBox, Mode=OneWay}"
+                                           Target="{Binding ElementName=BirthDate.DateEditTextBox, Mode=OneWay}"
                                            Padding="5,8,5,0"
                                            DockPanel.Dock="Top"
                                            Margin="0,0,0,4" />
@@ -2859,7 +2859,7 @@
                                      IsEnabled="{Binding Path=IsLocked, Converter={StaticResource NotConverter}, Mode=Default}" />
                         </Grid>
 
-                        <familyData:IndividualEventDate x:Name="BirthDateEditControl"
+                        <familyData:IndividualEventDate x:Name="BirthDate"
                                                         DateLabelText="{x:Static properties:Resources.DateOfBirth}"
                                                         Date="{Binding Path=BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         DateDescriptor="{Binding Path=BirthDateDescriptor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -2911,7 +2911,7 @@
                                    Height="16"
                                    ToolTip="{x:Static properties:Resources.MapToolTip}" />
                         </Grid>
-                        <familyData:IndividualEventDate x:Name="DeathDateEditControl"
+                        <familyData:IndividualEventDate x:Name="DeathDate"
                                                         DateLabelText="{x:Static properties:Resources.DateOfDeath}"
                                                         Date="{Binding Path=DeathDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         DateDescriptor="{Binding Path=DeathDateDescriptor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -3043,7 +3043,7 @@
                                     IsCancel="True" />
                         </DockPanel>
 
-                        <familyData:IndividualEventDate x:Name="BurialDateEditControl"
+                        <familyData:IndividualEventDate x:Name="BurialDate"
                                                         DateLabelText="{x:Static properties:Resources.BurialDate}"
                                                         Date="{Binding Path=BurialDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         DateDescriptor="{Binding Path=BurialDateDescriptor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -3092,7 +3092,7 @@
                                    ToolTip="{x:Static properties:Resources.MapToolTip}" />
                         </Grid>
 
-                        <familyData:IndividualEventDate x:Name="CremationDateEditControl"
+                        <familyData:IndividualEventDate x:Name="CremationDate"
                                                         DateLabelText="{x:Static properties:Resources.CremationDate}"
                                                         Date="{Binding Path=CremationDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         DateDescriptor="{Binding Path=CremationDateDescriptor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
