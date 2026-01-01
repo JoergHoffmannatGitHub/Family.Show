@@ -59,7 +59,7 @@ public class DiagramNodeTest
       { Restriction.None,    false, 1910, 3, 3,    0, 0, 0, "1910 - ? | ?" },
       { Restriction.None,    false,    0, 0, 0, 2017, 2, 2, "? - 2017 | ?" },
       { Restriction.None,    false, 1910, 3, 3, 2017, 2, 2, "1910 - 2017 | 106" },
-      { Restriction.None,    false, 1920, 3, 3, 2025, 2, 2, "1920 - 2025 | 103" },
+      { Restriction.None,    false, 1920, 3, 3, 2025, 2, 2, "1920 - 2025 | 104" },
       };
 
     [StaTheory, MemberData(nameof(DateInformationCases))]
@@ -84,7 +84,7 @@ public class DiagramNodeTest
             BirthDate = birthDate,
             DeathDate = deathDate
         };
-        var diagramNode = new DiagramNode { _testing = true, _displayYear = 2024, Person = person };
+        var diagramNode = new DiagramNode { _testing = true, _displayYear = DateTime.Now.Year - 1, Person = person };
 
         // Act
         string result = diagramNode.DateInformation;

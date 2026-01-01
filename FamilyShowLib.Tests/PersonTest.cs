@@ -158,7 +158,7 @@ public class PersonTest
         // Arrange
         Person person = new()
         {
-            BirthDate = new(2000, DateTime.Now.Month - 1, 1),
+            BirthDate = new(2000, DateTime.Now.Month, 1),
         };
 
         // Act
