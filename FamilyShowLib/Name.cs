@@ -14,9 +14,10 @@ public class Name : INotifyPropertyChanged, IEquatable<Name>
   #region Fields
 
   private string _firstName;
-  private string _lastName;
-  private string _suffix;
+  private string _surname;
   private string _prefix;
+  private string _suffix;
+  private string _surnamePrefix;
   private NameType _nameType;
   private bool _isPrimary;
 
@@ -42,24 +43,41 @@ public class Name : INotifyPropertyChanged, IEquatable<Name>
   }
 
   /// <summary>
-  /// Gets or sets the last name (surname)
+  /// Gets or sets the surname (GEDCOM SURN tag)
   /// </summary>
-  public string LastName
+  public string Surname
   {
-    get { return _lastName; }
+    get { return _surname; }
     set
     {
-      if (_lastName != value)
+      if (_surname != value)
       {
-        _lastName = value;
-        OnPropertyChanged(nameof(LastName));
+        _surname = value;
+        OnPropertyChanged(nameof(Surname));
         OnPropertyChanged(nameof(FullName));
       }
     }
   }
 
   /// <summary>
-  /// Gets or sets the suffix (Jr., Sr., III, etc.)
+  /// Gets or sets the name prefix/title, e.g., "Dr.", "Lt. Cmndr." (GEDCOM NPFX tag)
+  /// </summary>
+  public string Prefix
+  {
+    get { return _prefix; }
+    set
+    {
+      if (_prefix != value)
+      {
+        _prefix = value;
+        OnPropertyChanged(nameof(Prefix));
+        OnPropertyChanged(nameof(FullName));
+      }
+    }
+  }
+
+  /// <summary>
+  /// Gets or sets the name suffix, e.g., "Jr.", "Sr.", "III" (GEDCOM NSFX tag)
   /// </summary>
   public string Suffix
   {
@@ -76,17 +94,17 @@ public class Name : INotifyPropertyChanged, IEquatable<Name>
   }
 
   /// <summary>
-  /// Gets or sets the prefix/title (Dr., Prof., etc.)
+  /// Gets or sets the surname prefix, e.g., "de", "von", "van" (GEDCOM SPFX tag)
   /// </summary>
-  public string Prefix
+  public string SurnamePrefix
   {
-    get { return _prefix; }
+    get { return _surnamePrefix; }
     set
     {
-      if (_prefix != value)
+      if (_surnamePrefix != value)
       {
-        _prefix = value;
-        OnPropertyChanged(nameof(Prefix));
+        _surnamePrefix = value;
+        OnPropertyChanged(nameof(SurnamePrefix));
         OnPropertyChanged(nameof(FullName));
       }
     }
@@ -125,7 +143,7 @@ public class Name : INotifyPropertyChanged, IEquatable<Name>
   }
 
   /// <summary>
-  /// Gets the full name including prefix, first name, last name, and suffix
+  /// Gets the full name including prefix, first name, surname prefix, surname, and suffix
   /// </summary>
   [XmlIgnore]
   public string FullName
@@ -144,9 +162,14 @@ public class Name : INotifyPropertyChanged, IEquatable<Name>
         name += FirstName;
       }
 
-      if (!string.IsNullOrEmpty(LastName))
+      if (!string.IsNullOrEmpty(SurnamePrefix))
       {
-        name += (string.IsNullOrEmpty(name) ? "" : " ") + LastName;
+        name += (string.IsNullOrEmpty(name) ? "" : " ") + SurnamePrefix;
+      }
+
+      if (!string.IsNullOrEmpty(Surname))
+      {
+        name += (string.IsNullOrEmpty(name) ? "" : " ") + Surname;
       }
 
       if (!string.IsNullOrEmpty(Suffix))
@@ -172,23 +195,24 @@ public class Name : INotifyPropertyChanged, IEquatable<Name>
   }
 
   /// <summary>
-  /// Constructor with first and last name
+  /// Constructor with first name and surname
   /// </summary>
-  public Name(string firstName, string lastName) : this()
+  public Name(string firstName, string surname) : this()
   {
     _firstName = firstName;
-    _lastName = lastName;
+    _surname = surname;
   }
 
   /// <summary>
   /// Constructor with all name components
   /// </summary>
-  public Name(string firstName, string lastName, string suffix, string prefix, NameType nameType, bool isPrimary)
+  public Name(string firstName, string surname, string prefix, string suffix, string surnamePrefix, NameType nameType, bool isPrimary)
   {
     _firstName = firstName;
-    _lastName = lastName;
-    _suffix = suffix;
+    _surname = surname;
     _prefix = prefix;
+    _suffix = suffix;
+    _surnamePrefix = surnamePrefix;
     _nameType = nameType;
     _isPrimary = isPrimary;
   }
@@ -210,9 +234,10 @@ public class Name : INotifyPropertyChanged, IEquatable<Name>
     }
 
     return string.Equals(FirstName, other.FirstName, StringComparison.OrdinalIgnoreCase) &&
-           string.Equals(LastName, other.LastName, StringComparison.OrdinalIgnoreCase) &&
-           string.Equals(Suffix, other.Suffix, StringComparison.OrdinalIgnoreCase) &&
+           string.Equals(Surname, other.Surname, StringComparison.OrdinalIgnoreCase) &&
            string.Equals(Prefix, other.Prefix, StringComparison.OrdinalIgnoreCase) &&
+           string.Equals(Suffix, other.Suffix, StringComparison.OrdinalIgnoreCase) &&
+           string.Equals(SurnamePrefix, other.SurnamePrefix, StringComparison.OrdinalIgnoreCase) &&
            NameType == other.NameType;
   }
 
@@ -225,9 +250,10 @@ public class Name : INotifyPropertyChanged, IEquatable<Name>
   {
     return HashCode.Combine(
       FirstName?.ToLowerInvariant(),
-      LastName?.ToLowerInvariant(),
-      Suffix?.ToLowerInvariant(),
+      Surname?.ToLowerInvariant(),
       Prefix?.ToLowerInvariant(),
+      Suffix?.ToLowerInvariant(),
+      SurnamePrefix?.ToLowerInvariant(),
       NameType
     );
   }

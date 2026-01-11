@@ -2369,7 +2369,7 @@ namespace FamilyShowLib
         if (primaryName != null)
         {
           primaryName.FirstName = _firstName;
-          primaryName.LastName = _lastName;
+          primaryName.Surname = _lastName;
           primaryName.Suffix = _suffix;
         }
       }
@@ -2396,7 +2396,7 @@ namespace FamilyShowLib
         if (primaryName != null)
         {
           _firstName = primaryName.FirstName ?? string.Empty;
-          _lastName = primaryName.LastName ?? string.Empty;
+          _lastName = primaryName.Surname ?? string.Empty;
           _suffix = primaryName.Suffix ?? string.Empty;
 
           OnPropertyChanged(nameof(FirstName));

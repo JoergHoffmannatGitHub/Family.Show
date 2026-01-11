@@ -212,7 +212,7 @@ public class GedcomExport
       {
 
         // Name (now includes all names with their attributes)
-        ExportName(person);
+        ExportNames(person);
 
         // Gender.
         ExportGender(person);
@@ -608,37 +608,40 @@ public class GedcomExport
     }
   }
 
-  private void ExportName(Person person)
+  private void ExportNames(Person person)
   {
-    string Space = " ";
-
     // Export all names from the Names collection (GEDCOM 5.5.1 supports multiple NAME tags)
     if (person.Names != null && person.Names.Count > 0)
     {
       foreach (Name name in person.Names)
       {
-        // Build the NAME value in GEDCOM format: "FirstName /LastName/"
-        string nameValue = string.Format(CultureInfo.InvariantCulture,
-            "{0}{1}/{2}/", name.FirstName ?? string.Empty, Space, name.LastName ?? string.Empty);
+        // Build the NAME value in GEDCOM format: "FirstName /Surname/"
+        // Handle edge cases where first name or surname may be empty
+        string nameValue = BuildNameValue(name.FirstName, name.Surname);
+        WriteLine(1, "NAME", nameValue);
 
-        WriteLine(1, "NAME", nameValue.Trim());
-
-        // Export surname if present
-        if (!string.IsNullOrEmpty(name.LastName))
+        // Export surname if present (SURN)
+        if (!string.IsNullOrEmpty(name.Surname))
         {
-          WriteLine(2, "SURN", name.LastName);
+          WriteLine(2, "SURN", name.Surname);
         }
 
-        // Export prefix (title) if present
+        // Export name prefix/title if present (NPFX) - e.g., "Dr.", "Lt. Cmndr."
         if (!string.IsNullOrEmpty(name.Prefix))
         {
-          WriteLine(2, "SPFX", name.Prefix);
+          WriteLine(2, "NPFX", name.Prefix);
         }
 
-        // Export suffix if present
+        // Export surname prefix if present (SPFX) - e.g., "de", "von"
+        if (!string.IsNullOrEmpty(name.SurnamePrefix))
+        {
+          WriteLine(2, "SPFX", name.SurnamePrefix);
+        }
+
+        // Export name suffix if present (NSFX) - e.g., "Jr.", "Sr.", "III"
         if (!string.IsNullOrEmpty(name.Suffix))
         {
-          WriteLine(2, "NPFX", name.Suffix);
+          WriteLine(2, "NSFX", name.Suffix);
         }
 
         // Export name type if not birth name
@@ -655,30 +658,66 @@ public class GedcomExport
     else
     {
       // Fallback to legacy fields if Names collection is empty
-      string value = string.Format(CultureInfo.InvariantCulture,
-          "{0}{1}/{2}/", person.FirstName, Space, person.LastName);
-
-      WriteLine(1, "NAME", value);
+      string nameValue = BuildNameValue(person.FirstName, person.LastName);
+      WriteLine(1, "NAME", nameValue);
     }
   }
 
   /// <summary>
-  /// Converts NameType enum to GEDCOM NAME TYPE string
+  /// Builds the GEDCOM NAME value string, handling edge cases for empty values
+  /// </summary>
+  private static string BuildNameValue(string firstName, string surname)
+  {
+    bool hasFirstName = !string.IsNullOrEmpty(firstName);
+    bool hasSurname = !string.IsNullOrEmpty(surname);
+
+    if (hasFirstName && hasSurname)
+    {
+      return $"{firstName} /{surname}/";
+    }
+    else if (hasSurname)
+    {
+      return $"/{surname}/";
+    }
+    else if (hasFirstName)
+    {
+      return $"{firstName} //";
+    }
+    else
+    {
+      return "//";
+    }
+  }
+
+  /// <summary>
+  /// Converts NameType enum to GEDCOM NAME TYPE string (uppercase for readability)
   /// </summary>
   private static string ConvertNameTypeToGedcom(NameType nameType)
   {
     return nameType switch
     {
-      NameType.Aka => "aka",
-      NameType.Birth => "birth",
-      NameType.Married => "married",
-      NameType.Maiden => "maiden",
-      NameType.Immigration => "immigrant",
-      NameType.Professional => "professional",
-      NameType.Other => "other",
+      NameType.Aka => "AKA",
+      NameType.Birth => "BIRTH",
+      NameType.Married => "MARRIED",
+      NameType.Maiden => "MAIDEN",
+      NameType.Immigration => "IMMIGRANT",
+      NameType.Professional => "PROFESSIONAL",
+      NameType.Other => "OTHER",
       _ => string.Empty
     };
   }
+
+  /// <summary>
+  /// Test wrapper for BuildNameValue
+  /// </summary>
+  public static string BuildNameValueWrapper(string firstName, string surname)
+    => BuildNameValue(firstName, surname);
+
+  /// <summary>
+  /// Test wrapper for ConvertNameTypeToGedcom
+  /// </summary>
+  public static string ConvertNameTypeToGedcomWrapper(NameType nameType)
+    => ConvertNameTypeToGedcom(nameType);
 
   private void ExportPhotos(Person person)
   {
