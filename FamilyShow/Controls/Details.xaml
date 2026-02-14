@@ -2638,7 +2638,6 @@
                                     Width="115"
                                     Style="{DynamicResource BlackButtonStyle}"
                                     FontSize="10" />
-                            <!--<Button Margin="7,2,10,7" Height="20" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Width="115" Style="{DynamicResource BlackButtonStyle}" FontSize="10"/>-->
 
                         </Grid>
 
