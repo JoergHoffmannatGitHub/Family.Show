@@ -19,17 +19,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FamilyShowLib.Tests", "Fami
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyShow.Tests", "FamilyShow.Tests\FamilyShow.Tests.csproj", "{0F6BE0B3-C648-4B57-8286-BD9346562CE3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Package", "Package", "{2CD5FF4E-7AF0-4A59-98FC-8114B4D060F0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Genealogy", "Genealogy", "{2CD5FF4E-7AF0-4A59-98FC-8114B4D060F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genealogy.Domain", "Package\Genealogy.Domain\Genealogy.Domain.csproj", "{D1FF5FB4-625C-45B0-B904-86DD69A11952}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genealogy.Domain", "Genealogy\Genealogy.Domain\Genealogy.Domain.csproj", "{D1FF5FB4-625C-45B0-B904-86DD69A11952}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genealogy.Domain.Tests", "Package\Genealogy.Domain.Tests\Genealogy.Domain.Tests.csproj", "{D946C8EF-83FC-4E0B-8434-F148D010A68F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genealogy.Domain.Tests", "Genealogy\Genealogy.Domain.Tests\Genealogy.Domain.Tests.csproj", "{D946C8EF-83FC-4E0B-8434-F148D010A68F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Package Items", "Package Items", "{C4DCA96D-8C25-4FCB-9C5E-5E2ECBC93529}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Genealogy Items", "Genealogy Items", "{C4DCA96D-8C25-4FCB-9C5E-5E2ECBC93529}"
 	ProjectSection(SolutionItems) = preProject
-		Package\Directory.Build.props = Package\Directory.Build.props
-		Package\Directory.Build.targets = Package\Directory.Build.targets
-		Package\Genealogy.snk = Package\Genealogy.snk
+		Genealogy\Directory.Build.props = Genealogy\Directory.Build.props
+		Genealogy\Directory.Build.targets = Genealogy\Directory.Build.targets
+		Genealogy\Genealogy.snk = Genealogy\Genealogy.snk
 	EndProjectSection
 EndProject
 Global
