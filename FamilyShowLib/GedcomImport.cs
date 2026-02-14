@@ -117,20 +117,25 @@ public class GedcomImport
         {
 
             // Create a new person that will be added to the collection.
-            Person person = new()
-            {
-                // Import details about the person.
-                FirstName = GetNames(node),
-                LastName = GetSurname(node)
-            };
+            Person person = new();
 
-            // If no name or surname, call them unknown rather than an empty string
-            if (string.IsNullOrEmpty(person.FirstName) && string.IsNullOrEmpty(person.LastName))
+            // Import all names (GEDCOM 5.5.1 supports multiple NAME tags)
+            ImportNames(person, node);
+
+            // Set legacy fields from primary name for backward compatibility
+            if (person.Names.Count > 0)
             {
+                Name primaryName = person.Names.PrimaryName;
+                person.FirstName = primaryName.FirstName;
+                person.LastName = primaryName.Surname;
+                person.Suffix = primaryName.Suffix;
+            }
+            else
+            {
+                // If no names imported, set unknown
                 person.FirstName = Properties.Resources.Unknown;
             }
 
-            person.Suffix = GetSuffix(node);
             person.Id = GetId(node);
             person._UID = _Uid(node);
             person.Gender = GetGender(node);
@@ -1032,6 +1037,113 @@ public class GedcomImport
     private static string GetSuffix(XmlNode node)
     {
         return GetValue(node, "NAME/NPFX");
+    }
+
+    /// <summary>
+    /// Imports all NAME tags from a GEDCOM INDI node into the Person's Names collection
+    /// GEDCOM 5.5.1+ supports multiple NAME tags for alternate names
+    /// </summary>
+    private static void ImportNames(Person person, XmlNode node)
+    {
+        // Clear the default name that was added in the constructor
+        person.Names.Clear();
+
+        // Get all NAME nodes
+        XmlNodeList nameNodes = node.SelectNodes("NAME");
+
+        if (nameNodes == null || nameNodes.Count == 0)
+        {
+            // No names found, add a default unknown name
+            person.Names.Add(new Name(Properties.Resources.Unknown, string.Empty) { IsPrimary = true });
+            return;
+        }
+
+        bool hasPrimaryName = false;
+        foreach (XmlNode nameNode in nameNodes)
+        {
+            // Parse the NAME value (format: "FirstName /Surname/")
+            string nameValue = GetValue(nameNode, ".");
+            string givenName = string.Empty;
+            string surname = string.Empty;
+
+            if (!string.IsNullOrEmpty(nameValue))
+            {
+                string[] parts = nameValue.Split('/');
+                if (parts.Length > 0)
+                {
+                    givenName = parts[0].Trim();
+                }
+                if (parts.Length > 1)
+                {
+                    surname = parts[1].Trim();
+                }
+            }
+
+            // Get other name components per GEDCOM spec:
+            // NPFX = Name Prefix (Dr., Lt., etc.)
+            // NSFX = Name Suffix (Jr., Sr., III, etc.)
+            // SPFX = Surname Prefix (de, von, etc.)
+            string prefix = GetValue(nameNode, "NPFX");
+            string suffix = GetValue(nameNode, "NSFX");
+            string surnamePrefix = GetValue(nameNode, "SPFX");
+            string nameType = GetValue(nameNode, "TYPE");
+
+            // Determine name type from TYPE tag
+            NameType type = ParseNameType(nameType);
+
+            // Use TYPE="Birth" to determine primary name, or first name if no birth name exists
+            bool isPrimary = (type == NameType.Birth && !hasPrimaryName);
+            if (isPrimary)
+            {
+                hasPrimaryName = true;
+            }
+
+            // Create the name object with all components
+            Name name = new(givenName, surname, prefix, suffix, surnamePrefix, type, isPrimary);
+
+            // Add to collection
+            person.Names.Add(name);
+        }
+
+        // If no birth name was found, set the first name as primary
+        if (!hasPrimaryName && person.Names.Count > 0)
+        {
+            person.Names[0].IsPrimary = true;
+        }
+
+        // If no names were added, add an unknown name
+        if (person.Names.Count == 0)
+        {
+            person.Names.Add(new Name(Properties.Resources.Unknown, string.Empty) { IsPrimary = true });
+        }
+    }
+
+    /// <summary>
+    /// Test wrapper for ImportNames
+    /// </summary>
+    public static void ImportNamesWrapper(Person person, XmlNode node)
+      => ImportNames(person, node);
+
+    /// <summary>
+    /// Converts GEDCOM NAME TYPE string to NameType enum
+    /// </summary>
+    private static NameType ParseNameType(string gedcomType)
+    {
+        if (string.IsNullOrEmpty(gedcomType))
+        {
+            return NameType.Birth;
+        }
+
+        return gedcomType.ToUpperInvariant() switch
+        {
+            "AKA" or "ALSO KNOWN AS" => NameType.Aka,
+            "BIRTH" => NameType.Birth,
+            "MARRIED" => NameType.Married,
+            "MAIDEN" => NameType.Maiden,
+            "IMMIGRANT" or "IMMIGRATION" => NameType.Immigration,
+            "PROFESSIONAL" or "STAGE" => NameType.Professional,
+            _ => NameType.Other
+        };
     }
 
     private static string GetHusbandID(XmlNode node)
