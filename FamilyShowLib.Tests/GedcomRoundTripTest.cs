@@ -115,9 +115,9 @@ public class GedcomRoundTripTest
       Assert.Equal(3, reimportedPerson.Names.Count);
 
       // Verify all names are preserved with correct types
-      Name birthName = reimportedPerson.Names.FirstOrDefault(n => n.NameType == NameType.Birth);
-      Name akaName = reimportedPerson.Names.FirstOrDefault(n => n.NameType == NameType.Aka);
-      Name marriedName = reimportedPerson.Names.FirstOrDefault(n => n.NameType == NameType.Married);
+      Name? birthName = reimportedPerson.Names.FirstOrDefault(n => n.NameType == NameType.Birth);
+      Name? akaName = reimportedPerson.Names.FirstOrDefault(n => n.NameType == NameType.Aka);
+      Name? marriedName = reimportedPerson.Names.FirstOrDefault(n => n.NameType == NameType.Married);
 
       Assert.NotNull(birthName);
       Assert.NotNull(akaName);
