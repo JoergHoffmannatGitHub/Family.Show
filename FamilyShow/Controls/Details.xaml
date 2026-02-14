@@ -3,6 +3,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:FamilyShowLib="clr-namespace:FamilyShowLib;assembly=FamilyShowLib"
              xmlns:local="clr-namespace:FamilyShow"
+             xmlns:familyData="clr-namespace:FamilyShow.Controls.FamilyData"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:properties="clr-namespace:FamilyShow.Properties"
              x:Class="FamilyShow.Details"
@@ -124,6 +125,16 @@
             <!-- Data Template for displaying the attachments -->
             <DataTemplate x:Key="AttachmentSetTemplate">
                 <TextBlock Text="{Binding Path=FileName, Mode=Default}" />
+            </DataTemplate>
+
+            <!-- Data Template for displaying the parent child modifier -->
+            <DataTemplate x:Key="ParentChildModifierDataTemplate">
+                <TextBlock Text="{Binding Converter={StaticResource EnumValueDescriptionConverter}}" />
+            </DataTemplate>
+
+            <!-- Data Template for displaying the spouse modifier -->
+            <DataTemplate x:Key="SpouseModifierDataTemplate">
+                <TextBlock Text="{Binding Converter={StaticResource EnumValueDescriptionConverter}}" />
             </DataTemplate>
 
             <!-- Animation for expanding the Details Add section -->
@@ -2499,7 +2510,7 @@
                                                DockPanel.Dock="Top"
                                                FontSize="12" />
                                     <Label Content="{x:Static properties:Resources.Born}"
-                                           Target="{Binding ElementName=BirthDateEditTextBox, Mode=OneWay}"
+                                           Target="{Binding ElementName=BirthDate.DateEditTextBox, Mode=OneWay}"
                                            Padding="5,8,5,0"
                                            DockPanel.Dock="Top"
                                            Margin="0,0,0,4" />
@@ -2627,7 +2638,6 @@
                                     Width="115"
                                     Style="{DynamicResource BlackButtonStyle}"
                                     FontSize="10" />
-                            <!--<Button Margin="7,2,10,7" Height="20" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Width="115" Style="{DynamicResource BlackButtonStyle}" FontSize="10"/>-->
 
                         </Grid>
 
@@ -2848,62 +2858,14 @@
                                      IsEnabled="{Binding Path=IsLocked, Converter={StaticResource NotConverter}, Mode=Default}" />
                         </Grid>
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <Label Grid.Column="0"
-                                   x:Name="BirthDateLabel"
-                                   MouseEnter="Label_MouseEnter"
-                                   MouseLeave="Label_MouseLeave"
-                                   Content="{x:Static properties:Resources.DateOfBirth}"
-                                   MouseLeftButtonUp="ChangeBirthDescriptorForward"
-                                   MouseRightButtonUp="ChangeBirthDescriptorBackward"
-                                   Target="{Binding ElementName=BirthDateEditTextBox, Mode=OneWay}"
-                                   Foreground="{DynamicResource InputFontColor}"
-                                   IsEnabled="{Binding Path=IsLocked, Converter={StaticResource NotConverter}, Mode=Default}" />
-                            <Label Grid.Column="1"
-                                   Margin="-6,0,0,0"
-                                   Content="{Binding Path=BirthDateDescriptor}"
-                                   Foreground="{DynamicResource InputFontColor}" />
-
-                        </Grid>
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <TextBox TextWrapping="NoWrap"
-                                     x:Name="BirthDateEditTextBox"
-                                     Width="135"
-                                     VerticalAlignment="Top"
-                                     Grid.Row="1"
-                                     Margin="5,0,0,0"
-                                     Text="{Binding Path=BirthDate, Converter={StaticResource DateFormattingConverter}, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}"
-                                     ToolTip=""
-                                     ToolTipOpening="ToolTip_All"
-                                     IsEnabled="{Binding Path=IsLocked, Converter={StaticResource NotConverter}, Mode=Default}" />
-                            <CheckBox Margin="10,0,0,0"
-                                      VerticalAlignment="Center"
-                                      Content="{x:Static properties:Resources.Living}"
-                                      Foreground="{DynamicResource InputFontColor}"
-                                      Grid.Column="1"
-                                      Grid.Row="1"
-                                      IsChecked="{Binding Path=IsLiving, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=True}"
-                                      IsEnabled="{Binding Path=IsLocked, Converter={StaticResource NotConverter}, Mode=Default}" />
-
-                        </Grid>
+                        <familyData:IndividualEventDate x:Name="BirthDate"
+                                                        DateLabelText="{x:Static properties:Resources.DateOfBirth}"
+                                                        Date="{Binding Path=BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        DateDescriptor="{Binding Path=BirthDateDescriptor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        IsControlEnabled="{Binding Path=IsLocked, Converter={StaticResource NotConverter}, Mode=Default}"
+                                                        ShowCheckBox="True"
+                                                        CheckBoxText="{x:Static properties:Resources.Living}"
+                                                        CheckBoxValue="{Binding Path=IsLiving, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=True}" />
 
 
                         <Label Content="{x:Static properties:Resources.BirthPlace}"
@@ -2948,34 +2910,12 @@
                                    Height="16"
                                    ToolTip="{x:Static properties:Resources.MapToolTip}" />
                         </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Label MouseEnter="Label_MouseEnter"
-                                   MouseLeave="Label_MouseLeave"
-                                   Grid.Column="0"
-                                   Content="{x:Static properties:Resources.DateOfDeath}"
-                                   Target="{Binding ElementName=DeathDateEditTextBox, Mode=OneWay}"
-                                   MouseLeftButtonUp="ChangeDeathDescriptorForward"
-                                   MouseRightButtonUp="ChangeDeathDescriptorBackward"
-                                   Foreground="{DynamicResource InputFontColor}"
-                                   IsEnabled="{Binding Path=IsLockedIsLiving, Converter={StaticResource NotConverter}, Mode=Default}" />
-                            <Label Grid.Column="1"
-                                   Margin="-6,0,0,0"
-                                   Content="{Binding Path=DeathDateDescriptor}"
-                                   Foreground="{DynamicResource InputFontColor}" />
-                        </Grid>
-                        <TextBox TextWrapping="NoWrap"
-                                 x:Name="DeathDateEditTextBox"
-                                 Width="135"
-                                 HorizontalAlignment="Left"
-                                 Margin="5,0,0,0"
-                                 IsEnabled="{Binding Path=IsLockedIsLiving, Converter={StaticResource NotConverter}, Mode=Default}"
-                                 Text="{Binding Path=DeathDate, Converter={StaticResource DateFormattingConverter}, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}"
-                                 ToolTip=""
-                                 ToolTipOpening="ToolTip_All" />
+                        <familyData:IndividualEventDate x:Name="DeathDate"
+                                                        DateLabelText="{x:Static properties:Resources.DateOfDeath}"
+                                                        Date="{Binding Path=DeathDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        DateDescriptor="{Binding Path=DeathDateDescriptor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        IsControlEnabled="{Binding Path=IsLockedIsLiving, Converter={StaticResource NotConverter}, Mode=Default}"
+                                                        ShowCheckBox="False" />
                         <Label Content="{x:Static properties:Resources.DeathPlace}"
                                Target="{Binding ElementName=DeathPlaceEditTextBox, Mode=OneWay}"
                                Foreground="{DynamicResource InputFontColor}" />
@@ -3102,45 +3042,12 @@
                                     IsCancel="True" />
                         </DockPanel>
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <Label MouseEnter="Label_MouseEnter"
-                                   MouseLeave="Label_MouseLeave"
-                                   Grid.Row="0"
-                                   Grid.Column="0"
-                                   Content="{x:Static properties:Resources.BurialDate}"
-                                   Target="{Binding ElementName=BurialDateEditTextBox, Mode=OneWay}"
-                                   MouseLeftButtonUp="ChangeBurialDescriptorForward"
-                                   MouseRightButtonUp="ChangeBurialDescriptorBackward"
-                                   Foreground="{DynamicResource InputFontColor}"
-                                   IsEnabled="{Binding Path=IsLockedIsLiving, Converter={StaticResource NotConverter}, Mode=Default}" />
-                            <Label Grid.Row="0"
-                                   Grid.Column="1"
-                                   Margin="-6,0,0,0"
-                                   Content="{Binding Path=BurialDateDescriptor}"
-                                   Foreground="{DynamicResource InputFontColor}" />
-
-                            <TextBox Grid.Row="1"
-                                     Grid.ColumnSpan="2"
-                                     TextWrapping="NoWrap"
-                                     x:Name="BurialDateEditTextBox"
-                                     Width="135"
-                                     HorizontalAlignment="Left"
-                                     Margin="5,0,0,0"
-                                     IsEnabled="{Binding Path=IsLockedIsLiving, Converter={StaticResource NotConverter}, Mode=Default}"
-                                     Text="{Binding Path=BurialDate, Converter={StaticResource DateFormattingConverter}, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}"
-                                     ToolTip=""
-                                     ToolTipOpening="ToolTip_All" />
-
-                        </Grid>
+                        <familyData:IndividualEventDate x:Name="BurialDate"
+                                                        DateLabelText="{x:Static properties:Resources.BurialDate}"
+                                                        Date="{Binding Path=BurialDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        DateDescriptor="{Binding Path=BurialDateDescriptor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        IsControlEnabled="{Binding Path=IsLockedIsLiving, Converter={StaticResource NotConverter}, Mode=Default}"
+                                                        ShowCheckBox="False" />
                         <Label Content="{x:Static properties:Resources.BurialPlace}"
                                Target="{Binding ElementName=BurialPlaceEditTextBox, Mode=OneWay}"
                                Foreground="{DynamicResource InputFontColor}" />
@@ -3184,34 +3091,12 @@
                                    ToolTip="{x:Static properties:Resources.MapToolTip}" />
                         </Grid>
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Label MouseEnter="Label_MouseEnter"
-                                   MouseLeave="Label_MouseLeave"
-                                   Grid.Column="0"
-                                   Content="{x:Static properties:Resources.CremationDate}"
-                                   Target="{Binding ElementName=CremationDateEditTextBox, Mode=OneWay}"
-                                   MouseLeftButtonUp="ChangeCremationDescriptorForward"
-                                   MouseRightButtonUp="ChangeCremationDescriptorBackward"
-                                   Foreground="{DynamicResource InputFontColor}"
-                                   IsEnabled="{Binding Path=IsLockedIsLiving, Converter={StaticResource NotConverter}, Mode=Default}" />
-                            <Label Grid.Column="1"
-                                   Margin="-6,0,0,0"
-                                   Content="{Binding Path=CremationDateDescriptor}"
-                                   Foreground="{DynamicResource InputFontColor}" />
-                        </Grid>
-                        <TextBox TextWrapping="NoWrap"
-                                 x:Name="CremationDateEditTextBox"
-                                 Width="135"
-                                 HorizontalAlignment="Left"
-                                 Margin="5,0,0,0"
-                                 IsEnabled="{Binding Path=IsLockedIsLiving, Converter={StaticResource NotConverter}, Mode=Default}"
-                                 Text="{Binding Path=CremationDate, Converter={StaticResource DateFormattingConverter}, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}"
-                                 ToolTip=""
-                                 ToolTipOpening="ToolTip_All" />
+                        <familyData:IndividualEventDate x:Name="CremationDate"
+                                                        DateLabelText="{x:Static properties:Resources.CremationDate}"
+                                                        Date="{Binding Path=CremationDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        DateDescriptor="{Binding Path=CremationDateDescriptor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        IsControlEnabled="{Binding Path=IsLockedIsLiving, Converter={StaticResource NotConverter}, Mode=Default}"
+                                                        ShowCheckBox="False" />
                         <Label Content="{x:Static properties:Resources.CremationPlace}"
                                Target="{Binding ElementName=CremationPlaceEditTextBox, Mode=OneWay}"
                                Foreground="{DynamicResource InputFontColor}" />

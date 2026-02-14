@@ -1,0 +1,11 @@
+<Project>
+  <!-- See https://aka.ms/dotnet/msbuild/customize for more details on customizing your build -->
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Genealogy.snk</AssemblyOriginatorKeyFile>
+    <PublicKey>
+      00240000048000009400000006020000002400005253413100040000010001001919901f5df15129968f4c9323fe7d78773579b041f0cefd2f39d406133417c48e6c790381da7d59a51eb3b8b8844fddb6b480a1ab2a630d3f998b6f44c67d67ee94f0c7a7372d071fd47e602ed30be383ba07fce60f0a075935ae637ceca75e9179431eaed5bd3b14d7b50d8f3587902f07b5a78f7ab705370f937dc542bcbc
+    </PublicKey>
+    <PublicKeyToken>d55723e43f351317</PublicKeyToken>
+  </PropertyGroup>
+</Project>

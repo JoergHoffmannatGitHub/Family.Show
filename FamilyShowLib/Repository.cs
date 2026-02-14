@@ -18,167 +18,165 @@ namespace FamilyShowLib;
 [Serializable]
 public class Repository : INotifyPropertyChanged, IEquatable<Repository>
 {
+    #region Fields and Constants
 
-  #region Fields and Constants
+    private string _id;
+    private string _repositoryName;
+    private string _repositoryAddress;
 
-  private string _id;
-  private string _repositoryName;
-  private string _repositoryAddress;
+    #endregion
 
-  #endregion
+    #region Properties
 
-  #region Properties
-
-  [XmlAttribute]
-  public string Id
-  {
-    get { return _id; }
-    set
+    [XmlAttribute]
+    public string Id
     {
-      if (_id != value)
-      {
-        _id = value;
-        OnPropertyChanged(nameof(Id));
-      }
-    }
-  }
-
-  public string RepositoryName
-  {
-    get { return _repositoryName; }
-    set
-    {
-      if (_repositoryName != value)
-      {
-        _repositoryName = value;
-        OnPropertyChanged("RepositoryeName");
-      }
-    }
-  }
-
-  public string RepositoryAddress
-  {
-    get { return _repositoryAddress; }
-    set
-    {
-      if (_repositoryAddress != value)
-      {
-        _repositoryAddress = value;
-        OnPropertyChanged(nameof(RepositoryAddress));
-      }
-    }
-  }
-
-  [XmlIgnore]
-  public string RepositoryNameAndId
-  {
-    get { return _id + " " + _repositoryName; }
-    set { }
-  }
-
-  #endregion
-
-  #region Constructors
-
-  /// <summary>
-  /// Creates a new instance of a repository object.
-  /// This parameterless constructor is also required for serialization.
-  /// </summary>
-  public Repository()
-  {
-    _repositoryName = Properties.Resources.Unknown;
-  }
-
-  /// <summary>
-  /// Creates a new instance of the repository class with the id, name and address of the repository.  
-  /// The calling method must ensure that there are no duplicated ids.
-  /// </summary>
-  public Repository(string repositoryId, string repositoryName, string repositoryAddress) : this()
-  {
-    if (!string.IsNullOrEmpty(repositoryId))
-    {
-      _id = repositoryId;
+        get { return _id; }
+        set
+        {
+            if (_id != value)
+            {
+                _id = value;
+                OnPropertyChanged(nameof(Id));
+            }
+        }
     }
 
-    if (!string.IsNullOrEmpty(repositoryName))
+    public string RepositoryName
     {
-      _repositoryName = repositoryName;
+        get { return _repositoryName; }
+        set
+        {
+            if (_repositoryName != value)
+            {
+                _repositoryName = value;
+                OnPropertyChanged("RepositoryeName");
+            }
+        }
     }
 
-    if (!string.IsNullOrEmpty(repositoryAddress))
+    public string RepositoryAddress
     {
-      _repositoryAddress = repositoryAddress;
+        get { return _repositoryAddress; }
+        set
+        {
+            if (_repositoryAddress != value)
+            {
+                _repositoryAddress = value;
+                OnPropertyChanged(nameof(RepositoryAddress));
+            }
+        }
     }
-  }
 
-  #endregion
-
-  #region IEquatable Members
-
-  /// <summary>
-  /// Determine equality between two repository classes
-  /// </summary>
-  public bool Equals(Repository other)
-  {
-    if (other is null)
+    [XmlIgnore]
+    public string RepositoryNameAndId
     {
-      return false;
+        get { return _id + " " + _repositoryName; }
+        set { }
     }
-    // Optimization for a common success case.
-    if (ReferenceEquals(this, other))
+
+    #endregion
+
+    #region Constructors
+
+    /// <summary>
+    /// Creates a new instance of a repository object.
+    /// This parameterless constructor is also required for serialization.
+    /// </summary>
+    public Repository()
     {
-      return true;
+        _repositoryName = Properties.Resources.Unknown;
     }
-    // If run-time types are not exactly the same, return false.
-    if (GetType() != other.GetType())
+
+    /// <summary>
+    /// Creates a new instance of the repository class with the id, name and address of the repository.  
+    /// The calling method must ensure that there are no duplicated ids.
+    /// </summary>
+    public Repository(string repositoryId, string repositoryName, string repositoryAddress) : this()
     {
-      return false;
+        if (!string.IsNullOrEmpty(repositoryId))
+        {
+            _id = repositoryId;
+        }
+
+        if (!string.IsNullOrEmpty(repositoryName))
+        {
+            _repositoryName = repositoryName;
+        }
+
+        if (!string.IsNullOrEmpty(repositoryAddress))
+        {
+            _repositoryAddress = repositoryAddress;
+        }
     }
-    // Return true if the Id match.
-    return Id == other.Id;
-  }
 
-  #endregion
+    #endregion
 
-  #region Equals Methods
+    #region IEquatable Members
 
-  /// <summary>
-  /// Determines whether the specified object is equal to the current repository.
-  /// </summary>
-  public override bool Equals(object obj) => Equals(obj as Repository);
+    /// <summary>
+    /// Determine equality between two repository classes
+    /// </summary>
+    public bool Equals(Repository other)
+    {
+        if (other is null)
+        {
+            return false;
+        }
+        // Optimization for a common success case.
+        if (ReferenceEquals(this, other))
+        {
+            return true;
+        }
+        // If run-time types are not exactly the same, return false.
+        if (GetType() != other.GetType())
+        {
+            return false;
+        }
+        // Return true if the Id match.
+        return Id == other.Id;
+    }
 
-  /// <summary>
-  /// Returns the hash code of this repository.
-  /// </summary>
-  public override int GetHashCode()
-  {
-    return Id.GetHashCode();
-  }
+    #endregion
 
-  public static bool operator ==(Repository lhs, Repository rhs)
-  {
-    return lhs is null ? rhs is null : lhs.Equals(rhs);
-  }
+    #region Equals Methods
 
-  public static bool operator !=(Repository lhs, Repository rhs) => !(lhs == rhs);
+    /// <summary>
+    /// Determines whether the specified object is equal to the current repository.
+    /// </summary>
+    public override bool Equals(object obj) => Equals(obj as Repository);
 
-  #endregion
+    /// <summary>
+    /// Returns the hash code of this repository.
+    /// </summary>
+    public override int GetHashCode()
+    {
+        return Id.GetHashCode();
+    }
 
-  #region INotifyPropertyChanged Members
+    public static bool operator ==(Repository lhs, Repository rhs)
+    {
+        return lhs is null ? rhs is null : lhs.Equals(rhs);
+    }
 
-  /// <summary>
-  /// INotifyPropertyChanged requires a property called PropertyChanged.
-  /// </summary>
-  public event PropertyChangedEventHandler PropertyChanged;
+    public static bool operator !=(Repository lhs, Repository rhs) => !(lhs == rhs);
 
-  /// <summary>
-  /// Fires the event for the property when it changes.
-  /// </summary>
-  public virtual void OnPropertyChanged(string propertyName)
-  {
-    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-  }
+    #endregion
 
-  #endregion
+    #region INotifyPropertyChanged Members
 
+    /// <summary>
+    /// INotifyPropertyChanged requires a property called PropertyChanged.
+    /// </summary>
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    /// <summary>
+    /// Fires the event for the property when it changes.
+    /// </summary>
+    public virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    #endregion
 }

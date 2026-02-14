@@ -19,6 +19,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FamilyShowLib.Tests", "Fami
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyShow.Tests", "FamilyShow.Tests\FamilyShow.Tests.csproj", "{0F6BE0B3-C648-4B57-8286-BD9346562CE3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Genealogy", "Genealogy", "{2CD5FF4E-7AF0-4A59-98FC-8114B4D060F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genealogy.Domain", "Genealogy\Genealogy.Domain\Genealogy.Domain.csproj", "{D1FF5FB4-625C-45B0-B904-86DD69A11952}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genealogy.Domain.Tests", "Genealogy\Genealogy.Domain.Tests\Genealogy.Domain.Tests.csproj", "{D946C8EF-83FC-4E0B-8434-F148D010A68F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Genealogy Items", "Genealogy Items", "{C4DCA96D-8C25-4FCB-9C5E-5E2ECBC93529}"
+	ProjectSection(SolutionItems) = preProject
+		Genealogy\Directory.Build.props = Genealogy\Directory.Build.props
+		Genealogy\Directory.Build.targets = Genealogy\Directory.Build.targets
+		Genealogy\Genealogy.snk = Genealogy\Genealogy.snk
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,9 +54,22 @@ Global
 		{0F6BE0B3-C648-4B57-8286-BD9346562CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F6BE0B3-C648-4B57-8286-BD9346562CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F6BE0B3-C648-4B57-8286-BD9346562CE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1FF5FB4-625C-45B0-B904-86DD69A11952}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1FF5FB4-625C-45B0-B904-86DD69A11952}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1FF5FB4-625C-45B0-B904-86DD69A11952}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1FF5FB4-625C-45B0-B904-86DD69A11952}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D946C8EF-83FC-4E0B-8434-F148D010A68F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D946C8EF-83FC-4E0B-8434-F148D010A68F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D946C8EF-83FC-4E0B-8434-F148D010A68F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D946C8EF-83FC-4E0B-8434-F148D010A68F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D1FF5FB4-625C-45B0-B904-86DD69A11952} = {2CD5FF4E-7AF0-4A59-98FC-8114B4D060F0}
+		{D946C8EF-83FC-4E0B-8434-F148D010A68F} = {2CD5FF4E-7AF0-4A59-98FC-8114B4D060F0}
+		{C4DCA96D-8C25-4FCB-9C5E-5E2ECBC93529} = {2CD5FF4E-7AF0-4A59-98FC-8114B4D060F0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {14954E03-1F04-4E4C-BF00-2F16BD8030DA}

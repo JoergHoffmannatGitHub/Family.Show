@@ -16,37 +16,37 @@ namespace FamilyShow;
 /// </summary>
 internal class SingleInstanceManager : WindowsFormsApplicationBase
 {
-  private App _app;
+    private App _app;
 
-  public SingleInstanceManager()
-  {
-    IsSingleInstance = true;
-  }
+    public SingleInstanceManager()
+    {
+        IsSingleInstance = true;
+    }
 
-  protected override bool OnStartup(StartupEventArgs eventArgs)
-  {
-    // First time app is launched.
-    _app = new App();
-    _app.InitializeComponent();
-    _app.ProcessArgs([.. eventArgs.CommandLine]);
-    _app.Run();
+    protected override bool OnStartup(StartupEventArgs eventArgs)
+    {
+        // First time app is launched.
+        _app = new App();
+        _app.InitializeComponent();
+        _app.ProcessArgs([.. eventArgs.CommandLine]);
+        _app.Run();
 
-    return false;
-  }
+        return false;
+    }
 
-  protected override void OnStartupNextInstance(StartupNextInstanceEventArgs eventArgs)
-  {
-    // Subsequent launches.
-    base.OnStartupNextInstance(eventArgs);
+    protected override void OnStartupNextInstance(StartupNextInstanceEventArgs eventArgs)
+    {
+        // Subsequent launches.
+        base.OnStartupNextInstance(eventArgs);
 
-    _app.Activate();
-    _app.ProcessArgs([.. eventArgs.CommandLine]);
-  }
+        _app.Activate();
+        _app.ProcessArgs([.. eventArgs.CommandLine]);
+    }
 
-  [STAThread]
-  private static void Main(string[] args)
-  {
-    SingleInstanceManager manager = new();
-    manager.Run(args);
-  }
+    [STAThread]
+    private static void Main(string[] args)
+    {
+        SingleInstanceManager manager = new();
+        manager.Run(args);
+    }
 }

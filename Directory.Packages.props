@@ -4,13 +4,16 @@
   </PropertyGroup>
   <!-- Versioning projects -->
   <ItemGroup>
+    <PackageVersion Include="Architect.DomainModeling" Version="3.0.3" />
     <PackageVersion Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5" />
     <!-- Tests -->
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="coverlet.msbuild" Version="6.0.4" />
     <PackageVersion Include="GitHubActionsTestLogger" Version="3.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.10.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="Xunit.Combinatorial" Version="1.6.24" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="Xunit.StaFact" Version="1.2.69" />
   </ItemGroup>

@@ -4,30 +4,32 @@
 
 using FamilyShowLib;
 
+#pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace FamilyShow;
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 
 internal class FamilyDisplayListView : FilterSortListView
 {
-  /// <summary>
-  /// Called for each item in the list. Return true if the item should be in
-  /// the current result set, otherwise return false to exclude the item.
-  /// </summary>
-  protected override bool FilterCallback(object item)
-  {
-    Person person = item as Person;
-    if (person == null)
+    /// <summary>
+    /// Called for each item in the list. Return true if the item should be in
+    /// the current result set, otherwise return false to exclude the item.
+    /// </summary>
+    protected override bool FilterCallback(object item)
     {
-      return false;
-    }
+        Person person = item as Person;
+        if (person == null)
+        {
+            return false;
+        }
 
-    if (Filter.Matches(person.Name) ||
-        Filter.MatchesYear(person.BirthDate) ||
-        Filter.MatchesYear(person.DeathDate) ||
-        Filter.Matches(person.Age))
-    {
-      return true;
-    }
+        if (Filter.Matches(person.Name) ||
+            Filter.MatchesYear(person.BirthDate) ||
+            Filter.MatchesYear(person.DeathDate) ||
+            Filter.Matches(person.Age))
+        {
+            return true;
+        }
 
-    return false;
-  }
+        return false;
+    }
 }

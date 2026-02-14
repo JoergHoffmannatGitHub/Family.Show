@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
+using FamilyShowLib;
+
 namespace FamilyShow;
 
 /// <summary>
@@ -14,41 +16,19 @@ namespace FamilyShow;
 /// </summary>
 public class DateFormattingConverter : IValueConverter
 {
-  #region IValueConverter Members
+    #region IValueConverter Members
 
-  public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-  {
-
-    if (value != null)
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      return ((DateTime)value).ToShortDateString();
+        return (value != null) ? (value as DateWrapper).ToShortString() : string.Empty;
     }
 
-    return string.Empty;
-  }
-
-  public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-  {
-
-    if (string.IsNullOrEmpty((string)value))
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      return null;
+        return new DateWrapper((string)value);
     }
 
-    string dateString = (string)value;
-
-    // Append first month and day if just the year was entered
-    if (dateString.Length == 4)
-    {
-      dateString = "1/1/" + dateString;
-    }
-
-    _ = DateTime.TryParse(dateString, out DateTime date);
-
-    return date;
-  }
-
-  #endregion
+    #endregion
 }
 
 /// <summary>
@@ -56,32 +36,32 @@ public class DateFormattingConverter : IValueConverter
 /// </summary>
 public class FirstNamePossessiveFormConverter : IValueConverter
 {
-  #region IValueConverter Members
+    #region IValueConverter Members
 
-  public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    if (value != null)
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      if (!string.IsNullOrEmpty(value.ToString()))
-      {
-        // Simply add "'s".  This is the correct use of the posessive.
-        return value.ToString() + "'s ";
-      }
-      else
-      {
+        if (value != null)
+        {
+            if (!string.IsNullOrEmpty(value.ToString()))
+            {
+                // Simply add "'s".  This is the correct use of the posessive.
+                return value.ToString() + "'s ";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
         return string.Empty;
-      }
     }
 
-    return string.Empty;
-  }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException(Properties.Resources.NotImplemented);
+    }
 
-  public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    throw new NotImplementedException(Properties.Resources.NotImplemented);
-  }
-
-  #endregion
+    #endregion
 }
 
 /// <summary>
@@ -89,26 +69,26 @@ public class FirstNamePossessiveFormConverter : IValueConverter
 /// </summary>
 public class BoolToVisibilityConverter : IValueConverter
 {
-  #region IValueConverter Members
+    #region IValueConverter Members
 
-  public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    if ((bool)value)
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      return Visibility.Visible;
+        if ((bool)value)
+        {
+            return Visibility.Visible;
+        }
+        else
+        {
+            return Visibility.Collapsed;
+        }
     }
-    else
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      return Visibility.Collapsed;
+        throw new NotImplementedException(Properties.Resources.NotImplemented);
     }
-  }
 
-  public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    throw new NotImplementedException(Properties.Resources.NotImplemented);
-  }
-
-  #endregion
+    #endregion
 }
 
 /// <summary>
@@ -116,26 +96,26 @@ public class BoolToVisibilityConverter : IValueConverter
 /// </summary>
 public class NotBoolToVisibilityConverter : IValueConverter
 {
-  #region IValueConverter Members
+    #region IValueConverter Members
 
-  public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    if ((bool)value)
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      return Visibility.Collapsed;
+        if ((bool)value)
+        {
+            return Visibility.Collapsed;
+        }
+        else
+        {
+            return Visibility.Visible;
+        }
     }
-    else
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      return Visibility.Visible;
+        throw new NotImplementedException(Properties.Resources.NotImplemented);
     }
-  }
 
-  public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    throw new NotImplementedException(Properties.Resources.NotImplemented);
-  }
-
-  #endregion
+    #endregion
 }
 
 /// <summary>
@@ -143,19 +123,19 @@ public class NotBoolToVisibilityConverter : IValueConverter
 /// </summary>
 public class NotConverter : IValueConverter
 {
-  #region IValueConverter Members
+    #region IValueConverter Members
 
-  public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    return !(bool)value;
-  }
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return !(bool)value;
+    }
 
-  public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    throw new NotImplementedException(Properties.Resources.NotImplemented);
-  }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException(Properties.Resources.NotImplemented);
+    }
 
-  #endregion
+    #endregion
 }
 
 /// <summary>
@@ -163,51 +143,51 @@ public class NotConverter : IValueConverter
 /// </summary>
 public class BoolConverter : IValueConverter
 {
-  #region IValueConverter Members
+    #region IValueConverter Members
 
-  public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    return (bool)value;
-  }
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return (bool)value;
+    }
 
-  public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    throw new NotImplementedException(Properties.Resources.NotImplemented);
-  }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException(Properties.Resources.NotImplemented);
+    }
 
-  #endregion
+    #endregion
 }
 
 public class ComposingConverter : IValueConverter
 {
-  #region IValueCOnverter Members
+    #region IValueCOnverter Members
 
-  private readonly List<IValueConverter> _converters = [];
+    private readonly List<IValueConverter> _converters = [];
 
-  public Collection<IValueConverter> Converters
-  {
-    get { return new Collection<IValueConverter>(_converters); }
-  }
-
-  public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    for (int i = 0; i < _converters.Count; i++)
+    public Collection<IValueConverter> Converters
     {
-      value = _converters[i].Convert(value, targetType, parameter, culture);
+        get { return new Collection<IValueConverter>(_converters); }
     }
-    return value;
-  }
 
-  public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    for (int i = _converters.Count - 1; i >= 0; i--)
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      value = _converters[i].ConvertBack(value, targetType, parameter, culture);
+        for (int i = 0; i < _converters.Count; i++)
+        {
+            value = _converters[i].Convert(value, targetType, parameter, culture);
+        }
+        return value;
     }
-    return value;
-  }
 
-  #endregion
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        for (int i = _converters.Count - 1; i >= 0; i--)
+        {
+            value = _converters[i].ConvertBack(value, targetType, parameter, culture);
+        }
+        return value;
+    }
+
+    #endregion
 }
 
 /// <summary>
@@ -215,48 +195,48 @@ public class ComposingConverter : IValueConverter
 /// </summary>
 public class ImageConverter : IValueConverter
 {
-  #region IValueConverter Members
+    #region IValueConverter Members
 
-  public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    string filePath = value as string;
-    if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      try
-      {
-        BitmapImage bitmap = new();
-        bitmap.BeginInit();
-        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+        string filePath = value as string;
+        if (!string.IsNullOrEmpty(filePath) && File.Exists(filePath))
+        {
+            try
+            {
+                BitmapImage bitmap = new();
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
 
-        // To save significant application memory, set the DecodePixelWidth or  
-        // DecodePixelHeight of the BitmapImage value of the image source to the desired 
-        // height or width of the rendered image. If you don't do this, the application will 
-        // cache the image as though it were rendered as its normal size rather then just 
-        // the size that is displayed.
-        // Note: In order to preserve aspect ratio, set DecodePixelWidth
-        // or DecodePixelHeight but not both.
-        // See http://msdn.microsoft.com/en-us/library/ms748873.aspx
-        bitmap.DecodePixelWidth = 200;
-        bitmap.UriSource = new Uri(filePath);
-        bitmap.EndInit();
+                // To save significant application memory, set the DecodePixelWidth or  
+                // DecodePixelHeight of the BitmapImage value of the image source to the desired 
+                // height or width of the rendered image. If you don't do this, the application will 
+                // cache the image as though it were rendered as its normal size rather then just 
+                // the size that is displayed.
+                // Note: In order to preserve aspect ratio, set DecodePixelWidth
+                // or DecodePixelHeight but not both.
+                // See http://msdn.microsoft.com/en-us/library/ms748873.aspx
+                bitmap.DecodePixelWidth = 200;
+                bitmap.UriSource = new Uri(filePath);
+                bitmap.EndInit();
 
-        return bitmap;
-      }
-      catch
-      {
+                return bitmap;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         return null;
-      }
     }
 
-    return null;
-  }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException(Properties.Resources.NotImplemented);
+    }
 
-  public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    throw new NotImplementedException(Properties.Resources.NotImplemented);
-  }
-
-  #endregion
+    #endregion
 }
 
 /// <summary>
@@ -264,43 +244,43 @@ public class ImageConverter : IValueConverter
 /// </summary>
 public class EnumToBoolConverter : IValueConverter
 {
-  #region IValueConverter Members
+    #region IValueConverter Members
 
-  public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    if (parameter.ToString() == null)
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      return DependencyProperty.UnsetValue;
+        if (parameter.ToString() == null)
+        {
+            return DependencyProperty.UnsetValue;
+        }
+
+        if (Enum.IsDefined(value.GetType(), value) == false)
+        {
+            return DependencyProperty.UnsetValue;
+        }
+
+        if (Enum.Parse(value.GetType(), parameter.ToString()).Equals(value))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    if (Enum.IsDefined(value.GetType(), value) == false)
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-      return DependencyProperty.UnsetValue;
+
+        if (parameter.ToString() == null)
+        {
+            return DependencyProperty.UnsetValue;
+        }
+
+        return Enum.Parse(targetType, parameter.ToString());
+
     }
 
-    if (Enum.Parse(value.GetType(), parameter.ToString()).Equals(value))
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-
-  public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-
-    if (parameter.ToString() == null)
-    {
-      return DependencyProperty.UnsetValue;
-    }
-
-    return Enum.Parse(targetType, parameter.ToString());
-
-  }
-
-  #endregion
+    #endregion
 }
 
 /// <summary>
@@ -309,50 +289,50 @@ public class EnumToBoolConverter : IValueConverter
 [ValueConversion(typeof(Enum), typeof(string))]
 public class EnumValueDescriptionConverter : IValueConverter
 {
-  #region IValueConverter Members
+    #region IValueConverter Members
 
-  object IValueConverter.Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    try
+    object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
+        try
+        {
 
-      if (value is Enum == false)
-      {
-        return string.Empty;
-      }
+            if (value is Enum == false)
+            {
+                return string.Empty;
+            }
 
-      if (value.ToString() == "Foster")
-      {
-        return Properties.Resources.Fostered;
-      }
-      else if (value.ToString() == "Adopted")
-      {
-        return Properties.Resources.Adopted;
-      }
-      else if (value.ToString() == "Natural")
-      {
-        return Properties.Resources.Natural;
-      }
-      else if (value.ToString() == "Current")
-      {
-        return Properties.Resources.Current;
-      }
-      else if (value.ToString() == "Former")
-      {
-        return Properties.Resources.Former;
-      }
-      else
-      {
-        return string.Empty;
-      }
+            if (value.ToString() == "Foster")
+            {
+                return Properties.Resources.Fostered;
+            }
+            else if (value.ToString() == "Adopted")
+            {
+                return Properties.Resources.Adopted;
+            }
+            else if (value.ToString() == "Natural")
+            {
+                return Properties.Resources.Natural;
+            }
+            else if (value.ToString() == "Current")
+            {
+                return Properties.Resources.Current;
+            }
+            else if (value.ToString() == "Former")
+            {
+                return Properties.Resources.Former;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+        catch { return string.Empty; }
     }
-    catch { return string.Empty; }
-  }
 
-  object IValueConverter.ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-  {
-    throw new NotImplementedException(Properties.Resources.NotImplemented);
-  }
+    object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException(Properties.Resources.NotImplemented);
+    }
 
-  #endregion
+    #endregion
 }

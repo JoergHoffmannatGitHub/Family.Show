@@ -15,448 +15,452 @@ namespace FamilyShow;
 
 public partial class FamilyData : UserControl
 {
-  // Event that is raised when the Back button is clicked.
-  public static readonly RoutedEvent CloseButtonClickEvent = EventManager.RegisterRoutedEvent(
-      "CloseButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FamilyData));
+    // Event that is raised when the Back button is clicked.
+    public static readonly RoutedEvent CloseButtonClickEvent = EventManager.RegisterRoutedEvent(
+        "CloseButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(FamilyData));
 
-  public event RoutedEventHandler CloseButtonClick
-  {
-    add { AddHandler(CloseButtonClickEvent, value); }
-    remove { RemoveHandler(CloseButtonClickEvent, value); }
-  }
-
-  private string _ageFilter;
-  private string _surnameFilter;
-  private string _birthdateFilter;
-  private string _livingFilter;
-  private string _genderFilter;
-
-  public FamilyData()
-  {
-    InitializeComponent();
-
-    // Get the data that is bound to the list.
-    CollectionViewSource source = new()
+    public event RoutedEventHandler CloseButtonClick
     {
-      Source = App.Family
-    };
-
-    FamilyEditorGrid.ItemsSource = source.View;
-    FamilyEditor.ItemsSource = source.View;
-
-    // When the family changes we'll update things in this view
-    App.Family.ContentChanged += new EventHandler<ContentChangedEventArgs>(OnFamilyContentChanged);
-
-    // Setup the binding to the chart controls.
-    ListCollectionView tagCloudView = CreateView("LastName", "LastName");
-    tagCloudView.Filter = new Predicate<object>(TagCloudFilter);
-    TagCloudControl.View = tagCloudView;
-
-    ListCollectionView histogramView = CreateView("AgeGroup", "AgeGroup");
-    histogramView.Filter = new Predicate<object>(HistogramFilter);
-    AgeDistributionControl.View = histogramView;
-    AgeDistributionControl.CategoryLabels.Add(AgeGroup.Youth, Properties.Resources.AgeGroupYouth);
-    AgeDistributionControl.CategoryLabels.Add(AgeGroup.Adult, Properties.Resources.AgeGroupAdult);
-    AgeDistributionControl.CategoryLabels.Add(AgeGroup.MiddleAge, Properties.Resources.AgeGroupMiddleAge);
-    AgeDistributionControl.CategoryLabels.Add(AgeGroup.Senior, Properties.Resources.AgeGroupSenior);
-
-    BirthdaysControl.PeopleCollection = App.Family;
-
-    //Gender bar chart
-    ListCollectionView histogramView3 = CreateView("Gender", "Gender");
-    GenderDistributionControl1.View = histogramView3;
-    GenderDistributionControl1.CategoryLabels.Add(Gender.Male, Properties.Resources.Male);
-    GenderDistributionControl1.CategoryLabels.Add(Gender.Female, Properties.Resources.Female);
-
-
-    //Living bar chart
-    ListCollectionView histogramView2 = CreateView("IsLiving", "IsLiving");
-    LivingDistributionControl1.View = histogramView2;
-    LivingDistributionControl1.CategoryLabels.Add(false, Properties.Resources.Deceased);
-    LivingDistributionControl1.CategoryLabels.Add(true, Properties.Resources.Living);
-
-    //Ensure all column widths are wide enough to display the header and the sort icon.
-    LoadColumnsSettings();
-    UpdateColumnWidths();
-
-  }
-
-  private static ListCollectionView CreateView(string group, string sort)
-  {
-    ListCollectionView view = new(App.Family);
-
-    // Apply sorting
-    if (!string.IsNullOrEmpty(sort))
-    {
-      view.SortDescriptions.Add(new SortDescription(sort, ListSortDirection.Ascending));
+        add { AddHandler(CloseButtonClickEvent, value); }
+        remove { RemoveHandler(CloseButtonClickEvent, value); }
     }
 
-    // Group the collection into tags. The tag cloud will be based on the group Name and ItemCount
-    PropertyGroupDescription groupDescription = new();
-    if (!string.IsNullOrEmpty(group))
+    private string _ageFilter;
+    private string _surnameFilter;
+    internal string _birthdateFilter;
+    private string _livingFilter;
+    private string _genderFilter;
+
+    public FamilyData()
     {
-      groupDescription.PropertyName = group;
+        InitializeComponent();
+
+        // Get the data that is bound to the list.
+        CollectionViewSource source = new()
+        {
+            Source = App.Family
+        };
+
+        FamilyEditorGrid.ItemsSource = source.View;
+        FamilyEditor.ItemsSource = source.View;
+
+        // When the family changes we'll update things in this view
+        App.Family.ContentChanged += new EventHandler<ContentChangedEventArgs>(OnFamilyContentChanged);
+
+        // Setup the binding to the chart controls.
+        ListCollectionView tagCloudView = CreateView("LastName", "LastName");
+        tagCloudView.Filter = new Predicate<object>(TagCloudFilter);
+        TagCloudControl.View = tagCloudView;
+
+        ListCollectionView histogramView = CreateView("AgeGroup", "AgeGroup");
+        histogramView.Filter = new Predicate<object>(HistogramFilter);
+        AgeDistributionControl.View = histogramView;
+        AgeDistributionControl.CategoryLabels.Add(AgeGroup.Youth, Properties.Resources.AgeGroupYouth);
+        AgeDistributionControl.CategoryLabels.Add(AgeGroup.Adult, Properties.Resources.AgeGroupAdult);
+        AgeDistributionControl.CategoryLabels.Add(AgeGroup.MiddleAge, Properties.Resources.AgeGroupMiddleAge);
+        AgeDistributionControl.CategoryLabels.Add(AgeGroup.Senior, Properties.Resources.AgeGroupSenior);
+
+        BirthdaysControl.PeopleCollection = App.Family;
+
+        //Gender bar chart
+        ListCollectionView histogramView3 = CreateView("Gender", "Gender");
+        GenderDistributionControl1.View = histogramView3;
+        GenderDistributionControl1.CategoryLabels.Add(Gender.Male, Properties.Resources.Male);
+        GenderDistributionControl1.CategoryLabels.Add(Gender.Female, Properties.Resources.Female);
+
+
+        //Living bar chart
+        ListCollectionView histogramView2 = CreateView("IsLiving", "IsLiving");
+        LivingDistributionControl1.View = histogramView2;
+        LivingDistributionControl1.CategoryLabels.Add(false, Properties.Resources.Deceased);
+        LivingDistributionControl1.CategoryLabels.Add(true, Properties.Resources.Living);
+
+        //Ensure all column widths are wide enough to display the header and the sort icon.
+        LoadColumnsSettings();
+        UpdateColumnWidths();
+
     }
 
-    view.GroupDescriptions.Add(groupDescription);
-
-    return view;
-  }
-
-  /// <summary>
-  /// Used as a filter predicate to see if the person should be included 
-  /// </summary>
-  /// <param name="o">Person object</param>
-  /// <returns>True if the person should be included in the filter, otherwise false</returns>
-  public static bool TagCloudFilter(object o)
-  {
-    Person p = o as Person;
-    return (!string.IsNullOrEmpty(p.LastName));
-  }
-
-  /// <summary>
-  /// Used as a filter predicate to see if the person should be included 
-  /// </summary>
-  /// <param name="o">Person object</param>
-  /// <returns>True if the person should be included in the filter, otherwise false</returns>
-  public static bool HistogramFilter(object o)
-  {
-    Person p = o as Person;
-    return (p.AgeGroup != AgeGroup.Unknown);
-  }
-
-  /// <summary>
-  /// Set focus to the default control.
-  /// </summary>
-  public void SetDefaultFocus()
-  {
-    FilterTextBox.Focus();
-  }
-
-  /// <summary>
-  /// Refresh the chart controls.
-  /// </summary>
-  public void Refresh()
-  {
-    TagCloudControl.Refresh();
-    AgeDistributionControl.Refresh();
-    SharedBirthdays.Refresh();
-    LivingDistributionControl1.Refresh();
-    GenderDistributionControl1.Refresh();
-  }
-
-  private void OnFamilyContentChanged(object sender, ContentChangedEventArgs e)
-  {
-    Refresh();
-  }
-
-  /// <summary>
-  /// A control lost focus. Refresh the chart controls if a cell was updated.
-  /// </summary>
-  private void FamilyEditor_LostFocus(object sender, RoutedEventArgs e)
-  {
-    if (e.OriginalSource is TextBox || e.OriginalSource is CheckBox)
+    private static ListCollectionView CreateView(string group, string sort)
     {
-      Refresh();
-    }
-  }
+        ListCollectionView view = new(App.Family);
 
-  /// <summary>
-  /// The back button was clicked, raise event.
-  /// </summary>
-  private void CloseButton_Click(object sender, RoutedEventArgs e)
-  {
-    App.Family.OnContentChanged();
-    RaiseEvent(new RoutedEventArgs(CloseButtonClickEvent));
-  }
+        // Apply sorting
+        if (!string.IsNullOrEmpty(sort))
+        {
+            view.SortDescriptions.Add(new SortDescription(sort, ListSortDirection.Ascending));
+        }
 
-  /// <summary>
-  /// Updates the column widths
-  /// </summary>
-  private void UpdateColumnWidths()
-  {
-    CalculateColumnWidth(NamesMenu, Names);
-    CalculateColumnWidth(CitationMenu, Citation);
-    CalculateColumnWidth(PhotosMenu, Photo);
-    CalculateColumnWidth(NotesMenu, Note);
-    CalculateColumnWidth(AttachmentsMenu, Attachment);
-    CalculateColumnWidth(RestrictionMenu, Restriction);
-    CalculateColumnWidth(SurnameMenu, Surname);
-    CalculateColumnWidth(SuffixMenu, Suffix);
-    CalculateColumnWidth(AgeMenu, Age);
-    CalculateColumnWidth(ImagesMenu, Image);
-    CalculateColumnWidth(BirthDateMenu, BirthDate);
-    CalculateColumnWidth(BirthPlaceMenu, BirthPlace);
-    CalculateColumnWidth(DeathDateMenu, DeathDate);
-    CalculateColumnWidth(DeathPlaceMenu, DeathPlace);
-    CalculateColumnWidth(IsLivingMenu, IsLiving);
-    CalculateColumnWidth(OccupationMenu, Occupation);
-    CalculateColumnWidth(EducationMenu, Education);
-    CalculateColumnWidth(ReligionMenu, Religion);
-    CalculateColumnWidth(BurialPlaceMenu, BurialPlace);
-    CalculateColumnWidth(BurialDateMenu, BurialDate);
-    CalculateColumnWidth(CremationPlaceMenu, CremationPlace);
-    CalculateColumnWidth(CremationDateMenu, CremationDate);
-    CalculateColumnWidth(IDMenu, ID);
-  }
+        // Group the collection into tags. The tag cloud will be based on the group Name and ItemCount
+        PropertyGroupDescription groupDescription = new();
+        if (!string.IsNullOrEmpty(group))
+        {
+            groupDescription.PropertyName = group;
+        }
 
-  /// <summary>
-  /// Update which columns are visible.
-  /// </summary>
-  private void UpdateColumnsVisible(object sender, RoutedEventArgs e)
-  {
-    UpdateColumnsSettings();
-    UpdateColumnWidths();
-  }
+        view.GroupDescriptions.Add(groupDescription);
 
-  /// <summary>
-  /// Update user settings for columns displayed in the list view.
-  /// </summary>
-  private void UpdateColumnsSettings()
-  {
-
-    Properties.Settings.Default.ColumnName = NamesMenu.IsChecked;
-    Properties.Settings.Default.ColumnCitations = CitationMenu.IsChecked;
-    Properties.Settings.Default.ColumnNotes = NotesMenu.IsChecked;
-    Properties.Settings.Default.ColumnRestriction = RestrictionMenu.IsChecked;
-    Properties.Settings.Default.ColumnAttachments = AttachmentsMenu.IsChecked;
-    Properties.Settings.Default.ColumnImage = ImagesMenu.IsChecked;
-    Properties.Settings.Default.ColumnPhotos = PhotosMenu.IsChecked;
-    Properties.Settings.Default.ColumnSurname = SurnameMenu.IsChecked;
-    Properties.Settings.Default.ColumnDateOfBirth = BirthDateMenu.IsChecked;
-    Properties.Settings.Default.ColumnDateOfDeath = DeathDateMenu.IsChecked;
-    Properties.Settings.Default.ColumnDeathPlace = DeathPlaceMenu.IsChecked;
-    Properties.Settings.Default.ColumnBirthPlace = BirthPlaceMenu.IsChecked;
-    Properties.Settings.Default.ColumnCremationPlace = CremationPlaceMenu.IsChecked;
-    Properties.Settings.Default.ColumnCremationDate = CremationDateMenu.IsChecked;
-    Properties.Settings.Default.ColumnID = IDMenu.IsChecked;
-    Properties.Settings.Default.ColumnAge = AgeMenu.IsChecked;
-    Properties.Settings.Default.ColumnLiving = IsLivingMenu.IsChecked;
-    Properties.Settings.Default.ColumnSuffix = SuffixMenu.IsChecked;
-    Properties.Settings.Default.ColumnReligion = ReligionMenu.IsChecked;
-    Properties.Settings.Default.ColumnEducation = EducationMenu.IsChecked;
-    Properties.Settings.Default.ColumnOccupation = OccupationMenu.IsChecked;
-    Properties.Settings.Default.ColumnBurialPlace = BurialDateMenu.IsChecked;
-    Properties.Settings.Default.ColumnBurialDate = BurialPlaceMenu.IsChecked;
-
-    Properties.Settings.Default.Save();
-  }
-
-  /// <summary>
-  /// Load user settings for columns displayed in the list view.
-  /// </summary>
-  private void LoadColumnsSettings()
-  {
-    NamesMenu.IsChecked = Properties.Settings.Default.ColumnName;
-    RestrictionMenu.IsChecked = Properties.Settings.Default.ColumnRestriction;
-    CitationMenu.IsChecked = Properties.Settings.Default.ColumnCitations;
-    NotesMenu.IsChecked = Properties.Settings.Default.ColumnNotes;
-    AttachmentsMenu.IsChecked = Properties.Settings.Default.ColumnAttachments;
-    ImagesMenu.IsChecked = Properties.Settings.Default.ColumnImage;
-    PhotosMenu.IsChecked = Properties.Settings.Default.ColumnPhotos;
-    SurnameMenu.IsChecked = Properties.Settings.Default.ColumnSurname;
-    BirthDateMenu.IsChecked = Properties.Settings.Default.ColumnDateOfBirth;
-    DeathDateMenu.IsChecked = Properties.Settings.Default.ColumnDateOfDeath;
-    DeathPlaceMenu.IsChecked = Properties.Settings.Default.ColumnDeathPlace;
-    BirthPlaceMenu.IsChecked = Properties.Settings.Default.ColumnBirthPlace;
-    CremationPlaceMenu.IsChecked = Properties.Settings.Default.ColumnCremationPlace;
-    CremationDateMenu.IsChecked = Properties.Settings.Default.ColumnCremationDate;
-    IDMenu.IsChecked = Properties.Settings.Default.ColumnID;
-    AgeMenu.IsChecked = Properties.Settings.Default.ColumnAge;
-    IsLivingMenu.IsChecked = Properties.Settings.Default.ColumnLiving;
-    SuffixMenu.IsChecked = Properties.Settings.Default.ColumnSuffix;
-    ReligionMenu.IsChecked = Properties.Settings.Default.ColumnReligion;
-    EducationMenu.IsChecked = Properties.Settings.Default.ColumnEducation;
-    OccupationMenu.IsChecked = Properties.Settings.Default.ColumnOccupation;
-    BurialPlaceMenu.IsChecked = Properties.Settings.Default.ColumnBurialPlace;
-    BurialDateMenu.IsChecked = Properties.Settings.Default.ColumnBurialDate;
-  }
-
-  /// <summary>
-  /// Sets the column width based on the length of the title.
-  /// Required for localization.
-  /// </summary>
-  /// <param name="menu"></param>
-  /// <param name="columnName"></param>
-  /// <returns></returns>
-  private static double CalculateColumnWidth(MenuItem menu, SortListViewColumn columnName)
-  {
-    if (menu.IsChecked && columnName.Header != null)
-    {
-      string s = columnName.Header.ToString();
-      int i = s.Length;
-      int ii = 8;
-      columnName.Width = (i * ii) + 25;
-      return columnName.Width;
-    }
-    else if (menu.IsChecked && columnName.Header == null)
-    {
-      columnName.Width = 24;
-      return 24;
-    }
-    else
-    {
-      columnName.Width = 0;
-      return 0;
+        return view;
     }
 
-  }
-
-  /// <summary>
-  /// The filter text changed, update the list based on the new filter.
-  /// </summary>
-  private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
-  {
-    FamilyEditor.FilterList(FilterTextBox.Text);
-    if (FamilyEditor.Items.Count > 0)
+    /// <summary>
+    /// Used as a filter predicate to see if the person should be included 
+    /// </summary>
+    /// <param name="o">Person object</param>
+    /// <returns>True if the person should be included in the filter, otherwise false</returns>
+    public static bool TagCloudFilter(object o)
     {
-      FamilyEditor.ScrollIntoView(FamilyEditor.Items[0]);
+        Person p = o as Person;
+        return (!string.IsNullOrEmpty(p.LastName));
     }
 
-    UpdateControls(FilterTextBox.Text);
-  }
-
-  /// <summary>
-  /// Allow the analytic user controls to reset their selections when the filter is reset
-  /// </summary>
-  private void FilterTextBox_ResetFilter(object sender, RoutedEventArgs e)
-  {
-    TagCloudControl.ClearSelection();
-    AgeDistributionControl.ClearSelection();
-    BirthdaysControl.ClearSelection();
-    GenderDistributionControl1.ClearSelection();
-    LivingDistributionControl1.ClearSelection();
-
-    _surnameFilter = null;
-    _ageFilter = null;
-    _birthdateFilter = null;
-    _livingFilter = null;
-    _genderFilter = null;
-    scrollToTop();
-
-  }
-
-  /// <summary>
-  /// Selection changed in the chart, update the filter.
-  /// </summary>
-  private void TagCloudControl_TagSelectionChanged(object sender, RoutedEventArgs e)
-  {
-
-    string filter = e.OriginalSource as string;
-    _surnameFilter = filter;
-    if (filter != null)
+    /// <summary>
+    /// Used as a filter predicate to see if the person should be included 
+    /// </summary>
+    /// <param name="o">Person object</param>
+    /// <returns>True if the person should be included in the filter, otherwise false</returns>
+    public static bool HistogramFilter(object o)
     {
-      UpdateFilter(filter);
-    }
-  }
-
-  /// <summary>
-  /// Selection changed in the chart, update the filter.
-  /// </summary>
-  private void AgeDistributionControl_CategorySelectionChanged(object sender, RoutedEventArgs e)
-  {
-
-    string filter = e.OriginalSource as string;
-    _ageFilter = filter;
-    if (filter != null)
-    {
-      UpdateFilter(filter);
-    }
-  }
-
-  /// <summary>
-  /// Selection changed in the chart, update the filter.
-  /// </summary>
-  private void BirthdaysControl_SelectionChanged(object sender, RoutedEventArgs e)
-  {
-
-    if (e.OriginalSource is DateTime date)
-    {
-      _birthdateFilter = date.ToShortDateString();
-      UpdateFilter(date.ToShortDateString());
-    }
-  }
-
-  /// <summary>
-  /// Selection changed in the chart, update the filter.
-  /// </summary>
-  private void GenderDistributionControl1_CategorySelectionChanged(object sender, RoutedEventArgs e)
-  {
-
-    string filter = e.OriginalSource as string;
-    _genderFilter = filter;
-    if (filter != null)
-    {
-      UpdateFilter(filter);
-    }
-  }
-
-  /// <summary>
-  /// Selection changed in the chart, update the filter.
-  /// </summary>
-  private void LivingDistributionControl1_CategorySelectionChanged(object sender, RoutedEventArgs e)
-  {
-
-    string filter = e.OriginalSource as string;
-    _livingFilter = filter;
-    if (filter != null)
-    {
-      UpdateFilter(filter);
-    }
-  }
-
-  /// <summary>
-  /// Update the list based on the filter.
-  /// </summary>
-  private void UpdateFilter(string filter)
-  {
-    FilterTextBox.Text = filter;
-    UpdateControls(filter);
-  }
-
-  /// <summary>
-  /// Remove the highlight from the data panels controls when the filter text changes
-  /// </summary>
-  private void UpdateControls(string filter)
-  {
-    if (_ageFilter != filter)
-    {
-      AgeDistributionControl.ClearSelection();
+        Person p = o as Person;
+        return (p.AgeGroup != AgeGroup.Unknown);
     }
 
-    if (_surnameFilter != filter)
+    /// <summary>
+    /// Set focus to the default control.
+    /// </summary>
+    public void SetDefaultFocus()
     {
-      TagCloudControl.ClearSelection();
+        FilterTextBox.Focus();
     }
 
-    if (_birthdateFilter != filter)
+    /// <summary>
+    /// Refresh the chart controls.
+    /// </summary>
+    public void Refresh()
     {
-      BirthdaysControl.ClearSelection();
+        TagCloudControl.Refresh();
+        AgeDistributionControl.Refresh();
+        SharedBirthdays.Refresh();
+        LivingDistributionControl1.Refresh();
+        GenderDistributionControl1.Refresh();
     }
 
-    if (_livingFilter != filter)
+    private void OnFamilyContentChanged(object sender, ContentChangedEventArgs e)
     {
-      LivingDistributionControl1.ClearSelection();
+        Refresh();
     }
 
-    if (_genderFilter != filter)
+    /// <summary>
+    /// A control lost focus. Refresh the chart controls if a cell was updated.
+    /// </summary>
+    private void FamilyEditor_LostFocus(object sender, RoutedEventArgs e)
     {
-      GenderDistributionControl1.ClearSelection();
+        if (e.OriginalSource is TextBox || e.OriginalSource is CheckBox)
+        {
+            Refresh();
+        }
     }
-  }
 
-  /// <summary>
-  /// Try to scroll to the top of the list on filter text change
-  /// Don't use autoscroll option in xaml as this disables the 
-  /// virtual list slowing the program significantly.
-  /// </summary>
-  private void scrollToTop()
-  {
-    try
+    /// <summary>
+    /// The back button was clicked, raise event.
+    /// </summary>
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
     {
-      FamilyEditor.ScrollIntoView(FamilyEditor.Items[0]);
+        App.Family.OnContentChanged();
+        RaiseEvent(new RoutedEventArgs(CloseButtonClickEvent));
     }
-    catch { }
-  }
+
+    /// <summary>
+    /// Updates the column widths
+    /// </summary>
+    private void UpdateColumnWidths()
+    {
+        CalculateColumnWidth(NamesMenu, Names);
+        CalculateColumnWidth(CitationMenu, Citation);
+        CalculateColumnWidth(PhotosMenu, Photo);
+        CalculateColumnWidth(NotesMenu, Note);
+        CalculateColumnWidth(AttachmentsMenu, Attachment);
+        CalculateColumnWidth(RestrictionMenu, Restriction);
+        CalculateColumnWidth(SurnameMenu, Surname);
+        CalculateColumnWidth(SuffixMenu, Suffix);
+        CalculateColumnWidth(AgeMenu, Age);
+        CalculateColumnWidth(ImagesMenu, Image);
+        CalculateColumnWidth(BirthDateMenu, BirthDate);
+        CalculateColumnWidth(BirthPlaceMenu, BirthPlace);
+        CalculateColumnWidth(DeathDateMenu, DeathDate);
+        CalculateColumnWidth(DeathPlaceMenu, DeathPlace);
+        CalculateColumnWidth(IsLivingMenu, IsLiving);
+        CalculateColumnWidth(OccupationMenu, Occupation);
+        CalculateColumnWidth(EducationMenu, Education);
+        CalculateColumnWidth(ReligionMenu, Religion);
+        CalculateColumnWidth(BurialPlaceMenu, BurialPlace);
+        CalculateColumnWidth(BurialDateMenu, BurialDate);
+        CalculateColumnWidth(CremationPlaceMenu, CremationPlace);
+        CalculateColumnWidth(CremationDateMenu, CremationDate);
+        CalculateColumnWidth(IDMenu, ID);
+    }
+
+    /// <summary>
+    /// Update which columns are visible.
+    /// </summary>
+    private void UpdateColumnsVisible(object sender, RoutedEventArgs e)
+    {
+        UpdateColumnsSettings();
+        UpdateColumnWidths();
+    }
+
+    /// <summary>
+    /// Update user settings for columns displayed in the list view.
+    /// </summary>
+    private void UpdateColumnsSettings()
+    {
+
+        Properties.Settings.Default.ColumnName = NamesMenu.IsChecked;
+        Properties.Settings.Default.ColumnCitations = CitationMenu.IsChecked;
+        Properties.Settings.Default.ColumnNotes = NotesMenu.IsChecked;
+        Properties.Settings.Default.ColumnRestriction = RestrictionMenu.IsChecked;
+        Properties.Settings.Default.ColumnAttachments = AttachmentsMenu.IsChecked;
+        Properties.Settings.Default.ColumnImage = ImagesMenu.IsChecked;
+        Properties.Settings.Default.ColumnPhotos = PhotosMenu.IsChecked;
+        Properties.Settings.Default.ColumnSurname = SurnameMenu.IsChecked;
+        Properties.Settings.Default.ColumnDateOfBirth = BirthDateMenu.IsChecked;
+        Properties.Settings.Default.ColumnDateOfDeath = DeathDateMenu.IsChecked;
+        Properties.Settings.Default.ColumnDeathPlace = DeathPlaceMenu.IsChecked;
+        Properties.Settings.Default.ColumnBirthPlace = BirthPlaceMenu.IsChecked;
+        Properties.Settings.Default.ColumnCremationPlace = CremationPlaceMenu.IsChecked;
+        Properties.Settings.Default.ColumnCremationDate = CremationDateMenu.IsChecked;
+        Properties.Settings.Default.ColumnID = IDMenu.IsChecked;
+        Properties.Settings.Default.ColumnAge = AgeMenu.IsChecked;
+        Properties.Settings.Default.ColumnLiving = IsLivingMenu.IsChecked;
+        Properties.Settings.Default.ColumnSuffix = SuffixMenu.IsChecked;
+        Properties.Settings.Default.ColumnReligion = ReligionMenu.IsChecked;
+        Properties.Settings.Default.ColumnEducation = EducationMenu.IsChecked;
+        Properties.Settings.Default.ColumnOccupation = OccupationMenu.IsChecked;
+        Properties.Settings.Default.ColumnBurialPlace = BurialDateMenu.IsChecked;
+        Properties.Settings.Default.ColumnBurialDate = BurialPlaceMenu.IsChecked;
+
+        Properties.Settings.Default.Save();
+    }
+
+    /// <summary>
+    /// Load user settings for columns displayed in the list view.
+    /// </summary>
+    private void LoadColumnsSettings()
+    {
+        NamesMenu.IsChecked = Properties.Settings.Default.ColumnName;
+        RestrictionMenu.IsChecked = Properties.Settings.Default.ColumnRestriction;
+        CitationMenu.IsChecked = Properties.Settings.Default.ColumnCitations;
+        NotesMenu.IsChecked = Properties.Settings.Default.ColumnNotes;
+        AttachmentsMenu.IsChecked = Properties.Settings.Default.ColumnAttachments;
+        ImagesMenu.IsChecked = Properties.Settings.Default.ColumnImage;
+        PhotosMenu.IsChecked = Properties.Settings.Default.ColumnPhotos;
+        SurnameMenu.IsChecked = Properties.Settings.Default.ColumnSurname;
+        BirthDateMenu.IsChecked = Properties.Settings.Default.ColumnDateOfBirth;
+        DeathDateMenu.IsChecked = Properties.Settings.Default.ColumnDateOfDeath;
+        DeathPlaceMenu.IsChecked = Properties.Settings.Default.ColumnDeathPlace;
+        BirthPlaceMenu.IsChecked = Properties.Settings.Default.ColumnBirthPlace;
+        CremationPlaceMenu.IsChecked = Properties.Settings.Default.ColumnCremationPlace;
+        CremationDateMenu.IsChecked = Properties.Settings.Default.ColumnCremationDate;
+        IDMenu.IsChecked = Properties.Settings.Default.ColumnID;
+        AgeMenu.IsChecked = Properties.Settings.Default.ColumnAge;
+        IsLivingMenu.IsChecked = Properties.Settings.Default.ColumnLiving;
+        SuffixMenu.IsChecked = Properties.Settings.Default.ColumnSuffix;
+        ReligionMenu.IsChecked = Properties.Settings.Default.ColumnReligion;
+        EducationMenu.IsChecked = Properties.Settings.Default.ColumnEducation;
+        OccupationMenu.IsChecked = Properties.Settings.Default.ColumnOccupation;
+        BurialPlaceMenu.IsChecked = Properties.Settings.Default.ColumnBurialPlace;
+        BurialDateMenu.IsChecked = Properties.Settings.Default.ColumnBurialDate;
+    }
+
+    /// <summary>
+    /// Sets the column width based on the length of the title.
+    /// Required for localization.
+    /// </summary>
+    /// <param name="menu"></param>
+    /// <param name="columnName"></param>
+    /// <returns></returns>
+    private static double CalculateColumnWidth(MenuItem menu, SortListViewColumn columnName)
+    {
+        if (menu.IsChecked && columnName.Header != null)
+        {
+            string s = columnName.Header.ToString();
+            int i = s.Length;
+            int ii = 8;
+            columnName.Width = (i * ii) + 25;
+            return columnName.Width;
+        }
+        else if (menu.IsChecked && columnName.Header == null)
+        {
+            columnName.Width = 24;
+            return 24;
+        }
+        else
+        {
+            columnName.Width = 0;
+            return 0;
+        }
+
+    }
+
+    /// <summary>
+    /// The filter text changed, update the list based on the new filter.
+    /// </summary>
+    private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        FamilyEditor.FilterList(FilterTextBox.Text);
+        if (FamilyEditor.Items.Count > 0)
+        {
+            FamilyEditor.ScrollIntoView(FamilyEditor.Items[0]);
+        }
+
+        UpdateControls(FilterTextBox.Text);
+    }
+
+    /// <summary>
+    /// Allow the analytic user controls to reset their selections when the filter is reset
+    /// </summary>
+    private void FilterTextBox_ResetFilter(object sender, RoutedEventArgs e)
+    {
+        TagCloudControl.ClearSelection();
+        AgeDistributionControl.ClearSelection();
+        BirthdaysControl.ClearSelection();
+        GenderDistributionControl1.ClearSelection();
+        LivingDistributionControl1.ClearSelection();
+
+        _surnameFilter = null;
+        _ageFilter = null;
+        _birthdateFilter = null;
+        _livingFilter = null;
+        _genderFilter = null;
+        scrollToTop();
+
+    }
+
+    /// <summary>
+    /// Selection changed in the chart, update the filter.
+    /// </summary>
+    private void TagCloudControl_TagSelectionChanged(object sender, RoutedEventArgs e)
+    {
+
+        string filter = e.OriginalSource as string;
+        _surnameFilter = filter;
+        if (filter != null)
+        {
+            UpdateFilter(filter);
+        }
+    }
+
+    /// <summary>
+    /// Selection changed in the chart, update the filter.
+    /// </summary>
+    private void AgeDistributionControl_CategorySelectionChanged(object sender, RoutedEventArgs e)
+    {
+
+        string filter = e.OriginalSource as string;
+        _ageFilter = filter;
+        if (filter != null)
+        {
+            UpdateFilter(filter);
+        }
+    }
+
+    /// <summary>
+    /// Selection changed in the chart, update the filter.
+    /// </summary>
+    private void BirthdaysControl_SelectionChanged(object sender, RoutedEventArgs e)
+    {
+        UpdateFilterCommand(e.OriginalSource);
+    }
+
+    internal void UpdateFilterCommand(object source)
+    {
+        if (source is DateWrapper date)
+        {
+            _birthdateFilter = date.ToShortString();
+            UpdateFilter(date.ToShortString());
+        }
+    }
+
+    /// <summary>
+    /// Selection changed in the chart, update the filter.
+    /// </summary>
+    private void GenderDistributionControl1_CategorySelectionChanged(object sender, RoutedEventArgs e)
+    {
+
+        string filter = e.OriginalSource as string;
+        _genderFilter = filter;
+        if (filter != null)
+        {
+            UpdateFilter(filter);
+        }
+    }
+
+    /// <summary>
+    /// Selection changed in the chart, update the filter.
+    /// </summary>
+    private void LivingDistributionControl1_CategorySelectionChanged(object sender, RoutedEventArgs e)
+    {
+
+        string filter = e.OriginalSource as string;
+        _livingFilter = filter;
+        if (filter != null)
+        {
+            UpdateFilter(filter);
+        }
+    }
+
+    /// <summary>
+    /// Update the list based on the filter.
+    /// </summary>
+    internal void UpdateFilter(string filter)
+    {
+        FilterTextBox.Text = filter;
+        UpdateControls(filter);
+    }
+
+    /// <summary>
+    /// Remove the highlight from the data panels controls when the filter text changes
+    /// </summary>
+    private void UpdateControls(string filter)
+    {
+        if (_ageFilter != filter)
+        {
+            AgeDistributionControl.ClearSelection();
+        }
+
+        if (_surnameFilter != filter)
+        {
+            TagCloudControl.ClearSelection();
+        }
+
+        if (_birthdateFilter != filter)
+        {
+            BirthdaysControl.ClearSelection();
+        }
+
+        if (_livingFilter != filter)
+        {
+            LivingDistributionControl1.ClearSelection();
+        }
+
+        if (_genderFilter != filter)
+        {
+            GenderDistributionControl1.ClearSelection();
+        }
+    }
+
+    /// <summary>
+    /// Try to scroll to the top of the list on filter text change
+    /// Don't use autoscroll option in xaml as this disables the 
+    /// virtual list slowing the program significantly.
+    /// </summary>
+    private void scrollToTop()
+    {
+        try
+        {
+            FamilyEditor.ScrollIntoView(FamilyEditor.Items[0]);
+        }
+        catch { }
+    }
 
 }

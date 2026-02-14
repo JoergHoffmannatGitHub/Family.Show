@@ -8,456 +8,463 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Threading;
 
+using FamilyShowLib;
+
+using Genealogy.Domain.Interfaces;
+
+#pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace FamilyShow;
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 
 /// <summary>
 /// Class that parses the filter text.
 /// </summary>
 public class Filter
 {
-  // Parsed data from the filter string.
-  private string _filterText;
-  private int? _maximumAge;
-  private int? _minimumAge;
-  private DateTime? _filterDate;
-  private bool _photos;
-  private bool _restrictions;
-  private bool _attachments;
-  private bool _notes;
-  private bool _images;
-  private bool _living;
-  private bool _citations;
+    // Parsed data from the filter string.
+    private string _filterText;
+    private int? _maximumAge;
+    private int? _minimumAge;
+    private DateTime? _filterDate;
+    private bool _photos;
+    private bool _restrictions;
+    private bool _attachments;
+    private bool _notes;
+    private bool _images;
+    private bool _living;
+    private bool _citations;
 
-  private bool _nophotos;
-  private bool _norestrictions;
-  private bool _noattachments;
-  private bool _nonotes;
-  private bool _noimages;
-  private bool _noliving;
-  private bool _nocitations;
-  private string _gender;
+    private bool _nophotos;
+    private bool _norestrictions;
+    private bool _noattachments;
+    private bool _nonotes;
+    private bool _noimages;
+    private bool _noliving;
+    private bool _nocitations;
+    private string _gender;
 
-  /// <summary>
-  /// Indicates if the filter is empty.
-  /// </summary>
-  public bool IsEmpty
-  {
-    get { return string.IsNullOrEmpty(_filterText); }
-  }
-
-  /// <summary>
-  /// Return true if the filter contains the specified text.
-  /// </summary>
-  public bool Matches(string text)
-  {
-    return (_filterText != null && text != null &&
-        text.Contains(_filterText, StringComparison.CurrentCultureIgnoreCase));
-  }
-
-  /// <summary>
-  /// Return true if the filter contains the specified date.
-  /// </summary>
-  public bool Matches(DateTime? date)
-  {
-    return (date != null && date.Value.ToShortDateString().Contains(_filterText));
-  }
-
-  /// <summary>
-  /// Return true if the filter contains the year in the specified date.
-  /// </summary>
-  public bool MatchesYear(DateTime? date)
-  {
-    return (date != null && date.Value.Year.ToString(CultureInfo.CurrentCulture).Contains(_filterText));
-  }
-
-  public bool MatchesPhotos(bool photo)
-  {
-    if (photo == true && _photos == true)
+    /// <summary>
+    /// Indicates if the filter is empty.
+    /// </summary>
+    public bool IsEmpty
     {
-      return true;
+        get { return string.IsNullOrEmpty(_filterText); }
     }
 
-    if (_nophotos == true && photo == false)
+    /// <summary>
+    /// Return true if the filter contains the specified text.
+    /// </summary>
+    public bool Matches(string text)
     {
-      return true;
+        return (_filterText != null && text != null &&
+            text.Contains(_filterText, StringComparison.CurrentCultureIgnoreCase));
     }
 
-    return false;
-  }
-
-  public bool MatchesRestrictions(bool restriction)
-  {
-    if (restriction == true && _restrictions == true)
+    /// <summary>
+    /// Return true if the filter contains the specified date.
+    /// </summary>
+    public bool Matches(DateWrapper date)
     {
-      return true;
+        return (date != null && date.ToShortString().Contains(_filterText));
     }
 
-    if (_norestrictions == true && restriction == false)
+    /// <summary>
+    /// Return true if the filter contains the year in the specified date.
+    /// </summary>
+    public bool MatchesYear(DateWrapper date)
     {
-      return true;
+        return (DateWrapper.IsDateExact(date, out IDateExact exactDate) &&
+            exactDate.Year.ToString(CultureInfo.CurrentCulture).Contains(_filterText));
     }
 
-    return false;
-  }
-
-  public bool MatchesCitations(bool citation)
-  {
-    if (citation == true && _citations == true)
+    public bool MatchesPhotos(bool photo)
     {
-      return true;
+        if (photo == true && _photos == true)
+        {
+            return true;
+        }
+
+        if (_nophotos == true && photo == false)
+        {
+            return true;
+        }
+
+        return false;
     }
 
-    if (_nocitations == true && citation == false)
+    public bool MatchesRestrictions(bool restriction)
     {
-      return true;
+        if (restriction == true && _restrictions == true)
+        {
+            return true;
+        }
+
+        if (_norestrictions == true && restriction == false)
+        {
+            return true;
+        }
+
+        return false;
     }
 
-    return false;
-  }
-
-  public bool MatchesAttachments(bool attachment)
-  {
-    if (attachment == true && _attachments == true)
+    public bool MatchesCitations(bool citation)
     {
-      return true;
+        if (citation == true && _citations == true)
+        {
+            return true;
+        }
+
+        if (_nocitations == true && citation == false)
+        {
+            return true;
+        }
+
+        return false;
     }
 
-    if (_noattachments == true && attachment == false)
+    public bool MatchesAttachments(bool attachment)
     {
-      return true;
+        if (attachment == true && _attachments == true)
+        {
+            return true;
+        }
+
+        if (_noattachments == true && attachment == false)
+        {
+            return true;
+        }
+
+        return false;
     }
 
-    return false;
-  }
-
-  public bool MatchesNotes(bool note)
-  {
-    if (note == true && _notes == true)
+    public bool MatchesNotes(bool note)
     {
-      return true;
+        if (note == true && _notes == true)
+        {
+            return true;
+        }
+
+        if (_nonotes == true && note == false)
+        {
+            return true;
+        }
+
+        return false;
     }
 
-    if (_nonotes == true && note == false)
+    public bool MatchesLiving(bool isliving)
     {
-      return true;
+        if (isliving == true && _living == true)
+        {
+            return true;
+        }
+
+        if (_noliving == true && isliving == false)
+        {
+            return true;
+        }
+
+        return false;
     }
 
-    return false;
-  }
-
-  public bool MatchesLiving(bool isliving)
-  {
-    if (isliving == true && _living == true)
+    public bool MatchesImages(bool image)
     {
-      return true;
+        if (image == true && _images == true)
+        {
+            return true;
+        }
+
+        if (_noimages == true && image == false)
+        {
+            return true;
+        }
+
+        return false;
     }
 
-    if (_noliving == true && isliving == false)
+    public bool MatchesGender(string genders)
     {
-      return true;
+        if (genders == _gender)
+        {
+            return true;
+        }
+
+        return false;
     }
 
-    return false;
-  }
-
-  public bool MatchesImages(bool image)
-  {
-    if (image == true && _images == true)
+    /// <summary>
+    /// Return true if the filter contains the month in the specified date.
+    /// </summary>
+    public bool MatchesMonth(DateWrapper date)
     {
-      return true;
+        return DateWrapper.IsDateExact(date, out IDateExact exact) && _filterDate != null &&
+            exact.Month == _filterDate.Value.Month;
     }
 
-    if (_noimages == true && image == false)
+    /// <summary>
+    /// Return true if the filter contains the day in the specified date.
+    /// </summary>
+    public bool MatchesDay(DateWrapper date)
     {
-      return true;
+        return DateWrapper.IsDateExact(date, out IDateExact exact) && _filterDate != null &&
+            exact.Day == _filterDate.Value.Day;
     }
 
-    return false;
-  }
-
-  public bool MatchesGender(string genders)
-  {
-    if (genders == _gender)
+    /// <summary>
+    /// Return true if the filter contains the specified age. The filter can 
+    /// represent a single age (10), a range (10-20), or an ending (10+).
+    /// </summary>
+    public bool Matches(int? age)
     {
-      return true;
+        if (age == null)
+        {
+            return false;
+        }
+
+        // Check single age.
+        if (_minimumAge != null && age.Value == _minimumAge.Value)
+        {
+            return true;
+        }
+
+        // Check for a range.
+        if (_minimumAge != null && _maximumAge != null &&
+            age.Value >= _minimumAge && age <= _maximumAge)
+        {
+            return true;
+        }
+
+        // Check for an ending age.
+        if (_minimumAge == null && _maximumAge != null && age.Value >= _maximumAge)
+        {
+            return true;
+        }
+
+        return false;
     }
 
-    return false;
-  }
-
-  /// <summary>
-  /// Return true if the filter contains the month in the specified date.
-  /// </summary>
-  public bool MatchesMonth(DateTime? date)
-  {
-    return (date != null && _filterDate != null &&
-        date.Value.Month == _filterDate.Value.Month);
-  }
-
-  /// <summary>
-  /// Return true if the filter contains the day in the specified date.
-  /// </summary>
-  public bool MatchesDay(DateTime? date)
-  {
-    return (date != null && _filterDate != null &&
-        date.Value.Day == _filterDate.Value.Day);
-  }
-
-  /// <summary>
-  /// Return true if the filter contains the specified age. The filter can 
-  /// represent a single age (10), a range (10-20), or an ending (10+).
-  /// </summary>
-  public bool Matches(int? age)
-  {
-    if (age == null)
+    /// <summary>
+    /// Parse the specified filter text.
+    /// </summary>
+    public void Parse(string text)
     {
-      return false;
+        // Initialize fields.
+        _filterText = "";
+        _gender = "";
+        _filterDate = null;
+        _minimumAge = null;
+        _maximumAge = null;
+
+        _photos = false;
+        _restrictions = false;
+        _attachments = false;
+        _notes = false;
+        _images = false;
+        _living = false;
+        _citations = false;
+
+        _nophotos = false;
+        _norestrictions = false;
+        _noattachments = false;
+        _nonotes = false;
+        _noimages = false;
+        _noliving = false;
+        _nocitations = false;
+
+        // Store the filter text.
+        _filterText = string.IsNullOrEmpty(text) ? "" : text.ToLower(CultureInfo.CurrentCulture).Trim();
+
+        // Parse date and age.
+        ParseDate();
+        ParseAge();
+        ParsePhotos();
+        ParseRestrictions();
+        ParseNotes();
+        ParseAttachments();
+        ParseImages();
+        ParseLiving();
+        ParseCitations();
+        ParseGender();
+
     }
 
-    // Check single age.
-    if (_minimumAge != null && age.Value == _minimumAge.Value)
+    /// <summary>
+    /// Parse the filter date.
+    /// </summary>
+    internal void ParseDate()
     {
-      return true;
+        if (DateTime.TryParse(_filterText, out DateTime date))
+        {
+            _filterDate = date;
+        }
     }
 
-    // Check for a range.
-    if (_minimumAge != null && _maximumAge != null &&
-        age.Value >= _minimumAge && age <= _maximumAge)
+    /// <summary>
+    /// Parse photos.
+    /// </summary>
+    private void ParsePhotos()
     {
-      return true;
+        if (_filterText.Equals(Properties.Resources.Photos, StringComparison.CurrentCultureIgnoreCase))
+        {
+            _photos = true;
+        }
+
+        if (_filterText.Equals("!" + Properties.Resources.Photos, StringComparison.CurrentCultureIgnoreCase))
+        {
+            _nophotos = true;
+        }
     }
 
-    // Check for an ending age.
-    if (_minimumAge == null && _maximumAge != null && age.Value >= _maximumAge)
+    /// <summary>
+    /// Parse genders.
+    /// </summary>
+    private void ParseGender()
     {
-      return true;
+        if (_filterText.Equals(Properties.Resources.Female, StringComparison.CurrentCultureIgnoreCase))
+        {
+            _gender = Properties.Resources.Female.ToLower();
+        }
+
+        if (_filterText.Equals(Properties.Resources.Male, StringComparison.CurrentCultureIgnoreCase))
+        {
+            _gender = Properties.Resources.Male.ToLower();
+        }
     }
 
-    return false;
-  }
-
-  /// <summary>
-  /// Parse the specified filter text.
-  /// </summary>
-  public void Parse(string text)
-  {
-    // Initialize fields.
-    _filterText = "";
-    _gender = "";
-    _filterDate = null;
-    _minimumAge = null;
-    _maximumAge = null;
-
-    _photos = false;
-    _restrictions = false;
-    _attachments = false;
-    _notes = false;
-    _images = false;
-    _living = false;
-    _citations = false;
-
-    _nophotos = false;
-    _norestrictions = false;
-    _noattachments = false;
-    _nonotes = false;
-    _noimages = false;
-    _noliving = false;
-    _nocitations = false;
-
-    // Store the filter text.
-    _filterText = string.IsNullOrEmpty(text) ? "" : text.ToLower(CultureInfo.CurrentCulture).Trim();
-
-    // Parse date and age.
-    ParseDate();
-    ParseAge();
-    ParsePhotos();
-    ParseRestrictions();
-    ParseNotes();
-    ParseAttachments();
-    ParseImages();
-    ParseLiving();
-    ParseCitations();
-    ParseGender();
-
-  }
-
-  /// <summary>
-  /// Parse the filter date.
-  /// </summary>
-  private void ParseDate()
-  {
-    if (DateTime.TryParse(_filterText, out DateTime date))
+    /// <summary>
+    /// Parse restrictions.
+    /// </summary>
+    private void ParseRestrictions()
     {
-      _filterDate = date;
-    }
-  }
+        if (_filterText.Equals(Properties.Resources.Restriction, StringComparison.CurrentCultureIgnoreCase))
+        {
+            _restrictions = true;
+        }
 
-  /// <summary>
-  /// Parse photos.
-  /// </summary>
-  private void ParsePhotos()
-  {
-    if (_filterText.Equals(Properties.Resources.Photos, StringComparison.CurrentCultureIgnoreCase))
-    {
-      _photos = true;
+        if (_filterText.Equals("!" + Properties.Resources.Restriction, StringComparison.CurrentCultureIgnoreCase))
+        {
+            _norestrictions = true;
+        }
     }
 
-    if (_filterText.Equals("!" + Properties.Resources.Photos, StringComparison.CurrentCultureIgnoreCase))
+    /// <summary>
+    /// Parse images.
+    /// </summary>
+    private void ParseImages()
     {
-      _nophotos = true;
-    }
-  }
+        if (_filterText.Equals(Properties.Resources.Image, StringComparison.CurrentCultureIgnoreCase))
+        {
+            _images = true;
+        }
 
-  /// <summary>
-  /// Parse genders.
-  /// </summary>
-  private void ParseGender()
-  {
-    if (_filterText.Equals(Properties.Resources.Female, StringComparison.CurrentCultureIgnoreCase))
-    {
-      _gender = Properties.Resources.Female.ToLower();
-    }
-
-    if (_filterText.Equals(Properties.Resources.Male, StringComparison.CurrentCultureIgnoreCase))
-    {
-      _gender = Properties.Resources.Male.ToLower();
-    }
-  }
-
-  /// <summary>
-  /// Parse restrictions.
-  /// </summary>
-  private void ParseRestrictions()
-  {
-    if (_filterText.Equals(Properties.Resources.Restriction, StringComparison.CurrentCultureIgnoreCase))
-    {
-      _restrictions = true;
+        if (_filterText.Equals("!" + Properties.Resources.Image, StringComparison.CurrentCultureIgnoreCase))
+        {
+            _noimages = true;
+        }
     }
 
-    if (_filterText.Equals("!" + Properties.Resources.Restriction, StringComparison.CurrentCultureIgnoreCase))
+    /// <summary>
+    /// Parse notes.
+    /// </summary>
+    private void ParseNotes()
     {
-      _norestrictions = true;
-    }
-  }
+        if (_filterText.Equals(Properties.Resources.Note, StringComparison.CurrentCultureIgnoreCase))
+        {
+            _notes = true;
+        }
 
-  /// <summary>
-  /// Parse images.
-  /// </summary>
-  private void ParseImages()
-  {
-    if (_filterText.Equals(Properties.Resources.Image, StringComparison.CurrentCultureIgnoreCase))
-    {
-      _images = true;
-    }
-
-    if (_filterText.Equals("!" + Properties.Resources.Image, StringComparison.CurrentCultureIgnoreCase))
-    {
-      _noimages = true;
-    }
-  }
-
-  /// <summary>
-  /// Parse notes.
-  /// </summary>
-  private void ParseNotes()
-  {
-    if (_filterText.Equals(Properties.Resources.Note, StringComparison.CurrentCultureIgnoreCase))
-    {
-      _notes = true;
+        if (_filterText.Equals("!" + Properties.Resources.Note, StringComparison.CurrentCultureIgnoreCase))
+        {
+            _nonotes = true;
+        }
     }
 
-    if (_filterText.Equals("!" + Properties.Resources.Note, StringComparison.CurrentCultureIgnoreCase))
+    /// <summary>
+    /// Parse attachments.
+    /// </summary>
+    private void ParseAttachments()
     {
-      _nonotes = true;
-    }
-  }
+        if (_filterText.Equals(Properties.Resources.Attachment, StringComparison.CurrentCultureIgnoreCase))
+        {
+            _attachments = true;
+        }
 
-  /// <summary>
-  /// Parse attachments.
-  /// </summary>
-  private void ParseAttachments()
-  {
-    if (_filterText.Equals(Properties.Resources.Attachment, StringComparison.CurrentCultureIgnoreCase))
-    {
-      _attachments = true;
-    }
-
-    if (_filterText.Equals("!" + Properties.Resources.Attachment, StringComparison.CurrentCultureIgnoreCase))
-    {
-      _noattachments = true;
-    }
-  }
-
-  /// <summary>
-  /// Parse living.
-  /// </summary>
-  private void ParseLiving()
-  {
-    if (_filterText.Equals(Properties.Resources.Living, StringComparison.CurrentCultureIgnoreCase))
-    {
-      _living = true;
+        if (_filterText.Equals("!" + Properties.Resources.Attachment, StringComparison.CurrentCultureIgnoreCase))
+        {
+            _noattachments = true;
+        }
     }
 
-    if (_filterText.Equals(Properties.Resources.Deceased, StringComparison.CurrentCultureIgnoreCase))
+    /// <summary>
+    /// Parse living.
+    /// </summary>
+    private void ParseLiving()
     {
-      _noliving = true;
-    }
-  }
+        if (_filterText.Equals(Properties.Resources.Living, StringComparison.CurrentCultureIgnoreCase))
+        {
+            _living = true;
+        }
 
-  /// <summary>
-  /// Parse citations.
-  /// </summary>
-  private void ParseCitations()
-  {
-    if (_filterText.Equals(Properties.Resources.Citations, StringComparison.CurrentCultureIgnoreCase))
-    {
-      _citations = true;
-    }
-
-    if (_filterText.Equals("!" + Properties.Resources.Citations, StringComparison.CurrentCultureIgnoreCase))
-    {
-      _nocitations = true;
-    }
-  }
-
-  /// <summary>
-  /// Parse the filter age. The filter can represent a
-  /// single age (10), a range (10-20), or an ending (10+).
-  /// </summary>
-  private void ParseAge()
-  {
-
-    // Single age.
-    if (int.TryParse(_filterText, out int age))
-    {
-      _minimumAge = age;
+        if (_filterText.Equals(Properties.Resources.Deceased, StringComparison.CurrentCultureIgnoreCase))
+        {
+            _noliving = true;
+        }
     }
 
-    // Age range.
-    if (_filterText.Contains('-'))
+    /// <summary>
+    /// Parse citations.
+    /// </summary>
+    private void ParseCitations()
     {
-      string[] list = _filterText.Split('-');
+        if (_filterText.Equals(Properties.Resources.Citations, StringComparison.CurrentCultureIgnoreCase))
+        {
+            _citations = true;
+        }
 
-      if (int.TryParse(list[0], out age))
-      {
-        _minimumAge = age;
-      }
-
-      if (int.TryParse(list[1], out age))
-      {
-        _maximumAge = age;
-      }
+        if (_filterText.Equals("!" + Properties.Resources.Citations, StringComparison.CurrentCultureIgnoreCase))
+        {
+            _nocitations = true;
+        }
     }
 
-    // Ending age.
-    if (_filterText.EndsWith('+'))
+    /// <summary>
+    /// Parse the filter age. The filter can represent a
+    /// single age (10), a range (10-20), or an ending (10+).
+    /// </summary>
+    private void ParseAge()
     {
-      if (int.TryParse(_filterText.AsSpan(0, _filterText.Length - 1), out age))
-      {
-        _maximumAge = age;
-      }
+
+        // Single age.
+        if (int.TryParse(_filterText, out int age))
+        {
+            _minimumAge = age;
+        }
+
+        // Age range.
+        if (_filterText.Contains('-'))
+        {
+            string[] list = _filterText.Split('-');
+
+            if (int.TryParse(list[0], out age))
+            {
+                _minimumAge = age;
+            }
+
+            if (int.TryParse(list[1], out age))
+            {
+                _maximumAge = age;
+            }
+        }
+
+        // Ending age.
+        if (_filterText.EndsWith('+'))
+        {
+            if (int.TryParse(_filterText.AsSpan(0, _filterText.Length - 1), out age))
+            {
+                _maximumAge = age;
+            }
+        }
     }
-  }
 }
 
 
@@ -466,46 +473,46 @@ public class Filter
 /// </summary>
 public class FilterSortListView : SortListView
 {
-  private delegate void FilterDelegate();
+    private delegate void FilterDelegate();
 
-  /// <summary>
-  /// Get the filter for this control.
-  /// </summary>
-  protected Filter Filter { get; } = new Filter();
+    /// <summary>
+    /// Get the filter for this control.
+    /// </summary>
+    protected Filter Filter { get; } = new Filter();
 
-  /// <summary>
-  /// Filter the data using the specified filter text.
-  /// </summary>
-  public void FilterList(string text)
-  {
-    // Setup the filter object.
-    Filter.Parse(text);
+    /// <summary>
+    /// Filter the data using the specified filter text.
+    /// </summary>
+    public void FilterList(string text)
+    {
+        // Setup the filter object.
+        Filter.Parse(text);
 
-    // Start an async operation that filters the list.
-    Dispatcher.BeginInvoke(
-        DispatcherPriority.ApplicationIdle,
-        new FilterDelegate(FilterWorker));
-  }
+        // Start an async operation that filters the list.
+        Dispatcher.BeginInvoke(
+            DispatcherPriority.ApplicationIdle,
+            new FilterDelegate(FilterWorker));
+    }
 
-  /// <summary>
-  /// Worker method that filters the list.
-  /// </summary>
-  private void FilterWorker()
-  {
-    // Get the data the ListView is bound to.
-    ICollectionView view = CollectionViewSource.GetDefaultView(ItemsSource);
+    /// <summary>
+    /// Worker method that filters the list.
+    /// </summary>
+    private void FilterWorker()
+    {
+        // Get the data the ListView is bound to.
+        ICollectionView view = CollectionViewSource.GetDefaultView(ItemsSource);
 
-    // Clear the list if the filter is empty, otherwise filter the list.
-    view.Filter = Filter.IsEmpty ? null :
-        new Predicate<object>(FilterCallback);
-  }
+        // Clear the list if the filter is empty, otherwise filter the list.
+        view.Filter = Filter.IsEmpty ? null :
+            new Predicate<object>(FilterCallback);
+    }
 
-  /// <summary>
-  /// This is called for each item in the list. The derived classes 
-  /// override this method.
-  /// </summary>
-  protected virtual bool FilterCallback(object item)
-  {
-    return false;
-  }
+    /// <summary>
+    /// This is called for each item in the list. The derived classes 
+    /// override this method.
+    /// </summary>
+    protected virtual bool FilterCallback(object item)
+    {
+        return false;
+    }
 }

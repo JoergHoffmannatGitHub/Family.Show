@@ -14,6 +14,7 @@
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="FamilyShowLib.Tests, PublicKey=0024000004800000940000000602000000240000525341310004000001000100112a33f6cca1938f1f41c83db2b78c4b93d141028d57932ab8df49ca5c54cb9d5cab690c13103d49ae50ad2ac17dd0b0c43a8f47a5cad65982429d34da17a9ab216af394b6068d899e2644c5b1dfe5cd9b3d0ab56b777e5cc23445743b6548485fa256d42bd3bf65b47a45346ba053be7f4cbd51507fc29a97c2ba897b7513a5" />
+    <ProjectReference Include="..\Genealogy\Genealogy.Domain\Genealogy.Domain.csproj" />
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

@@ -38,7 +38,7 @@ The aim of this project is the enhancement with actual technologies:
 
 ### Requirements
 
-Family.Show runs on Microsoft Windows 10. To run the application on Microsoft Windows without .NET 8, you must first download and install version 8.0 of .NET 8. The framework can be downloaded at https://dotnet.microsoft.com/en-us/download/dotnet/8.0.
+Family.Show runs on Microsoft Windows 10 or higher. To run the application on Microsoft Windows without .NET 8, you must first download and install version 8.0 of .NET 8. The framework can be downloaded at https://dotnet.microsoft.com/en-us/download/dotnet/8.0.
 
 ## Example
 
