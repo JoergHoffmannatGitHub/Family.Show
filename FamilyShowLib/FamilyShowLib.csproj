@@ -12,6 +12,7 @@
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="FamilyShowLib.Tests" />
+    <InternalsVisibleTo Include="FamilyShow.Tests" />
     <ProjectReference Include="..\Genealogy\Genealogy.Domain\Genealogy.Domain.csproj" />
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
