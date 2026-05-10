@@ -78,7 +78,8 @@ public partial class Extract : UserControl
         bool openFolderAfterExtraction = Option5.IsChecked.Value;
         bool currentPersonOnly = Option4.IsChecked.Value;
 
-        string folderName = Properties.Resources.Unknown + " (" + DateTime.Now.Day + "-" + DateTime.Now.Month + "-" + DateTime.Now.Year + ")";
+        var now = DateTime.Now;
+        string folderName = Properties.Resources.Unknown + " (" + now.Day + "-" + now.Month + "-" + now.Year + ")";
         string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + App.ApplicationFolderName;
 
         if (!string.IsNullOrEmpty(_familyCollection.FullyQualifiedFilename))
