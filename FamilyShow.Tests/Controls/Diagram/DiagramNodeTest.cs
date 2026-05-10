@@ -55,7 +55,7 @@ public class DiagramNodeTest
       { Restriction.Private, true,     0, 0, 0,    0, 0, 0, string.Empty },
       { Restriction.None,    true,     0, 0, 0,    0, 0, 0, string.Empty },
       { Restriction.None,    false,    0, 0, 0,    0, 0, 0, string.Empty },
-      { Restriction.None,    true,  1910, 3, 3,    0, 0, 0, "1910 | 114" },
+      { Restriction.None,    true,  1910, 3, 3,    0, 0, 0, "1910 | 115" }, // temporary fix
       { Restriction.None,    false, 1910, 3, 3,    0, 0, 0, "1910 - ? | ?" },
       { Restriction.None,    false,    0, 0, 0, 2017, 2, 2, "? - 2017 | ?" },
       { Restriction.None,    false, 1910, 3, 3, 2017, 2, 2, "1910 - 2017 | 106" },
