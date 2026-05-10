@@ -26,12 +26,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genealogy.Domain", "Genealo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genealogy.Domain.Tests", "Genealogy\Genealogy.Domain.Tests\Genealogy.Domain.Tests.csproj", "{D946C8EF-83FC-4E0B-8434-F148D010A68F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Genealogy Items", "Genealogy Items", "{C4DCA96D-8C25-4FCB-9C5E-5E2ECBC93529}"
-	ProjectSection(SolutionItems) = preProject
-		Genealogy\Directory.Build.props = Genealogy\Directory.Build.props
-		Genealogy\Directory.Build.targets = Genealogy\Directory.Build.targets
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,7 +63,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D1FF5FB4-625C-45B0-B904-86DD69A11952} = {2CD5FF4E-7AF0-4A59-98FC-8114B4D060F0}
 		{D946C8EF-83FC-4E0B-8434-F148D010A68F} = {2CD5FF4E-7AF0-4A59-98FC-8114B4D060F0}
-		{C4DCA96D-8C25-4FCB-9C5E-5E2ECBC93529} = {2CD5FF4E-7AF0-4A59-98FC-8114B4D060F0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {14954E03-1F04-4E4C-BF00-2F16BD8030DA}
