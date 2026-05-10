@@ -7,8 +7,6 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\FamilyShowLib\FamilyShowLib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
