@@ -385,13 +385,14 @@ public partial class DiagramViewer : UserControl
     private void UpdateTimeSlider()
     {
         // The max is always this year.
-        TimeSlider.Maximum = DateTime.Now.Year;
+        var currentYear = DateTime.Now.Year;
+        TimeSlider.Maximum = currentYear;
 
         // Min is the more previous date in the diagram, this comes
         // from birth dates and marriages. Use a default of 10 years
         // if the diagram does not contain any dates.
         TimeSlider.Minimum = Math.Min(
-            DateTime.Now.Year - 10, Diagram.MinimumYear - 1);
+            currentYear - 10, Diagram.MinimumYear - 1);
 
         // Adjust the large change tick based on the range of the min / max values.
         TimeSlider.LargeChange = Math.Max(2,

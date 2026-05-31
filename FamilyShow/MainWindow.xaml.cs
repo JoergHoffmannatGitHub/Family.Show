@@ -777,7 +777,6 @@ public partial class MainWindow : Window
 
     private void ChangeTheme(object sender, RoutedEventArgs e)
     {
-
         MenuItem item = (MenuItem)sender;
         string theme = item.CommandParameter as string;
 
@@ -793,7 +792,6 @@ public partial class MainWindow : Window
         PersonInfoControl.OnThemeChange();
         UpdateStatus();
         DiagramControl.TimeSlider.Value = DateTime.Now.Year;
-
     }
 
     #endregion

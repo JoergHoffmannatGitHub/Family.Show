@@ -79,6 +79,8 @@ namespace FamilyShow
         // use for testing, as the NodeTemplate is not set in the test environment
         internal bool _testing = false;
 
+        internal TimeProvider _timeProvider = TimeProvider.System;
+
         #endregion
 
         #region properties
@@ -215,7 +217,7 @@ namespace FamilyShow
                         return string.Empty;
                     }
 
-                    int age = _person.Age.Value - (DateTime.Now.Year - (int)_displayYear);
+                    int age = _person.Age.Value - (_timeProvider.GetLocalNow().DateTime.Year - (int)_displayYear);
                     return string.Format(CultureInfo.CurrentUICulture,
                         "{0}{1} | {2}", _person.BirthDateDescriptor, birthdate.Year, Math.Max(0, age));
                 }

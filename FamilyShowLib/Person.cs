@@ -100,6 +100,8 @@ namespace FamilyShowLib
         // Flag to prevent recursion when syncing names
         private bool _isSyncingNames;
 
+        internal TimeProvider _timeProvider = TimeProvider.System;
+
         #endregion
 
 #pragma warning disable IDE1006 // Naming Styles
@@ -324,7 +326,7 @@ namespace FamilyShowLib
 
                 // Determine the age of the person based on just the year.
                 DateTime startDate = DateExactAsDateTime(birthDate);
-                DateTime endDate = IsLiving ? DateTime.Now : DateExactAsDateTime(deathDate);
+                DateTime endDate = IsLiving ? _timeProvider.GetLocalNow().DateTime : DateExactAsDateTime(deathDate);
                 int age = endDate.Year - startDate.Year;
 
                 // Compensate for the month and day of month (if they have not had a birthday this year).

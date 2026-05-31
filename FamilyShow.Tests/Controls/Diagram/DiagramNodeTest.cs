@@ -1,5 +1,7 @@
 ﻿using FamilyShowLib;
 
+using Microsoft.Extensions.Time.Testing;
+
 namespace FamilyShow.Tests.Controls.Diagram;
 
 public class DiagramNodeTest
@@ -55,7 +57,7 @@ public class DiagramNodeTest
       { Restriction.Private, true,     0, 0, 0,    0, 0, 0, string.Empty },
       { Restriction.None,    true,     0, 0, 0,    0, 0, 0, string.Empty },
       { Restriction.None,    false,    0, 0, 0,    0, 0, 0, string.Empty },
-      { Restriction.None,    true,  1910, 3, 3,    0, 0, 0, "1910 | 115" }, // temporary fix
+      { Restriction.None,    true,  1910, 3, 3,    0, 0, 0, "1910 | 114" },
       { Restriction.None,    false, 1910, 3, 3,    0, 0, 0, "1910 - ? | ?" },
       { Restriction.None,    false,    0, 0, 0, 2017, 2, 2, "? - 2017 | ?" },
       { Restriction.None,    false, 1910, 3, 3, 2017, 2, 2, "1910 - 2017 | 106" },
@@ -75,6 +77,8 @@ public class DiagramNodeTest
       string expected)
     {
         // Arrange
+        var fakeTimeProvider = new FakeTimeProvider();
+        fakeTimeProvider.SetUtcNow(new DateTime(2026, 2, 14, 8, 22, 35));
         DateWrapper? birthDate = (birthYear == 0 ? null : new DateWrapper(birthYear, birthMonth, birthDay));
         DateWrapper? deathDate = (deathYear == 0 ? null : new DateWrapper(deathYear, deathMonth, deathDay));
         Person person = new("John", "Doe")
@@ -82,9 +86,16 @@ public class DiagramNodeTest
             Restriction = restriction,
             IsLiving = living,
             BirthDate = birthDate,
-            DeathDate = deathDate
+            DeathDate = deathDate,
+            _timeProvider = fakeTimeProvider
         };
-        var diagramNode = new DiagramNode { _testing = true, _displayYear = DateTime.Now.Year - 1, Person = person };
+        var diagramNode = new DiagramNode
+        {
+            _testing = true,
+            _displayYear = 2025,
+            Person = person,
+            _timeProvider = fakeTimeProvider
+        };
 
         // Act
         string result = diagramNode.DateInformation;
