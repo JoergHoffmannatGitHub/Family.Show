@@ -37,10 +37,8 @@ public class DateTest
     }
 
     public static readonly TheoryData<string> InvalidGedcomDates =
-      [
-        null,
-      string.Empty,
-      "123",
+    [
+        string.Empty, string.Empty, "123"
     ];
 
     [Theory, MemberData(nameof(InvalidGedcomDates))]

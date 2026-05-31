@@ -9,6 +9,6 @@
   </PropertyGroup>
   <!-- Versioning projects -->
   <PropertyGroup>
-    <TargetFrameworkVersion>net8.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>net10.0</TargetFrameworkVersion>
   </PropertyGroup>
 </Project>
