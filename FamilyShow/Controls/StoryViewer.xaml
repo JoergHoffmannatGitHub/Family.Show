@@ -137,9 +137,6 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
           </Grid.ColumnDefinitions>
-          <Grid.RowDefinitions>
-
-          </Grid.RowDefinitions>
 
           <!-- Story View -->
           <Border x:Name="StoryViewBorder"
