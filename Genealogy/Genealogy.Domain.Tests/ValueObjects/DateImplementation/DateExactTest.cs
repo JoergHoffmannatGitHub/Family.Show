@@ -241,22 +241,27 @@ public class DateExactTest
         Assert.Equal(expectedResult, result);
     }
 
-    public static readonly TheoryData<string?> EqualsDateObjectCases =
-      new()
-      {
-      { null },
-      { "NotADateExact" }
-      };
-
-    [Theory, MemberData(nameof(EqualsDateObjectCases))]
-    public void EqualsObject_ShouldReturnCorrectComparisonResult_WhenComparingWithVariousObjects(
-      object? obj)
+    [Fact]
+    public void EqualsObject_ShouldReturnCorrectComparisonResult_WhenComparingWithStringObject()
     {
         // Arrange
         DateExact date = new(2023, 7, 22);
 
         // Act
-        bool result = date.Equals(obj);
+        bool result = date.Equals("NotADateExact");
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void EqualsObject_ShouldReturnCorrectComparisonResult_WhenComparingWithNullObject()
+    {
+        // Arrange
+        DateExact date = new(2023, 7, 22);
+
+        // Act
+        bool result = date.Equals(null);
 
         // Assert
         Assert.False(result);
